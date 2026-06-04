@@ -47,17 +47,20 @@
     .page-break { margin: 48px 0; display: flex; align-items: center; gap: 16px; }
     .page-break::before, .page-break::after { content: ''; flex: 1; height: 1px; background: #bbb; }
     .page-break span { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #999; }
-    .print-bar { text-align: center; margin-top: 40px; }
+    .print-bar { text-align: center; margin-top: 40px; display: flex; align-items: center; justify-content: center; gap: 16px; }
     .print-btn { background: #1a1a1a; border: none; color: #fff; font-family: 'Merriweather Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; padding: 12px 32px; border-radius: 3px; cursor: pointer; transition: background 0.2s; }
     .print-btn:hover { background: #333; }
+    .clear-btn { background: transparent; border: 1.5px solid #ccc; color: #999; font-family: 'Merriweather Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; padding: 11px 24px; border-radius: 3px; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
+    .clear-btn:hover { border-color: #c0392b; color: #c0392b; }
+    .save-notice { font-family: 'Merriweather Sans', sans-serif; font-size: 11px; color: #aaa; text-align: center; margin-top: 12px; font-style: italic; }
     @media print {
       html { background: #fff; }
       body { padding: 0; max-width: 100%; }
-      .grade-nav { display: none; }
+      .grade-nav, .print-bar, .save-notice { display: none; }
       .worksheet { border: 1px solid #ccc; box-shadow: none; padding: 28px 32px; }
       .passage-box { background: #f5f5f5; }
       .ci-input, .detail-input { border: 1px solid #bbb; }
-      .print-bar, .page-break, .ak-toggle, .answer-key { display: none !important; }
+      .page-break, .ak-toggle, .answer-key { display: none !important; }
       .worksheet + .worksheet { page-break-before: always; }
     }
   </style>
@@ -87,19 +90,19 @@
     <div class="ws-rule"></div>
     <p class="section-label">Part 1 &mdash; Central Idea</p>
     <p class="section-question">What is the most important message or main point of this story? Write it in one complete sentence.</p>
-    <textarea class="ci-input" rows="2" placeholder="The central idea of this story is…"></textarea>
+    <textarea class="ci-input" data-save="ws1-ci" rows="2" placeholder="The central idea of this story is…"></textarea>
     <div class="ws-rule"></div>
     <p class="section-label">Part 2 &mdash; Supporting Detail</p>
     <p class="section-question">Find one detail from the passage that supports your central idea. Use words or phrases directly from the text.</p>
-    <textarea class="detail-input" rows="3" placeholder="A detail from the passage…"></textarea>
+    <textarea class="detail-input" data-save="ws1-detail" rows="3" placeholder="A detail from the passage…"></textarea>
     <button class="ak-toggle" onclick="toggleKey(this)">Show Answer Key</button>
     <div class="answer-key">
       <p class="ak-heading">Answer Key</p>
       <p class="ak-label">Central Idea</p>
-      <textarea class="ak-input" rows="2" placeholder="Type the expected central idea answer…"></textarea>
+      <textarea class="ak-input" data-save="ws1-ak-ci" rows="2" placeholder="Type the expected central idea answer…"></textarea>
       <div class="ak-rule"></div>
       <p class="ak-label">Supporting Detail</p>
-      <textarea class="ak-input" rows="3" placeholder="Type the expected supporting detail…"></textarea>
+      <textarea class="ak-input" data-save="ws1-ak-detail" rows="3" placeholder="Type the expected supporting detail…"></textarea>
     </div>
   </section>
 
@@ -118,32 +121,54 @@
     <div class="ws-rule"></div>
     <p class="section-label">Part 1 &mdash; Central Idea</p>
     <p class="section-question">What is the most important message or main point of this story? Write it in one complete sentence.</p>
-    <textarea class="ci-input" rows="2" placeholder="The central idea of this story is…"></textarea>
+    <textarea class="ci-input" data-save="ws2-ci" rows="2" placeholder="The central idea of this story is…"></textarea>
     <div class="ws-rule"></div>
     <p class="section-label">Part 2 &mdash; Supporting Detail</p>
     <p class="section-question">Find one detail from the passage that supports your central idea. Use words or phrases directly from the text.</p>
-    <textarea class="detail-input" rows="3" placeholder="A detail from the passage…"></textarea>
+    <textarea class="detail-input" data-save="ws2-detail" rows="3" placeholder="A detail from the passage…"></textarea>
     <button class="ak-toggle" onclick="toggleKey(this)">Show Answer Key</button>
     <div class="answer-key">
       <p class="ak-heading">Answer Key</p>
       <p class="ak-label">Central Idea</p>
-      <textarea class="ak-input" rows="2" placeholder="Type the expected central idea answer…"></textarea>
+      <textarea class="ak-input" data-save="ws2-ak-ci" rows="2" placeholder="Type the expected central idea answer…"></textarea>
       <div class="ak-rule"></div>
       <p class="ak-label">Supporting Detail</p>
-      <textarea class="ak-input" rows="3" placeholder="Type the expected supporting detail…"></textarea>
+      <textarea class="ak-input" data-save="ws2-ak-detail" rows="3" placeholder="Type the expected supporting detail…"></textarea>
     </div>
   </section>
 
   <div class="print-bar">
     <button class="print-btn" onclick="window.print()">Print Worksheets</button>
+    <button class="clear-btn" onclick="clearAnswers()">Clear My Answers</button>
   </div>
+  <p class="save-notice">Your answers are saved automatically in this browser.</p>
 
   <script>
+    const NS = 'nafis';
+
     function toggleKey(btn) {
       const key = btn.nextElementSibling;
       const visible = key.classList.toggle('visible');
       btn.textContent = visible ? 'Hide Answer Key' : 'Show Answer Key';
     }
+
+    function clearAnswers() {
+      if (!confirm('Clear all your saved answers on this page?')) return;
+      document.querySelectorAll('textarea[data-save]').forEach(el => {
+        localStorage.removeItem(NS + ':' + el.dataset.save);
+        el.value = '';
+      });
+    }
+
+    // Save & restore
+    document.querySelectorAll('textarea[data-save]').forEach(el => {
+      const key = NS + ':' + el.dataset.save;
+      const saved = localStorage.getItem(key);
+      if (saved) el.value = saved;
+      el.addEventListener('input', () => localStorage.setItem(key, el.value));
+    });
+
+    // Block paste on student fields
     document.querySelectorAll('.ci-input, .detail-input').forEach(el => {
       el.addEventListener('paste', e => e.preventDefault());
       el.addEventListener('contextmenu', e => e.preventDefault());

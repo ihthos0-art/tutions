@@ -359,6 +359,14 @@
       const visible = key.classList.toggle('visible');
       btn.textContent = visible ? 'Hide Answer Key' : 'Show Answer Key';
     }
+
+    document.querySelectorAll('.ci-input, .detail-input').forEach(el => {
+      el.addEventListener('paste', e => e.preventDefault());
+      el.addEventListener('contextmenu', e => e.preventDefault());
+      el.addEventListener('keydown', e => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'v') e.preventDefault();
+      });
+    });
   </script>
 
 </body>

@@ -34,16 +34,6 @@
     .detail-input { min-height: 80px; }
     .ci-input:focus, .detail-input:focus { border-color: #333; }
     .ci-input::placeholder, .detail-input::placeholder { color: #bbb; font-style: italic; }
-    .answer-key { display: none; margin-top: 28px; background: #f0f7ee; border: 1.5px solid #a8cfa2; border-radius: 4px; padding: 24px 28px; }
-    .answer-key.visible { display: block; }
-    .answer-key .ak-heading { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #3a7a33; margin-bottom: 18px; }
-    .answer-key .ak-label { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: #4a8a43; margin-bottom: 6px; }
-    .answer-key .ak-input { width: 100%; background: #fff; border: 1.5px solid #a8cfa2; border-radius: 3px; color: #1a1a1a; font-family: 'Merriweather', Georgia, serif; font-size: 14px; padding: 12px 14px; outline: none; line-height: 1.7; resize: none; transition: border-color 0.2s; }
-    .answer-key .ak-input:focus { border-color: #3a7a33; }
-    .answer-key .ak-input::placeholder { color: #bbb; font-style: italic; }
-    .answer-key .ak-rule { height: 1px; background: #c8e0c4; margin: 16px 0; }
-    .ak-toggle { margin-top: 28px; background: transparent; border: 1.5px solid #a8cfa2; color: #3a7a33; font-family: 'Merriweather Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; padding: 9px 20px; border-radius: 3px; cursor: pointer; transition: background 0.2s; }
-    .ak-toggle:hover { background: #f0f7ee; }
     .page-break { margin: 48px 0; display: flex; align-items: center; gap: 16px; }
     .page-break::before, .page-break::after { content: ''; flex: 1; height: 1px; background: #bbb; }
     .page-break span { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #999; }
@@ -60,7 +50,7 @@
       .worksheet { border: 1px solid #ccc; box-shadow: none; padding: 28px 32px; }
       .passage-box { background: #f5f5f5; }
       .ci-input, .detail-input { border: 1px solid #bbb; }
-      .page-break, .ak-toggle, .answer-key { display: none !important; }
+      .page-break { display: none; }
       .worksheet + .worksheet { page-break-before: always; }
     }
   </style>
@@ -95,15 +85,6 @@
     <p class="section-label">Part 2 &mdash; Supporting Detail</p>
     <p class="section-question">Find one detail from the passage that supports your central idea. Use words or phrases directly from the text.</p>
     <textarea class="detail-input" data-save="ws1-detail" rows="3" placeholder="A detail from the passage…"></textarea>
-    <button class="ak-toggle" onclick="toggleKey(this)">Show Answer Key</button>
-    <div class="answer-key">
-      <p class="ak-heading">Answer Key</p>
-      <p class="ak-label">Central Idea</p>
-      <textarea class="ak-input" data-save="ws1-ak-ci" rows="2" placeholder="Type the expected central idea answer…"></textarea>
-      <div class="ak-rule"></div>
-      <p class="ak-label">Supporting Detail</p>
-      <textarea class="ak-input" data-save="ws1-ak-detail" rows="3" placeholder="Type the expected supporting detail…"></textarea>
-    </div>
   </section>
 
   <div class="page-break"><span>Worksheet 02</span></div>
@@ -126,15 +107,6 @@
     <p class="section-label">Part 2 &mdash; Supporting Detail</p>
     <p class="section-question">Find one detail from the passage that supports your central idea. Use words or phrases directly from the text.</p>
     <textarea class="detail-input" data-save="ws2-detail" rows="3" placeholder="A detail from the passage…"></textarea>
-    <button class="ak-toggle" onclick="toggleKey(this)">Show Answer Key</button>
-    <div class="answer-key">
-      <p class="ak-heading">Answer Key</p>
-      <p class="ak-label">Central Idea</p>
-      <textarea class="ak-input" data-save="ws2-ak-ci" rows="2" placeholder="Type the expected central idea answer…"></textarea>
-      <div class="ak-rule"></div>
-      <p class="ak-label">Supporting Detail</p>
-      <textarea class="ak-input" data-save="ws2-ak-detail" rows="3" placeholder="Type the expected supporting detail…"></textarea>
-    </div>
   </section>
 
   <div class="print-bar">
@@ -145,13 +117,6 @@
 
   <script>
     const NS = 'nafis';
-
-    function toggleKey(btn) {
-      const key = btn.nextElementSibling;
-      const visible = key.classList.toggle('visible');
-      btn.textContent = visible ? 'Hide Answer Key' : 'Show Answer Key';
-    }
-
     function clearAnswers() {
       if (!confirm('Clear all your saved answers on this page?')) return;
       document.querySelectorAll('textarea[data-save]').forEach(el => {
@@ -159,16 +124,12 @@
         el.value = '';
       });
     }
-
-    // Save & restore
     document.querySelectorAll('textarea[data-save]').forEach(el => {
       const key = NS + ':' + el.dataset.save;
       const saved = localStorage.getItem(key);
       if (saved) el.value = saved;
       el.addEventListener('input', () => localStorage.setItem(key, el.value));
     });
-
-    // Block paste on student fields
     document.querySelectorAll('.ci-input, .detail-input').forEach(el => {
       el.addEventListener('paste', e => e.preventDefault());
       el.addEventListener('contextmenu', e => e.preventDefault());

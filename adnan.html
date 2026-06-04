@@ -34,6 +34,11 @@
     .detail-input { min-height: 80px; }
     .ci-input:focus, .detail-input:focus { border-color: #333; }
     .ci-input::placeholder, .detail-input::placeholder { color: #bbb; font-style: italic; }
+    /* Prevent selecting/copying passage and questions */
+    .passage-box, .passage-title, .section-question, .section-label, .ws-number {
+      -webkit-user-select: none;
+      user-select: none;
+    }
     .page-break { margin: 48px 0; display: flex; align-items: center; gap: 16px; }
     .page-break::before, .page-break::after { content: ''; flex: 1; height: 1px; background: #bbb; }
     .page-break span { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #999; }
@@ -52,6 +57,10 @@
       .ci-input, .detail-input { border: 1px solid #bbb; }
       .page-break { display: none; }
       .worksheet + .worksheet { page-break-before: always; }
+      .passage-box, .passage-title, .section-question, .section-label, .ws-number {
+        -webkit-user-select: text;
+        user-select: text;
+      }
     }
   </style>
 </head>

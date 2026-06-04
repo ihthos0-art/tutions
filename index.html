@@ -23,7 +23,6 @@
       padding: 40px 20px 60px;
     }
 
-    /* ── Page header ── */
     .page-header {
       text-align: center;
       margin-bottom: 36px;
@@ -51,24 +50,16 @@
       color: #666;
     }
 
-    /* ── Worksheet card ── */
     .worksheet {
       background: #ffffff;
       border: 1px solid #c8c8c8;
       border-radius: 4px;
       box-shadow: 0 2px 12px rgba(0,0,0,0.09);
       padding: 40px 44px 48px;
-      margin-bottom: 0;
     }
 
-    /* ── Top bar ── */
     .ws-topbar {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-      padding-bottom: 20px;
+      padding-bottom: 18px;
       border-bottom: 2px solid #1a1a1a;
       margin-bottom: 32px;
     }
@@ -79,44 +70,8 @@
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: #555;
-      padding-top: 4px;
     }
-    .ws-fields {
-      display: flex;
-      gap: 24px;
-      flex-wrap: wrap;
-    }
-    .ws-field {
-      display: flex;
-      align-items: baseline;
-      gap: 6px;
-    }
-    .ws-field label {
-      font-family: 'Merriweather Sans', sans-serif;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #333;
-      white-space: nowrap;
-    }
-    .ws-field input[type="text"] {
-      background: transparent;
-      border: none;
-      border-bottom: 1.5px solid #999;
-      color: #1a1a1a;
-      font-family: 'Merriweather', Georgia, serif;
-      font-size: 13px;
-      padding: 2px 4px 3px;
-      width: 110px;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-    .ws-field input[type="text"]:focus { border-bottom-color: #1a1a1a; }
-    .ws-field input[type="text"]::placeholder { color: #bbb; }
 
-    /* ── Passage ── */
-    .passage-wrap { margin-bottom: 32px; }
     .section-label {
       font-family: 'Merriweather Sans', sans-serif;
       font-size: 10px;
@@ -126,6 +81,8 @@
       color: #555;
       margin-bottom: 6px;
     }
+
+    .passage-wrap { margin-bottom: 32px; }
     .passage-title {
       font-size: clamp(16px, 2.4vw, 22px);
       font-weight: 700;
@@ -147,7 +104,6 @@
     }
     .passage-box p:last-child { margin-bottom: 0; }
 
-    /* ── Section rule ── */
     .ws-rule {
       height: 1px;
       background: #ddd;
@@ -162,7 +118,6 @@
       line-height: 1.6;
     }
 
-    /* ── Central idea textarea ── */
     .ci-input {
       width: 100%;
       background: #fff;
@@ -181,47 +136,24 @@
     .ci-input:focus { border-color: #333; }
     .ci-input::placeholder { color: #bbb; font-style: italic; }
 
-    /* ── Supporting details ── */
-    .details-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-    @media (max-width: 560px) {
-      .details-grid { grid-template-columns: 1fr; }
-    }
-    .detail-item {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-    .detail-num {
-      font-family: 'Merriweather Sans', sans-serif;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: #666;
-    }
     .detail-input {
       width: 100%;
       background: #fff;
       border: 1.5px solid #bbb;
       border-radius: 3px;
-      padding: 10px 12px;
+      padding: 12px 14px;
       font-family: 'Merriweather', Georgia, serif;
-      font-size: 13px;
+      font-size: 14px;
       color: #1a1a1a;
       line-height: 1.7;
-      resize: vertical;
-      min-height: 70px;
+      resize: none;
+      min-height: 80px;
       outline: none;
       transition: border-color 0.2s;
     }
     .detail-input:focus { border-color: #333; }
     .detail-input::placeholder { color: #bbb; font-style: italic; }
 
-    /* ── Divider between worksheets ── */
     .page-break {
       margin: 48px 0;
       display: flex;
@@ -245,7 +177,6 @@
       white-space: nowrap;
     }
 
-    /* ── Print button ── */
     .print-bar {
       text-align: center;
       margin-top: 40px;
@@ -266,7 +197,6 @@
     }
     .print-btn:hover { background: #333; }
 
-    /* ── Print ── */
     @media print {
       html { background: #fff; }
       body { padding: 0; max-width: 100%; }
@@ -274,7 +204,7 @@
       .passage-box { background: #f5f5f5; }
       .ci-input, .detail-input { border: 1px solid #bbb; }
       .print-bar, .page-break { display: none; }
-      .worksheet + .worksheet { margin-top: 0; page-break-before: always; }
+      .worksheet + .worksheet { page-break-before: always; }
     }
   </style>
 </head>
@@ -292,23 +222,8 @@
 
     <div class="ws-topbar">
       <span class="ws-number">Worksheet 01</span>
-      <div class="ws-fields">
-        <div class="ws-field">
-          <label for="name1">Name</label>
-          <input type="text" id="name1" placeholder="______" autocomplete="off" />
-        </div>
-        <div class="ws-field">
-          <label for="date1">Date</label>
-          <input type="text" id="date1" placeholder="MM / DD" autocomplete="off" />
-        </div>
-        <div class="ws-field">
-          <label for="class1">Class</label>
-          <input type="text" id="class1" placeholder="Period" autocomplete="off" />
-        </div>
-      </div>
     </div>
 
-    <!-- Passage -->
     <div class="passage-wrap">
       <p class="section-label">Read the passage</p>
       <h2 class="passage-title">The Last Piece</h2>
@@ -320,35 +235,15 @@
 
     <div class="ws-rule"></div>
 
-    <!-- Part 1 -->
     <p class="section-label">Part 1 &mdash; Central Idea</p>
     <p class="section-question">What is the most important message or main point of this story? Write it in one complete sentence.</p>
     <textarea class="ci-input" rows="2" placeholder="The central idea of this story is…" aria-label="Central idea worksheet 1"></textarea>
 
     <div class="ws-rule"></div>
 
-    <!-- Part 2 -->
-    <p class="section-label">Part 2 &mdash; Supporting Details</p>
-    <p class="section-question">Find 4 details from the passage that support your central idea. Use words or phrases directly from the text.</p>
-
-    <div class="details-grid">
-      <div class="detail-item">
-        <span class="detail-num">Detail 1</span>
-        <textarea class="detail-input" rows="3" placeholder="A detail from the passage…" aria-label="Detail 1"></textarea>
-      </div>
-      <div class="detail-item">
-        <span class="detail-num">Detail 2</span>
-        <textarea class="detail-input" rows="3" placeholder="Another detail…" aria-label="Detail 2"></textarea>
-      </div>
-      <div class="detail-item">
-        <span class="detail-num">Detail 3</span>
-        <textarea class="detail-input" rows="3" placeholder="A third detail…" aria-label="Detail 3"></textarea>
-      </div>
-      <div class="detail-item">
-        <span class="detail-num">Detail 4</span>
-        <textarea class="detail-input" rows="3" placeholder="One more detail…" aria-label="Detail 4"></textarea>
-      </div>
-    </div>
+    <p class="section-label">Part 2 &mdash; Supporting Detail</p>
+    <p class="section-question">Find one detail from the passage that supports your central idea. Use words or phrases directly from the text.</p>
+    <textarea class="detail-input" rows="3" placeholder="A detail from the passage…" aria-label="Supporting detail worksheet 1"></textarea>
 
   </section>
 
@@ -361,23 +256,8 @@
 
     <div class="ws-topbar">
       <span class="ws-number">Worksheet 02</span>
-      <div class="ws-fields">
-        <div class="ws-field">
-          <label for="name2">Name</label>
-          <input type="text" id="name2" placeholder="______" autocomplete="off" />
-        </div>
-        <div class="ws-field">
-          <label for="date2">Date</label>
-          <input type="text" id="date2" placeholder="MM / DD" autocomplete="off" />
-        </div>
-        <div class="ws-field">
-          <label for="class2">Class</label>
-          <input type="text" id="class2" placeholder="Period" autocomplete="off" />
-        </div>
-      </div>
     </div>
 
-    <!-- Passage -->
     <div class="passage-wrap">
       <p class="section-label">Read the passage</p>
       <h2 class="passage-title">The Garden on the Rooftop</h2>
@@ -389,35 +269,15 @@
 
     <div class="ws-rule"></div>
 
-    <!-- Part 1 -->
     <p class="section-label">Part 1 &mdash; Central Idea</p>
     <p class="section-question">What is the most important message or main point of this story? Write it in one complete sentence.</p>
     <textarea class="ci-input" rows="2" placeholder="The central idea of this story is…" aria-label="Central idea worksheet 2"></textarea>
 
     <div class="ws-rule"></div>
 
-    <!-- Part 2 -->
-    <p class="section-label">Part 2 &mdash; Supporting Details</p>
-    <p class="section-question">Find 4 details from the passage that support your central idea. Use words or phrases directly from the text.</p>
-
-    <div class="details-grid">
-      <div class="detail-item">
-        <span class="detail-num">Detail 1</span>
-        <textarea class="detail-input" rows="3" placeholder="A detail from the passage…" aria-label="Detail 1"></textarea>
-      </div>
-      <div class="detail-item">
-        <span class="detail-num">Detail 2</span>
-        <textarea class="detail-input" rows="3" placeholder="Another detail…" aria-label="Detail 2"></textarea>
-      </div>
-      <div class="detail-item">
-        <span class="detail-num">Detail 3</span>
-        <textarea class="detail-input" rows="3" placeholder="A third detail…" aria-label="Detail 3"></textarea>
-      </div>
-      <div class="detail-item">
-        <span class="detail-num">Detail 4</span>
-        <textarea class="detail-input" rows="3" placeholder="One more detail…" aria-label="Detail 4"></textarea>
-      </div>
-    </div>
+    <p class="section-label">Part 2 &mdash; Supporting Detail</p>
+    <p class="section-question">Find one detail from the passage that supports your central idea. Use words or phrases directly from the text.</p>
+    <textarea class="detail-input" rows="3" placeholder="A detail from the passage…" aria-label="Supporting detail worksheet 2"></textarea>
 
   </section>
 

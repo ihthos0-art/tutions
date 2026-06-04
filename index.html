@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Central Idea — Worksheet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:      #0d0a0e;
+      --gold:    #c9a84c;
+      --gold-lt: #e8c97a;
+      --cream:   #f5ede0;
+      --card-bg: rgba(18, 10, 26, 0.88);
+      --card-bdr:rgba(201, 168, 76, 0.28);
+      --line:    rgba(201, 168, 76, 0.18);
+      --input-bg:rgba(46, 31, 58, 0.45);
+    }
+
+    html {
+      background: var(--bg);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      color: var(--cream);
+      min-height: 100%;
+    }
+
+    body {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 52px 28px 80px;
+    }
+
+    /* ── Page header ──────────────────────────────────────── */
+    .page-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .page-header .eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.42em;
+      color: rgba(201,168,76,0.55);
+      font-weight: 300;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .page-header h1 {
+      font-size: clamp(28px, 5vw, 46px);
+      font-weight: 600;
+      font-style: italic;
+      letter-spacing: 0.02em;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-lt) 45%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.2;
+    }
+    .page-header .sub {
+      margin-top: 12px;
+      font-size: 14px;
+      font-style: italic;
+      color: rgba(245,237,224,0.42);
+      letter-spacing: 0.08em;
+    }
+
+    /* ── Divider ──────────────────────────────────────────── */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold-lt), transparent);
+      opacity: 0.3;
+      margin: 56px 0;
+    }
+
+    /* ── Worksheet card ─────────────────────────────────────── */
+    .worksheet {
+      background: var(--card-bg);
+      border: 1px solid var(--card-bdr);
+      border-radius: 16px;
+      box-shadow:
+        inset 0 0 40px rgba(201,168,76,0.04),
+        0 24px 70px rgba(0,0,0,0.55),
+        0 0 60px rgba(201,168,76,0.06);
+      padding: 44px 40px 50px;
+    }
+
+    /* ── Worksheet top bar ───────────────────────────────────── */
+    .ws-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+    .ws-number {
+      font-size: 11px;
+      letter-spacing: 0.38em;
+      color: var(--gold);
+      font-weight: 300;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+    .ws-fields {
+      display: flex;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+    .ws-field {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .ws-field label {
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      color: rgba(201,168,76,0.55);
+      font-weight: 300;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .ws-field input[type="text"] {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(201,168,76,0.35);
+      color: var(--cream);
+      font-family: inherit;
+      font-size: 14px;
+      font-style: italic;
+      padding: 2px 6px 4px;
+      width: 120px;
+      outline: none;
+      transition: border-color 0.25s;
+    }
+    .ws-field input[type="text"]:focus {
+      border-bottom-color: var(--gold-lt);
+    }
+    .ws-field input[type="text"]::placeholder {
+      color: rgba(245,237,224,0.18);
+    }
+
+    /* ── Section label ────────────────────────────────────────── */
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.38em;
+      color: var(--gold);
+      font-weight: 300;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      opacity: 0.7;
+    }
+    .section-title {
+      font-size: clamp(17px, 2.6vw, 24px);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--cream);
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+    .section-desc {
+      font-size: 13px;
+      font-style: italic;
+      color: rgba(245,237,224,0.38);
+      letter-spacing: 0.05em;
+      margin-bottom: 18px;
+    }
+
+    /* ── Story textarea ─────────────────────────────────────────── */
+    .story-block {
+      margin-bottom: 32px;
+    }
+    .para-label {
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      color: rgba(201,168,76,0.55);
+      font-weight: 300;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .lined-area {
+      width: 100%;
+      min-height: 130px;
+      background: var(--input-bg);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px 16px;
+      font-family: inherit;
+      font-size: clamp(14px, 1.8vw, 17px);
+      font-style: italic;
+      color: var(--cream);
+      line-height: 2.1;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.25s, box-shadow 0.25s;
+      /* Lined paper effect */
+      background-image: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent calc(2.1em - 1px),
+        rgba(201,168,76,0.10) calc(2.1em - 1px),
+        rgba(201,168,76,0.10) calc(2.1em)
+      );
+    }
+    .lined-area:focus {
+      border-color: rgba(201,168,76,0.5);
+      box-shadow: 0 0 0 2px rgba(201,168,76,0.06);
+    }
+    .lined-area::placeholder {
+      color: rgba(245,237,224,0.18);
+      font-style: italic;
+    }
+
+    /* ── Section separator ────────────────────────────────────────── */
+    .ws-rule {
+      height: 1px;
+      background: var(--line);
+      margin: 32px 0;
+    }
+
+    /* ── Central idea box ───────────────────────────────────────── */
+    .central-idea-box {
+      background: rgba(201,168,76,0.05);
+      border: 1px solid rgba(201,168,76,0.22);
+      border-radius: 10px;
+      padding: 22px 24px;
+      margin-bottom: 28px;
+    }
+    .central-idea-box .ci-label {
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      color: var(--gold);
+      font-weight: 300;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      opacity: 0.8;
+    }
+    .central-idea-box .ci-question {
+      font-size: clamp(14px, 2vw, 18px);
+      font-style: italic;
+      color: rgba(245,237,224,0.7);
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+    .ci-input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(201,168,76,0.3);
+      color: var(--cream);
+      font-family: inherit;
+      font-size: clamp(14px, 1.8vw, 17px);
+      font-style: italic;
+      padding: 6px 4px 8px;
+      outline: none;
+      transition: border-color 0.25s;
+      line-height: 1.6;
+    }
+    .ci-input:focus { border-bottom-color: var(--gold-lt); }
+    .ci-input::placeholder { color: rgba(245,237,224,0.18); }
+
+    /* ── Supporting details ───────────────────────────────────────── */
+    .details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 580px) {
+      .details-grid { grid-template-columns: 1fr; }
+    }
+    .detail-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .detail-num {
+      font-size: 10px;
+      letter-spacing: 0.35em;
+      color: rgba(201,168,76,0.5);
+      font-weight: 300;
+      text-transform: uppercase;
+    }
+    .detail-input {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: inherit;
+      font-size: clamp(13px, 1.6vw, 15px);
+      font-style: italic;
+      color: var(--cream);
+      line-height: 1.7;
+      resize: vertical;
+      min-height: 72px;
+      outline: none;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+    .detail-input:focus {
+      border-color: rgba(201,168,76,0.45);
+      box-shadow: 0 0 0 2px rgba(201,168,76,0.05);
+    }
+    .detail-input::placeholder { color: rgba(245,237,224,0.18); }
+
+    /* ── Print button ────────────────────────────────────────────── */
+    .print-bar {
+      text-align: center;
+      margin-top: 52px;
+    }
+    .print-btn {
+      background: transparent;
+      border: 1px solid rgba(201,168,76,0.35);
+      color: rgba(245,237,224,0.55);
+      font-family: inherit;
+      font-size: 11px;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      padding: 12px 32px;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: border-color 0.25s, color 0.25s;
+    }
+    .print-btn:hover {
+      border-color: var(--gold-lt);
+      color: var(--gold-lt);
+    }
+
+    /* ── Print styles ──────────────────────────────────────────── */
+    @media print {
+      body { background: #fff; color: #111; padding: 20px; max-width: 100%; }
+      .page-header h1 { -webkit-text-fill-color: #111; color: #111; }
+      .page-header .eyebrow, .page-header .sub, .ws-number, .section-label,
+      .para-label, .ci-label, .detail-num { color: #555 !important; }
+      .worksheet {
+        background: #fff; border: 1px solid #ccc; border-radius: 0;
+        box-shadow: none; padding: 24px;
+      }
+      .central-idea-box { background: #f9f9f9; border: 1px solid #ccc; }
+      .lined-area, .detail-input {
+        background: #fff; border: 1px solid #ccc;
+        color: #111; -webkit-text-fill-color: #111;
+      }
+      .ci-input {
+        border-bottom: 1px solid #999;
+        color: #111; -webkit-text-fill-color: #111;
+      }
+      .ws-field input[type="text"] {
+        border-bottom: 1px solid #999;
+        color: #111; -webkit-text-fill-color: #111;
+      }
+      .print-bar { display: none; }
+      .divider { background: #ccc; opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Page Header ──────────────────────────────────────────────── -->
+  <header class="page-header">
+    <p class="eyebrow">NYC English Language Arts</p>
+    <h1>Central Idea &amp; Supporting Details</h1>
+    <p class="sub">Write your own story — then break it down</p>
+  </header>
+
+
+  <!-- ════════════════════════════════════════════════════════
+       WORKSHEET  1
+  ════════════════════════════════════════════════════════ -->
+  <section class="worksheet" aria-label="Worksheet 1">
+
+    <!-- Top bar -->
+    <div class="ws-topbar">
+      <span class="ws-number">Worksheet · 01</span>
+      <div class="ws-fields">
+        <div class="ws-field">
+          <label for="name1">Name</label>
+          <input type="text" id="name1" placeholder="Your name" autocomplete="off" />
+        </div>
+        <div class="ws-field">
+          <label for="date1">Date</label>
+          <input type="text" id="date1" placeholder="MM / DD" autocomplete="off" />
+        </div>
+        <div class="ws-field">
+          <label for="class1">Class</label>
+          <input type="text" id="class1" placeholder="Period" autocomplete="off" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Writing prompt -->
+    <p class="section-label">Part 1 — Write Your Story</p>
+    <h2 class="section-title">Tell a 2-paragraph story about anything you choose.</h2>
+    <p class="section-desc">It can be real or imaginary — just make it yours.</p>
+
+    <div class="story-block">
+      <p class="para-label">Paragraph 1 — Set the scene</p>
+      <textarea class="lined-area" rows="5" placeholder="Begin your story here…" aria-label="Paragraph 1"></textarea>
+    </div>
+    <div class="story-block">
+      <p class="para-label">Paragraph 2 — Build or conclude</p>
+      <textarea class="lined-area" rows="5" placeholder="Continue or wrap up your story…" aria-label="Paragraph 2"></textarea>
+    </div>
+
+    <div class="ws-rule"></div>
+
+    <!-- Central idea -->
+    <p class="section-label">Part 2 — Find Your Central Idea</p>
+    <div class="central-idea-box">
+      <p class="ci-label">Central Idea</p>
+      <p class="ci-question">What is the <em>most important</em> message or main point of your story?<br>Write it in one sentence.</p>
+      <input type="text" class="ci-input" placeholder="The central idea of my story is…" aria-label="Central idea for worksheet 1" />
+    </div>
+
+    <!-- Supporting details -->
+    <p class="section-label">Part 3 — Supporting Details</p>
+    <h2 class="section-title">Which details from your story support that central idea?</h2>
+    <p class="section-desc">Choose 4 details — a word, phrase, or sentence from your writing.</p>
+
+    <div class="details-grid">
+      <div class="detail-item">
+        <span class="detail-num">Detail 01</span>
+        <textarea class="detail-input" rows="3" placeholder="A detail that supports your central idea…" aria-label="Supporting detail 1"></textarea>
+      </div>
+      <div class="detail-item">
+        <span class="detail-num">Detail 02</span>
+        <textarea class="detail-input" rows="3" placeholder="Another supporting detail…" aria-label="Supporting detail 2"></textarea>
+      </div>
+      <div class="detail-item">
+        <span class="detail-num">Detail 03</span>
+        <textarea class="detail-input" rows="3" placeholder="A third supporting detail…" aria-label="Supporting detail 3"></textarea>
+      </div>
+      <div class="detail-item">
+        <span class="detail-num">Detail 04</span>
+        <textarea class="detail-input" rows="3" placeholder="One more supporting detail…" aria-label="Supporting detail 4"></textarea>
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- ── Divider between worksheets ───────────────────────────────────────── -->
+  <div class="divider" role="separator"></div>
+
+
+  <!-- ════════════════════════════════════════════════════════
+       WORKSHEET  2
+  ════════════════════════════════════════════════════════ -->
+  <section class="worksheet" aria-label="Worksheet 2">
+
+    <!-- Top bar -->
+    <div class="ws-topbar">
+      <span class="ws-number">Worksheet · 02</span>
+      <div class="ws-fields">
+        <div class="ws-field">
+          <label for="name2">Name</label>
+          <input type="text" id="name2" placeholder="Your name" autocomplete="off" />
+        </div>
+        <div class="ws-field">
+          <label for="date2">Date</label>
+          <input type="text" id="date2" placeholder="MM / DD" autocomplete="off" />
+        </div>
+        <div class="ws-field">
+          <label for="class2">Class</label>
+          <input type="text" id="class2" placeholder="Period" autocomplete="off" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Writing prompt -->
+    <p class="section-label">Part 1 — Write Your Story</p>
+    <h2 class="section-title">Tell a different 2-paragraph story — try a new topic.</h2>
+    <p class="section-desc">Push yourself: choose a topic you wouldn't normally write about.</p>
+
+    <div class="story-block">
+      <p class="para-label">Paragraph 1 — Introduce your idea</p>
+      <textarea class="lined-area" rows="5" placeholder="Start your second story here…" aria-label="Paragraph 1 worksheet 2"></textarea>
+    </div>
+    <div class="story-block">
+      <p class="para-label">Paragraph 2 — Develop or resolve</p>
+      <textarea class="lined-area" rows="5" placeholder="Develop or wrap up your story…" aria-label="Paragraph 2 worksheet 2"></textarea>
+    </div>
+
+    <div class="ws-rule"></div>
+
+    <!-- Central idea -->
+    <p class="section-label">Part 2 — Find Your Central Idea</p>
+    <div class="central-idea-box">
+      <p class="ci-label">Central Idea</p>
+      <p class="ci-question">What is the <em>most important</em> message or main point of your story?<br>Write it in one sentence.</p>
+      <input type="text" class="ci-input" placeholder="The central idea of my story is…" aria-label="Central idea for worksheet 2" />
+    </div>
+
+    <!-- Supporting details -->
+    <p class="section-label">Part 3 — Supporting Details</p>
+    <h2 class="section-title">Which details from your story support that central idea?</h2>
+    <p class="section-desc">Choose 4 details — a word, phrase, or sentence from your writing.</p>
+
+    <div class="details-grid">
+      <div class="detail-item">
+        <span class="detail-num">Detail 01</span>
+        <textarea class="detail-input" rows="3" placeholder="A detail that supports your central idea…" aria-label="Supporting detail 1 ws2"></textarea>
+      </div>
+      <div class="detail-item">
+        <span class="detail-num">Detail 02</span>
+        <textarea class="detail-input" rows="3" placeholder="Another supporting detail…" aria-label="Supporting detail 2 ws2"></textarea>
+      </div>
+      <div class="detail-item">
+        <span class="detail-num">Detail 03</span>
+        <textarea class="detail-input" rows="3" placeholder="A third supporting detail…" aria-label="Supporting detail 3 ws2"></textarea>
+      </div>
+      <div class="detail-item">
+        <span class="detail-num">Detail 04</span>
+        <textarea class="detail-input" rows="3" placeholder="One more supporting detail…" aria-label="Supporting detail 4 ws2"></textarea>
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- ── Print button ──────────────────────────────────────────────────────── -->
+  <div class="print-bar">
+    <button class="print-btn" onclick="window.print()">Print worksheet</button>
+  </div>
+
+</body>
+</html>

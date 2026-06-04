@@ -40,7 +40,6 @@
       font-size: clamp(20px, 3.5vw, 30px);
       font-weight: 700;
       color: #1a1a1a;
-      letter-spacing: 0.01em;
       line-height: 1.2;
     }
     .page-header .sub {
@@ -59,6 +58,9 @@
     }
 
     .ws-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       padding-bottom: 18px;
       border-bottom: 2px solid #1a1a1a;
       margin-bottom: 32px;
@@ -118,7 +120,7 @@
       line-height: 1.6;
     }
 
-    .ci-input {
+    .ci-input, .detail-input {
       width: 100%;
       background: #fff;
       border: 1.5px solid #bbb;
@@ -131,28 +133,79 @@
       transition: border-color 0.2s;
       line-height: 1.7;
       resize: none;
-      min-height: 58px;
     }
-    .ci-input:focus { border-color: #333; }
-    .ci-input::placeholder { color: #bbb; font-style: italic; }
+    .ci-input { min-height: 58px; }
+    .detail-input { min-height: 80px; }
+    .ci-input:focus, .detail-input:focus { border-color: #333; }
+    .ci-input::placeholder, .detail-input::placeholder { color: #bbb; font-style: italic; }
 
-    .detail-input {
+    /* Answer key */
+    .answer-key {
+      display: none;
+      margin-top: 28px;
+      background: #f0f7ee;
+      border: 1.5px solid #a8cfa2;
+      border-radius: 4px;
+      padding: 24px 28px;
+    }
+    .answer-key.visible { display: block; }
+    .answer-key .ak-heading {
+      font-family: 'Merriweather Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #3a7a33;
+      margin-bottom: 18px;
+    }
+    .answer-key .ak-label {
+      font-family: 'Merriweather Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #4a8a43;
+      margin-bottom: 6px;
+    }
+    .answer-key .ak-input {
       width: 100%;
       background: #fff;
-      border: 1.5px solid #bbb;
+      border: 1.5px solid #a8cfa2;
       border-radius: 3px;
-      padding: 12px 14px;
+      color: #1a1a1a;
       font-family: 'Merriweather', Georgia, serif;
       font-size: 14px;
-      color: #1a1a1a;
+      padding: 12px 14px;
+      outline: none;
       line-height: 1.7;
       resize: none;
-      min-height: 80px;
-      outline: none;
       transition: border-color 0.2s;
     }
-    .detail-input:focus { border-color: #333; }
-    .detail-input::placeholder { color: #bbb; font-style: italic; }
+    .answer-key .ak-input:focus { border-color: #3a7a33; }
+    .answer-key .ak-input::placeholder { color: #bbb; font-style: italic; }
+    .answer-key .ak-rule {
+      height: 1px;
+      background: #c8e0c4;
+      margin: 16px 0;
+    }
+
+    /* Toggle button */
+    .ak-toggle {
+      margin-top: 28px;
+      background: transparent;
+      border: 1.5px solid #a8cfa2;
+      color: #3a7a33;
+      font-family: 'Merriweather Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 9px 20px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .ak-toggle:hover { background: #f0f7ee; }
 
     .page-break {
       margin: 48px 0;
@@ -160,12 +213,8 @@
       align-items: center;
       gap: 16px;
     }
-    .page-break::before,
-    .page-break::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: #bbb;
+    .page-break::before, .page-break::after {
+      content: ''; flex: 1; height: 1px; background: #bbb;
     }
     .page-break span {
       font-family: 'Merriweather Sans', sans-serif;
@@ -174,7 +223,6 @@
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: #999;
-      white-space: nowrap;
     }
 
     .print-bar {
@@ -203,7 +251,7 @@
       .worksheet { border: 1px solid #ccc; box-shadow: none; padding: 28px 32px; }
       .passage-box { background: #f5f5f5; }
       .ci-input, .detail-input { border: 1px solid #bbb; }
-      .print-bar, .page-break { display: none; }
+      .print-bar, .page-break, .ak-toggle, .answer-key { display: none !important; }
       .worksheet + .worksheet { page-break-before: always; }
     }
   </style>
@@ -237,13 +285,24 @@
 
     <p class="section-label">Part 1 &mdash; Central Idea</p>
     <p class="section-question">What is the most important message or main point of this story? Write it in one complete sentence.</p>
-    <textarea class="ci-input" rows="2" placeholder="The central idea of this story is…" aria-label="Central idea worksheet 1"></textarea>
+    <textarea class="ci-input" rows="2" placeholder="The central idea of this story is…"></textarea>
 
     <div class="ws-rule"></div>
 
     <p class="section-label">Part 2 &mdash; Supporting Detail</p>
     <p class="section-question">Find one detail from the passage that supports your central idea. Use words or phrases directly from the text.</p>
-    <textarea class="detail-input" rows="3" placeholder="A detail from the passage…" aria-label="Supporting detail worksheet 1"></textarea>
+    <textarea class="detail-input" rows="3" placeholder="A detail from the passage…"></textarea>
+
+    <button class="ak-toggle" onclick="toggleKey(this)">Show Answer Key</button>
+
+    <div class="answer-key">
+      <p class="ak-heading">Answer Key</p>
+      <p class="ak-label">Central Idea</p>
+      <textarea class="ak-input" rows="2" placeholder="Type the expected central idea answer…"></textarea>
+      <div class="ak-rule"></div>
+      <p class="ak-label">Supporting Detail</p>
+      <textarea class="ak-input" rows="3" placeholder="Type the expected supporting detail…"></textarea>
+    </div>
 
   </section>
 
@@ -271,13 +330,24 @@
 
     <p class="section-label">Part 1 &mdash; Central Idea</p>
     <p class="section-question">What is the most important message or main point of this story? Write it in one complete sentence.</p>
-    <textarea class="ci-input" rows="2" placeholder="The central idea of this story is…" aria-label="Central idea worksheet 2"></textarea>
+    <textarea class="ci-input" rows="2" placeholder="The central idea of this story is…"></textarea>
 
     <div class="ws-rule"></div>
 
     <p class="section-label">Part 2 &mdash; Supporting Detail</p>
     <p class="section-question">Find one detail from the passage that supports your central idea. Use words or phrases directly from the text.</p>
-    <textarea class="detail-input" rows="3" placeholder="A detail from the passage…" aria-label="Supporting detail worksheet 2"></textarea>
+    <textarea class="detail-input" rows="3" placeholder="A detail from the passage…"></textarea>
+
+    <button class="ak-toggle" onclick="toggleKey(this)">Show Answer Key</button>
+
+    <div class="answer-key">
+      <p class="ak-heading">Answer Key</p>
+      <p class="ak-label">Central Idea</p>
+      <textarea class="ak-input" rows="2" placeholder="Type the expected central idea answer…"></textarea>
+      <div class="ak-rule"></div>
+      <p class="ak-label">Supporting Detail</p>
+      <textarea class="ak-input" rows="3" placeholder="Type the expected supporting detail…"></textarea>
+    </div>
 
   </section>
 
@@ -285,6 +355,14 @@
   <div class="print-bar">
     <button class="print-btn" onclick="window.print()">Print Worksheets</button>
   </div>
+
+  <script>
+    function toggleKey(btn) {
+      const key = btn.nextElementSibling;
+      const visible = key.classList.toggle('visible');
+      btn.textContent = visible ? 'Hide Answer Key' : 'Show Answer Key';
+    }
+  </script>
 
 </body>
 </html>

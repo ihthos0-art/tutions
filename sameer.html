@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Algebra 1 Regents Prep — Sameer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Merriweather+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { min-height: 100%; background: #e8e8e6; font-family: 'Merriweather Sans', sans-serif; color: #1a1a1a; }
+    body { padding: 40px 20px 60px; }
+
+    .top-nav { max-width: 720px; margin: 0 auto 28px; }
+    .back-btn { font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #666; background: none; border: 1.5px solid #c0c0c0; border-radius: 4px; padding: 8px 16px; cursor: pointer; text-decoration: none; transition: background 0.15s, color 0.15s, border-color 0.15s; }
+    .back-btn:hover { background: #1a1a1a; border-color: #1a1a1a; color: #fff; }
+
+    .ws-card { background: #fff; border: 1px solid #c8c8c8; border-radius: 6px; box-shadow: 0 2px 16px rgba(0,0,0,0.09); padding: 48px 52px 56px; max-width: 720px; margin: 0 auto; }
+
+    .ws-header { border-bottom: 2px solid #1a1a1a; padding-bottom: 18px; margin-bottom: 40px; }
+    .eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: #888; margin-bottom: 10px; }
+    .ws-title { font-family: 'Merriweather', serif; font-size: clamp(22px, 4vw, 30px); font-weight: 700; margin-bottom: 6px; }
+    .ws-meta { font-size: 13px; color: #555; font-style: italic; }
+
+    .ws-section { margin-bottom: 40px; }
+
+    .section-header { background: #f4f3f0; border: 1px solid #d8d6cf; border-radius: 4px; padding: 10px 16px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; -webkit-user-select: none; user-select: none; }
+    .formula-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #666; }
+    .formula-ref { font-family: 'Courier New', monospace; font-size: 12px; font-weight: 600; color: #2a2a2a; background: #e0deda; padding: 3px 10px; border-radius: 3px; white-space: nowrap; }
+
+    .problem { display: flex; gap: 12px; padding: 14px 16px; background: #fafaf8; border: 1px solid #e2e0db; border-radius: 4px; margin-bottom: 10px; }
+    .q-num { font-size: 12px; font-weight: 700; color: #bbb; width: 24px; flex-shrink: 0; padding-top: 3px; }
+    .q-body { flex: 1; min-width: 0; }
+    .q-text { font-family: 'Merriweather', serif; font-size: 14px; line-height: 1.65; margin-bottom: 10px; -webkit-user-select: none; user-select: none; }
+    .q-hint { font-size: 11px; font-style: italic; color: #999; margin-bottom: 8px; -webkit-user-select: none; user-select: none; }
+    .ans-row { display: flex; align-items: center; gap: 8px; }
+    .ans-label { font-size: 13px; font-weight: 700; color: #555; white-space: nowrap; flex-shrink: 0; }
+    .ans-input { height: 34px; border: 2px solid #c8c8c8; border-radius: 3px; font-family: 'Merriweather', serif; font-size: 14px; padding: 0 10px; outline: none; background: #fff; color: #1a1a1a; flex: 1; min-width: 0; max-width: 320px; transition: border-color 0.15s; }
+    .ans-input:focus { border-color: #1a1a1a; }
+
+    @media (max-width: 540px) {
+      .ws-card { padding: 32px 20px 40px; }
+      .formula-ref { font-size: 10px; }
+      .section-header { flex-direction: column; align-items: flex-start; }
+    }
+    @media print {
+      body { background: #fff; padding: 0; }
+      .top-nav { display: none; }
+      .ws-card { box-shadow: none; border: none; padding: 20px 0; }
+      .ans-input { border: none; border-bottom: 2px solid #000; border-radius: 0; background: transparent; }
+      * { -webkit-user-select: text !important; user-select: text !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-nav">
+    <a class="back-btn" href="index.html">&larr; Menu</a>
+  </div>
+
+  <div class="ws-card">
+    <div class="ws-header">
+      <p class="eyebrow">Algebra 1 &nbsp;&middot;&nbsp; Regents Prep</p>
+      <h1 class="ws-title">Five Key Formulas</h1>
+      <p class="ws-meta">Sameer &nbsp;&middot;&nbsp; 20 Questions &nbsp;&middot;&nbsp; Use your formula sheet to help you</p>
+    </div>
+
+    <!-- SECTION 1: SLOPE -->
+    <div class="ws-section">
+      <div class="section-header">
+        <span class="formula-label">Formula 1 &mdash; Slope</span>
+        <span class="formula-ref">m = (y&#x2082; &minus; y&#x2081;) &divide; (x&#x2082; &minus; x&#x2081;)</span>
+      </div>
+
+      <div class="problem">
+        <span class="q-num">1.</span>
+        <div class="q-body">
+          <p class="q-text">Find the slope of the line that passes through (1, 3) and (5, 11).</p>
+          <div class="ans-row"><span class="ans-label">m =</span><input class="ans-input" type="text" data-save="q1" autocomplete="off" placeholder="" /></div>
+        </div>
+      </div>
+
+      <div class="problem">
+        <span class="q-num">2.</span>
+        <div class="q-body">
+          <p class="q-text">Find the slope of the line that passes through (0, 6) and (4, 2).</p>
+          <div class="ans-row"><span class="ans-label">m =</span><input class="ans-input" type="text" data-save="q2" autocomplete="off" /></div>
+        </div>
+      </div>
+
+      <div class="problem">
+        <span class="q-num">3.</span>
+        <div class="q-body">
+          <p class="q-text">Find the slope of the line that passes through (&minus;3, 1) and (3, 7).</p>
+          <div class="ans-row"><span class="ans-label">m =</span><input class="ans-input" type="text" data-save="q3" autocomplete="off" /></div>
+        </div>
+      </div>
+
+      <div class="problem">
+        <span class="q-num">4.</span>
+        <div class="q-body">
+          <p class="q-text">Find the slope of the line that passes through (2, 9) and (6, 1).</p>
+          <div class="ans-row"><span class="ans-label">m =</span><input class="ans-input" type="text" data-save="q4" autocomplete="off" /></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: SLOPE-INTERCEPT -->
+    <div class="ws-section">
+      <div class="section-header">
+        <span class="formula-label">Formula 2 &mdash; Slope-Intercept Form</span>
+        <span class="formula-ref">y = mx + b</span>
+      </div>
+
+      <div class="problem">
+        <span class="q-num">5.</span>
+        <div class="q-body">
+          <p class="q-text">A line has a slope of 4 and a y-intercept of &minus;3. Write the equation of the line.</p>
+          <div class="ans-row"><span class="ans-label">y =</span><input class="ans-input" type="text" data-save="q5" autocomplete="off" /></div>
+        </div>
+      </div>
+
+      <div class="problem">
+        <span class="q-num">6.</span>
+        <div class="q-body">
+          <p class="q-text">Using the equation y = 5x + 2, find the value of y when x = 3.</p>
+          <div class="ans-row"><span class="ans-label">y =</span><input class="ans-input" type="text" data-save="q6" autocomplete="off" /></div>
+        </div>
+      </div>
+
+      <div class="problem">
+        <span class="q-num">7.</span>
+        <div class="q-body">
+          <p class="q-text">A line has a slope of &minus;2 and crosses the y-axis at the point (0, 6). Write the equation.</p>
+          <div class="ans-row"><span class="ans-label">y =</span><input class="ans-input" type="text" data-save="q7" autocomplete="off" /></div>
+        </div>
+      </div>
+
+      <div class="problem">
+        <span class="q-num">8.</span>
+        <div class="q-body">
+          <p class="q-text">Using the equation y = 3x &minus; 5, find the value of y when x = 4.</p>
+          <div class="ans-row"><span class="ans-label">y =</span><input class="ans-input" type="text" data-save="q8" autocomplete="off" /></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 3: QUADRATIC -->
+    <div class="ws-section">
+      <div class="section-header">
+        <span class="formula-label">Formula 3 &mdash; Quadratic Formula</span>
+        <span class="formula-ref">x = (&minus;b &plusmn; &radic;(b&sup2;&minus;4ac)) &divide; 2a</span>
+      </div>
+
+      <div class="problem">
+        <span class="q-num">9.</span>
+        <div class="q-body">
+          <p class="q-text">Solve: x&sup2; + 7x + 12 = 0</p>
+          <p class="q-hint">Find both values of x. Example: x = 2 and x = &minus;3</p>
+          <div class="ans-row"><span class="ans-label">x =</span><input class="ans-input" type="text" data-save="q9" autocomplete="off" /></div>
+        </div>
+      </div>
+
+      <div class="problem">
+        <span class="q-num">10.</span>
+        <div class="q-body">
+          <p class="q-text">Solve: x&sup2; &minus; x &minus; 6 = 0</p>
+          <p class="q-hint">Find both values of x.</p>
+          <div class="ans-row"><span class="ans-label">x =</span><input class="ans-input" type="text" data-save="q10" autocomplete="off" /></div>
+        </div>
+      </div>
+
+      <div class="problem">
+        <span class="q-num">11.</span>
+        <div class="q-body">
+          <p class="q-text">Solve: x&sup2; &minus; 6x + 8 = 0</p>
+          <p class="q-hint">Find both values of x.</p>
+          <div class="ans-row"><span class="ans-label">x =</span><input class="ans-input" type="text" data-save="q11" autocomplete="off" /></div>
+        </div>
+      </div>
+
+      <div class="problem">
+        <span class="q-num">12.</span>
+        <div class="q-body">
+          <p class="q-text">Solve: 2x&sup2; &minus; 2x &minus; 4 = 0</p>
+          <p class="q-hint">Find both values of x.</p>
+          <div class="ans-row"><span class="ans-label">x =</span><input class="ans-input" type="text" data-save="q12" autocomplete="off" /></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 4: DISTANCE -->
+    <div class="ws-section">
+      <div class="section-header">
+        <span class="formula-label">Formula 4 &mdash; Distance Formula</span>
+        <span class="formula-ref">d = &radic;((x&#x2082;&minus;x&#x2081;)&sup2; + (y&#x2082;&minus;y&#x2081;)&sup2;)</span>
+      </div>
+
+      <div class="problem">
+        <span class="q-num">13.</span>
+        <div class="q-body">
+          <p class="q-text">Find the distance between the points (0, 0) and (3, 4).</p>
+          <div class="ans-row"><span class="ans-label">d =</span><input class="ans-input" type="text" data-save="q13" autocomplete="off" /></div>
+        </div>
+      </div>
+
+      <div class="problem">
+        <span class="q-num">14.</span>
+        <div class="q-body">
+          <p class="q-text">Find the distance between the points (1, 2) and (4, 6).</p>
+          <div class="ans-row"><span class="ans-label">d =</span><input class="ans-input" type="text" data-save="q14" autocomplete="off" /></div>
+        </div>
+      </div>
+
+      <div class="problem">
+        <span class="q-num">15.</span>
+        <div class="q-body">
+          <p class="q-text">Find the distance between the points (0, 0) and (8, 6).</p>
+          <div class="ans-row"><span class="ans-label">d =</span><input class="ans-input" type="text" data-save="q15" autocomplete="off" /></div>
+        </div>
+      </div>
+
+      <div class="problem">
+        <span class="q-num">16.</span>
+        <div class="q-body">
+          <p class="q-text">Find the distance between the points (&minus;3, 1) and (1, 4).</p>
+          <div class="ans-row"><span class="ans-label">d =</span><input class="ans-input" type="text" data-save="q16" autocomplete="off" /></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 5: SIMPLE INTEREST -->
+    <div class="ws-section">
+      <div class="section-header">
+        <span class="formula-label">Formula 5 &mdash; Simple Interest</span>
+        <span class="formula-ref">I = P &times; r &times; t</span>
+      </div>
+
+      <div class="problem">
+        <span class="q-num">17.</span>
+        <div class="q-body">
+          <p class="q-text">You deposit $300 in a bank account at a rate of 4% per year for 5 years. How much interest do you earn?</p>
+          <div class="ans-row"><span class="ans-label">I = $</span><input class="ans-input" type="text" data-save="q17" autocomplete="off" /></div>
+        </div>
+      </div>
+
+      <div class="problem">
+        <span class="q-num">18.</span>
+        <div class="q-body">
+          <p class="q-text">You borrow $1,000 at a rate of 6% per year for 2 years. How much interest do you owe?</p>
+          <div class="ans-row"><span class="ans-label">I = $</span><input class="ans-input" type="text" data-save="q18" autocomplete="off" /></div>
+        </div>
+      </div>
+
+      <div class="problem">
+        <span class="q-num">19.</span>
+        <div class="q-body">
+          <p class="q-text">You invest $500 at a rate of 3% per year for 4 years. What is the total amount in your account after 4 years?</p>
+          <p class="q-hint">Find I first, then add it to the starting amount.</p>
+          <div class="ans-row"><span class="ans-label">Total = $</span><input class="ans-input" type="text" data-save="q19" autocomplete="off" /></div>
+        </div>
+      </div>
+
+      <div class="problem">
+        <span class="q-num">20.</span>
+        <div class="q-body">
+          <p class="q-text">You put $2,000 in a savings account at a rate of 5% per year. After 3 years, how much interest have you earned?</p>
+          <div class="ans-row"><span class="ans-label">I = $</span><input class="ans-input" type="text" data-save="q20" autocomplete="off" /></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const NS = 'sameer';
+    document.querySelectorAll('input[data-save]').forEach(el => {
+      const key = NS + ':' + el.dataset.save;
+      const saved = localStorage.getItem(key);
+      if (saved) el.value = saved;
+      el.addEventListener('input', () => localStorage.setItem(key, el.value));
+      el.addEventListener('paste', e => e.preventDefault());
+      el.addEventListener('contextmenu', e => e.preventDefault());
+      el.addEventListener('keydown', e => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'v') e.preventDefault();
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Times Tables — Taha</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Merriweather+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { min-height: 100%; background: #e8e8e6; font-family: 'Merriweather Sans', sans-serif; color: #1a1a1a; }
+    body { padding: 40px 20px 60px; }
+
+    .top-nav { max-width: 700px; margin: 0 auto 28px; }
+    .back-btn { font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #666; background: none; border: 1.5px solid #c0c0c0; border-radius: 4px; padding: 8px 16px; cursor: pointer; text-decoration: none; transition: background 0.15s, color 0.15s, border-color 0.15s; }
+    .back-btn:hover { background: #1a1a1a; border-color: #1a1a1a; color: #fff; }
+
+    .ws-card { background: #fff; border: 1px solid #c8c8c8; border-radius: 6px; box-shadow: 0 2px 16px rgba(0,0,0,0.09); padding: 48px 52px 56px; max-width: 700px; margin: 0 auto; }
+
+    .ws-header { border-bottom: 2px solid #1a1a1a; padding-bottom: 18px; margin-bottom: 36px; }
+    .eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: #888; margin-bottom: 10px; }
+    .ws-title { font-family: 'Merriweather', serif; font-size: clamp(24px, 4vw, 32px); font-weight: 700; margin-bottom: 6px; }
+    .ws-meta { font-size: 13px; color: #555; font-style: italic; }
+
+    .ws-number { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #999; margin-bottom: 28px; }
+
+    .problems-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 36px; }
+
+    .problem { display: flex; align-items: center; gap: 10px; padding: 11px 14px; background: #fafaf8; border: 1px solid #e2e0db; border-radius: 4px; }
+    .problem-num { font-size: 11px; font-weight: 600; color: #bbb; width: 22px; flex-shrink: 0; text-align: right; }
+    .problem-eq { font-family: 'Merriweather', serif; font-size: 16px; font-weight: 700; flex: 1; -webkit-user-select: none; user-select: none; }
+    .ans-input { width: 54px; height: 34px; border: 2px solid #c8c8c8; border-radius: 3px; font-family: 'Merriweather', serif; font-size: 16px; font-weight: 700; text-align: center; outline: none; background: #fff; color: #1a1a1a; flex-shrink: 0; transition: border-color 0.15s; }
+    .ans-input:focus { border-color: #1a1a1a; }
+
+    .score-row { margin-top: 36px; padding-top: 22px; border-top: 1px solid #e2e0db; display: flex; align-items: center; gap: 14px; }
+    .score-label { font-size: 13px; font-weight: 600; color: #555; }
+    .score-box { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 700; color: #888; }
+    .score-box span { color: #bbb; }
+
+    @media (max-width: 520px) {
+      .ws-card { padding: 32px 22px 40px; }
+      .problems-grid { grid-template-columns: 1fr; }
+    }
+    @media print {
+      body { background: #fff; padding: 0; }
+      .top-nav { display: none; }
+      .ws-card { box-shadow: none; border: none; padding: 20px; }
+      .ans-input { border: none; border-bottom: 2px solid #000; border-radius: 0; background: transparent; }
+      * { -webkit-user-select: text !important; user-select: text !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-nav">
+    <a class="back-btn" href="index.html">&larr; Menu</a>
+  </div>
+
+  <div class="ws-card">
+    <div class="ws-header">
+      <p class="eyebrow">Math Practice &nbsp;&middot;&nbsp; Multiplication</p>
+      <h1 class="ws-title">Times Tables</h1>
+      <p class="ws-meta">Taha &nbsp;&middot;&nbsp; Write the answer in each box</p>
+    </div>
+
+    <p class="ws-number">20 Problems &nbsp;&mdash;&nbsp; Tables 2 through 7</p>
+
+    <div class="problems-grid">
+      <div class="problem">
+        <span class="problem-num">1.</span>
+        <span class="problem-eq">6 &times; 7 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q1" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-num">2.</span>
+        <span class="problem-eq">3 &times; 8 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q2" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-num">3.</span>
+        <span class="problem-eq">7 &times; 9 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q3" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-num">4.</span>
+        <span class="problem-eq">5 &times; 7 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q4" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-num">5.</span>
+        <span class="problem-eq">4 &times; 9 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q5" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-num">6.</span>
+        <span class="problem-eq">6 &times; 9 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q6" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-num">7.</span>
+        <span class="problem-eq">2 &times; 9 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q7" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-num">8.</span>
+        <span class="problem-eq">7 &times; 7 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q8" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-num">9.</span>
+        <span class="problem-eq">4 &times; 8 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q9" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-num">10.</span>
+        <span class="problem-eq">3 &times; 9 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q10" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-num">11.</span>
+        <span class="problem-eq">5 &times; 8 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q11" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-num">12.</span>
+        <span class="problem-eq">6 &times; 8 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q12" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-num">13.</span>
+        <span class="problem-eq">7 &times; 8 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q13" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-num">14.</span>
+        <span class="problem-eq">3 &times; 7 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q14" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-num">15.</span>
+        <span class="problem-eq">5 &times; 9 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q15" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-num">16.</span>
+        <span class="problem-eq">4 &times; 7 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q16" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-num">17.</span>
+        <span class="problem-eq">7 &times; 6 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q17" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-num">18.</span>
+        <span class="problem-eq">6 &times; 6 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q18" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-num">19.</span>
+        <span class="problem-eq">2 &times; 8 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q19" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-num">20.</span>
+        <span class="problem-eq">4 &times; 6 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q20" autocomplete="off" />
+      </div>
+    </div>
+
+    <div class="score-row">
+      <span class="score-label">Score:</span>
+      <span class="score-box">_____ <span>/ 20</span></span>
+    </div>
+  </div>
+
+  <script>
+    const NS = 'taha';
+    document.querySelectorAll('input[data-save]').forEach(el => {
+      const key = NS + ':' + el.dataset.save;
+      const saved = localStorage.getItem(key);
+      if (saved) el.value = saved;
+      el.addEventListener('input', () => localStorage.setItem(key, el.value));
+      el.addEventListener('paste', e => e.preventDefault());
+      el.addEventListener('contextmenu', e => e.preventDefault());
+      el.addEventListener('keydown', e => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'v') e.preventDefault();
+      });
+    });
+  </script>
+</body>
+</html>

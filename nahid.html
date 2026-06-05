@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reading Worksheet — Nahid</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Merriweather+Sans:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { background: #e8e8e6; font-family: 'Merriweather', Georgia, serif; color: #1a1a1a; min-height: 100%; }
+    body { max-width: 820px; margin: 0 auto; padding: 32px 20px 60px; }
+    .grade-nav { display: flex; gap: 10px; margin-bottom: 36px; }
+    .grade-btn { font-family: 'Merriweather Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; padding: 8px 20px; border-radius: 3px; border: 1.5px solid #1a1a1a; background: transparent; color: #1a1a1a; cursor: pointer; text-decoration: none; transition: background 0.2s, color 0.2s; }
+    .grade-btn:hover { background: #1a1a1a; color: #fff; }
+    .page-header { text-align: center; margin-bottom: 36px; }
+    .page-header .school-name { font-family: 'Merriweather Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: #555; margin-bottom: 8px; }
+    .page-header h1 { font-size: clamp(20px, 3.5vw, 30px); font-weight: 700; color: #1a1a1a; line-height: 1.2; }
+    .page-header .sub { margin-top: 6px; font-size: 13px; font-style: italic; color: #666; }
+    .worksheet { background: #ffffff; border: 1px solid #c8c8c8; border-radius: 4px; box-shadow: 0 2px 12px rgba(0,0,0,0.09); padding: 40px 44px 48px; }
+    .ws-topbar { display: flex; align-items: center; justify-content: space-between; padding-bottom: 18px; border-bottom: 2px solid #1a1a1a; margin-bottom: 32px; }
+    .ws-number { font-family: 'Merriweather Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: #555; }
+    .section-label { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #555; margin-bottom: 6px; }
+    .passage-wrap { margin-bottom: 32px; }
+    .passage-title { font-size: clamp(16px, 2.4vw, 22px); font-weight: 700; font-style: italic; color: #1a1a1a; margin-bottom: 16px; line-height: 1.3; }
+    .passage-box { background: #f7f6f3; border-left: 4px solid #555; padding: 20px 24px; }
+    .passage-box p { font-size: clamp(14px, 2vw, 16px); line-height: 2; color: #222; margin-bottom: 16px; }
+    .passage-box p:last-child { margin-bottom: 0; }
+    .ws-rule { height: 1px; background: #ddd; margin: 32px 0; }
+    .section-question { font-size: clamp(13px, 1.8vw, 15px); font-style: italic; color: #333; margin-bottom: 14px; line-height: 1.6; }
+    .answer-input { width: 100%; background: #fff; border: 1.5px solid #bbb; border-radius: 3px; color: #1a1a1a; font-family: 'Merriweather', Georgia, serif; font-size: 14px; padding: 12px 14px; outline: none; transition: border-color 0.2s; line-height: 1.7; resize: none; }
+    .answer-input.summary { min-height: 100px; }
+    .answer-input.central { min-height: 58px; }
+    .answer-input:focus { border-color: #333; }
+    .answer-input::placeholder { color: #bbb; font-style: italic; }
+    /* Block selection on passage and questions */
+    .passage-box, .passage-title, .section-question, .section-label, .ws-number {
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .page-break { margin: 48px 0; display: flex; align-items: center; gap: 16px; }
+    .page-break::before, .page-break::after { content: ''; flex: 1; height: 1px; background: #bbb; }
+    .page-break span { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #999; }
+    .print-bar { text-align: center; margin-top: 40px; display: flex; align-items: center; justify-content: center; gap: 16px; }
+    .print-btn { background: #1a1a1a; border: none; color: #fff; font-family: 'Merriweather Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; padding: 12px 32px; border-radius: 3px; cursor: pointer; transition: background 0.2s; }
+    .print-btn:hover { background: #333; }
+    .clear-btn { background: transparent; border: 1.5px solid #ccc; color: #999; font-family: 'Merriweather Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; padding: 11px 24px; border-radius: 3px; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
+    .clear-btn:hover { border-color: #c0392b; color: #c0392b; }
+    .save-notice { font-family: 'Merriweather Sans', sans-serif; font-size: 11px; color: #aaa; text-align: center; margin-top: 12px; font-style: italic; }
+    @media print {
+      html { background: #fff; }
+      body { padding: 0; max-width: 100%; }
+      .grade-nav, .print-bar, .save-notice { display: none; }
+      .worksheet { border: 1px solid #ccc; box-shadow: none; padding: 28px 32px; }
+      .passage-box { background: #f5f5f5; }
+      .answer-input { border: 1px solid #bbb; }
+      .page-break { display: none; }
+      .worksheet + .worksheet { page-break-before: always; }
+      .passage-box, .passage-title, .section-question, .section-label, .ws-number { -webkit-user-select: text; user-select: text; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="grade-nav">
+    <a class="grade-btn" href="index.html">&larr; Menu</a>
+  </nav>
+
+  <header class="page-header">
+    <p class="school-name">NYC English Language Arts &mdash; Nahid</p>
+    <h1>Summary &amp; Central Idea</h1>
+    <p class="sub">Read the story, write a summary, then find the central idea</p>
+  </header>
+
+  <!-- WORKSHEET 1 -->
+  <section class="worksheet" aria-label="Worksheet 1">
+    <div class="ws-topbar"><span class="ws-number">Worksheet 01</span></div>
+
+    <div class="passage-wrap">
+      <p class="section-label">Read the story</p>
+      <h2 class="passage-title">The Broken Kite</h2>
+      <div class="passage-box">
+        <p>Leo had been saving his allowance for three whole months. Every Saturday, he walked past the toy store on the corner of his block and stopped to look at the red kite in the window. It had a long yellow tail and a bright picture of a dragon breathing fire. When he finally had enough money, he ran to the store and bought it with a huge smile on his face. He carried it home like it was made of glass.</p>
+        <p>The next afternoon, Leo went to the park with his dad. The wind was strong and the sky was clear &mdash; a perfect kite day. Leo ran across the wide open grass, letting out the string little by little, and watched the kite climb higher and higher into the blue. It twisted and dipped and soared right above the trees. Leo laughed so hard his stomach hurt. It was the best afternoon he could remember in a long time.</p>
+        <p>Then, without any warning, the wind shifted direction. The kite spun wildly, dove straight down, and crashed hard into the branches of a tall oak tree. Leo yanked on the string, but it was tangled and stuck. He pulled and pulled until the kite finally came free &mdash; but when it did, one of its wings was torn right down the middle. Leo sat down on the grass and stared at the damage. He felt like crying.</p>
+        <p>His neighbor, Mrs. Okonkwo, was walking her dog nearby and saw what happened. She came over and looked at the torn wing carefully, turning it over in her hands. &ldquo;I think we can fix this,&rdquo; she said quietly. She went back to her house and returned with strong tape and a small piece of cloth that matched the kite&rsquo;s color. She spent almost an hour patching the wing back together while Leo watched her every move. When it was done, Leo took the kite back to the open field and let it go. It climbed just as high as before, spinning in the wind like nothing had ever happened. &ldquo;Things worth keeping are worth fixing,&rdquo; Mrs. Okonkwo told him. Leo never forgot those words.</p>
+      </div>
+    </div>
+
+    <div class="ws-rule"></div>
+
+    <p class="section-label">Part 1 &mdash; Summary</p>
+    <p class="section-question">Write a summary of the story in 2&ndash;3 sentences. Include what happened at the beginning, middle, and end.</p>
+    <textarea class="answer-input summary" data-save="ws1-summary" rows="4" placeholder="This story is about…"></textarea>
+
+    <div class="ws-rule"></div>
+
+    <p class="section-label">Part 2 &mdash; Central Idea</p>
+    <p class="section-question">What is the most important message or lesson of this story? Write it in one complete sentence.</p>
+    <textarea class="answer-input central" data-save="ws1-central" rows="2" placeholder="The central idea of this story is…"></textarea>
+  </section>
+
+  <div class="page-break"><span>Worksheet 02</span></div>
+
+  <!-- WORKSHEET 2 -->
+  <section class="worksheet" aria-label="Worksheet 2">
+    <div class="ws-topbar"><span class="ws-number">Worksheet 02</span></div>
+
+    <div class="passage-wrap">
+      <p class="section-label">Read the story</p>
+      <h2 class="passage-title">The Longest Summer</h2>
+      <div class="passage-box">
+        <p>Amara was not happy about moving to a new neighborhood the summer before third grade. Back home, she had friends on every block &mdash; kids she had known since kindergarten, kids who knew her favorite color and her best jokes. Here, she did not know a single person. She sat on the front steps every morning, watching strangers walk by with their dogs and strollers, feeling like she had become invisible.</p>
+        <p>One day, the old man next door, Mr. Rivera, called out to her from his garden. He was kneeling in the dirt, carefully pulling weeds from around a long row of tomato plants. &ldquo;You look bored,&rdquo; he called. &ldquo;Want to help?&rdquo; Amara shrugged and slowly walked over. Mr. Rivera handed her a pair of small green gloves and showed her how to pull weeds without disturbing the roots of the plants growing next to them. It was harder than it looked, and her hands got tired quickly, but she kept going.</p>
+        <p>Every morning that week, Amara came back to the garden on her own. Mr. Rivera taught her how to water the plants at the base so the roots could drink, not the leaves. He showed her how to spot tiny bugs that could eat through a tomato before it was even ripe, and how to press a tomato gently with one finger to know if it was ready to pick. Amara started writing things down in a little notebook she found in her room. She wanted to remember everything.</p>
+        <p>By the end of August, the tomato plants were heavy with fruit &mdash; big, round, and deeply red. Mr. Rivera let Amara pick the very first batch herself. They filled two whole baskets. He gave one basket to her family and kept the other. &ldquo;You grew every single one of these,&rdquo; he told her, pointing at her basket. That evening, Amara sat on the front steps again &mdash; but this time she was not feeling invisible. She was waving at the kids across the street and telling them about the garden, and they were actually coming over to listen.</p>
+      </div>
+    </div>
+
+    <div class="ws-rule"></div>
+
+    <p class="section-label">Part 1 &mdash; Summary</p>
+    <p class="section-question">Write a summary of the story in 2&ndash;3 sentences. Include what happened at the beginning, middle, and end.</p>
+    <textarea class="answer-input summary" data-save="ws2-summary" rows="4" placeholder="This story is about…"></textarea>
+
+    <div class="ws-rule"></div>
+
+    <p class="section-label">Part 2 &mdash; Central Idea</p>
+    <p class="section-question">What is the most important message or lesson of this story? Write it in one complete sentence.</p>
+    <textarea class="answer-input central" data-save="ws2-central" rows="2" placeholder="The central idea of this story is…"></textarea>
+  </section>
+
+  <div class="print-bar">
+    <button class="print-btn" onclick="window.print()">Print Worksheets</button>
+    <button class="clear-btn" onclick="clearAnswers()">Clear My Answers</button>
+  </div>
+  <p class="save-notice">Your answers are saved automatically in this browser.</p>
+
+  <script>
+    const NS = 'nahid';
+    function clearAnswers() {
+      if (!confirm('Clear all your saved answers on this page?')) return;
+      document.querySelectorAll('textarea[data-save]').forEach(el => {
+        localStorage.removeItem(NS + ':' + el.dataset.save);
+        el.value = '';
+      });
+    }
+    document.querySelectorAll('textarea[data-save]').forEach(el => {
+      const key = NS + ':' + el.dataset.save;
+      const saved = localStorage.getItem(key);
+      if (saved) el.value = saved;
+      el.addEventListener('input', () => localStorage.setItem(key, el.value));
+    });
+    document.querySelectorAll('.answer-input').forEach(el => {
+      el.addEventListener('paste', e => e.preventDefault());
+      el.addEventListener('contextmenu', e => e.preventDefault());
+      el.addEventListener('keydown', e => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'v') e.preventDefault();
+      });
+    });
+  </script>
+
+</body>
+</html>

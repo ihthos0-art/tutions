@@ -9,119 +9,32 @@
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Merriweather+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-    html, body {
-      min-height: 100%;
-      background: #e8e8e6;
-      font-family: 'Merriweather', Georgia, serif;
-      color: #1a1a1a;
-    }
-
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 40px 20px;
-    }
-
-    .menu-card {
-      background: #fff;
-      border: 1px solid #c8c8c8;
-      border-radius: 6px;
-      box-shadow: 0 2px 16px rgba(0,0,0,0.09);
-      padding: 52px 48px 56px;
-      width: 100%;
-      max-width: 520px;
-      text-align: center;
-    }
-
-    .eyebrow {
-      font-family: 'Merriweather Sans', sans-serif;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: #888;
-      margin-bottom: 14px;
-    }
-
-    .menu-card h1 {
-      font-size: clamp(26px, 5vw, 36px);
-      font-weight: 700;
-      line-height: 1.2;
-      margin-bottom: 8px;
-    }
-
-    .menu-card .sub {
-      font-size: 14px;
-      font-style: italic;
-      color: #666;
-      margin-bottom: 44px;
-    }
-
-    .name-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-
-    .name-btn {
-      display: block;
-      font-family: 'Merriweather Sans', sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      color: #1a1a1a;
-      background: #f4f3f0;
-      border: 1.5px solid #d4d2cc;
-      border-radius: 4px;
-      padding: 18px 12px;
-      text-decoration: none;
-      transition: background 0.18s, border-color 0.18s, transform 0.12s;
-      cursor: pointer;
-    }
-
-    .name-btn:hover {
-      background: #1a1a1a;
-      border-color: #1a1a1a;
-      color: #fff;
-      transform: translateY(-1px);
-    }
-
+    html, body { min-height: 100%; background: #e8e8e6; font-family: 'Merriweather', Georgia, serif; color: #1a1a1a; }
+    body { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 40px 20px; }
+    .menu-card { background: #fff; border: 1px solid #c8c8c8; border-radius: 6px; box-shadow: 0 2px 16px rgba(0,0,0,0.09); padding: 52px 48px 56px; width: 100%; max-width: 520px; text-align: center; }
+    .eyebrow { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: #888; margin-bottom: 14px; }
+    .menu-card h1 { font-size: clamp(26px, 5vw, 36px); font-weight: 700; line-height: 1.2; margin-bottom: 8px; }
+    .menu-card .sub { font-size: 14px; font-style: italic; color: #666; margin-bottom: 44px; }
+    .name-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .name-btn { display: block; font-family: 'Merriweather Sans', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 0.03em; color: #1a1a1a; background: #f4f3f0; border: 1.5px solid #d4d2cc; border-radius: 4px; padding: 18px 12px; text-decoration: none; transition: background 0.18s, border-color 0.18s, transform 0.12s; cursor: pointer; }
+    .name-btn:hover { background: #1a1a1a; border-color: #1a1a1a; color: #fff; transform: translateY(-1px); }
     .name-btn:active { transform: translateY(0); }
-
-    /* Last button spans full width if odd count */
-    .name-btn:last-child:nth-child(odd) {
-      grid-column: 1 / -1;
-      max-width: 260px;
-      margin: 0 auto;
-      width: 100%;
-    }
-
-    @media (max-width: 420px) {
-      .name-grid { grid-template-columns: 1fr; }
-      .name-btn:last-child:nth-child(odd) { max-width: 100%; }
-      .menu-card { padding: 40px 28px 44px; }
-    }
+    .name-btn:last-child:nth-child(odd) { grid-column: 1 / -1; max-width: 260px; margin: 0 auto; width: 100%; }
+    @media (max-width: 420px) { .name-grid { grid-template-columns: 1fr; } .name-btn:last-child:nth-child(odd) { max-width: 100%; } .menu-card { padding: 40px 28px 44px; } }
   </style>
 </head>
 <body>
-
   <div class="menu-card">
     <p class="eyebrow">NYC English Language Arts</p>
     <h1>Good morning!</h1>
     <p class="sub">Select your name to begin</p>
-
     <div class="name-grid">
       <a class="name-btn" href="adnan.html">Adnan</a>
       <a class="name-btn" href="nafis.html">Nafis</a>
-      <a class="name-btn" href="hw-later.html?name=Salma+%26+Khadija">Salma &amp; Khadija</a>
+      <a class="name-btn" href="salma-khadija.html">Salma &amp; Khadija</a>
       <a class="name-btn" href="hw-later.html?name=Taha">Taha</a>
       <a class="name-btn" href="hw-later.html?name=Sameer">Sameer</a>
     </div>
   </div>
-
 </body>
 </html>

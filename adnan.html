@@ -34,11 +34,7 @@
     .detail-input { min-height: 80px; }
     .ci-input:focus, .detail-input:focus { border-color: #333; }
     .ci-input::placeholder, .detail-input::placeholder { color: #bbb; font-style: italic; }
-    /* Prevent selecting/copying passage and questions */
-    .passage-box, .passage-title, .section-question, .section-label, .ws-number {
-      -webkit-user-select: none;
-      user-select: none;
-    }
+    .passage-box, .passage-title, .section-question, .section-label, .ws-number { -webkit-user-select: none; user-select: none; }
     .page-break { margin: 48px 0; display: flex; align-items: center; gap: 16px; }
     .page-break::before, .page-break::after { content: ''; flex: 1; height: 1px; background: #bbb; }
     .page-break span { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #999; }
@@ -57,10 +53,7 @@
       .ci-input, .detail-input { border: 1px solid #bbb; }
       .page-break { display: none; }
       .worksheet + .worksheet { page-break-before: always; }
-      .passage-box, .passage-title, .section-question, .section-label, .ws-number {
-        -webkit-user-select: text;
-        user-select: text;
-      }
+      .passage-box, .passage-title, .section-question, .section-label, .ws-number { -webkit-user-select: text; user-select: text; }
     }
   </style>
 </head>
@@ -116,6 +109,50 @@
     <p class="section-label">Part 2 &mdash; Supporting Detail</p>
     <p class="section-question">Find one detail from the story that supports your answer. Use words from the passage.</p>
     <textarea class="detail-input" data-save="ws2-detail" rows="3" placeholder="A detail from the passage…"></textarea>
+  </section>
+
+  <div class="page-break"><span>Worksheet 03</span></div>
+
+  <section class="worksheet" aria-label="Worksheet 3">
+    <div class="ws-topbar"><span class="ws-number">Worksheet 03</span></div>
+    <div class="passage-wrap">
+      <p class="section-label">Read the passage</p>
+      <h2 class="passage-title">The Big Race</h2>
+      <div class="passage-box">
+        <p>Every year, the school held a race on Field Day. This year, Jamal wanted to win more than anything. He practiced running every day after school, even when he was tired. His older sister timed him with her phone and cheered him on from the sidewalk.</p>
+        <p>On the day of the race, Jamal ran as fast as he could. His legs hurt, but he kept going. He did not come in first. He came in third. When the race was over, his sister ran over to him. &ldquo;That was your best time ever,&rdquo; she said. Jamal was still breathing hard, but he smiled. He had done his best. That was enough.</p>
+      </div>
+    </div>
+    <div class="ws-rule"></div>
+    <p class="section-label">Part 1 &mdash; Central Idea</p>
+    <p class="section-question">What is the most important idea in this story? Write it in one sentence.</p>
+    <textarea class="ci-input" data-save="ws3-ci" rows="2" placeholder="The central idea of this story is…"></textarea>
+    <div class="ws-rule"></div>
+    <p class="section-label">Part 2 &mdash; Supporting Detail</p>
+    <p class="section-question">Find one detail from the story that supports your answer. Use words from the passage.</p>
+    <textarea class="detail-input" data-save="ws3-detail" rows="3" placeholder="A detail from the passage…"></textarea>
+  </section>
+
+  <div class="page-break"><span>Worksheet 04</span></div>
+
+  <section class="worksheet" aria-label="Worksheet 4">
+    <div class="ws-topbar"><span class="ws-number">Worksheet 04</span></div>
+    <div class="passage-wrap">
+      <p class="section-label">Read the passage</p>
+      <h2 class="passage-title">The Lost Puppy</h2>
+      <div class="passage-box">
+        <p>On the way home from school, Rosa found a small white puppy sitting alone near the park fence. It had no collar and no tags. Rosa picked it up and carried it home. She named it Snowball, gave it water, and made a soft bed out of an old blanket.</p>
+        <p>Rosa wanted to keep Snowball more than anything. But her mother helped her make a sign and put it up around the neighborhood. Two days later, a little boy named Sam knocked on their door. His eyes were red from crying. The puppy was his and had been missing for three days. Rosa handed Snowball over slowly. Sam hugged the dog tight and said thank you. It was hard to let go, but Rosa knew she had done the right thing.</p>
+      </div>
+    </div>
+    <div class="ws-rule"></div>
+    <p class="section-label">Part 1 &mdash; Central Idea</p>
+    <p class="section-question">What is the most important idea in this story? Write it in one sentence.</p>
+    <textarea class="ci-input" data-save="ws4-ci" rows="2" placeholder="The central idea of this story is…"></textarea>
+    <div class="ws-rule"></div>
+    <p class="section-label">Part 2 &mdash; Supporting Detail</p>
+    <p class="section-question">Find one detail from the story that supports your answer. Use words from the passage.</p>
+    <textarea class="detail-input" data-save="ws4-detail" rows="3" placeholder="A detail from the passage…"></textarea>
   </section>
 
   <div class="print-bar">

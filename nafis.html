@@ -34,11 +34,7 @@
     .detail-input { min-height: 80px; }
     .ci-input:focus, .detail-input:focus { border-color: #333; }
     .ci-input::placeholder, .detail-input::placeholder { color: #bbb; font-style: italic; }
-    /* Prevent selecting/copying passage and questions */
-    .passage-box, .passage-title, .section-question, .section-label, .ws-number {
-      -webkit-user-select: none;
-      user-select: none;
-    }
+    .passage-box, .passage-title, .section-question, .section-label, .ws-number { -webkit-user-select: none; user-select: none; }
     .page-break { margin: 48px 0; display: flex; align-items: center; gap: 16px; }
     .page-break::before, .page-break::after { content: ''; flex: 1; height: 1px; background: #bbb; }
     .page-break span { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #999; }
@@ -57,10 +53,7 @@
       .ci-input, .detail-input { border: 1px solid #bbb; }
       .page-break { display: none; }
       .worksheet + .worksheet { page-break-before: always; }
-      .passage-box, .passage-title, .section-question, .section-label, .ws-number {
-        -webkit-user-select: text;
-        user-select: text;
-      }
+      .passage-box, .passage-title, .section-question, .section-label, .ws-number { -webkit-user-select: text; user-select: text; }
     }
   </style>
 </head>
@@ -116,6 +109,50 @@
     <p class="section-label">Part 2 &mdash; Supporting Detail</p>
     <p class="section-question">Find one detail from the passage that supports your central idea. Use words or phrases directly from the text.</p>
     <textarea class="detail-input" data-save="ws2-detail" rows="3" placeholder="A detail from the passage…"></textarea>
+  </section>
+
+  <div class="page-break"><span>Worksheet 03</span></div>
+
+  <section class="worksheet" aria-label="Worksheet 3">
+    <div class="ws-topbar"><span class="ws-number">Worksheet 03</span></div>
+    <div class="passage-wrap">
+      <p class="section-label">Read the passage</p>
+      <h2 class="passage-title">The Empty Seat</h2>
+      <div class="passage-box">
+        <p>Every morning for three years, Priya had saved the seat next to her for her best friend, Camille. They always walked to class together, traded snacks at lunch, and walked home the same way. So when Camille&rsquo;s family moved to Atlanta in October, the empty seat beside Priya felt like it took up more space than Camille ever had.</p>
+        <p>For weeks, Priya kept to herself. She ate alone and rushed home instead of stopping at the corner store where she and Camille used to buy chips. Then one afternoon, a new girl named Imani asked if the seat was taken. Priya started to say yes, the way she always had. But she stopped herself. &ldquo;No,&rdquo; she said quietly, &ldquo;it&rsquo;s yours.&rdquo; It wasn&rsquo;t the same as before. But it was a start.</p>
+      </div>
+    </div>
+    <div class="ws-rule"></div>
+    <p class="section-label">Part 1 &mdash; Central Idea</p>
+    <p class="section-question">What is the most important message or main point of this story? Write it in one complete sentence.</p>
+    <textarea class="ci-input" data-save="ws3-ci" rows="2" placeholder="The central idea of this story is…"></textarea>
+    <div class="ws-rule"></div>
+    <p class="section-label">Part 2 &mdash; Supporting Detail</p>
+    <p class="section-question">Find one detail from the passage that supports your central idea. Use words or phrases directly from the text.</p>
+    <textarea class="detail-input" data-save="ws3-detail" rows="3" placeholder="A detail from the passage…"></textarea>
+  </section>
+
+  <div class="page-break"><span>Worksheet 04</span></div>
+
+  <section class="worksheet" aria-label="Worksheet 4">
+    <div class="ws-topbar"><span class="ws-number">Worksheet 04</span></div>
+    <div class="passage-wrap">
+      <p class="section-label">Read the passage</p>
+      <h2 class="passage-title">The Night of the Science Fair</h2>
+      <div class="passage-box">
+        <p>Deja spent six weeks building her science fair project: a working model of a water filtration system made from sand, gravel, and charcoal. She stayed up past midnight three times, read four library books, and redid her poster when she spilled juice on the first one. The night of the fair, a sixth grader won first place with a project that had a computer screen and flashing lights.</p>
+        <p>Deja didn&rsquo;t win a ribbon. But while she was explaining her project to visitors, one of the judges stopped and listened for fifteen minutes. He asked her more questions than he asked anyone else. &ldquo;You really understand what you built,&rdquo; he said. Deja walked home without a trophy. But she knew the answer to every question he had asked, and that felt like its own kind of winning.</p>
+      </div>
+    </div>
+    <div class="ws-rule"></div>
+    <p class="section-label">Part 1 &mdash; Central Idea</p>
+    <p class="section-question">What is the most important message or main point of this story? Write it in one complete sentence.</p>
+    <textarea class="ci-input" data-save="ws4-ci" rows="2" placeholder="The central idea of this story is…"></textarea>
+    <div class="ws-rule"></div>
+    <p class="section-label">Part 2 &mdash; Supporting Detail</p>
+    <p class="section-question">Find one detail from the passage that supports your central idea. Use words or phrases directly from the text.</p>
+    <textarea class="detail-input" data-save="ws4-detail" rows="3" placeholder="A detail from the passage…"></textarea>
   </section>
 
   <div class="print-bar">

@@ -140,7 +140,9 @@
         ? correct + ' / ' + total + ' — Perfect score!'
         : correct + ' / ' + total + ' correct';
       display.className = 'score-display' + (correct === total ? ' perfect' : '');
+      document.dispatchEvent(new CustomEvent('checkResult', { detail: { correct: correct, total: total } }));
     });
   </script>
+  <script src="ai-tutor.js"></script>
 </body>
 </html>

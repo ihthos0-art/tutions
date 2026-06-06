@@ -1,9 +1,7 @@
 (function () {
   'use strict';
 
-  var GROQ_API_KEY = 'YOUR_GROQ_API_KEY_HERE';
-  var GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
-  var GROQ_MODEL = 'llama3-8b-8192';
+  var API_URL = '/api/chat';
 
   var pagePath = location.pathname.split('/').pop().replace('.html', '') || 'index';
   var isMenu = !!document.querySelector('.menu-card');
@@ -26,12 +24,11 @@
   }
 
   async function groqChat(messages) {
-    if (GROQ_API_KEY === 'YOUR_GROQ_API_KEY_HERE') return null;
     try {
-      var res = await fetch(GROQ_URL, {
+      var res = await fetch(API_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + GROQ_API_KEY },
-        body: JSON.stringify({ model: GROQ_MODEL, messages: messages, temperature: 0.7, max_tokens: 1024 })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: messages, temperature: 0.7, max_tokens: 1024 })
       });
       var data = await res.json();
       return data.choices && data.choices[0] && data.choices[0].message ? data.choices[0].message.content : null;
@@ -153,7 +150,7 @@
         history.push({ role: 'assistant', content: reply });
         addMsg('bot', reply);
       } else {
-        addMsg('bot', GROQ_API_KEY === 'YOUR_GROQ_API_KEY_HERE' ? 'Please set the API key in ai-tutor.js to enable the helper.' : 'Sorry, I couldn\'t connect. Please try again!');
+        addMsg('bot', 'Sorry, I couldn\'t connect right now. Please try again!');
       }
     }
 
@@ -196,10 +193,10 @@
         localStorage.setItem(cacheKey, JSON.stringify(words));
         renderVocab(container, words);
       } catch (e) {
-        container.querySelector('.ai-vocab-loading').textContent = 'Vocabulary will appear when API key is set.';
+        container.querySelector('.ai-vocab-loading').textContent = 'Could not load vocabulary.';
       }
     } else {
-      container.querySelector('.ai-vocab-loading').textContent = GROQ_API_KEY === 'YOUR_GROQ_API_KEY_HERE' ? 'Set API key in ai-tutor.js to load vocabulary.' : 'Vocabulary will appear here.';
+      container.querySelector('.ai-vocab-loading').textContent = 'Vocabulary unavailable right now.';
     }
   }
 

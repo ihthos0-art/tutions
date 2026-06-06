@@ -24,7 +24,6 @@
     .ws-meta { font-size: 13px; color: #555; font-style: italic; }
     .ws-label { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #999; margin-bottom: 24px; }
 
-    /* ---- MATH ---- */
     .problems-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
     .problem { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 14px 16px; background: #fafaf8; border: 1px solid #e2e0db; border-radius: 4px; }
     .problem-eq { font-family: 'Merriweather', serif; font-size: 19px; font-weight: 700; -webkit-user-select: none; user-select: none; white-space: nowrap; }
@@ -33,21 +32,18 @@
     .ans-input.correct { border-color: #27ae60; background: #edfbf1; color: #1a5c35; }
     .ans-input.wrong  { border-color: #e74c3c; background: #fdf0ef; }
 
-    /* ---- SHARED CHECK ROW ---- */
     .check-row { margin-top: 28px; padding-top: 20px; border-top: 1px solid #e2e0db; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
     .check-btn { font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; background: #1a1a1a; color: #fff; border: none; border-radius: 4px; padding: 10px 24px; cursor: pointer; transition: background 0.15s; }
     .check-btn:hover { background: #444; }
     .score-display { font-family: 'Merriweather Sans', sans-serif; font-size: 15px; font-weight: 700; color: #555; }
     .score-display.perfect { color: #27ae60; }
 
-    /* ---- WORD BANK ---- */
     .wb-box { background: #f4f3f0; border: 1px solid #dddbd4; border-radius: 4px; padding: 16px 20px; margin-bottom: 28px; }
     .wb-label { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #888; margin-bottom: 12px; -webkit-user-select: none; user-select: none; }
     .wb-words { display: flex; flex-wrap: wrap; gap: 8px; }
     .wb-chip { font-family: 'Merriweather Sans', sans-serif; font-size: 13px; font-weight: 700; color: #1a1a1a; background: #fff; border: 1.5px solid #c4c2bb; border-radius: 20px; padding: 5px 16px; -webkit-user-select: none; user-select: none; transition: color 0.2s, border-color 0.2s; }
     .wb-chip.used { text-decoration: line-through; color: #b0b0a8; border-color: #dddbd6; }
 
-    /* ---- FILL IN THE BLANK ---- */
     .fitb-list { display: flex; flex-direction: column; gap: 18px; }
     .fitb-item { display: flex; align-items: baseline; gap: 8px; }
     .fitb-num { font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; color: #bbb; min-width: 22px; flex-shrink: 0; }
@@ -57,12 +53,10 @@
     .fitb-input.correct { border-bottom-color: #27ae60; color: #1a5c35; }
     .fitb-input.wrong   { border-bottom-color: #e74c3c; color: #c0392b; }
 
-    /* ---- SECTION BREAK ---- */
     .section-break { margin: 44px 0; max-width: 700px; margin-left: auto; margin-right: auto; display: flex; align-items: center; gap: 16px; }
     .section-break::before, .section-break::after { content: ''; flex: 1; height: 1px; background: #bbb; }
     .section-break span { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #999; white-space: nowrap; }
 
-    /* ---- READING ---- */
     .section-label { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #555; margin-bottom: 6px; -webkit-user-select: none; user-select: none; }
     .passage-box { background: #f7f6f3; border-left: 4px solid #555; padding: 20px 24px; margin-bottom: 28px; -webkit-user-select: none; user-select: none; }
     .passage-box p { font-family: 'Merriweather', serif; font-size: clamp(14px, 2vw, 17px); line-height: 2; color: #222; margin-bottom: 14px; }
@@ -99,7 +93,6 @@
     <a class="back-btn" href="index.html">&larr; Menu</a>
   </div>
 
-  <!-- ===== MATH CARD ===== -->
   <div class="ws-card">
     <div class="ws-header">
       <p class="eyebrow">Math Practice &nbsp;&middot;&nbsp; Grade 1</p>
@@ -134,7 +127,6 @@
 
   <div class="section-break"><span>Fill in the Blank</span></div>
 
-  <!-- ===== FILL IN THE BLANK CARD ===== -->
   <div class="ws-card">
     <div class="ws-header">
       <p class="eyebrow">English &nbsp;&middot;&nbsp; Grade 1</p>
@@ -161,54 +153,18 @@
     </div>
 
     <div class="fitb-list">
-      <div class="fitb-item">
-        <span class="fitb-num">1.</span>
-        <p class="fitb-text">The <input class="fitb-input" data-save="f1" data-answer="sun" autocomplete="off" /> shines in the sky every morning.</p>
-      </div>
-      <div class="fitb-item">
-        <span class="fitb-num">2.</span>
-        <p class="fitb-text">My pet <input class="fitb-input" data-save="f2" data-answer="dog" autocomplete="off" /> loves to play in the park.</p>
-      </div>
-      <div class="fitb-item">
-        <span class="fitb-num">3.</span>
-        <p class="fitb-text">The sky is <input class="fitb-input" data-save="f3" data-answer="blue" autocomplete="off" /> on a clear day.</p>
-      </div>
-      <div class="fitb-item">
-        <span class="fitb-num">4.</span>
-        <p class="fitb-text">I learn to read and write at <input class="fitb-input" data-save="f4" data-answer="school" autocomplete="off" />.</p>
-      </div>
-      <div class="fitb-item">
-        <span class="fitb-num">5.</span>
-        <p class="fitb-text">She smiled because she was very <input class="fitb-input" data-save="f5" data-answer="happy" autocomplete="off" />.</p>
-      </div>
-      <div class="fitb-item">
-        <span class="fitb-num">6.</span>
-        <p class="fitb-text">An <input class="fitb-input" data-save="f6" data-answer="apple" autocomplete="off" /> is a sweet and crunchy fruit.</p>
-      </div>
-      <div class="fitb-item">
-        <span class="fitb-num">7.</span>
-        <p class="fitb-text">Fish and frogs live in the <input class="fitb-input" data-save="f7" data-answer="water" autocomplete="off" />.</p>
-      </div>
-      <div class="fitb-item">
-        <span class="fitb-num">8.</span>
-        <p class="fitb-text">The elephant is a very <input class="fitb-input" data-save="f8" data-answer="big" autocomplete="off" /> animal.</p>
-      </div>
-      <div class="fitb-item">
-        <span class="fitb-num">9.</span>
-        <p class="fitb-text">My best <input class="fitb-input" data-save="f9" data-answer="friend" autocomplete="off" /> and I play together at recess.</p>
-      </div>
-      <div class="fitb-item">
-        <span class="fitb-num">10.</span>
-        <p class="fitb-text">The stars come out at <input class="fitb-input" data-save="f10" data-answer="night" autocomplete="off" />.</p>
-      </div>
-      <div class="fitb-item">
-        <span class="fitb-num">11.</span>
-        <p class="fitb-text">A <input class="fitb-input" data-save="f11" data-answer="bird" autocomplete="off" /> can fly high in the sky.</p>
-      </div>
-      <div class="fitb-item">
-        <span class="fitb-num">12.</span>
-        <p class="fitb-text">I like to <input class="fitb-input" data-save="f12" data-answer="run" autocomplete="off" /> fast at the park.</p>
-      </div>
+      <div class="fitb-item"><span class="fitb-num">1.</span><p class="fitb-text">The <input class="fitb-input" data-save="f1" data-answer="sun" autocomplete="off" /> shines in the sky every morning.</p></div>
+      <div class="fitb-item"><span class="fitb-num">2.</span><p class="fitb-text">My pet <input class="fitb-input" data-save="f2" data-answer="dog" autocomplete="off" /> loves to play in the park.</p></div>
+      <div class="fitb-item"><span class="fitb-num">3.</span><p class="fitb-text">The sky is <input class="fitb-input" data-save="f3" data-answer="blue" autocomplete="off" /> on a clear day.</p></div>
+      <div class="fitb-item"><span class="fitb-num">4.</span><p class="fitb-text">I learn to read and write at <input class="fitb-input" data-save="f4" data-answer="school" autocomplete="off" />.</p></div>
+      <div class="fitb-item"><span class="fitb-num">5.</span><p class="fitb-text">She smiled because she was very <input class="fitb-input" data-save="f5" data-answer="happy" autocomplete="off" />.</p></div>
+      <div class="fitb-item"><span class="fitb-num">6.</span><p class="fitb-text">An <input class="fitb-input" data-save="f6" data-answer="apple" autocomplete="off" /> is a sweet and crunchy fruit.</p></div>
+      <div class="fitb-item"><span class="fitb-num">7.</span><p class="fitb-text">Fish and frogs live in the <input class="fitb-input" data-save="f7" data-answer="water" autocomplete="off" />.</p></div>
+      <div class="fitb-item"><span class="fitb-num">8.</span><p class="fitb-text">The elephant is a very <input class="fitb-input" data-save="f8" data-answer="big" autocomplete="off" /> animal.</p></div>
+      <div class="fitb-item"><span class="fitb-num">9.</span><p class="fitb-text">My best <input class="fitb-input" data-save="f9" data-answer="friend" autocomplete="off" /> and I play together at recess.</p></div>
+      <div class="fitb-item"><span class="fitb-num">10.</span><p class="fitb-text">The stars come out at <input class="fitb-input" data-save="f10" data-answer="night" autocomplete="off" />.</p></div>
+      <div class="fitb-item"><span class="fitb-num">11.</span><p class="fitb-text">A <input class="fitb-input" data-save="f11" data-answer="bird" autocomplete="off" /> can fly high in the sky.</p></div>
+      <div class="fitb-item"><span class="fitb-num">12.</span><p class="fitb-text">I like to <input class="fitb-input" data-save="f12" data-answer="run" autocomplete="off" /> fast at the park.</p></div>
     </div>
 
     <div class="check-row">
@@ -219,7 +175,6 @@
 
   <div class="section-break"><span>Reading</span></div>
 
-  <!-- ===== READING CARD ===== -->
   <div class="ws-card">
     <div class="ws-header">
       <p class="eyebrow">Reading &nbsp;&middot;&nbsp; Grade 1</p>
@@ -277,6 +232,7 @@
       const total = mathInputs.length;
       display.textContent = correct === total ? correct + ' / ' + total + ' — Perfect score!' : correct + ' / ' + total + ' correct';
       display.className = 'score-display' + (correct === total ? ' perfect' : '');
+      document.dispatchEvent(new CustomEvent('checkResult', { detail: { correct: correct, total: total } }));
     });
 
     // ---- FILL IN THE BLANK ----
@@ -326,6 +282,7 @@
       display.textContent = correct === total ? correct + ' / ' + total + ' — Perfect score!' : correct + ' / ' + total + ' correct';
       display.className = 'score-display' + (correct === total ? ' perfect' : '');
       syncWordBank();
+      document.dispatchEvent(new CustomEvent('checkResult', { detail: { correct: correct, total: total } }));
     });
 
     // ---- READING ----
@@ -338,6 +295,6 @@
     summaryEl.addEventListener('contextmenu', e => e.preventDefault());
     summaryEl.addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && e.key === 'v') e.preventDefault(); });
   </script>
-
+  <script src="ai-tutor.js"></script>
 </body>
 </html>

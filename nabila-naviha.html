@@ -22,29 +22,48 @@
     .eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: #888; margin-bottom: 8px; }
     .ws-title { font-family: 'Merriweather', serif; font-size: clamp(22px, 4vw, 30px); font-weight: 700; margin-bottom: 5px; }
     .ws-meta { font-size: 13px; color: #555; font-style: italic; }
-
     .ws-label { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #999; margin-bottom: 24px; }
 
+    /* ---- MATH ---- */
     .problems-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
     .problem { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 14px 16px; background: #fafaf8; border: 1px solid #e2e0db; border-radius: 4px; }
     .problem-eq { font-family: 'Merriweather', serif; font-size: 19px; font-weight: 700; -webkit-user-select: none; user-select: none; white-space: nowrap; }
     .ans-input { width: 50px; height: 40px; border: 2px solid #c8c8c8; border-radius: 3px; font-family: 'Merriweather', serif; font-size: 19px; font-weight: 700; text-align: center; outline: none; background: #fff; color: #1a1a1a; transition: border-color 0.15s, background 0.15s; }
     .ans-input:focus { border-color: #1a1a1a; }
     .ans-input.correct { border-color: #27ae60; background: #edfbf1; color: #1a5c35; }
-    .ans-input.wrong { border-color: #e74c3c; background: #fdf0ef; }
+    .ans-input.wrong  { border-color: #e74c3c; background: #fdf0ef; }
 
+    /* ---- SHARED CHECK ROW ---- */
     .check-row { margin-top: 28px; padding-top: 20px; border-top: 1px solid #e2e0db; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
     .check-btn { font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; background: #1a1a1a; color: #fff; border: none; border-radius: 4px; padding: 10px 24px; cursor: pointer; transition: background 0.15s; }
     .check-btn:hover { background: #444; }
     .score-display { font-family: 'Merriweather Sans', sans-serif; font-size: 15px; font-weight: 700; color: #555; }
     .score-display.perfect { color: #27ae60; }
 
+    /* ---- WORD BANK ---- */
+    .wb-box { background: #f4f3f0; border: 1px solid #dddbd4; border-radius: 4px; padding: 16px 20px; margin-bottom: 28px; }
+    .wb-label { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #888; margin-bottom: 12px; -webkit-user-select: none; user-select: none; }
+    .wb-words { display: flex; flex-wrap: wrap; gap: 8px; }
+    .wb-chip { font-family: 'Merriweather Sans', sans-serif; font-size: 13px; font-weight: 700; color: #1a1a1a; background: #fff; border: 1.5px solid #c4c2bb; border-radius: 20px; padding: 5px 16px; -webkit-user-select: none; user-select: none; transition: color 0.2s, border-color 0.2s; }
+    .wb-chip.used { text-decoration: line-through; color: #b0b0a8; border-color: #dddbd6; }
+
+    /* ---- FILL IN THE BLANK ---- */
+    .fitb-list { display: flex; flex-direction: column; gap: 18px; }
+    .fitb-item { display: flex; align-items: baseline; gap: 8px; }
+    .fitb-num { font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; color: #bbb; min-width: 22px; flex-shrink: 0; }
+    .fitb-text { font-family: 'Merriweather', serif; font-size: clamp(14px, 2vw, 16px); line-height: 1.9; color: #222; -webkit-user-select: none; user-select: none; flex: 1; }
+    .fitb-input { border: none; border-bottom: 2.5px solid #bbb; background: transparent; font-family: 'Merriweather', serif; font-size: inherit; color: #1a1a1a; outline: none; padding: 0 4px 2px; width: 88px; margin: 0 3px; text-align: center; transition: border-color 0.15s, color 0.15s; -webkit-user-select: text; user-select: text; }
+    .fitb-input:focus { border-bottom-color: #1a1a1a; }
+    .fitb-input.correct { border-bottom-color: #27ae60; color: #1a5c35; }
+    .fitb-input.wrong   { border-bottom-color: #e74c3c; color: #c0392b; }
+
+    /* ---- SECTION BREAK ---- */
     .section-break { margin: 44px 0; max-width: 700px; margin-left: auto; margin-right: auto; display: flex; align-items: center; gap: 16px; }
     .section-break::before, .section-break::after { content: ''; flex: 1; height: 1px; background: #bbb; }
     .section-break span { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #999; white-space: nowrap; }
 
+    /* ---- READING ---- */
     .section-label { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #555; margin-bottom: 6px; -webkit-user-select: none; user-select: none; }
-    .passage-title { font-family: 'Merriweather', serif; font-size: clamp(17px, 2.5vw, 22px); font-weight: 700; font-style: italic; margin-bottom: 16px; -webkit-user-select: none; user-select: none; }
     .passage-box { background: #f7f6f3; border-left: 4px solid #555; padding: 20px 24px; margin-bottom: 28px; -webkit-user-select: none; user-select: none; }
     .passage-box p { font-family: 'Merriweather', serif; font-size: clamp(14px, 2vw, 17px); line-height: 2; color: #222; margin-bottom: 14px; }
     .passage-box p:last-child { margin-bottom: 0; }
@@ -61,13 +80,15 @@
       .problems-grid { grid-template-columns: 1fr 1fr; }
       .problem-eq { font-size: 17px; }
       .ans-input { font-size: 17px; width: 44px; }
+      .fitb-input { width: 74px; }
     }
     @media print {
       body { background: #fff; padding: 0; }
       .top-nav, .save-notice, .check-row { display: none; }
       .ws-card { box-shadow: none; border: none; padding: 20px 0; }
       .ans-input { border: none; border-bottom: 2px solid #000; border-radius: 0; background: transparent !important; }
-      .passage-box, .passage-title, .section-label, .section-question { -webkit-user-select: text !important; user-select: text !important; }
+      .fitb-input { border-bottom-color: #000 !important; color: #000 !important; }
+      .wb-chip.used { text-decoration: none; color: #000; border-color: #000; }
       * { -webkit-user-select: text !important; user-select: text !important; }
     }
   </style>
@@ -78,7 +99,7 @@
     <a class="back-btn" href="index.html">&larr; Menu</a>
   </div>
 
-  <!-- MATH CARD -->
+  <!-- ===== MATH CARD ===== -->
   <div class="ws-card">
     <div class="ws-header">
       <p class="eyebrow">Math Practice &nbsp;&middot;&nbsp; Grade 1</p>
@@ -106,14 +127,99 @@
     </div>
 
     <div class="check-row">
-      <button class="check-btn" id="check-btn">Check Answers</button>
-      <span class="score-display" id="score-display"></span>
+      <button class="check-btn" id="math-check-btn">Check Answers</button>
+      <span class="score-display" id="math-score"></span>
+    </div>
+  </div>
+
+  <div class="section-break"><span>Fill in the Blank</span></div>
+
+  <!-- ===== FILL IN THE BLANK CARD ===== -->
+  <div class="ws-card">
+    <div class="ws-header">
+      <p class="eyebrow">English &nbsp;&middot;&nbsp; Grade 1</p>
+      <h1 class="ws-title">Fill in the Blank</h1>
+      <p class="ws-meta">Nabila &amp; Naviha &nbsp;&middot;&nbsp; Use the word bank to complete each sentence</p>
+    </div>
+
+    <div class="wb-box">
+      <p class="wb-label">Word Bank</p>
+      <div class="wb-words">
+        <span class="wb-chip" data-word="sun">sun</span>
+        <span class="wb-chip" data-word="dog">dog</span>
+        <span class="wb-chip" data-word="blue">blue</span>
+        <span class="wb-chip" data-word="school">school</span>
+        <span class="wb-chip" data-word="happy">happy</span>
+        <span class="wb-chip" data-word="apple">apple</span>
+        <span class="wb-chip" data-word="water">water</span>
+        <span class="wb-chip" data-word="big">big</span>
+        <span class="wb-chip" data-word="friend">friend</span>
+        <span class="wb-chip" data-word="night">night</span>
+        <span class="wb-chip" data-word="bird">bird</span>
+        <span class="wb-chip" data-word="run">run</span>
+      </div>
+    </div>
+
+    <div class="fitb-list">
+      <div class="fitb-item">
+        <span class="fitb-num">1.</span>
+        <p class="fitb-text">The <input class="fitb-input" data-save="f1" data-answer="sun" autocomplete="off" /> shines in the sky every morning.</p>
+      </div>
+      <div class="fitb-item">
+        <span class="fitb-num">2.</span>
+        <p class="fitb-text">My pet <input class="fitb-input" data-save="f2" data-answer="dog" autocomplete="off" /> loves to play in the park.</p>
+      </div>
+      <div class="fitb-item">
+        <span class="fitb-num">3.</span>
+        <p class="fitb-text">The sky is <input class="fitb-input" data-save="f3" data-answer="blue" autocomplete="off" /> on a clear day.</p>
+      </div>
+      <div class="fitb-item">
+        <span class="fitb-num">4.</span>
+        <p class="fitb-text">I learn to read and write at <input class="fitb-input" data-save="f4" data-answer="school" autocomplete="off" />.</p>
+      </div>
+      <div class="fitb-item">
+        <span class="fitb-num">5.</span>
+        <p class="fitb-text">She smiled because she was very <input class="fitb-input" data-save="f5" data-answer="happy" autocomplete="off" />.</p>
+      </div>
+      <div class="fitb-item">
+        <span class="fitb-num">6.</span>
+        <p class="fitb-text">An <input class="fitb-input" data-save="f6" data-answer="apple" autocomplete="off" /> is a sweet and crunchy fruit.</p>
+      </div>
+      <div class="fitb-item">
+        <span class="fitb-num">7.</span>
+        <p class="fitb-text">Fish and frogs live in the <input class="fitb-input" data-save="f7" data-answer="water" autocomplete="off" />.</p>
+      </div>
+      <div class="fitb-item">
+        <span class="fitb-num">8.</span>
+        <p class="fitb-text">The elephant is a very <input class="fitb-input" data-save="f8" data-answer="big" autocomplete="off" /> animal.</p>
+      </div>
+      <div class="fitb-item">
+        <span class="fitb-num">9.</span>
+        <p class="fitb-text">My best <input class="fitb-input" data-save="f9" data-answer="friend" autocomplete="off" /> and I play together at recess.</p>
+      </div>
+      <div class="fitb-item">
+        <span class="fitb-num">10.</span>
+        <p class="fitb-text">The stars come out at <input class="fitb-input" data-save="f10" data-answer="night" autocomplete="off" />.</p>
+      </div>
+      <div class="fitb-item">
+        <span class="fitb-num">11.</span>
+        <p class="fitb-text">A <input class="fitb-input" data-save="f11" data-answer="bird" autocomplete="off" /> can fly high in the sky.</p>
+      </div>
+      <div class="fitb-item">
+        <span class="fitb-num">12.</span>
+        <p class="fitb-text">I like to <input class="fitb-input" data-save="f12" data-answer="run" autocomplete="off" /> fast at the park.</p>
+      </div>
+    </div>
+
+    <div class="check-row">
+      <button class="check-btn" id="fitb-check-btn">Check Answers</button>
+      <span class="score-display" id="fitb-score"></span>
     </div>
   </div>
 
   <div class="section-break"><span>Reading</span></div>
 
-  <!-- READING CARD -->
+  <!-- ===== READING CARD ===== -->
   <div class="ws-card">
     <div class="ws-header">
       <p class="eyebrow">Reading &nbsp;&middot;&nbsp; Grade 1</p>
@@ -138,8 +244,9 @@
 
   <script>
     const NS = 'nabila-naviha';
-    const mathInputs = document.querySelectorAll('input[data-save]');
 
+    // ---- MATH ----
+    const mathInputs = document.querySelectorAll('.ans-input[data-save]');
     mathInputs.forEach(el => {
       const key = NS + ':' + el.dataset.save;
       const saved = localStorage.getItem(key);
@@ -149,38 +256,79 @@
       }
       el.addEventListener('input', () => {
         localStorage.setItem(key, el.value);
-        const val = el.value.trim();
         el.classList.remove('correct', 'wrong');
-        if (val && val === el.dataset.answer) el.classList.add('correct');
+        if (el.value.trim() === el.dataset.answer) el.classList.add('correct');
       });
       el.addEventListener('paste', e => e.preventDefault());
       el.addEventListener('contextmenu', e => e.preventDefault());
-      el.addEventListener('keydown', e => {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'v') e.preventDefault();
-      });
+      el.addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && e.key === 'v') e.preventDefault(); });
     });
 
-    document.getElementById('check-btn').addEventListener('click', () => {
+    document.getElementById('math-check-btn').addEventListener('click', () => {
       let correct = 0;
       mathInputs.forEach(el => {
         el.classList.remove('correct', 'wrong');
         const val = el.value.trim();
         if (!val) return;
-        if (val === el.dataset.answer) {
-          el.classList.add('correct');
-          correct++;
-        } else {
-          el.classList.add('wrong');
-        }
+        if (val === el.dataset.answer) { el.classList.add('correct'); correct++; }
+        else el.classList.add('wrong');
       });
+      const display = document.getElementById('math-score');
       const total = mathInputs.length;
-      const display = document.getElementById('score-display');
-      display.textContent = correct === total
-        ? correct + ' / ' + total + ' — Perfect score!'
-        : correct + ' / ' + total + ' correct';
+      display.textContent = correct === total ? correct + ' / ' + total + ' — Perfect score!' : correct + ' / ' + total + ' correct';
       display.className = 'score-display' + (correct === total ? ' perfect' : '');
     });
 
+    // ---- FILL IN THE BLANK ----
+    const fitbInputs = document.querySelectorAll('.fitb-input[data-save]');
+
+    function syncWordBank() {
+      const used = new Set();
+      fitbInputs.forEach(el => {
+        if (el.value.trim().toLowerCase() === el.dataset.answer) used.add(el.dataset.answer);
+      });
+      document.querySelectorAll('.wb-chip').forEach(chip => {
+        chip.classList.toggle('used', used.has(chip.dataset.word));
+      });
+    }
+
+    fitbInputs.forEach(el => {
+      const key = NS + ':fitb-' + el.dataset.save;
+      const saved = localStorage.getItem(key);
+      if (saved) {
+        el.value = saved;
+        if (saved.trim().toLowerCase() === el.dataset.answer) el.classList.add('correct');
+      }
+      el.addEventListener('input', () => {
+        localStorage.setItem(key, el.value);
+        const val = el.value.trim().toLowerCase();
+        el.classList.remove('correct', 'wrong');
+        if (val && val === el.dataset.answer) el.classList.add('correct');
+        syncWordBank();
+      });
+      el.addEventListener('paste', e => e.preventDefault());
+      el.addEventListener('contextmenu', e => e.preventDefault());
+      el.addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && e.key === 'v') e.preventDefault(); });
+    });
+    syncWordBank();
+
+    document.getElementById('fitb-check-btn').addEventListener('click', () => {
+      let correct = 0;
+      fitbInputs.forEach(el => {
+        el.classList.remove('correct', 'wrong');
+        const val = el.value.trim().toLowerCase();
+        if (!val) return;
+        if (val === el.dataset.answer) { el.classList.add('correct'); correct++; }
+        else el.classList.add('wrong');
+      });
+      const display = document.getElementById('fitb-score');
+      const total = fitbInputs.length;
+      display.textContent = correct === total ? correct + ' / ' + total + ' — Perfect score!' : correct + ' / ' + total + ' correct';
+      display.className = 'score-display' + (correct === total ? ' perfect' : '');
+      syncWordBank();
+    });
+
+    // ---- READING ----
     const summaryEl = document.querySelector('textarea[data-save]');
     const summaryKey = NS + ':' + summaryEl.dataset.save;
     const savedSummary = localStorage.getItem(summaryKey);
@@ -188,9 +336,7 @@
     summaryEl.addEventListener('input', () => localStorage.setItem(summaryKey, summaryEl.value));
     summaryEl.addEventListener('paste', e => e.preventDefault());
     summaryEl.addEventListener('contextmenu', e => e.preventDefault());
-    summaryEl.addEventListener('keydown', e => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'v') e.preventDefault();
-    });
+    summaryEl.addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && e.key === 'v') e.preventDefault(); });
   </script>
 
 </body>

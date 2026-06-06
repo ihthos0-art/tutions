@@ -1,0 +1,8 @@
+name = "tutions"
+compatibility_date = "2026-06-06"
+main = "src/index.js"
+
+[assets]
+directory = "."
+binding = "ASSETS"
+run_worker_first = ["/api/*"]

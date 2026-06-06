@@ -34,7 +34,6 @@
     .answer-input.central { min-height: 58px; }
     .answer-input:focus { border-color: #333; }
     .answer-input::placeholder { color: #bbb; font-style: italic; }
-    /* Block selection on passage and questions */
     .passage-box, .passage-title, .section-question, .section-label, .ws-number {
       -webkit-user-select: none;
       user-select: none;
@@ -73,10 +72,8 @@
     <p class="sub">Read the story, write a summary, then find the central idea</p>
   </header>
 
-  <!-- WORKSHEET 1 -->
   <section class="worksheet" aria-label="Worksheet 1">
     <div class="ws-topbar"><span class="ws-number">Worksheet 01</span></div>
-
     <div class="passage-wrap">
       <p class="section-label">Read the story</p>
       <h2 class="passage-title">The Broken Kite</h2>
@@ -87,15 +84,11 @@
         <p>His neighbor, Mrs. Okonkwo, was walking her dog nearby and saw what happened. She came over and looked at the torn wing carefully, turning it over in her hands. &ldquo;I think we can fix this,&rdquo; she said quietly. She went back to her house and returned with strong tape and a small piece of cloth that matched the kite&rsquo;s color. She spent almost an hour patching the wing back together while Leo watched her every move. When it was done, Leo took the kite back to the open field and let it go. It climbed just as high as before, spinning in the wind like nothing had ever happened. &ldquo;Things worth keeping are worth fixing,&rdquo; Mrs. Okonkwo told him. Leo never forgot those words.</p>
       </div>
     </div>
-
     <div class="ws-rule"></div>
-
     <p class="section-label">Part 1 &mdash; Summary</p>
     <p class="section-question">Write a summary of the story in 2&ndash;3 sentences. Include what happened at the beginning, middle, and end.</p>
     <textarea class="answer-input summary" data-save="ws1-summary" rows="4" placeholder="This story is about…"></textarea>
-
     <div class="ws-rule"></div>
-
     <p class="section-label">Part 2 &mdash; Central Idea</p>
     <p class="section-question">What is the most important message or lesson of this story? Write it in one complete sentence.</p>
     <textarea class="answer-input central" data-save="ws1-central" rows="2" placeholder="The central idea of this story is…"></textarea>
@@ -103,10 +96,8 @@
 
   <div class="page-break"><span>Worksheet 02</span></div>
 
-  <!-- WORKSHEET 2 -->
   <section class="worksheet" aria-label="Worksheet 2">
     <div class="ws-topbar"><span class="ws-number">Worksheet 02</span></div>
-
     <div class="passage-wrap">
       <p class="section-label">Read the story</p>
       <h2 class="passage-title">The Longest Summer</h2>
@@ -117,15 +108,11 @@
         <p>By the end of August, the tomato plants were heavy with fruit &mdash; big, round, and deeply red. Mr. Rivera let Amara pick the very first batch herself. They filled two whole baskets. He gave one basket to her family and kept the other. &ldquo;You grew every single one of these,&rdquo; he told her, pointing at her basket. That evening, Amara sat on the front steps again &mdash; but this time she was not feeling invisible. She was waving at the kids across the street and telling them about the garden, and they were actually coming over to listen.</p>
       </div>
     </div>
-
     <div class="ws-rule"></div>
-
     <p class="section-label">Part 1 &mdash; Summary</p>
     <p class="section-question">Write a summary of the story in 2&ndash;3 sentences. Include what happened at the beginning, middle, and end.</p>
     <textarea class="answer-input summary" data-save="ws2-summary" rows="4" placeholder="This story is about…"></textarea>
-
     <div class="ws-rule"></div>
-
     <p class="section-label">Part 2 &mdash; Central Idea</p>
     <p class="section-question">What is the most important message or lesson of this story? Write it in one complete sentence.</p>
     <textarea class="answer-input central" data-save="ws2-central" rows="2" placeholder="The central idea of this story is…"></textarea>
@@ -160,6 +147,6 @@
       });
     });
   </script>
-
+  <script src="ai-tutor.js"></script>
 </body>
 </html>

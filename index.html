@@ -19,7 +19,8 @@
     .name-btn { display: block; font-family: 'Merriweather Sans', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 0.03em; color: #1a1a1a; background: #f4f3f0; border: 1.5px solid #d4d2cc; border-radius: 4px; padding: 18px 12px; text-decoration: none; transition: background 0.18s, border-color 0.18s, transform 0.12s; cursor: pointer; }
     .name-btn:hover { background: #1a1a1a; border-color: #1a1a1a; color: #fff; transform: translateY(-1px); }
     .name-btn:active { transform: translateY(0); }
-    @media (max-width: 420px) { .name-grid { grid-template-columns: 1fr; } .menu-card { padding: 40px 28px 44px; } }
+    .name-btn.wide { grid-column: 1 / -1; }
+    @media (max-width: 420px) { .name-grid { grid-template-columns: 1fr; } .menu-card { padding: 40px 28px 44px; } .name-btn.wide { grid-column: auto; } }
   </style>
 </head>
 <body>
@@ -34,6 +35,7 @@
       <a class="name-btn" href="nahid.html">Nahid</a>
       <a class="name-btn" href="taha.html">Taha</a>
       <a class="name-btn" href="sameer.html">Sameer</a>
+      <a class="name-btn wide" href="nabila-naviha.html">Nabila &amp; Naviha</a>
     </div>
   </div>
 </body>

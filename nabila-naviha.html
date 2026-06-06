@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grade 1 Worksheet — Nabila &amp; Naviha</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Merriweather+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { min-height: 100%; background: #e8e8e6; font-family: 'Merriweather Sans', sans-serif; color: #1a1a1a; }
+    body { padding: 40px 20px 60px; }
+
+    .top-nav { max-width: 700px; margin: 0 auto 28px; }
+    .back-btn { font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #666; background: none; border: 1.5px solid #c0c0c0; border-radius: 4px; padding: 8px 16px; cursor: pointer; text-decoration: none; transition: background 0.15s, color 0.15s, border-color 0.15s; }
+    .back-btn:hover { background: #1a1a1a; border-color: #1a1a1a; color: #fff; }
+
+    .ws-card { background: #fff; border: 1px solid #c8c8c8; border-radius: 6px; box-shadow: 0 2px 16px rgba(0,0,0,0.09); padding: 44px 48px 52px; max-width: 700px; margin: 0 auto; }
+
+    .ws-header { border-bottom: 2px solid #1a1a1a; padding-bottom: 16px; margin-bottom: 32px; }
+    .eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: #888; margin-bottom: 8px; }
+    .ws-title { font-family: 'Merriweather', serif; font-size: clamp(22px, 4vw, 30px); font-weight: 700; margin-bottom: 5px; }
+    .ws-meta { font-size: 13px; color: #555; font-style: italic; }
+
+    .ws-label { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #999; margin-bottom: 24px; }
+
+    /* ---- MATH GRID ---- */
+    .problems-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .problem { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 14px 16px; background: #fafaf8; border: 1px solid #e2e0db; border-radius: 4px; }
+    .problem-eq { font-family: 'Merriweather', serif; font-size: 19px; font-weight: 700; -webkit-user-select: none; user-select: none; white-space: nowrap; }
+    .ans-input { width: 50px; height: 40px; border: 2px solid #c8c8c8; border-radius: 3px; font-family: 'Merriweather', serif; font-size: 19px; font-weight: 700; text-align: center; outline: none; background: #fff; color: #1a1a1a; transition: border-color 0.15s; }
+    .ans-input:focus { border-color: #1a1a1a; }
+
+    .score-row { margin-top: 28px; padding-top: 20px; border-top: 1px solid #e2e0db; display: flex; align-items: center; gap: 12px; }
+    .score-label { font-size: 13px; font-weight: 600; color: #666; }
+    .score-val { font-size: 14px; font-weight: 700; color: #aaa; }
+
+    /* ---- SECTION BREAK ---- */
+    .section-break { margin: 44px 0; max-width: 700px; margin-left: auto; margin-right: auto; display: flex; align-items: center; gap: 16px; }
+    .section-break::before, .section-break::after { content: ''; flex: 1; height: 1px; background: #bbb; }
+    .section-break span { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #999; white-space: nowrap; }
+
+    /* ---- READING ---- */
+    .section-label { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #555; margin-bottom: 6px; -webkit-user-select: none; user-select: none; }
+    .passage-title { font-family: 'Merriweather', serif; font-size: clamp(17px, 2.5vw, 22px); font-weight: 700; font-style: italic; margin-bottom: 16px; -webkit-user-select: none; user-select: none; }
+    .passage-box { background: #f7f6f3; border-left: 4px solid #555; padding: 20px 24px; margin-bottom: 28px; -webkit-user-select: none; user-select: none; }
+    .passage-box p { font-family: 'Merriweather', serif; font-size: clamp(14px, 2vw, 17px); line-height: 2; color: #222; margin-bottom: 14px; }
+    .passage-box p:last-child { margin-bottom: 0; }
+
+    .ws-rule { height: 1px; background: #ddd; margin: 28px 0; }
+
+    .section-question { font-family: 'Merriweather', serif; font-size: clamp(13px, 1.8vw, 15px); font-style: italic; color: #333; margin-bottom: 14px; line-height: 1.6; -webkit-user-select: none; user-select: none; }
+    .summary-input { width: 100%; min-height: 110px; background: #fff; border: 1.5px solid #bbb; border-radius: 3px; color: #1a1a1a; font-family: 'Merriweather', Georgia, serif; font-size: 15px; padding: 12px 14px; outline: none; transition: border-color 0.2s; line-height: 1.7; resize: none; }
+    .summary-input:focus { border-color: #333; }
+    .summary-input::placeholder { color: #bbb; font-style: italic; }
+
+    .save-notice { font-family: 'Merriweather Sans', sans-serif; font-size: 11px; color: #aaa; text-align: center; margin-top: 20px; font-style: italic; }
+
+    @media (max-width: 520px) {
+      .ws-card { padding: 32px 20px 40px; }
+      .problems-grid { grid-template-columns: 1fr 1fr; }
+      .problem-eq { font-size: 17px; }
+      .ans-input { font-size: 17px; width: 44px; }
+    }
+    @media print {
+      body { background: #fff; padding: 0; }
+      .top-nav, .save-notice { display: none; }
+      .ws-card { box-shadow: none; border: none; padding: 20px 0; }
+      .ans-input { border: none; border-bottom: 2px solid #000; border-radius: 0; background: transparent; }
+      .passage-box, .passage-title, .section-label, .section-question { -webkit-user-select: text !important; user-select: text !important; }
+      * { -webkit-user-select: text !important; user-select: text !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-nav">
+    <a class="back-btn" href="index.html">&larr; Menu</a>
+  </div>
+
+  <!-- MATH CARD -->
+  <div class="ws-card">
+    <div class="ws-header">
+      <p class="eyebrow">Math Practice &nbsp;&middot;&nbsp; Grade 1</p>
+      <h1 class="ws-title">Addition &amp; Subtraction</h1>
+      <p class="ws-meta">Nabila &amp; Naviha &nbsp;&middot;&nbsp; Solve each problem and write your answer</p>
+    </div>
+    <p class="ws-label">15 Problems &nbsp;&mdash;&nbsp; Numbers 1&ndash;20</p>
+
+    <div class="problems-grid">
+      <div class="problem">
+        <span class="problem-eq">2 + 5 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" data-save="q1" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-eq">10 &minus; 3 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" data-save="q2" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-eq">6 + 4 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" data-save="q3" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-eq">14 &minus; 8 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" data-save="q4" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-eq">9 + 3 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" data-save="q5" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-eq">16 &minus; 7 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" data-save="q6" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-eq">5 + 8 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" data-save="q7" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-eq">11 &minus; 5 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" data-save="q8" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-eq">7 + 9 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" data-save="q9" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-eq">20 &minus; 6 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" data-save="q10" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-eq">4 + 7 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" data-save="q11" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-eq">15 &minus; 9 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" data-save="q12" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-eq">8 + 5 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" data-save="q13" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-eq">17 &minus; 8 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" data-save="q14" autocomplete="off" />
+      </div>
+      <div class="problem">
+        <span class="problem-eq">6 + 9 =</span>
+        <input class="ans-input" type="text" inputmode="numeric" data-save="q15" autocomplete="off" />
+      </div>
+    </div>
+
+    <div class="score-row">
+      <span class="score-label">Score:</span>
+      <span class="score-val">_____ / 15</span>
+    </div>
+  </div>
+
+  <div class="section-break"><span>Reading</span></div>
+
+  <!-- READING CARD -->
+  <div class="ws-card">
+    <div class="ws-header">
+      <p class="eyebrow">Reading &nbsp;&middot;&nbsp; Grade 1</p>
+      <h1 class="ws-title">The Rainy Day</h1>
+      <p class="ws-meta">Read the story, then write a summary below</p>
+    </div>
+
+    <p class="section-label">Read the story</p>
+    <div class="passage-box">
+      <p>Zara looked out the window and frowned. It was raining again. She had wanted to ride her bike to the park, but the sky was gray and the streets were wet. She sat on the couch and did not know what to do.</p>
+      <p>Then her dad came in with two pieces of paper. He showed Zara how to fold them into paper boats. They took the boats outside and floated them in the puddles on the sidewalk. Zara laughed as her boat sailed all the way to the end of the street. It turned out to be a great day after all.</p>
+    </div>
+
+    <div class="ws-rule"></div>
+
+    <p class="section-label">Summary</p>
+    <p class="section-question">What happened in this story? Write 2&ndash;3 sentences in your own words.</p>
+    <textarea class="summary-input" data-save="ws1-summary" rows="4" placeholder="In this story…"></textarea>
+  </div>
+
+  <p class="save-notice">Your answers are saved automatically in this browser.</p>
+
+  <script>
+    const NS = 'nabila-naviha';
+    document.querySelectorAll('input[data-save], textarea[data-save]').forEach(el => {
+      const key = NS + ':' + el.dataset.save;
+      const saved = localStorage.getItem(key);
+      if (saved) el.value = saved;
+      el.addEventListener('input', () => localStorage.setItem(key, el.value));
+      el.addEventListener('paste', e => e.preventDefault());
+      el.addEventListener('contextmenu', e => e.preventDefault());
+      el.addEventListener('keydown', e => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'v') e.preventDefault();
+      });
+    });
+  </script>
+
+</body>
+</html>

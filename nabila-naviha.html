@@ -25,31 +25,30 @@
 
     .ws-label { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #999; margin-bottom: 24px; }
 
-    /* ---- MATH GRID ---- */
     .problems-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
     .problem { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 14px 16px; background: #fafaf8; border: 1px solid #e2e0db; border-radius: 4px; }
     .problem-eq { font-family: 'Merriweather', serif; font-size: 19px; font-weight: 700; -webkit-user-select: none; user-select: none; white-space: nowrap; }
-    .ans-input { width: 50px; height: 40px; border: 2px solid #c8c8c8; border-radius: 3px; font-family: 'Merriweather', serif; font-size: 19px; font-weight: 700; text-align: center; outline: none; background: #fff; color: #1a1a1a; transition: border-color 0.15s; }
+    .ans-input { width: 50px; height: 40px; border: 2px solid #c8c8c8; border-radius: 3px; font-family: 'Merriweather', serif; font-size: 19px; font-weight: 700; text-align: center; outline: none; background: #fff; color: #1a1a1a; transition: border-color 0.15s, background 0.15s; }
     .ans-input:focus { border-color: #1a1a1a; }
+    .ans-input.correct { border-color: #27ae60; background: #edfbf1; color: #1a5c35; }
+    .ans-input.wrong { border-color: #e74c3c; background: #fdf0ef; }
 
-    .score-row { margin-top: 28px; padding-top: 20px; border-top: 1px solid #e2e0db; display: flex; align-items: center; gap: 12px; }
-    .score-label { font-size: 13px; font-weight: 600; color: #666; }
-    .score-val { font-size: 14px; font-weight: 700; color: #aaa; }
+    .check-row { margin-top: 28px; padding-top: 20px; border-top: 1px solid #e2e0db; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .check-btn { font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; background: #1a1a1a; color: #fff; border: none; border-radius: 4px; padding: 10px 24px; cursor: pointer; transition: background 0.15s; }
+    .check-btn:hover { background: #444; }
+    .score-display { font-family: 'Merriweather Sans', sans-serif; font-size: 15px; font-weight: 700; color: #555; }
+    .score-display.perfect { color: #27ae60; }
 
-    /* ---- SECTION BREAK ---- */
     .section-break { margin: 44px 0; max-width: 700px; margin-left: auto; margin-right: auto; display: flex; align-items: center; gap: 16px; }
     .section-break::before, .section-break::after { content: ''; flex: 1; height: 1px; background: #bbb; }
     .section-break span { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #999; white-space: nowrap; }
 
-    /* ---- READING ---- */
     .section-label { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #555; margin-bottom: 6px; -webkit-user-select: none; user-select: none; }
     .passage-title { font-family: 'Merriweather', serif; font-size: clamp(17px, 2.5vw, 22px); font-weight: 700; font-style: italic; margin-bottom: 16px; -webkit-user-select: none; user-select: none; }
     .passage-box { background: #f7f6f3; border-left: 4px solid #555; padding: 20px 24px; margin-bottom: 28px; -webkit-user-select: none; user-select: none; }
     .passage-box p { font-family: 'Merriweather', serif; font-size: clamp(14px, 2vw, 17px); line-height: 2; color: #222; margin-bottom: 14px; }
     .passage-box p:last-child { margin-bottom: 0; }
-
     .ws-rule { height: 1px; background: #ddd; margin: 28px 0; }
-
     .section-question { font-family: 'Merriweather', serif; font-size: clamp(13px, 1.8vw, 15px); font-style: italic; color: #333; margin-bottom: 14px; line-height: 1.6; -webkit-user-select: none; user-select: none; }
     .summary-input { width: 100%; min-height: 110px; background: #fff; border: 1.5px solid #bbb; border-radius: 3px; color: #1a1a1a; font-family: 'Merriweather', Georgia, serif; font-size: 15px; padding: 12px 14px; outline: none; transition: border-color 0.2s; line-height: 1.7; resize: none; }
     .summary-input:focus { border-color: #333; }
@@ -65,9 +64,9 @@
     }
     @media print {
       body { background: #fff; padding: 0; }
-      .top-nav, .save-notice { display: none; }
+      .top-nav, .save-notice, .check-row { display: none; }
       .ws-card { box-shadow: none; border: none; padding: 20px 0; }
-      .ans-input { border: none; border-bottom: 2px solid #000; border-radius: 0; background: transparent; }
+      .ans-input { border: none; border-bottom: 2px solid #000; border-radius: 0; background: transparent !important; }
       .passage-box, .passage-title, .section-label, .section-question { -webkit-user-select: text !important; user-select: text !important; }
       * { -webkit-user-select: text !important; user-select: text !important; }
     }
@@ -89,71 +88,26 @@
     <p class="ws-label">15 Problems &nbsp;&mdash;&nbsp; Numbers 1&ndash;20</p>
 
     <div class="problems-grid">
-      <div class="problem">
-        <span class="problem-eq">2 + 5 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" data-save="q1" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-eq">10 &minus; 3 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" data-save="q2" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-eq">6 + 4 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" data-save="q3" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-eq">14 &minus; 8 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" data-save="q4" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-eq">9 + 3 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" data-save="q5" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-eq">16 &minus; 7 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" data-save="q6" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-eq">5 + 8 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" data-save="q7" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-eq">11 &minus; 5 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" data-save="q8" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-eq">7 + 9 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" data-save="q9" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-eq">20 &minus; 6 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" data-save="q10" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-eq">4 + 7 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" data-save="q11" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-eq">15 &minus; 9 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" data-save="q12" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-eq">8 + 5 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" data-save="q13" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-eq">17 &minus; 8 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" data-save="q14" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-eq">6 + 9 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" data-save="q15" autocomplete="off" />
-      </div>
+      <div class="problem"><span class="problem-eq">2 + 5 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q1" data-answer="7" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-eq">10 &minus; 3 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q2" data-answer="7" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-eq">6 + 4 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q3" data-answer="10" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-eq">14 &minus; 8 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q4" data-answer="6" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-eq">9 + 3 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q5" data-answer="12" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-eq">16 &minus; 7 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q6" data-answer="9" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-eq">5 + 8 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q7" data-answer="13" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-eq">11 &minus; 5 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q8" data-answer="6" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-eq">7 + 9 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q9" data-answer="16" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-eq">20 &minus; 6 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q10" data-answer="14" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-eq">4 + 7 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q11" data-answer="11" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-eq">15 &minus; 9 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q12" data-answer="6" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-eq">8 + 5 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q13" data-answer="13" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-eq">17 &minus; 8 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q14" data-answer="9" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-eq">6 + 9 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q15" data-answer="15" autocomplete="off" /></div>
     </div>
 
-    <div class="score-row">
-      <span class="score-label">Score:</span>
-      <span class="score-val">_____ / 15</span>
+    <div class="check-row">
+      <button class="check-btn" id="check-btn">Check Answers</button>
+      <span class="score-display" id="score-display"></span>
     </div>
   </div>
 
@@ -184,16 +138,58 @@
 
   <script>
     const NS = 'nabila-naviha';
-    document.querySelectorAll('input[data-save], textarea[data-save]').forEach(el => {
+    const mathInputs = document.querySelectorAll('input[data-save]');
+
+    mathInputs.forEach(el => {
       const key = NS + ':' + el.dataset.save;
       const saved = localStorage.getItem(key);
-      if (saved) el.value = saved;
-      el.addEventListener('input', () => localStorage.setItem(key, el.value));
+      if (saved) {
+        el.value = saved;
+        if (saved.trim() === el.dataset.answer) el.classList.add('correct');
+      }
+      el.addEventListener('input', () => {
+        localStorage.setItem(key, el.value);
+        const val = el.value.trim();
+        el.classList.remove('correct', 'wrong');
+        if (val && val === el.dataset.answer) el.classList.add('correct');
+      });
       el.addEventListener('paste', e => e.preventDefault());
       el.addEventListener('contextmenu', e => e.preventDefault());
       el.addEventListener('keydown', e => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'v') e.preventDefault();
       });
+    });
+
+    document.getElementById('check-btn').addEventListener('click', () => {
+      let correct = 0;
+      mathInputs.forEach(el => {
+        el.classList.remove('correct', 'wrong');
+        const val = el.value.trim();
+        if (!val) return;
+        if (val === el.dataset.answer) {
+          el.classList.add('correct');
+          correct++;
+        } else {
+          el.classList.add('wrong');
+        }
+      });
+      const total = mathInputs.length;
+      const display = document.getElementById('score-display');
+      display.textContent = correct === total
+        ? correct + ' / ' + total + ' — Perfect score!'
+        : correct + ' / ' + total + ' correct';
+      display.className = 'score-display' + (correct === total ? ' perfect' : '');
+    });
+
+    const summaryEl = document.querySelector('textarea[data-save]');
+    const summaryKey = NS + ':' + summaryEl.dataset.save;
+    const savedSummary = localStorage.getItem(summaryKey);
+    if (savedSummary) summaryEl.value = savedSummary;
+    summaryEl.addEventListener('input', () => localStorage.setItem(summaryKey, summaryEl.value));
+    summaryEl.addEventListener('paste', e => e.preventDefault());
+    summaryEl.addEventListener('contextmenu', e => e.preventDefault());
+    summaryEl.addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'v') e.preventDefault();
     });
   </script>
 

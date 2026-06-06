@@ -30,13 +30,16 @@
     .problem { display: flex; align-items: center; gap: 10px; padding: 11px 14px; background: #fafaf8; border: 1px solid #e2e0db; border-radius: 4px; }
     .problem-num { font-size: 11px; font-weight: 600; color: #bbb; width: 22px; flex-shrink: 0; text-align: right; }
     .problem-eq { font-family: 'Merriweather', serif; font-size: 16px; font-weight: 700; flex: 1; -webkit-user-select: none; user-select: none; }
-    .ans-input { width: 54px; height: 34px; border: 2px solid #c8c8c8; border-radius: 3px; font-family: 'Merriweather', serif; font-size: 16px; font-weight: 700; text-align: center; outline: none; background: #fff; color: #1a1a1a; flex-shrink: 0; transition: border-color 0.15s; }
+    .ans-input { width: 54px; height: 34px; border: 2px solid #c8c8c8; border-radius: 3px; font-family: 'Merriweather', serif; font-size: 16px; font-weight: 700; text-align: center; outline: none; background: #fff; color: #1a1a1a; flex-shrink: 0; transition: border-color 0.15s, background 0.15s; }
     .ans-input:focus { border-color: #1a1a1a; }
+    .ans-input.correct { border-color: #27ae60; background: #edfbf1; color: #1a5c35; }
+    .ans-input.wrong { border-color: #e74c3c; background: #fdf0ef; }
 
-    .score-row { margin-top: 36px; padding-top: 22px; border-top: 1px solid #e2e0db; display: flex; align-items: center; gap: 14px; }
-    .score-label { font-size: 13px; font-weight: 600; color: #555; }
-    .score-box { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 700; color: #888; }
-    .score-box span { color: #bbb; }
+    .check-row { margin-top: 32px; padding-top: 22px; border-top: 1px solid #e2e0db; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .check-btn { font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; background: #1a1a1a; color: #fff; border: none; border-radius: 4px; padding: 10px 24px; cursor: pointer; transition: background 0.15s; }
+    .check-btn:hover { background: #444; }
+    .score-display { font-family: 'Merriweather Sans', sans-serif; font-size: 15px; font-weight: 700; color: #555; }
+    .score-display.perfect { color: #27ae60; }
 
     @media (max-width: 520px) {
       .ws-card { padding: 32px 22px 40px; }
@@ -44,9 +47,9 @@
     }
     @media print {
       body { background: #fff; padding: 0; }
-      .top-nav { display: none; }
+      .top-nav, .check-row { display: none; }
       .ws-card { box-shadow: none; border: none; padding: 20px; }
-      .ans-input { border: none; border-bottom: 2px solid #000; border-radius: 0; background: transparent; }
+      .ans-input { border: none; border-bottom: 2px solid #000; border-radius: 0; background: transparent !important; }
       * { -webkit-user-select: text !important; user-select: text !important; }
     }
   </style>
@@ -66,126 +69,77 @@
     <p class="ws-number">20 Problems &nbsp;&mdash;&nbsp; Tables 2 through 7</p>
 
     <div class="problems-grid">
-      <div class="problem">
-        <span class="problem-num">1.</span>
-        <span class="problem-eq">6 &times; 7 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q1" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-num">2.</span>
-        <span class="problem-eq">3 &times; 8 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q2" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-num">3.</span>
-        <span class="problem-eq">7 &times; 9 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q3" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-num">4.</span>
-        <span class="problem-eq">5 &times; 7 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q4" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-num">5.</span>
-        <span class="problem-eq">4 &times; 9 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q5" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-num">6.</span>
-        <span class="problem-eq">6 &times; 9 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q6" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-num">7.</span>
-        <span class="problem-eq">2 &times; 9 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q7" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-num">8.</span>
-        <span class="problem-eq">7 &times; 7 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q8" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-num">9.</span>
-        <span class="problem-eq">4 &times; 8 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q9" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-num">10.</span>
-        <span class="problem-eq">3 &times; 9 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q10" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-num">11.</span>
-        <span class="problem-eq">5 &times; 8 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q11" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-num">12.</span>
-        <span class="problem-eq">6 &times; 8 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q12" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-num">13.</span>
-        <span class="problem-eq">7 &times; 8 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q13" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-num">14.</span>
-        <span class="problem-eq">3 &times; 7 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q14" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-num">15.</span>
-        <span class="problem-eq">5 &times; 9 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q15" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-num">16.</span>
-        <span class="problem-eq">4 &times; 7 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q16" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-num">17.</span>
-        <span class="problem-eq">7 &times; 6 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q17" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-num">18.</span>
-        <span class="problem-eq">6 &times; 6 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q18" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-num">19.</span>
-        <span class="problem-eq">2 &times; 8 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q19" autocomplete="off" />
-      </div>
-      <div class="problem">
-        <span class="problem-num">20.</span>
-        <span class="problem-eq">4 &times; 6 =</span>
-        <input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q20" autocomplete="off" />
-      </div>
+      <div class="problem"><span class="problem-num">1.</span><span class="problem-eq">6 &times; 7 =</span><input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q1" data-answer="42" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-num">2.</span><span class="problem-eq">3 &times; 8 =</span><input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q2" data-answer="24" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-num">3.</span><span class="problem-eq">7 &times; 9 =</span><input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q3" data-answer="63" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-num">4.</span><span class="problem-eq">5 &times; 7 =</span><input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q4" data-answer="35" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-num">5.</span><span class="problem-eq">4 &times; 9 =</span><input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q5" data-answer="36" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-num">6.</span><span class="problem-eq">6 &times; 9 =</span><input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q6" data-answer="54" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-num">7.</span><span class="problem-eq">2 &times; 9 =</span><input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q7" data-answer="18" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-num">8.</span><span class="problem-eq">7 &times; 7 =</span><input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q8" data-answer="49" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-num">9.</span><span class="problem-eq">4 &times; 8 =</span><input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q9" data-answer="32" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-num">10.</span><span class="problem-eq">3 &times; 9 =</span><input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q10" data-answer="27" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-num">11.</span><span class="problem-eq">5 &times; 8 =</span><input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q11" data-answer="40" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-num">12.</span><span class="problem-eq">6 &times; 8 =</span><input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q12" data-answer="48" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-num">13.</span><span class="problem-eq">7 &times; 8 =</span><input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q13" data-answer="56" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-num">14.</span><span class="problem-eq">3 &times; 7 =</span><input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q14" data-answer="21" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-num">15.</span><span class="problem-eq">5 &times; 9 =</span><input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q15" data-answer="45" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-num">16.</span><span class="problem-eq">4 &times; 7 =</span><input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q16" data-answer="28" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-num">17.</span><span class="problem-eq">7 &times; 6 =</span><input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q17" data-answer="42" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-num">18.</span><span class="problem-eq">6 &times; 6 =</span><input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q18" data-answer="36" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-num">19.</span><span class="problem-eq">2 &times; 8 =</span><input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q19" data-answer="16" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-num">20.</span><span class="problem-eq">4 &times; 6 =</span><input class="ans-input" type="text" inputmode="numeric" pattern="[0-9]*" data-save="q20" data-answer="24" autocomplete="off" /></div>
     </div>
 
-    <div class="score-row">
-      <span class="score-label">Score:</span>
-      <span class="score-box">_____ <span>/ 20</span></span>
+    <div class="check-row">
+      <button class="check-btn" id="check-btn">Check Answers</button>
+      <span class="score-display" id="score-display"></span>
     </div>
   </div>
 
   <script>
     const NS = 'taha';
-    document.querySelectorAll('input[data-save]').forEach(el => {
+    const inputs = document.querySelectorAll('input[data-save]');
+
+    inputs.forEach(el => {
       const key = NS + ':' + el.dataset.save;
       const saved = localStorage.getItem(key);
-      if (saved) el.value = saved;
-      el.addEventListener('input', () => localStorage.setItem(key, el.value));
+      if (saved) {
+        el.value = saved;
+        if (saved.trim() === el.dataset.answer) el.classList.add('correct');
+      }
+      el.addEventListener('input', () => {
+        localStorage.setItem(key, el.value);
+        const val = el.value.trim();
+        el.classList.remove('correct', 'wrong');
+        if (val && val === el.dataset.answer) el.classList.add('correct');
+      });
       el.addEventListener('paste', e => e.preventDefault());
       el.addEventListener('contextmenu', e => e.preventDefault());
       el.addEventListener('keydown', e => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'v') e.preventDefault();
       });
+    });
+
+    document.getElementById('check-btn').addEventListener('click', () => {
+      let correct = 0;
+      inputs.forEach(el => {
+        el.classList.remove('correct', 'wrong');
+        const val = el.value.trim();
+        if (!val) return;
+        if (val === el.dataset.answer) {
+          el.classList.add('correct');
+          correct++;
+        } else {
+          el.classList.add('wrong');
+        }
+      });
+      const total = inputs.length;
+      const display = document.getElementById('score-display');
+      display.textContent = correct === total
+        ? correct + ' / ' + total + ' — Perfect score!'
+        : correct + ' / ' + total + ' correct';
+      display.className = 'score-display' + (correct === total ? ' perfect' : '');
     });
   </script>
 </body>

@@ -118,7 +118,7 @@
 
     var sysPrompt = {
       role: 'system',
-      content: 'You are a kind and patient homework helper for children in grades 1-8 who speak Bengali and are learning English as a second language (ESL). You work with students at an NYC tutoring center.\n\nIMPORTANT RULES:\n1. NEVER give the direct answer to any homework question or blank to fill in.\n2. Help students UNDERSTAND by asking guiding questions and explaining concepts.\n3. If a student writes in Bengali, respond in Bengali.\n4. If asked to translate something to Bengali, do it.\n5. Keep language simple and age-appropriate.\n6. Explain concepts simply: for example, "The central idea is like the main point of the whole story..."\n7. Never complete a student\'s sentence or write their answer for them.\n8. Be warm, encouraging, and patient.\n9. If a student asks what the answer is, gently redirect: "I can\'t tell you the answer, but I can help you figure it out!"\n10. Use examples from everyday life to explain difficult concepts.'
+      content: 'You are a kind and patient homework helper for children in grades 1-8 who speak Bengali and are learning English as a second language (ESL). You work with students at an NYC tutoring center.\n\nIMPORTANT RULES:\n1. NEVER give the direct answer to any homework question or blank to fill in.\n2. Help students UNDERSTAND by asking guiding questions and explaining concepts.\n3. ALWAYS respond in VERY SIMPLE English by default. Use short sentences and easy words. No hard vocabulary.\n4. ONLY use Bengali/Bangla if the student EXPLICITLY asks you to translate a word or explain something in Bengali. Otherwise stay in simple English.\n5. Keep language simple and age-appropriate.\n6. Explain concepts simply: for example, "The central idea is like the main point of the whole story..."\n7. Never complete a student\'s sentence or write their answer for them.\n8. Be warm, encouraging, and patient.\n9. If a student asks what the answer is, gently redirect: "I can\'t tell you the answer, but I can help you figure it out!"\n10. Use examples from everyday life to explain difficult concepts.'
     };
 
     function addMsg(cls, text) {
@@ -183,13 +183,15 @@
   async function fetchVocab(passageText, container, cacheKey) {
     var prompt = 'Given this reading passage, identify 8-10 words that would be challenging for Bengali-speaking ESL students in grades 1-8. Return ONLY a JSON array like this: [{"word":"example","definition":"simple child-friendly definition"}]. No other text.\n\nPassage:\n' + passageText.substring(0, 1500);
     var reply = await groqChat([
-      { role: 'system', content: 'You identify difficult vocabulary words for ESL students. Always respond with ONLY a JSON array, no markdown, no explanation.' },
+      { role: 'system', content: 'You identify difficult vocabulary words for ESL students. Return ONLY a raw JSON array. No markdown, no code blocks, no explanation, no extra text. Example: [{"word":"example","definition":"simple child-friendly definition"}]' },
       { role: 'user', content: prompt }
     ]);
     if (reply) {
       try {
         var clean = reply.replace(/```json?\n?/g, '').replace(/```/g, '').trim();
-        var words = JSON.parse(clean);
+        var match = clean.match(/\[.*\]/s);
+        var words = JSON.parse(match ? match[0] : clean);
+        if (!Array.isArray(words) || words.length === 0) throw new Error('empty');
         localStorage.setItem(cacheKey, JSON.stringify(words));
         renderVocab(container, words);
       } catch (e) {

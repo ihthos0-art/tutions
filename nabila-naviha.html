@@ -69,15 +69,36 @@
 
     .save-notice { font-family: 'Merriweather Sans', sans-serif; font-size: 11px; color: #aaa; text-align: center; margin-top: 20px; font-style: italic; }
 
+    /* ===== TABS ===== */
+    .tab-bar { display: flex; gap: 4px; margin-bottom: 28px; max-width: 700px; margin: 0 auto 28px; }
+    .tab-btn { flex: 1; font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 12px 16px; border: 1.5px solid #c8c8c8; background: #f4f3f0; color: #666; cursor: pointer; border-radius: 4px; transition: all 0.2s; text-align: center; }
+    .tab-btn:hover { border-color: #1a1a1a; color: #1a1a1a; }
+    .tab-btn.active { background: #1a1a1a; border-color: #1a1a1a; color: #fff; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .reset-bar { text-align: center; margin-top: 32px; margin-bottom: 20px; }
+    .reset-btn { background: transparent; border: 1.5px solid #c0392b; color: #c0392b; font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 12px 28px; border-radius: 4px; cursor: pointer; transition: all 0.2s; }
+    .reset-btn:hover { background: #c0392b; color: #fff; }
+    /* ===== MATH PRACTICE ===== */
+    .math-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; max-width: 600px; margin: 0 auto; }
+    .math-prob { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 14px; background: #fafaf8; border: 1px solid #e2e0db; border-radius: 4px; font-family: 'Merriweather Sans', sans-serif; font-size: 16px; }
+    .math-prob input { width: 50px; padding: 6px 8px; border: 1.5px solid #bbb; border-radius: 3px; font-family: 'Merriweather Sans', sans-serif; font-size: 15px; text-align: center; }
+    .math-prob input:focus { border-color: #1a1a1a; outline: none; }
+    .math-word { font-family: 'Merriweather', serif; font-size: 15px; line-height: 1.7; margin-bottom: 16px; padding: 16px; background: #fafaf8; border-radius: 4px; border: 1px solid #e2e0db; }
+    .math-word input { width: 80px; padding: 6px 8px; border: 1.5px solid #bbb; border-radius: 3px; font-family: 'Merriweather Sans', sans-serif; font-size: 14px; text-align: center; }
+
     @media (max-width: 520px) {
       .ws-card { padding: 32px 20px 40px; }
       .problems-grid { grid-template-columns: 1fr 1fr; }
       .problem-eq { font-size: 17px; }
       .ans-input { font-size: 17px; width: 44px; }
       .fitb-input { width: 74px; }
+      .math-grid { grid-template-columns: 1fr 1fr; }
     }
     @media print {
       body { background: #fff; padding: 0; }
+      .tab-bar, .reset-bar { display: none; }
+      .tab-content { display: block !important; }
       .top-nav, .save-notice, .check-row { display: none; }
       .ws-card { box-shadow: none; border: none; padding: 20px 0; }
       .ans-input { border: none; border-bottom: 2px solid #000; border-radius: 0; background: transparent !important; }
@@ -92,6 +113,15 @@
   <div class="top-nav">
     <a class="back-btn" href="index.html">&larr; Menu</a>
   </div>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" data-tab="assigned">Assigned</button>
+    <button class="tab-btn" data-tab="math">Math Practice</button>
+    <button class="tab-btn" data-tab="ela">ELA Practice</button>
+  </div>
+
+  <!-- ASSIGNED TAB -->
+  <div class="tab-content active" id="assigned">
 
   <div class="ws-card">
     <div class="ws-header">
@@ -197,6 +227,71 @@
 
   <p class="save-notice">Your answers are saved automatically in this browser.</p>
 
+  </div><!-- /assigned -->
+
+  <!-- MATH PRACTICE TAB -->
+  <div class="tab-content" id="math">
+    <div class="ws-card">
+      <div class="ws-header">
+        <p class="eyebrow">Math Practice &nbsp;&middot;&nbsp; Grade 1</p>
+        <h1 class="ws-title">Simple Addition</h1>
+        <p class="ws-meta">Nabila &amp; Naviha &nbsp;&middot;&nbsp; Solve each problem and write your answer</p>
+      </div>
+      <p class="ws-label">12 Problems &nbsp;&mdash;&nbsp; Numbers 1&ndash;10</p>
+      <div class="math-grid">
+        <div class="math-prob"><span class="problem-eq">1 + 2 =</span><input type="text" data-save="m1-1" placeholder="?" /></div>
+        <div class="math-prob"><span class="problem-eq">3 + 4 =</span><input type="text" data-save="m1-2" placeholder="?" /></div>
+        <div class="math-prob"><span class="problem-eq">2 + 5 =</span><input type="text" data-save="m1-3" placeholder="?" /></div>
+        <div class="math-prob"><span class="problem-eq">6 + 1 =</span><input type="text" data-save="m1-4" placeholder="?" /></div>
+        <div class="math-prob"><span class="problem-eq">4 + 3 =</span><input type="text" data-save="m1-5" placeholder="?" /></div>
+        <div class="math-prob"><span class="problem-eq">5 + 2 =</span><input type="text" data-save="m1-6" placeholder="?" /></div>
+        <div class="math-prob"><span class="problem-eq">7 + 2 =</span><input type="text" data-save="m1-7" placeholder="?" /></div>
+        <div class="math-prob"><span class="problem-eq">3 + 5 =</span><input type="text" data-save="m1-8" placeholder="?" /></div>
+        <div class="math-prob"><span class="problem-eq">8 + 1 =</span><input type="text" data-save="m1-9" placeholder="?" /></div>
+        <div class="math-prob"><span class="problem-eq">2 + 6 =</span><input type="text" data-save="m1-10" placeholder="?" /></div>
+        <div class="math-prob"><span class="problem-eq">5 + 4 =</span><input type="text" data-save="m1-11" placeholder="?" /></div>
+        <div class="math-prob"><span class="problem-eq">9 + 0 =</span><input type="text" data-save="m1-12" placeholder="?" /></div>
+      </div>
+    </div>
+    <div class="reset-bar">
+      <button class="reset-btn" data-reset="math">Reset Math Practice</button>
+    </div>
+    <p class="save-notice">Your answers are saved automatically in this browser.</p>
+  </div>
+
+  <!-- ELA PRACTICE TAB -->
+  <div class="tab-content" id="ela">
+    <div class="ws-card">
+      <div class="ws-header">
+        <p class="eyebrow">ELA Practice &nbsp;&middot;&nbsp; Grade 1</p>
+        <h1 class="ws-title">Reading Comprehension Practice</h1>
+        <p class="ws-meta">Nabila &amp; Naviha &nbsp;&middot;&nbsp; Read the story, then answer the questions below</p>
+      </div>
+      <p class="section-label">Read the story</p>
+      <div class="passage-box">
+        <p>Maya had a red balloon. She bought it at the store with her grandma. The balloon was bright and shiny. Maya held the string tight so it would not fly away.</p>
+        <p>On the way home, a strong wind blew. The string slipped from Maya's hand. The red balloon floated up, up, up into the sky. Maya watched until it was just a tiny dot.</p>
+        <p>Maya felt sad for a moment. But her grandma knelt down and said, "The balloon is on an adventure now." Maya smiled. She hoped the balloon was having fun.</p>
+      </div>
+      <div class="ws-rule"></div>
+      <p class="section-label">Question 1 &mdash; What Happened?</p>
+      <p class="section-question">What happened to Maya's balloon? Write 1&ndash;2 sentences.</p>
+      <textarea class="summary-input" data-save="ela1-q1" rows="3" placeholder="Maya's balloon…"></textarea>
+      <div class="ws-rule"></div>
+      <p class="section-label">Question 2 &mdash; How Did Maya Feel?</p>
+      <p class="section-question">How did Maya feel at the end of the story? Why?</p>
+      <textarea class="summary-input" data-save="ela1-q2" rows="3" placeholder="Maya felt…"></textarea>
+      <div class="ws-rule"></div>
+      <p class="section-label">Question 3 &mdash; Make a Connection</p>
+      <p class="section-question">Have you ever lost something? How did you feel? Write one sentence.</p>
+      <textarea class="summary-input" data-save="ela1-conn" rows="3" placeholder="One time, I lost…"></textarea>
+    </div>
+    <div class="reset-bar">
+      <button class="reset-btn" data-reset="ela">Reset ELA Practice</button>
+    </div>
+    <p class="save-notice">Your answers are saved automatically in this browser.</p>
+  </div>
+
   <script>
     const NS = 'nabila-naviha';
 
@@ -295,6 +390,7 @@
     summaryEl.addEventListener('contextmenu', e => e.preventDefault());
     summaryEl.addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && e.key === 'v') e.preventDefault(); });
   </script>
+  <script src="tabs.js"></script>
   <script src="ai-tutor.js"></script>
   <script src="quiz.js"></script>
   <script src="flashcards.js"></script>

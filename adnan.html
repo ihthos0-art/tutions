@@ -44,7 +44,26 @@
     .clear-btn { background: transparent; border: 1.5px solid #ccc; color: #999; font-family: 'Merriweather Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; padding: 11px 24px; border-radius: 3px; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
     .clear-btn:hover { border-color: #c0392b; color: #c0392b; }
     .save-notice { font-family: 'Merriweather Sans', sans-serif; font-size: 11px; color: #aaa; text-align: center; margin-top: 12px; font-style: italic; }
+    /* ===== TABS ===== */
+    .tab-bar { display: flex; gap: 4px; margin-bottom: 28px; max-width: 820px; margin-left: auto; margin-right: auto; }
+    .tab-btn { flex: 1; font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 12px 16px; border: 1.5px solid #c8c8c8; background: #f4f3f0; color: #666; cursor: pointer; border-radius: 4px; transition: all 0.2s; text-align: center; }
+    .tab-btn:hover { border-color: #1a1a1a; color: #1a1a1a; }
+    .tab-btn.active { background: #1a1a1a; border-color: #1a1a1a; color: #fff; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .reset-bar { text-align: center; margin-top: 32px; margin-bottom: 20px; }
+    .reset-btn { background: transparent; border: 1.5px solid #c0392b; color: #c0392b; font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 12px 28px; border-radius: 4px; cursor: pointer; transition: all 0.2s; }
+    .reset-btn:hover { background: #c0392b; color: #fff; }
+    /* ===== MATH PRACTICE ===== */
+    .math-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 32px; max-width: 600px; margin: 0 auto; }
+    .math-prob { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #fafaf8; border: 1px solid #e2e0db; border-radius: 4px; font-family: 'Merriweather Sans', sans-serif; font-size: 16px; }
+    .math-prob input { width: 72px; padding: 6px 8px; border: 1.5px solid #bbb; border-radius: 3px; font-family: 'Merriweather Sans', sans-serif; font-size: 15px; text-align: center; }
+    .math-prob input:focus { border-color: #1a1a1a; outline: none; }
+    .math-word { font-family: 'Merriweather', serif; font-size: 15px; line-height: 1.7; margin-bottom: 16px; padding: 16px; background: #fafaf8; border-radius: 4px; border: 1px solid #e2e0db; }
+    .math-word input { width: 80px; padding: 6px 8px; border: 1.5px solid #bbb; border-radius: 3px; font-family: 'Merriweather Sans', sans-serif; font-size: 14px; text-align: center; }
     @media print {
+      .tab-bar, .reset-bar { display: none; }
+      .tab-content { display: block !important; }
       html { background: #fff; }
       body { padding: 0; max-width: 100%; }
       .grade-nav, .print-bar, .save-notice { display: none; }
@@ -62,6 +81,15 @@
   <nav class="grade-nav">
     <a class="grade-btn" href="index.html">&larr; Menu</a>
   </nav>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" data-tab="assigned">Assigned</button>
+    <button class="tab-btn" data-tab="math">Math Practice</button>
+    <button class="tab-btn" data-tab="ela">ELA Practice</button>
+  </div>
+
+  <!-- ASSIGNED TAB -->
+  <div class="tab-content active" id="assigned">
 
   <header class="page-header">
     <p class="school-name">NYC English Language Arts &mdash; Adnan</p>
@@ -161,6 +189,79 @@
   </div>
   <p class="save-notice">Your answers are saved automatically in this browser.</p>
 
+  </div><!-- /assigned -->
+
+  <!-- MATH PRACTICE TAB -->
+  <div class="tab-content" id="math">
+    <header class="page-header">
+      <p class="school-name">Math Practice — Adnan</p>
+      <h1>Addition &amp; Subtraction Drill</h1>
+      <p class="sub">Solve each problem. Show your work on paper if needed.</p>
+    </header>
+    <section class="worksheet">
+      <div class="ws-topbar"><span class="ws-number">Math Drill 01</span></div>
+      <p class="section-label">Part 1 — Solve</p>
+      <div class="math-grid">
+        <div class="math-prob">1.  24 + 17 = <input type="text" data-save="m1-1" placeholder="?" /></div>
+        <div class="math-prob">2.  56 − 29 = <input type="text" data-save="m1-2" placeholder="?" /></div>
+        <div class="math-prob">3.  38 + 45 = <input type="text" data-save="m1-3" placeholder="?" /></div>
+        <div class="math-prob">4.  72 − 38 = <input type="text" data-save="m1-4" placeholder="?" /></div>
+        <div class="math-prob">5.  19 + 56 = <input type="text" data-save="m1-5" placeholder="?" /></div>
+        <div class="math-prob">6.  81 − 47 = <input type="text" data-save="m1-6" placeholder="?" /></div>
+        <div class="math-prob">7.  63 + 28 = <input type="text" data-save="m1-7" placeholder="?" /></div>
+        <div class="math-prob">8.  90 − 53 = <input type="text" data-save="m1-8" placeholder="?" /></div>
+        <div class="math-prob">9.  47 + 35 = <input type="text" data-save="m1-9" placeholder="?" /></div>
+        <div class="math-prob">10. 64 − 19 = <input type="text" data-save="m1-10" placeholder="?" /></div>
+      </div>
+      <div class="ws-rule"></div>
+      <p class="section-label">Part 2 — Word Problems</p>
+      <div class="math-word">11. Maria has 35 stickers. Her friend gives her 28 more. How many stickers does Maria have now? <input type="text" data-save="m1-11" placeholder="?" /></div>
+      <div class="math-word">12. A bus has 72 seats. 38 seats are filled. How many seats are empty? <input type="text" data-save="m1-12" placeholder="?" /></div>
+      <div class="math-word">13. Jamal buys a snack for $1.25. He pays with $2.00. How much change does he get? <input type="text" data-save="m1-13" placeholder="?" /></div>
+    </section>
+    <div class="reset-bar">
+      <button class="reset-btn" data-reset="math">Reset Math Practice</button>
+    </div>
+    <p class="save-notice">Your answers are saved automatically in this browser.</p>
+  </div>
+
+  <!-- ELA PRACTICE TAB -->
+  <div class="tab-content" id="ela">
+    <header class="page-header">
+      <p class="school-name">ELA Practice — Adnan</p>
+      <h1>Reading Comprehension Practice</h1>
+      <p class="sub">Read the passage, then answer the questions below</p>
+    </header>
+    <section class="worksheet">
+      <div class="ws-topbar"><span class="ws-number">Practice Passage</span></div>
+      <div class="passage-wrap">
+        <p class="section-label">Read the passage</p>
+        <h2 class="passage-title">The Helpful Neighbor</h2>
+        <div class="passage-box">
+          <p>Mr. Patel lived in a small house on Maple Street. Every morning, he walked to the corner store to buy a newspaper. Along the way, he waved to everyone he saw. He knew all his neighbors by name.</p>
+          <p>One winter morning, Mrs. Lee slipped on ice in front of her house. She dropped her groceries, and apples rolled everywhere. Mr. Patel was walking by at that exact moment. He did not just keep walking. He stopped and helped Mrs. Lee stand up. Then he picked up every single apple and carried her bags to her door.</p>
+          <p>Mrs. Lee thanked him many times. Mr. Patel just smiled and said, "That is what neighbors are for." From that day on, Mrs. Lee always baked him cookies on weekends.</p>
+        </div>
+      </div>
+      <div class="ws-rule"></div>
+      <p class="section-label">Question 1 — Central Idea</p>
+      <p class="section-question">What is the most important idea in this story? Write it in one sentence.</p>
+      <textarea class="ci-input" data-save="ela1-ci" rows="2" placeholder="The central idea of this story is…"></textarea>
+      <div class="ws-rule"></div>
+      <p class="section-label">Question 2 — Supporting Detail</p>
+      <p class="section-question">Find one detail from the story that shows Mr. Patel is kind. Use words from the passage.</p>
+      <textarea class="detail-input" data-save="ela1-detail" rows="3" placeholder="A detail from the passage…"></textarea>
+      <div class="ws-rule"></div>
+      <p class="section-label">Question 3 — Make a Connection</p>
+      <p class="section-question">Have you ever helped someone or been helped? Write one sentence about it.</p>
+      <textarea class="detail-input" data-save="ela1-conn" rows="3" placeholder="One time, I..."></textarea>
+    </section>
+    <div class="reset-bar">
+      <button class="reset-btn" data-reset="ela">Reset ELA Practice</button>
+    </div>
+    <p class="save-notice">Your answers are saved automatically in this browser.</p>
+  </div>
+
   <script>
     const NS = 'adnan';
     function clearAnswers() {
@@ -184,6 +285,7 @@
       });
     });
   </script>
+  <script src="tabs.js"></script>
   <script src="ai-tutor.js"></script>
   <script src="quiz.js"></script>
   <script src="flashcards.js"></script>

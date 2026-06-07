@@ -1,0 +1,75 @@
+(function () {
+  'use strict';
+
+  // ===== TAB SYSTEM =====
+  var tabs = document.querySelectorAll('.tab-btn');
+  var contents = document.querySelectorAll('.tab-content');
+
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      var target = this.dataset.tab;
+      tabs.forEach(function (t) { t.classList.remove('active'); });
+      contents.forEach(function (c) { c.classList.remove('active'); });
+      this.classList.add('active');
+      document.getElementById(target).classList.add('active');
+    });
+  });
+
+  // ===== RESET BUTTONS =====
+  document.querySelectorAll('.reset-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var targetId = this.dataset.reset;
+      var container = document.getElementById(targetId);
+      if (!container) return;
+      if (!confirm('Reset all your answers in this section?')) return;
+
+      // Clear all inputs and textareas
+      container.querySelectorAll('input[type="text"], textarea').forEach(function (el) {
+        el.value = '';
+        // Also clear localStorage if it has a data-save attribute
+        if (el.dataset.save) {
+          var pagePath = location.pathname.split('/').pop().replace('.html', '') || 'index';
+          localStorage.removeItem(pagePath + ':' + el.dataset.save);
+        }
+      });
+
+      // Clear radio buttons
+      container.querySelectorAll('input[type="radio"]').forEach(function (el) {
+        el.checked = false;
+      });
+
+      // Clear checkboxes
+      container.querySelectorAll('input[type="checkbox"]').forEach(function (el) {
+        el.checked = false;
+      });
+
+      // Trigger a flash animation
+      container.style.transition = 'opacity 0.2s';
+      container.style.opacity = '0.5';
+      setTimeout(function () {
+        container.style.opacity = '1';
+      }, 200);
+    });
+  });
+
+  // Auto-save for inputs with data-save
+  var pagePath = location.pathname.split('/').pop().replace('.html', '') || 'index';
+  document.querySelectorAll('input[data-save], textarea[data-save]').forEach(function (el) {
+    var key = pagePath + ':' + el.dataset.save;
+    var saved = localStorage.getItem(key);
+    if (saved) {
+      if (el.type === 'checkbox' || el.type === 'radio') {
+        el.checked = saved === 'true';
+      } else {
+        el.value = saved;
+      }
+    }
+    el.addEventListener('input', function () {
+      if (el.type === 'checkbox' || el.type === 'radio') {
+        localStorage.setItem(key, el.checked);
+      } else {
+        localStorage.setItem(key, el.value);
+      }
+    });
+  });
+})();

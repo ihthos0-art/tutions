@@ -39,6 +39,24 @@
     .ans-input { height: 34px; border: 2px solid #c8c8c8; border-radius: 3px; font-family: 'Merriweather', serif; font-size: 14px; padding: 0 10px; outline: none; background: #fff; color: #1a1a1a; flex: 1; min-width: 0; max-width: 320px; transition: border-color 0.15s; }
     .ans-input:focus { border-color: #1a1a1a; }
 
+    /* ===== TABS ===== */
+    .tab-bar { display: flex; gap: 4px; margin-bottom: 28px; max-width: 720px; margin: 0 auto 28px; }
+    .tab-btn { flex: 1; font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 12px 16px; border: 1.5px solid #c8c8c8; background: #f4f3f0; color: #666; cursor: pointer; border-radius: 4px; transition: all 0.2s; text-align: center; }
+    .tab-btn:hover { border-color: #1a1a1a; color: #1a1a1a; }
+    .tab-btn.active { background: #1a1a1a; border-color: #1a1a1a; color: #fff; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .reset-bar { text-align: center; margin-top: 32px; margin-bottom: 20px; }
+    .reset-btn { background: transparent; border: 1.5px solid #c0392b; color: #c0392b; font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 12px 28px; border-radius: 4px; cursor: pointer; transition: all 0.2s; }
+    .reset-btn:hover { background: #c0392b; color: #fff; }
+    /* ===== MATH PRACTICE ===== */
+    .math-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 32px; max-width: 600px; margin: 0 auto; }
+    .math-prob { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #fafaf8; border: 1px solid #e2e0db; border-radius: 4px; font-family: 'Merriweather Sans', sans-serif; font-size: 16px; }
+    .math-prob input { width: 72px; padding: 6px 8px; border: 1.5px solid #bbb; border-radius: 3px; font-family: 'Merriweather Sans', sans-serif; font-size: 15px; text-align: center; }
+    .math-prob input:focus { border-color: #1a1a1a; outline: none; }
+    .math-word { font-family: 'Merriweather', serif; font-size: 15px; line-height: 1.7; margin-bottom: 16px; padding: 16px; background: #fafaf8; border-radius: 4px; border: 1px solid #e2e0db; }
+    .math-word input { width: 80px; padding: 6px 8px; border: 1.5px solid #bbb; border-radius: 3px; font-family: 'Merriweather Sans', sans-serif; font-size: 14px; text-align: center; }
+
     @media (max-width: 540px) {
       .ws-card { padding: 32px 20px 40px; }
       .formula-ref { font-size: 10px; }
@@ -46,6 +64,8 @@
     }
     @media print {
       body { background: #fff; padding: 0; }
+      .tab-bar, .reset-bar { display: none; }
+      .tab-content { display: block !important; }
       .top-nav { display: none; }
       .ws-card { box-shadow: none; border: none; padding: 20px 0; }
       .ans-input { border: none; border-bottom: 2px solid #000; border-radius: 0; background: transparent; }
@@ -57,6 +77,15 @@
   <div class="top-nav">
     <a class="back-btn" href="index.html">&larr; Menu</a>
   </div>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" data-tab="assigned">Assigned</button>
+    <button class="tab-btn" data-tab="math">Math Practice</button>
+    <button class="tab-btn" data-tab="ela">ELA Practice</button>
+  </div>
+
+  <!-- ASSIGNED TAB -->
+  <div class="tab-content active" id="assigned">
 
   <div class="ws-card">
     <div class="ws-header">
@@ -122,6 +151,84 @@
 
   </div>
 
+  </div><!-- /assigned -->
+
+  <!-- MATH PRACTICE TAB -->
+  <div class="tab-content" id="math">
+    <div class="ws-card">
+      <div class="ws-header">
+        <p class="eyebrow">Math Practice &nbsp;&middot;&nbsp; Arithmetic</p>
+        <h1 class="ws-title">Multiplication &amp; Division Drill</h1>
+        <p class="ws-meta">Sameer &nbsp;&middot;&nbsp; Solve each problem and write your answer</p>
+      </div>
+      <div class="ws-section">
+        <div class="section-header">
+          <span class="formula-label">Part 1 &mdash; Solve</span>
+        </div>
+        <div class="math-grid">
+          <div class="math-prob">1.  6 &times; 7 = <input type="text" data-save="m1-1" placeholder="?" /></div>
+          <div class="math-prob">2.  48 &divide; 6 = <input type="text" data-save="m1-2" placeholder="?" /></div>
+          <div class="math-prob">3.  8 &times; 9 = <input type="text" data-save="m1-3" placeholder="?" /></div>
+          <div class="math-prob">4.  72 &divide; 8 = <input type="text" data-save="m1-4" placeholder="?" /></div>
+          <div class="math-prob">5.  7 &times; 7 = <input type="text" data-save="m1-5" placeholder="?" /></div>
+          <div class="math-prob">6.  54 &divide; 9 = <input type="text" data-save="m1-6" placeholder="?" /></div>
+          <div class="math-prob">7.  9 &times; 4 = <input type="text" data-save="m1-7" placeholder="?" /></div>
+          <div class="math-prob">8.  63 &divide; 7 = <input type="text" data-save="m1-8" placeholder="?" /></div>
+          <div class="math-prob">9.  5 &times; 8 = <input type="text" data-save="m1-9" placeholder="?" /></div>
+          <div class="math-prob">10. 36 &divide; 4 = <input type="text" data-save="m1-10" placeholder="?" /></div>
+        </div>
+      </div>
+      <div class="ws-section">
+        <div class="section-header">
+          <span class="formula-label">Part 2 &mdash; Word Problems</span>
+        </div>
+        <div class="math-word">11. A box holds 8 crayons. How many crayons are in 7 boxes? <input type="text" data-save="m1-11" placeholder="?" /></div>
+        <div class="math-word">12. There are 45 students divided into 5 equal groups. How many students are in each group? <input type="text" data-save="m1-12" placeholder="?" /></div>
+        <div class="math-word">13. A bakery makes 6 trays of cookies. Each tray has 9 cookies. How many cookies total? <input type="text" data-save="m1-13" placeholder="?" /></div>
+      </div>
+    </div>
+    <div class="reset-bar">
+      <button class="reset-btn" data-reset="math">Reset Math Practice</button>
+    </div>
+    <p class="save-notice" style="max-width:720px;margin:0 auto;text-align:center;font-family:'Merriweather Sans',sans-serif;font-size:11px;color:#aaa;font-style:italic;">Your answers are saved automatically in this browser.</p>
+  </div>
+
+  <!-- ELA PRACTICE TAB -->
+  <div class="tab-content" id="ela">
+    <div class="ws-card">
+      <div class="ws-header">
+        <p class="eyebrow">ELA Practice &nbsp;&middot;&nbsp; Reading</p>
+        <h1 class="ws-title">Reading Comprehension Practice</h1>
+        <p class="ws-meta">Sameer &nbsp;&middot;&nbsp; Read the passage, then answer the questions below</p>
+      </div>
+      <div class="passage-wrap">
+        <p class="section-label">Read the passage</p>
+        <h2 class="passage-title">The Science Fair</h2>
+        <div class="passage-box">
+          <p>Every year, Lincoln Middle School held a science fair in the gym. Students from every grade set up poster boards, models, and experiments on long folding tables. The gym smelled like glue and markers, and the sound of excited voices bounced off the walls.</p>
+          <p>This year, Keisha decided to enter for the first time. She had spent three weeks researching how plants grow in different kinds of soil. She filled four small pots with sand, clay, garden soil, and compost. Then she planted bean seeds in each one and watered them exactly the same amount every day. She measured their height with a ruler and recorded everything in a notebook.</p>
+          <p>On the day of the fair, Keisha stood nervously beside her display. A judge walked over and asked her why she chose this project. Keisha took a deep breath and explained that her grandmother had trouble growing tomatoes in sandy soil, and she wanted to find out why. The judge nodded and wrote something on his clipboard. Keisha did not win first place. But when she got home, her grandmother hugged her and said, "You already won something better. You kept asking questions until you found answers."</p>
+        </div>
+      </div>
+      <div class="ws-rule"></div>
+      <p class="section-label">Question 1 &mdash; Central Idea</p>
+      <p class="section-question">What is the most important idea in this passage? Write it in one sentence.</p>
+      <textarea class="ci-input" data-save="ela1-ci" rows="2" placeholder="The central idea of this passage is…"></textarea>
+      <div class="ws-rule"></div>
+      <p class="section-label">Question 2 &mdash; Supporting Detail</p>
+      <p class="section-question">Find one detail from the passage that shows Keisha worked hard. Use words from the text.</p>
+      <textarea class="detail-input" data-save="ela1-detail" rows="3" placeholder="A detail from the passage…"></textarea>
+      <div class="ws-rule"></div>
+      <p class="section-label">Question 3 &mdash; Make a Connection</p>
+      <p class="section-question">Have you ever worked hard on something even though you did not win? Write one sentence about it.</p>
+      <textarea class="detail-input" data-save="ela1-conn" rows="3" placeholder="One time, I…"></textarea>
+    </div>
+    <div class="reset-bar">
+      <button class="reset-btn" data-reset="ela">Reset ELA Practice</button>
+    </div>
+    <p class="save-notice" style="max-width:720px;margin:0 auto;text-align:center;font-family:'Merriweather Sans',sans-serif;font-size:11px;color:#aaa;font-style:italic;">Your answers are saved automatically in this browser.</p>
+  </div>
+
   <script>
     const NS = 'sameer';
     document.querySelectorAll('input[data-save]').forEach(el => {
@@ -136,6 +243,7 @@
       });
     });
   </script>
+  <script src="tabs.js"></script>
   <script src="ai-tutor.js"></script>
   <script src="quiz.js"></script>
   <script src="flashcards.js"></script>

@@ -41,11 +41,45 @@
     .score-display { font-family: 'Merriweather Sans', sans-serif; font-size: 15px; font-weight: 700; color: #555; }
     .score-display.perfect { color: #27ae60; }
 
+    /* ===== TABS ===== */
+    .tab-bar { display: flex; gap: 4px; margin-bottom: 28px; max-width: 700px; margin: 0 auto 28px; }
+    .tab-btn { flex: 1; font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 12px 16px; border: 1.5px solid #c8c8c8; background: #f4f3f0; color: #666; cursor: pointer; border-radius: 4px; transition: all 0.2s; text-align: center; }
+    .tab-btn:hover { border-color: #1a1a1a; color: #1a1a1a; }
+    .tab-btn.active { background: #1a1a1a; border-color: #1a1a1a; color: #fff; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .reset-bar { text-align: center; margin-top: 32px; margin-bottom: 20px; }
+    .reset-btn { background: transparent; border: 1.5px solid #c0392b; color: #c0392b; font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 12px 28px; border-radius: 4px; cursor: pointer; transition: all 0.2s; }
+    .reset-btn:hover { background: #c0392b; color: #fff; }
+    /* ===== MATH PRACTICE ===== */
+    .math-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 32px; max-width: 600px; margin: 0 auto; }
+    .math-prob { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #fafaf8; border: 1px solid #e2e0db; border-radius: 4px; font-family: 'Merriweather Sans', sans-serif; font-size: 16px; }
+    .math-prob input { width: 72px; padding: 6px 8px; border: 1.5px solid #bbb; border-radius: 3px; font-family: 'Merriweather Sans', sans-serif; font-size: 15px; text-align: center; }
+    .math-prob input:focus { border-color: #1a1a1a; outline: none; }
+    .math-word { font-family: 'Merriweather', serif; font-size: 15px; line-height: 1.7; margin-bottom: 16px; padding: 16px; background: #fafaf8; border-radius: 4px; border: 1px solid #e2e0db; }
+    .math-word input { width: 80px; padding: 6px 8px; border: 1.5px solid #bbb; border-radius: 3px; font-family: 'Merriweather Sans', sans-serif; font-size: 14px; text-align: center; }
+    /* ===== ELA PRACTICE ===== */
+    .passage-wrap { margin-bottom: 32px; }
+    .passage-title { font-size: clamp(16px, 2.4vw, 22px); font-weight: 700; font-style: italic; color: #1a1a1a; margin-bottom: 16px; line-height: 1.3; }
+    .passage-box { background: #f7f6f3; border-left: 4px solid #555; padding: 20px 24px; }
+    .passage-box p { font-family: 'Merriweather', serif; font-size: clamp(14px, 2vw, 17px); line-height: 2; color: #222; margin-bottom: 14px; }
+    .passage-box p:last-child { margin-bottom: 0; }
+    .ws-rule { height: 1px; background: #ddd; margin: 32px 0; }
+    .section-label { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #555; margin-bottom: 6px; }
+    .section-question { font-family: 'Merriweather', serif; font-size: clamp(13px, 1.8vw, 15px); font-style: italic; color: #333; margin-bottom: 14px; line-height: 1.6; }
+    .ci-input, .detail-input { width: 100%; background: #fff; border: 1.5px solid #bbb; border-radius: 3px; color: #1a1a1a; font-family: 'Merriweather', Georgia, serif; font-size: 14px; padding: 12px 14px; outline: none; transition: border-color 0.2s; line-height: 1.7; resize: none; }
+    .ci-input { min-height: 58px; }
+    .detail-input { min-height: 80px; }
+    .ci-input:focus, .detail-input:focus { border-color: #333; }
+    .ci-input::placeholder, .detail-input::placeholder { color: #bbb; font-style: italic; }
+
     @media (max-width: 520px) {
       .ws-card { padding: 32px 22px 40px; }
       .problems-grid { grid-template-columns: 1fr; }
     }
     @media print {
+      .tab-bar, .reset-bar { display: none; }
+      .tab-content { display: block !important; }
       body { background: #fff; padding: 0; }
       .top-nav, .check-row { display: none; }
       .ws-card { box-shadow: none; border: none; padding: 20px; }
@@ -58,6 +92,15 @@
   <div class="top-nav">
     <a class="back-btn" href="index.html">&larr; Menu</a>
   </div>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" data-tab="assigned">Assigned</button>
+    <button class="tab-btn" data-tab="math">Math Practice</button>
+    <button class="tab-btn" data-tab="ela">ELA Practice</button>
+  </div>
+
+  <!-- ASSIGNED TAB -->
+  <div class="tab-content active" id="assigned">
 
   <div class="ws-card">
     <div class="ws-header">
@@ -95,6 +138,75 @@
       <button class="check-btn" id="check-btn">Check Answers</button>
       <span class="score-display" id="score-display"></span>
     </div>
+  </div>
+
+  </div><!-- /assigned -->
+
+  <!-- MATH PRACTICE TAB -->
+  <div class="tab-content" id="math">
+    <div class="ws-card">
+      <div class="ws-header">
+        <p class="eyebrow">Math Practice &nbsp;&middot;&nbsp; Addition &amp; Subtraction</p>
+        <h1 class="ws-title">Addition &amp; Subtraction Drill</h1>
+        <p class="ws-meta">Taha &nbsp;&middot;&nbsp; Solve each problem and write your answer</p>
+      </div>
+      <p class="ws-number">13 Problems &nbsp;&mdash;&nbsp; Numbers 1&ndash;20</p>
+      <div class="math-grid">
+        <div class="math-prob">1.  2 + 5 = <input type="text" data-save="m1-1" placeholder="?" /></div>
+        <div class="math-prob">2.  10 &minus; 3 = <input type="text" data-save="m1-2" placeholder="?" /></div>
+        <div class="math-prob">3.  6 + 4 = <input type="text" data-save="m1-3" placeholder="?" /></div>
+        <div class="math-prob">4.  14 &minus; 8 = <input type="text" data-save="m1-4" placeholder="?" /></div>
+        <div class="math-prob">5.  9 + 3 = <input type="text" data-save="m1-5" placeholder="?" /></div>
+        <div class="math-prob">6.  16 &minus; 7 = <input type="text" data-save="m1-6" placeholder="?" /></div>
+        <div class="math-prob">7.  5 + 8 = <input type="text" data-save="m1-7" placeholder="?" /></div>
+        <div class="math-prob">8.  11 &minus; 5 = <input type="text" data-save="m1-8" placeholder="?" /></div>
+        <div class="math-prob">9.  7 + 9 = <input type="text" data-save="m1-9" placeholder="?" /></div>
+        <div class="math-prob">10. 20 &minus; 6 = <input type="text" data-save="m1-10" placeholder="?" /></div>
+        <div class="math-prob">11. 4 + 7 = <input type="text" data-save="m1-11" placeholder="?" /></div>
+        <div class="math-prob">12. 15 &minus; 9 = <input type="text" data-save="m1-12" placeholder="?" /></div>
+        <div class="math-prob">13. 6 + 9 = <input type="text" data-save="m1-13" placeholder="?" /></div>
+      </div>
+    </div>
+    <div class="reset-bar">
+      <button class="reset-btn" data-reset="math">Reset Math Practice</button>
+    </div>
+    <p class="save-notice" style="max-width:700px;margin:0 auto;text-align:center;font-family:'Merriweather Sans',sans-serif;font-size:11px;color:#aaa;font-style:italic;">Your answers are saved automatically in this browser.</p>
+  </div>
+
+  <!-- ELA PRACTICE TAB -->
+  <div class="tab-content" id="ela">
+    <div class="ws-card">
+      <div class="ws-header">
+        <p class="eyebrow">ELA Practice &nbsp;&middot;&nbsp; Reading</p>
+        <h1 class="ws-title">Reading Comprehension Practice</h1>
+        <p class="ws-meta">Taha &nbsp;&middot;&nbsp; Read the passage, then answer the questions below</p>
+      </div>
+      <div class="passage-wrap">
+        <p class="section-label">Read the passage</p>
+        <h2 class="passage-title">The Friendly Cat</h2>
+        <div class="passage-box">
+          <p>Every morning, a small orange cat sat on the front steps of Mr. Henderson's house. The cat did not belong to anyone. The neighbors called it Marmalade because of its bright color. Marmalade did not beg for food. It simply sat there, watching people walk by, and purred when anyone stopped to pet it.</p>
+          <p>One cold November morning, a little girl named Aisha was waiting for the school bus. She was shivering because she had forgotten her jacket. Marmalade walked over and rubbed against her leg. Aisha sat down on the steps and held the warm cat in her lap. By the time the bus came, Aisha was not cold anymore. She smiled and gave Marmalade one last pat before running to the bus.</p>
+          <p>That afternoon, Aisha asked her mother if they could leave a small blanket on the steps for the cat. Her mother agreed. From that day on, Aisha and Marmalade were friends. Every morning, the cat was there. And every morning, Aisha brought a little treat.</p>
+        </div>
+      </div>
+      <div class="ws-rule"></div>
+      <p class="section-label">Question 1 &mdash; Central Idea</p>
+      <p class="section-question">What is the most important idea in this story? Write it in one sentence.</p>
+      <textarea class="ci-input" data-save="ela1-ci" rows="2" placeholder="The central idea of this story is…"></textarea>
+      <div class="ws-rule"></div>
+      <p class="section-label">Question 2 &mdash; Supporting Detail</p>
+      <p class="section-question">Find one detail from the story that shows Marmalade is friendly. Use words from the passage.</p>
+      <textarea class="detail-input" data-save="ela1-detail" rows="3" placeholder="A detail from the passage…"></textarea>
+      <div class="ws-rule"></div>
+      <p class="section-label">Question 3 &mdash; Make a Connection</p>
+      <p class="section-question">Do you have a pet, or do you know an animal in your neighborhood? Write one sentence about it.</p>
+      <textarea class="detail-input" data-save="ela1-conn" rows="3" placeholder="I know an animal…"></textarea>
+    </div>
+    <div class="reset-bar">
+      <button class="reset-btn" data-reset="ela">Reset ELA Practice</button>
+    </div>
+    <p class="save-notice" style="max-width:700px;margin:0 auto;text-align:center;font-family:'Merriweather Sans',sans-serif;font-size:11px;color:#aaa;font-style:italic;">Your answers are saved automatically in this browser.</p>
   </div>
 
   <script>
@@ -143,6 +255,7 @@
       document.dispatchEvent(new CustomEvent('checkResult', { detail: { correct: correct, total: total } }));
     });
   </script>
+  <script src="tabs.js"></script>
   <script src="ai-tutor.js"></script>
   <script src="quiz.js"></script>
   <script src="flashcards.js"></script>

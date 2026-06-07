@@ -6,7 +6,8 @@
   var contents = document.querySelectorAll('.tab-content');
 
   tabs.forEach(function (tab) {
-    tab.addEventListener('click', function () {
+    tab.addEventListener('click', function (e) {
+      e.preventDefault();
       var target = this.dataset.tab;
       tabs.forEach(function (t) { t.classList.remove('active'); });
       contents.forEach(function (c) { c.classList.remove('active'); });
@@ -17,7 +18,8 @@
 
   // ===== RESET BUTTONS =====
   document.querySelectorAll('.reset-btn').forEach(function (btn) {
-    btn.addEventListener('click', function () {
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
       var targetId = this.dataset.reset;
       var container = document.getElementById(targetId);
       if (!container) return;

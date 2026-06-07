@@ -254,7 +254,7 @@
       </div>
     </div>
     <div class="reset-bar">
-      <button class="reset-btn" data-reset="math">Reset Math Practice</button>
+      <button type="button" class="reset-btn" data-reset="math">Reset Math Practice</button>
     </div>
     <p class="save-notice">Your answers are saved automatically in this browser.</p>
   </div>
@@ -287,7 +287,7 @@
       <textarea class="summary-input" data-save="ela1-conn" rows="3" placeholder="One time, I lost…"></textarea>
     </div>
     <div class="reset-bar">
-      <button class="reset-btn" data-reset="ela">Reset ELA Practice</button>
+      <button type="button" class="reset-btn" data-reset="ela">Reset ELA Practice</button>
     </div>
     <p class="save-notice">Your answers are saved automatically in this browser.</p>
   </div>
@@ -390,7 +390,7 @@
     summaryEl.addEventListener('contextmenu', e => e.preventDefault());
     summaryEl.addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && e.key === 'v') e.preventDefault(); });
   </script>
-  <script src="tabs.js"></script>
+  <script src="tabs.js?v=2"></script>
   <script src="ai-tutor.js"></script>
   <script src="quiz.js"></script>
   <script src="flashcards.js"></script>

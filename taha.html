@@ -168,7 +168,7 @@
       </div>
     </div>
     <div class="reset-bar">
-      <button class="reset-btn" data-reset="math">Reset Math Practice</button>
+      <button type="button" class="reset-btn" data-reset="math">Reset Math Practice</button>
     </div>
     <p class="save-notice" style="max-width:700px;margin:0 auto;text-align:center;font-family:'Merriweather Sans',sans-serif;font-size:11px;color:#aaa;font-style:italic;">Your answers are saved automatically in this browser.</p>
   </div>
@@ -204,7 +204,7 @@
       <textarea class="detail-input" data-save="ela1-conn" rows="3" placeholder="I know an animal…"></textarea>
     </div>
     <div class="reset-bar">
-      <button class="reset-btn" data-reset="ela">Reset ELA Practice</button>
+      <button type="button" class="reset-btn" data-reset="ela">Reset ELA Practice</button>
     </div>
     <p class="save-notice" style="max-width:700px;margin:0 auto;text-align:center;font-family:'Merriweather Sans',sans-serif;font-size:11px;color:#aaa;font-style:italic;">Your answers are saved automatically in this browser.</p>
   </div>
@@ -255,7 +255,7 @@
       document.dispatchEvent(new CustomEvent('checkResult', { detail: { correct: correct, total: total } }));
     });
   </script>
-  <script src="tabs.js"></script>
+  <script src="tabs.js?v=2"></script>
   <script src="ai-tutor.js"></script>
   <script src="quiz.js"></script>
   <script src="flashcards.js"></script>

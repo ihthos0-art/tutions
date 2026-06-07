@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <title>Worksheet — Manha</title>
+  <link rel='preconnect' href='https://fonts.googleapis.com' />
+  <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
+  <link href='https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Merriweather+Sans:wght@400;600&display=swap' rel='stylesheet' />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { background: #e8e8e6; font-family: 'Merriweather', Georgia, serif; color: #1a1a1a; min-height: 100%; }
+    body { max-width: 820px; margin: 0 auto; padding: 32px 20px 60px; }
+    .grade-nav { display: flex; gap: 10px; margin-bottom: 36px; }
+    .grade-btn { font-family: 'Merriweather Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; padding: 8px 20px; border-radius: 3px; border: 1.5px solid #1a1a1a; background: transparent; color: #1a1a1a; cursor: pointer; text-decoration: none; transition: background 0.2s, color 0.2s; }
+    .grade-btn:hover { background: #1a1a1a; color: #fff; }
+    .page-header { text-align: center; margin-bottom: 36px; }
+    .page-header .school-name { font-family: 'Merriweather Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: #555; margin-bottom: 8px; }
+    .page-header h1 { font-size: clamp(20px, 3.5vw, 30px); font-weight: 700; color: #1a1a1a; line-height: 1.2; }
+    .page-header .sub { margin-top: 6px; font-size: 13px; font-style: italic; color: #666; }
+    .worksheet { background: #ffffff; border: 1px solid #c8c8c8; border-radius: 4px; box-shadow: 0 2px 12px rgba(0,0,0,0.09); padding: 40px 44px 48px; }
+    .ws-topbar { display: flex; align-items: center; justify-content: space-between; padding-bottom: 18px; border-bottom: 2px solid #1a1a1a; margin-bottom: 32px; }
+    .ws-number { font-family: 'Merriweather Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: #555; }
+    .section-label { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #555; margin-bottom: 6px; }
+    .passage-wrap { margin-bottom: 32px; }
+    .passage-title { font-size: clamp(16px, 2.4vw, 22px); font-weight: 700; font-style: italic; color: #1a1a1a; margin-bottom: 16px; line-height: 1.3; }
+    .passage-box { background: #f7f6f3; border-left: 4px solid #555; padding: 20px 24px; }
+    .passage-box p { font-size: clamp(14px, 2vw, 16px); line-height: 2; color: #222; margin-bottom: 16px; }
+    .passage-box p:last-child { margin-bottom: 0; }
+    .ws-rule { height: 1px; background: #ddd; margin: 32px 0; }
+    .section-question { font-size: clamp(13px, 1.8vw, 15px); font-style: italic; color: #333; margin-bottom: 14px; line-height: 1.6; }
+    .answer-input { width: 100%; background: #fff; border: 1.5px solid #bbb; border-radius: 3px; color: #1a1a1a; font-family: 'Merriweather', Georgia, serif; font-size: 14px; padding: 12px 14px; outline: none; transition: border-color 0.2s; line-height: 1.7; resize: none; }
+    .answer-input.summary { min-height: 100px; }
+    .answer-input.central { min-height: 58px; }
+    .answer-input:focus { border-color: #333; }
+    .answer-input::placeholder { color: #bbb; font-style: italic; }
+    .passage-box, .passage-title, .section-question, .section-label, .ws-number { -webkit-user-select: none; user-select: none; }
+    .page-break { margin: 48px 0; display: flex; align-items: center; gap: 16px; }
+    .page-break::before, .page-break::after { content: ''; flex: 1; height: 1px; background: #bbb; }
+    .page-break span { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #999; }
+    .print-bar { text-align: center; margin-top: 40px; display: flex; align-items: center; justify-content: center; gap: 16px; }
+    .print-btn { background: #1a1a1a; border: none; color: #fff; font-family: 'Merriweather Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; padding: 12px 32px; border-radius: 3px; cursor: pointer; transition: background 0.2s; }
+    .print-btn:hover { background: #333; }
+    .clear-btn { background: transparent; border: 1.5px solid #ccc; color: #999; font-family: 'Merriweather Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; padding: 11px 24px; border-radius: 3px; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
+    .clear-btn:hover { border-color: #c0392b; color: #c0392b; }
+    .save-notice { font-family: 'Merriweather Sans', sans-serif; font-size: 11px; color: #aaa; text-align: center; margin-top: 12px; font-style: italic; }
+    .tab-bar { display: flex; gap: 4px; margin-bottom: 28px; }
+    .tab-btn { flex: 1; font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 12px 16px; border: 1.5px solid #c8c8c8; background: #f4f3f0; color: #666; cursor: pointer; border-radius: 4px; transition: all 0.2s; text-align: center; }
+    .tab-btn:hover { border-color: #1a1a1a; color: #1a1a1a; }
+    .tab-btn.active { background: #1a1a1a; border-color: #1a1a1a; color: #fff; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .reset-bar { text-align: center; margin-top: 32px; margin-bottom: 20px; }
+    .reset-btn { background: transparent; border: 1.5px solid #c0392b; color: #c0392b; font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 12px 28px; border-radius: 4px; cursor: pointer; transition: all 0.2s; }
+    .reset-btn:hover { background: #c0392b; color: #fff; }
+    .math-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 32px; max-width: 600px; margin: 0 auto; }
+    .math-prob { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #fafaf8; border: 1px solid #e2e0db; border-radius: 4px; font-family: 'Merriweather Sans', sans-serif; font-size: 16px; }
+    .math-prob input { width: 72px; padding: 6px 8px; border: 1.5px solid #bbb; border-radius: 3px; font-family: 'Merriweather Sans', sans-serif; font-size: 15px; text-align: center; }
+    .math-prob input:focus { border-color: #1a1a1a; outline: none; }
+    .math-word { font-family: 'Merriweather', serif; font-size: 15px; line-height: 1.7; margin-bottom: 16px; padding: 16px 20px; background: #fafaf8; border-radius: 4px; border: 1px solid #e2e0db; }
+    .math-word .ans-row { margin-top: 10px; display: flex; align-items: center; gap: 10px; font-family: 'Merriweather Sans', sans-serif; font-size: 13px; font-weight: 600; color: #555; }
+    .math-word input { width: 90px; padding: 6px 8px; border: 1.5px solid #bbb; border-radius: 3px; font-family: 'Merriweather Sans', sans-serif; font-size: 14px; text-align: center; }
+    .math-word input:focus { border-color: #1a1a1a; outline: none; }
+    .problem { display: flex; align-items: flex-start; gap: 10px; padding: 14px 16px; background: #fafaf8; border: 1px solid #e2e0db; border-radius: 4px; margin-bottom: 12px; font-family: 'Merriweather Sans', sans-serif; font-size: 15px; line-height: 1.6; }
+    .problem .problem-num { font-weight: 700; min-width: 24px; color: #555; }
+    .problem .problem-eq { flex: 1; }
+    .ans-input { width: 80px; padding: 6px 8px; border: 1.5px solid #bbb; border-radius: 3px; font-family: 'Merriweather Sans', sans-serif; font-size: 14px; text-align: center; }
+    .ans-input:focus { border-color: #1a1a1a; outline: none; }
+    .math-prob.correct, .math-word.correct, .problem.correct { border-color: #27ae60; background: #f0fff4; }
+    .math-prob.wrong, .math-word.wrong, .problem.wrong { border-color: #c0392b; background: #fff5f5; }
+    .problems-grid { max-width: 680px; margin: 0 auto; }
+    .check-wrap { text-align: center; margin: 24px 0 8px; }
+    .check-btn { background: #1a1a1a; border: none; color: #fff; font-family: 'Merriweather Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; padding: 12px 32px; border-radius: 3px; cursor: pointer; transition: background 0.2s; }
+    .check-btn:hover { background: #444; }
+    .ci-input, .detail-input { width: 100%; background: #fff; border: 1.5px solid #bbb; border-radius: 3px; color: #1a1a1a; font-family: 'Merriweather', Georgia, serif; font-size: 14px; padding: 12px 14px; outline: none; transition: border-color 0.2s; line-height: 1.7; resize: none; }
+    .ci-input:focus, .detail-input:focus { border-color: #333; }
+    @media print {
+      .tab-bar, .reset-bar, .check-wrap { display: none; }
+      .tab-content { display: block !important; }
+      html { background: #fff; }
+      body { padding: 0; max-width: 100%; }
+      .grade-nav, .print-bar, .save-notice { display: none; }
+      .worksheet { border: 1px solid #ccc; box-shadow: none; padding: 28px 32px; }
+      .passage-box { background: #f5f5f5; }
+      .answer-input { border: 1px solid #bbb; }
+      .page-break { display: none; }
+      .worksheet + .worksheet { page-break-before: always; }
+      .passage-box, .passage-title, .section-question, .section-label, .ws-number { -webkit-user-select: text; user-select: text; }
+    }
+  </style>
+  <script>window.STUDENT_CONFIG = {'name': 'Manha', 'grade': 3, 'math': {'topic': 'multiplication-division', 'count': 8, 'wordProblems': 4, 'max': 10, 'min': 2}, 'ela': {'type': 'narrative', 'questions': 3}};</script>
+</head>
+<body>
+
+  <nav class='grade-nav'>
+    <a class='grade-btn' href='index.html'>&larr; Menu</a>
+  </nav>
+
+  <div class='tab-bar'>
+    <button class='tab-btn active' data-tab='assigned'>Assigned</button>
+    <button class='tab-btn' data-tab='math'>Math Practice</button>
+    <button class='tab-btn' data-tab='ela'>ELA Practice</button>
+  </div>
+
+  <!-- ASSIGNED TAB -->
+  <div class='tab-content active' id='assigned'>
+
+    <header class='page-header'>
+      <p class='school-name'>NYC English Language Arts &mdash; Manha</p>
+      <h1>Summary &amp; Central Idea</h1>
+      <p class='sub'>Read each story, then write a summary and find the central idea</p>
+    </header>
+
+    <section class='worksheet' aria-label='Worksheet 1'>
+      <div class='ws-topbar'><span class='ws-number'>Worksheet 01</span></div>
+      <div class='passage-wrap'>
+        <p class='section-label'>Read the story</p>
+        <h2 class='passage-title'>The Lost Library Book</h2>
+        <div class='passage-box'>
+          <p>Manha had borrowed a library book called <em>Ocean Animals</em>. She was so excited that she read three chapters the very first night. The book had glossy pictures of dolphins, giant whales, and deep-sea fish that glowed in the dark. She promised herself she would take very good care of it because it belonged to everyone at the library, not just her.</p>
+          <p>A week passed, and when Manha went to put the book back on her shelf, it was not there. She searched under her bed, in her backpack, and inside every drawer in her room. Her stomach began to feel tight and anxious. The book was due back in two days, and she had no idea where it had gone.</p>
+          <p>Manha told her mother what happened. Her mother said calmly, &ldquo;Think carefully about the last place you had it.&rdquo; Manha remembered reading it during lunch at school. The next morning, she went straight to her teacher and explained everything honestly. Her teacher walked her to the cafeteria lost and found. And there it was &mdash; <em>Ocean Animals</em>, sitting right on top of the pile, safe and unharmed.</p>
+          <p>Manha felt her whole body relax the moment she held the book again. She returned it to the library on time and even apologized to the librarian for almost losing it. The librarian smiled and said, &ldquo;The best thing you did was tell the truth and keep looking.&rdquo; Manha walked home feeling lighter than she had in days. She learned that being responsible did not just mean being careful &mdash; it also meant being honest when something went wrong.</p>
+        </div>
+      </div>
+      <div class='ws-rule'></div>
+      <p class='section-label'>Part 1 &mdash; Summary</p>
+      <p class='section-question'>Write a summary of the story in 2&ndash;3 sentences. Include what happened at the beginning, middle, and end.</p>
+      <textarea class='answer-input summary' data-save='ws1-summary' rows='4' placeholder='This story is about&#8230;'></textarea>
+      <div class='ws-rule'></div>
+      <p class='section-label'>Part 2 &mdash; Central Idea</p>
+      <p class='section-question'>What is the most important message or lesson of this story? Write it in one complete sentence.</p>
+      <textarea class='answer-input central' data-save='ws1-central' rows='2' placeholder='The central idea of this story is&#8230;'></textarea>
+    </section>
+
+    <div class='page-break'><span>Worksheet 02</span></div>
+
+    <section class='worksheet' aria-label='Worksheet 2'>
+      <div class='ws-topbar'><span class='ws-number'>Worksheet 02</span></div>
+      <div class='passage-wrap'>
+        <p class='section-label'>Read the story</p>
+        <h2 class='passage-title'>The Science Fair</h2>
+        <div class='passage-box'>
+          <p>Javier had been working on his science fair project for three whole weeks. He was building a model volcano out of clay, and he had practiced making it erupt with baking soda and vinegar at least six times at home. Every eruption worked perfectly &mdash; a white foamy burst that shot straight up over the top of the cone. He was certain he had a strong chance at first place.</p>
+          <p>The night before the fair, disaster struck. While Javier was carrying the volcano to the car, he stumbled on the front step. The model hit the ground and split right down the middle. Javier stared at the two pieces in the driveway and felt tears pressing behind his eyes. Three weeks of careful work, ruined in one second. He wanted to just go to bed and forget the whole thing had ever happened.</p>
+          <p>His father sat down beside him on the driveway. &ldquo;We can fix this,&rdquo; he said quietly. Together they worked past midnight, pressing the clay back together and smoothing every crack. His father found brown paint in the garage and covered the damage. It was not as perfect as before, but it looked like a rough, real volcano &mdash; the kind you might see a photograph of in a science book.</p>
+          <p>At the science fair the next morning, Javier did not win first place. But when the eruption went off in a huge foamy burst, the entire gym cheered. His teacher gave him a special ribbon that said &ldquo;Most Determined.&rdquo; Javier taped it to his bedroom door that evening and decided it was his favorite prize of all &mdash; not because he had won, but because he had not given up when everything felt impossible.</p>
+        </div>
+      </div>
+      <div class='ws-rule'></div>
+      <p class='section-label'>Part 1 &mdash; Summary</p>
+      <p class='section-question'>Write a summary of the story in 2&ndash;3 sentences. Include what happened at the beginning, middle, and end.</p>
+      <textarea class='answer-input summary' data-save='ws2-summary' rows='4' placeholder='This story is about&#8230;'></textarea>
+      <div class='ws-rule'></div>
+      <p class='section-label'>Part 2 &mdash; Central Idea</p>
+      <p class='section-question'>What is the most important message or lesson of this story? Write it in one complete sentence.</p>
+      <textarea class='answer-input central' data-save='ws2-central' rows='2' placeholder='The central idea of this story is&#8230;'></textarea>
+    </section>
+
+    <div class='print-bar'>
+      <button class='print-btn' onclick='window.print()'>Print Worksheets</button>
+      <button class='clear-btn' onclick='clearAnswers()'>Clear My Answers</button>
+    </div>
+    <p class='save-notice'>Your answers are saved automatically in this browser.</p>
+
+  </div>
+
+  <!-- MATH PRACTICE TAB -->
+  <div class='tab-content' id='math'>
+    <header class='page-header'>
+      <p class='school-name'>Math Practice &mdash; Manha</p>
+      <h1>Two-Step Word Problems</h1>
+      <p class='sub'>Use scratch paper to show your steps. Write your final answer in the box.</p>
+    </header>
+    <section class='worksheet'>
+      <div class='ws-topbar'><span class='ws-number'>Grade 3 &mdash; All Operations</span></div>
+      <p class='section-label' style='margin-bottom:20px;'>Solve each two-step problem</p>
+      <div class='problems-grid'>
+        <div class='math-word'>
+          <strong>1.</strong> Sara has 24 marbles. She wins 16 more at recess, then gives 13 to her sister. How many marbles does Sara have now?
+          <div class='ans-row'>Answer: <input type='text' data-answer='27' data-save='mm-1' placeholder='?' /></div>
+        </div>
+        <div class='math-word'>
+          <strong>2.</strong> A baker makes 5 trays of muffins with 8 muffins on each tray. She eats 4 muffins. How many muffins are left?
+          <div class='ans-row'>Answer: <input type='text' data-answer='36' data-save='mm-2' placeholder='?' /></div>
+        </div>
+        <div class='math-word'>
+          <strong>3.</strong> The school library has 63 books on the shelf. Students borrow 27 books, then 15 books are returned. How many books are on the shelf now?
+          <div class='ans-row'>Answer: <input type='text' data-answer='51' data-save='mm-3' placeholder='?' /></div>
+        </div>
+        <div class='math-word'>
+          <strong>4.</strong> A classroom has 6 tables with 4 students at each table. Then 8 new students join the class. How many students are in the classroom now?
+          <div class='ans-row'>Answer: <input type='text' data-answer='32' data-save='mm-4' placeholder='?' /></div>
+        </div>
+        <div class='math-word'>
+          <strong>5.</strong> Pedro earns $15 doing chores and $9 walking the neighbor&rsquo;s dog. He then spends $11 at the book store. How much money does Pedro have left?
+          <div class='ans-row'>Answer: $<input type='text' data-answer='13' data-save='mm-5' placeholder='?' /></div>
+        </div>
+        <div class='math-word'>
+          <strong>6.</strong> A garden has 8 rows of flowers with 6 flowers in each row. A storm knocks over 14 flowers. How many flowers are still standing?
+          <div class='ans-row'>Answer: <input type='text' data-answer='34' data-save='mm-6' placeholder='?' /></div>
+        </div>
+        <div class='math-word'>
+          <strong>7.</strong> Keisha has a bag of 45 candies. She eats 9 candies, then divides the rest equally among 4 friends. How many candies does each friend get?
+          <div class='ans-row'>Answer: <input type='text' data-answer='9' data-save='mm-7' placeholder='?' /></div>
+        </div>
+        <div class='math-word'>
+          <strong>8.</strong> A farmer collects 56 eggs and packs them into cartons of 8 eggs each. His neighbor gives him 3 extra full cartons. How many cartons does the farmer have in all?
+          <div class='ans-row'>Answer: <input type='text' data-answer='10' data-save='mm-8' placeholder='?' /></div>
+        </div>
+      </div>
+      <div class='check-wrap'>
+        <button class='check-btn' onclick='checkMath()'>Check Answers</button>
+      </div>
+    </section>
+    <div class='reset-bar'>
+      <button type='button' class='reset-btn' data-reset='math'>Reset Math Practice</button>
+    </div>
+    <p class='save-notice'>Your answers are saved automatically in this browser.</p>
+  </div>
+
+  <!-- ELA PRACTICE TAB -->
+  <div class='tab-content' id='ela'>
+    <header class='page-header'>
+      <p class='school-name'>ELA Practice &mdash; Manha</p>
+      <h1>Reading Comprehension Practice</h1>
+      <p class='sub'>Read the passage, then answer the questions below</p>
+    </header>
+    <section class='worksheet'>
+      <div class='ws-topbar'><span class='ws-number'>Practice Passage</span></div>
+      <div class='passage-wrap'>
+        <p class='section-label'>Read the passage</p>
+        <h2 class='passage-title'>The New Girl</h2>
+        <div class='passage-box'>
+          <p>On the first day of October, a new girl named Priya arrived in Ms. Chen&rsquo;s third grade class. She had just moved from another city and did not know anyone. She sat in the back row and kept her eyes on her desk. When the other students laughed at something the teacher said, Priya just stared at her pencil case because she had missed the joke.</p>
+          <p>At lunch, Priya sat alone at the end of a long table. A girl named Sofia noticed and carried her tray over without saying anything. She just sat down next to Priya and started eating her sandwich. After a few quiet minutes, Sofia pointed at a mural on the cafeteria wall. &ldquo;I helped paint that dolphin,&rdquo; she said. Priya looked up for the first time all day. &ldquo;You did?&rdquo; she asked. That was all it took. They talked for the entire rest of lunch.</p>
+          <p>By Friday, Priya was saving Sofia a seat every morning before school. She still missed her old friends, but the ache was beginning to feel smaller. She had learned something important that week: sometimes a new friend does not give a big speech or do something grand. Sometimes they just sit down next to you when no one else does, and that is more than enough.</p>
+        </div>
+      </div>
+      <div class='ws-rule'></div>
+      <p class='section-label'>Question 1 &mdash; Summary</p>
+      <p class='section-question'>Write a summary of this story in 2&ndash;3 sentences.</p>
+      <textarea class='answer-input summary' data-save='ela1-summary' rows='4' placeholder='This story is about&#8230;'></textarea>
+      <div class='ws-rule'></div>
+      <p class='section-label'>Question 2 &mdash; Central Idea</p>
+      <p class='section-question'>What is the most important message of this story? Write it in one sentence.</p>
+      <textarea class='answer-input central' data-save='ela1-central' rows='2' placeholder='The central idea of this story is&#8230;'></textarea>
+      <div class='ws-rule'></div>
+      <p class='section-label'>Question 3 &mdash; Supporting Detail</p>
+      <p class='section-question'>Find one detail from the story that shows Sofia is kind. Use words from the passage in your answer.</p>
+      <textarea class='answer-input central' data-save='ela1-detail' rows='3' placeholder='A detail from the passage that shows Sofia is kind&#8230;'></textarea>
+    </section>
+    <div class='reset-bar'>
+      <button type='button' class='reset-btn' data-reset='ela'>Reset ELA Practice</button>
+    </div>
+    <p class='save-notice'>Your answers are saved automatically in this browser.</p>
+  </div>
+
+  <script>
+    function clearAnswers() {
+      if (!confirm('Clear all your saved answers on this page?')) return;
+      var pp = location.pathname.split('/').pop().replace('.html', '') || 'index';
+      document.querySelectorAll('[data-save]').forEach(function(el) {
+        localStorage.removeItem(pp + ':' + el.dataset.save);
+        el.value = '';
+      });
+    }
+    document.querySelectorAll('.answer-input').forEach(function(el) {
+      el.addEventListener('paste', function(e) { e.preventDefault(); });
+      el.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+      el.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'v') e.preventDefault();
+      });
+    });
+    function checkMath() {
+      var inputs = document.querySelectorAll('#math input[data-answer]');
+      var correct = 0, total = inputs.length;
+      inputs.forEach(function(inp) {
+        var parent = inp.closest('.math-prob, .math-word, .problem');
+        if (!parent) return;
+        parent.classList.remove('correct', 'wrong');
+        if (inp.value.trim() === String(inp.dataset.answer).trim()) {
+          parent.classList.add('correct');
+          correct++;
+        } else if (inp.value.trim()) {
+          parent.classList.add('wrong');
+        }
+      });
+      document.dispatchEvent(new CustomEvent('checkResult', { detail: { correct: correct, total: total } }));
+    }
+  </script>
+  <script src='tabs.js?v=3'></script>
+  <script src='ai-generator.js?v=1'></script>
+  <script src='ai-tutor.js'></script>
+  <script src='quiz.js'></script>
+  <script src='flashcards.js'></script>
+</body>
+</html>

@@ -23,24 +23,34 @@
       if (!container) return;
       if (!confirm('Reset all your answers in this section?')) return;
 
-      // Clear all inputs and textareas
-      container.querySelectorAll('input[type="text"], textarea').forEach(function (el) {
+      // Clear all text-like inputs and textareas
+      container.querySelectorAll('input:not([type="radio"]):not([type="checkbox"]), textarea').forEach(function (el) {
         el.value = '';
+        el.classList.remove('correct', 'wrong');
         // Also clear localStorage if it has a data-save attribute
         if (el.dataset.save) {
           var pagePath = location.pathname.split('/').pop().replace('.html', '') || 'index';
           localStorage.removeItem(pagePath + ':' + el.dataset.save);
+          localStorage.removeItem(pagePath + ':fitb-' + el.dataset.save);
         }
       });
 
       // Clear radio buttons
       container.querySelectorAll('input[type="radio"]').forEach(function (el) {
         el.checked = false;
+        el.classList.remove('correct', 'wrong');
       });
 
       // Clear checkboxes
       container.querySelectorAll('input[type="checkbox"]').forEach(function (el) {
         el.checked = false;
+        el.classList.remove('correct', 'wrong');
+      });
+
+      // Clear score displays inside this container
+      container.querySelectorAll('.score-display').forEach(function (el) {
+        el.textContent = '';
+        el.className = 'score-display';
       });
 
       // Trigger a flash animation

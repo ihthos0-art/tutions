@@ -4,7 +4,7 @@ export default {
 
     // API proxy route
     if (url.pathname === '/api/chat' && request.method === 'POST') {
-      const apiKey = env.api_token;
+      const apiKey = env.GROQ_API_KEY;
       if (!apiKey) {
         return new Response(JSON.stringify({ error: 'API key not configured' }), {
           status: 500,

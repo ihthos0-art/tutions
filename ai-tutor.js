@@ -31,8 +31,10 @@
         body: JSON.stringify({ messages: messages, temperature: 0.7, max_tokens: 1024 })
       });
       var data = await res.json();
-      return data.choices && data.choices[0] && data.choices[0].message ? data.choices[0].message.content : null;
-    } catch (e) { return null; }
+      var content = data.choices && data.choices[0] && data.choices[0].message ? data.choices[0].message.content : null;
+      var provider = res.headers.get('X-Routed-Via') || '';
+      return { content: content, provider: provider };
+    } catch (e) { return { content: null, provider: '' }; }
   }
 
   // ===== INJECT CSS =====
@@ -108,6 +110,8 @@
     '.ai-badges-bar{max-width:700px;margin:20px auto 0;display:flex;align-items:center;gap:12px;flex-wrap:wrap}',
     '.ai-badge{display:flex;align-items:center;gap:4px;font-family:"Merriweather Sans",sans-serif;font-size:12px;font-weight:700;color:#888;background:#f4f3f0;border:1px solid #dddbd4;border-radius:20px;padding:5px 14px}',
     '.ai-badge .badge-icon{font-size:16px}',
+    '#ai-chat-provider{font-family:"Merriweather Sans",sans-serif;font-size:9px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:#aaa;background:rgba(255,255,255,0.12);padding:2px 8px;border-radius:10px;margin-left:auto;margin-right:8px;opacity:0;transition:opacity 0.3s}',
+    '#ai-chat-provider.show{opacity:1}',
     '@media(max-width:500px){#ai-chat-panel{left:12px;right:12px;width:auto;bottom:84px}}'
   ].join('\n');
   document.head.appendChild(style);
@@ -128,7 +132,7 @@
     var panel = document.createElement('div');
     panel.id = 'ai-chat-panel';
     panel.innerHTML =
-      '<div id="ai-chat-head"><span id="ai-chat-avatar">🤖</span><span>Homework Helper</span><span id="ai-chat-streak"><span class="flame">🔥</span><span id="streak-count">0</span></span></div>' +
+      '<div id="ai-chat-head"><span id="ai-chat-avatar">🤖</span><span>Homework Helper</span><span id="ai-chat-provider"></span><span id="ai-chat-streak"><span class="flame">🔥</span><span id="streak-count">0</span></span></div>' +
       '<div id="ai-chat-messages"></div>' +
       '<div id="ai-chat-actions"><button id="ai-eli8">🤔 Explain Again</button><button id="ai-tts-last">🔊 Read Aloud</button></div>' +
       '<div id="ai-chat-input-row"><textarea id="ai-chat-input" rows="1" placeholder="Ask me anything..."></textarea><button id="ai-chat-mic" title="Speak your question">🎤</button><button id="ai-chat-send">&rarr;</button></div>';
@@ -254,9 +258,9 @@
       var typing = addMsg('bot typing', 'Thinking...');
       groqChat([sysPrompt].concat(history).concat([
         { role: 'user', content: 'Explain your last answer again using an even simpler analogy. Pretend I am 6 years old.' }
-      ])).then(function (reply) {
+      ])).then(function (result) {
         typing.remove();
-        if (reply) { history.push({ role: 'assistant', content: reply }); addMsg('bot', reply); lastReply = reply; }
+        if (result.content) { history.push({ role: 'assistant', content: result.content }); addMsg('bot', result.content); lastReply = result.content; showProvider(result.provider); }
         else { addMsg('bot', 'Sorry, try again!'); }
       });
     });
@@ -276,6 +280,16 @@
       return d;
     }
 
+    function showProvider(provider) {
+      var el = document.getElementById('ai-chat-provider');
+      if (!el || !provider) return;
+      var parts = provider.split('/');
+      var name = parts[0] || provider;
+      var model = parts[1] || '';
+      el.textContent = name + (model ? ' · ' + model.split('-')[0] : '');
+      el.classList.add('show');
+    }
+
     addMsg('bot', 'Hi! I\'m your homework helper. I won\'t give you answers, but I\'ll help you understand! Ask me anything.');
 
     toggle.addEventListener('click', function () {
@@ -291,12 +305,13 @@
       history.push({ role: 'user', content: text });
       updateStreak();
       var typing = addMsg('bot typing', 'Thinking...');
-      var reply = await groqChat([sysPrompt].concat(history));
+      var result = await groqChat([sysPrompt].concat(history));
       typing.remove();
-      if (reply) {
-        history.push({ role: 'assistant', content: reply });
-        addMsg('bot', reply);
-        lastReply = reply;
+      if (result.content) {
+        history.push({ role: 'assistant', content: result.content });
+        addMsg('bot', result.content);
+        lastReply = result.content;
+        showProvider(result.provider);
         var chatCount = parseInt(localStorage.getItem('ai-chat-count') || '0');
         chatCount++;
         localStorage.setItem('ai-chat-count', chatCount);
@@ -390,13 +405,13 @@
 
   async function fetchVocab(passageText, container, cacheKey) {
     var prompt = 'Given this reading passage, identify 8-10 words that would be challenging for Bengali-speaking ESL students in grades 1-8. Return ONLY a JSON array like this: [{"word":"example","definition":"simple child-friendly definition"}]. No other text.\n\nPassage:\n' + passageText.substring(0, 1500);
-    var reply = await groqChat([
+    var result = await groqChat([
       { role: 'system', content: 'You identify difficult vocabulary words for ESL students. Return ONLY a raw JSON array. No markdown, no code blocks, no explanation, no extra text. Example: [{"word":"example","definition":"simple child-friendly definition"}]' },
       { role: 'user', content: prompt }
     ]);
-    if (reply) {
+    if (result.content) {
       try {
-        var clean = reply.replace(/```json?\n?/g, '').replace(/```/g, '').trim();
+        var clean = result.content.replace(/```json?\n?/g, '').replace(/```/g, '').trim();
         var match = clean.match(/\[.*\]/s);
         var words = JSON.parse(match ? match[0] : clean);
         if (!Array.isArray(words) || words.length === 0) throw new Error('empty');
@@ -523,15 +538,15 @@
   })();
 
   async function explainWrongAnswer(el, question, passage, studentAnswer) {
-    var explanation = await groqChat([
+    var result = await groqChat([
       { role: 'system', content: 'You explain why a student got a wrong answer in ONE very simple sentence. Use easy words. Be encouraging.' },
       { role: 'user', content: 'Question: ' + question + '\nPassage: ' + passage.substring(0, 300) + '\nStudent answer: ' + studentAnswer + '\nExplain why this is wrong in one simple encouraging sentence.' }
     ]);
-    if (explanation) {
+    if (result.content) {
       var tip = document.createElement('div');
       tip.className = 'ai-wrong-tip';
       tip.style.cssText = 'font-size:11px;color:#c0392b;margin-top:4px;font-style:italic';
-      tip.textContent = '💡 ' + explanation;
+      tip.textContent = '💡 ' + result.content;
       el.parentNode.appendChild(tip);
     }
   }

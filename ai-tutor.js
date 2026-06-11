@@ -135,7 +135,7 @@
       '<div id="ai-chat-head"><span id="ai-chat-avatar">🤖</span><span>Homework Helper</span><span id="ai-chat-provider"></span><span id="ai-chat-streak"><span class="flame">🔥</span><span id="streak-count">0</span></span></div>' +
       '<div id="ai-chat-messages"></div>' +
       '<div id="ai-chat-actions"><button id="ai-eli8">🤔 Explain Again</button><button id="ai-tts-last">🔊 Read Aloud</button></div>' +
-      '<div id="ai-chat-input-row"><textarea id="ai-chat-input" rows="1" placeholder="Ask me anything..."></textarea><button id="ai-chat-mic" title="Speak your question">🎤</button><button id="ai-chat-send">&rarr;</button></div>';
+      '<div id="ai-chat-input-row"><textarea id="ai-chat-input" rows="1" placeholder="Ask me anything..."></textarea><button id="ai-chat-mic" title="Speak your question">🎤</button><button id="ai-chat-send">→</button></div>';
     document.body.appendChild(panel);
 
     // Avatar picker modal
@@ -334,6 +334,7 @@
 
   function addTtsButtons() {
     passages.forEach(function (box) {
+      if (box.dataset.noTts) return;
       var btn = document.createElement('button');
       btn.className = 'ai-tts-btn';
       btn.innerHTML = '🔊';
@@ -344,14 +345,12 @@
         e.stopPropagation();
         if (!window.speechSynthesis) return;
         if (activeTtsBtn === btn && window.speechSynthesis.speaking) {
-          // Same button clicked while reading — stop
           window.speechSynthesis.cancel();
           btn.innerHTML = '🔊';
           btn.title = 'Read aloud';
           btn.classList.remove('active');
           activeTtsBtn = null;
         } else {
-          // Stop any currently playing passage
           window.speechSynthesis.cancel();
           if (activeTtsBtn) {
             activeTtsBtn.innerHTML = '🔊';
@@ -428,7 +427,7 @@
   function renderVocab(container, words) {
     var html = '<p class="ai-vocab-title">Vocabulary Bank</p><div class="ai-vocab-list">';
     words.forEach(function (w) {
-      html += '<p class="ai-vocab-word"><strong>' + escapeHtml(w.word) + '</strong> &mdash; ' + escapeHtml(w.definition) + '</p>';
+      html += '<p class="ai-vocab-word"><strong>' + escapeHtml(w.word) + '</strong> — ' + escapeHtml(w.definition) + '</p>';
     });
     html += '</div>';
     container.innerHTML = html;

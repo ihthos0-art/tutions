@@ -24,10 +24,10 @@
     .ws-meta { font-size: 13px; color: #555; font-style: italic; }
     .ws-label { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #999; margin-bottom: 24px; }
 
-    .problems-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .problems-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .problem { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 14px 16px; background: #fafaf8; border: 1px solid #e2e0db; border-radius: 4px; }
-    .problem-eq { font-family: 'Merriweather', serif; font-size: 19px; font-weight: 700; -webkit-user-select: none; user-select: none; white-space: nowrap; }
-    .ans-input { width: 50px; height: 40px; border: 2px solid #c8c8c8; border-radius: 3px; font-family: 'Merriweather', serif; font-size: 19px; font-weight: 700; text-align: center; outline: none; background: #fff; color: #1a1a1a; transition: border-color 0.15s, background 0.15s; }
+    .problem-eq { font-family: 'Merriweather', serif; font-size: 20px; font-weight: 700; -webkit-user-select: none; user-select: none; white-space: nowrap; }
+    .ans-input { width: 60px; height: 44px; border: 2px solid #c8c8c8; border-radius: 3px; font-family: 'Merriweather', serif; font-size: 20px; font-weight: 700; text-align: center; outline: none; background: #fff; color: #1a1a1a; transition: border-color 0.15s, background 0.15s; }
     .ans-input:focus { border-color: #1a1a1a; }
     .ans-input.correct { border-color: #27ae60; background: #edfbf1; color: #1a5c35; }
     .ans-input.wrong  { border-color: #e74c3c; background: #fdf0ef; }
@@ -38,20 +38,43 @@
     .score-display { font-family: 'Merriweather Sans', sans-serif; font-size: 15px; font-weight: 700; color: #555; }
     .score-display.perfect { color: #27ae60; }
 
+    /* === WORD BANK === */
     .wb-box { background: #f4f3f0; border: 1px solid #dddbd4; border-radius: 4px; padding: 16px 20px; margin-bottom: 28px; }
     .wb-label { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #888; margin-bottom: 12px; -webkit-user-select: none; user-select: none; }
+    .wb-hint { font-family: 'Merriweather Sans', sans-serif; font-size: 11px; color: #aaa; margin-bottom: 10px; font-style: italic; }
     .wb-words { display: flex; flex-wrap: wrap; gap: 8px; }
-    .wb-chip { font-family: 'Merriweather Sans', sans-serif; font-size: 13px; font-weight: 700; color: #1a1a1a; background: #fff; border: 1.5px solid #c4c2bb; border-radius: 20px; padding: 5px 16px; -webkit-user-select: none; user-select: none; transition: color 0.2s, border-color 0.2s; }
-    .wb-chip.used { text-decoration: line-through; color: #b0b0a8; border-color: #dddbd6; }
+    .wb-chip { font-family: 'Merriweather Sans', sans-serif; font-size: 14px; font-weight: 700; color: #1a1a1a; background: #fff; border: 1.5px solid #c4c2bb; border-radius: 20px; padding: 6px 18px; -webkit-user-select: none; user-select: none; cursor: grab; transition: all 0.15s; }
+    .wb-chip:hover:not(.used) { border-color: #1a1a1a; background: #f0efec; }
+    .wb-chip.selected { background: #1a1a1a; color: #fff; border-color: #1a1a1a; cursor: pointer; }
+    .wb-chip.dragging { opacity: 0.35; cursor: grabbing; }
+    .wb-chip.used { text-decoration: line-through; color: #c0c0b8; border-color: #e0ded8; cursor: not-allowed; pointer-events: none; }
 
-    .fitb-list { display: flex; flex-direction: column; gap: 18px; }
+    /* === FITB DROP ZONES === */
+    .fitb-list { display: flex; flex-direction: column; gap: 20px; }
     .fitb-item { display: flex; align-items: baseline; gap: 8px; }
     .fitb-num { font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; color: #bbb; min-width: 22px; flex-shrink: 0; }
-    .fitb-text { font-family: 'Merriweather', serif; font-size: clamp(14px, 2vw, 16px); line-height: 1.9; color: #222; -webkit-user-select: none; user-select: none; flex: 1; }
-    .fitb-input { border: none; border-bottom: 2.5px solid #bbb; background: transparent; font-family: 'Merriweather', serif; font-size: inherit; color: #1a1a1a; outline: none; padding: 0 4px 2px; width: 88px; margin: 0 3px; text-align: center; transition: border-color 0.15s, color 0.15s; -webkit-user-select: text; user-select: text; }
-    .fitb-input:focus { border-bottom-color: #1a1a1a; }
-    .fitb-input.correct { border-bottom-color: #27ae60; color: #1a5c35; }
-    .fitb-input.wrong   { border-bottom-color: #e74c3c; color: #c0392b; }
+    .fitb-text { font-family: 'Merriweather', serif; font-size: clamp(14px, 2vw, 16px); line-height: 2; color: #222; -webkit-user-select: none; user-select: none; flex: 1; }
+    .fitb-drop {
+      display: inline-block;
+      min-width: 96px;
+      padding: 1px 10px 3px;
+      margin: 0 3px;
+      border-bottom: 2.5px solid #bbb;
+      border-radius: 2px 2px 0 0;
+      text-align: center;
+      font-family: 'Merriweather', serif;
+      font-size: inherit;
+      font-weight: 700;
+      color: #1a1a1a;
+      vertical-align: baseline;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+      background: transparent;
+    }
+    .fitb-drop:empty::after { content: '▢'; color: #ccc; font-weight: 400; font-size: 0.9em; }
+    .fitb-drop.drag-over { background: #e8f4fd; border-bottom-color: #3498db; border-radius: 3px; }
+    .fitb-drop.correct { border-bottom-color: #27ae60; color: #1a5c35; }
+    .fitb-drop.wrong { border-bottom-color: #e74c3c; color: #c0392b; }
 
     .section-break { margin: 44px 0; max-width: 700px; margin-left: auto; margin-right: auto; display: flex; align-items: center; gap: 16px; }
     .section-break::before, .section-break::after { content: ''; flex: 1; height: 1px; background: #bbb; }
@@ -79,6 +102,7 @@
     .reset-bar { text-align: center; margin-top: 32px; margin-bottom: 20px; }
     .reset-btn { background: transparent; border: 1.5px solid #c0392b; color: #c0392b; font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 12px 28px; border-radius: 4px; cursor: pointer; transition: all 0.2s; }
     .reset-btn:hover { background: #c0392b; color: #fff; }
+
     /* ===== MATH PRACTICE ===== */
     .math-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; max-width: 600px; margin: 0 auto; }
     .math-prob { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 14px; background: #fafaf8; border: 1px solid #e2e0db; border-radius: 4px; font-family: 'Merriweather Sans', sans-serif; font-size: 16px; }
@@ -89,10 +113,10 @@
 
     @media (max-width: 520px) {
       .ws-card { padding: 32px 20px 40px; }
-      .problems-grid { grid-template-columns: 1fr 1fr; }
-      .problem-eq { font-size: 17px; }
-      .ans-input { font-size: 17px; width: 44px; }
-      .fitb-input { width: 74px; }
+      .problems-grid { grid-template-columns: 1fr; }
+      .problem-eq { font-size: 18px; }
+      .ans-input { font-size: 18px; width: 56px; }
+      .fitb-drop { min-width: 76px; }
       .math-grid { grid-template-columns: 1fr 1fr; }
     }
     @media print {
@@ -102,7 +126,7 @@
       .top-nav, .save-notice, .check-row { display: none; }
       .ws-card { box-shadow: none; border: none; padding: 20px 0; }
       .ans-input { border: none; border-bottom: 2px solid #000; border-radius: 0; background: transparent !important; }
-      .fitb-input { border-bottom-color: #000 !important; color: #000 !important; }
+      .fitb-drop { border-bottom-color: #000 !important; color: #000 !important; }
       .wb-chip.used { text-decoration: none; color: #000; border-color: #000; }
       * { -webkit-user-select: text !important; user-select: text !important; }
     }
@@ -126,28 +150,23 @@
 
   <div class="ws-card">
     <div class="ws-header">
-      <p class="eyebrow">Math Practice &nbsp;&middot;&nbsp; Grade 1</p>
-      <h1 class="ws-title">Addition &amp; Subtraction</h1>
-      <p class="ws-meta">Nabila &amp; Naviha &nbsp;&middot;&nbsp; Solve each problem and write your answer</p>
+      <p class="eyebrow">Math &nbsp;&middot;&nbsp; Grade 1</p>
+      <h1 class="ws-title">2-Digit Addition</h1>
+      <p class="ws-meta">Nabila &amp; Naviha &nbsp;&middot;&nbsp; Add the numbers and write your answer</p>
     </div>
-    <p class="ws-label">15 Problems &nbsp;&mdash;&nbsp; Numbers 1&ndash;20</p>
+    <p class="ws-label">10 Problems &nbsp;&mdash;&nbsp; Two-Digit Numbers</p>
 
     <div class="problems-grid">
-      <div class="problem"><span class="problem-eq">2 + 5 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q1" data-answer="7" autocomplete="off" /></div>
-      <div class="problem"><span class="problem-eq">10 &minus; 3 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q2" data-answer="7" autocomplete="off" /></div>
-      <div class="problem"><span class="problem-eq">6 + 4 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q3" data-answer="10" autocomplete="off" /></div>
-      <div class="problem"><span class="problem-eq">14 &minus; 8 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q4" data-answer="6" autocomplete="off" /></div>
-      <div class="problem"><span class="problem-eq">9 + 3 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q5" data-answer="12" autocomplete="off" /></div>
-      <div class="problem"><span class="problem-eq">16 &minus; 7 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q6" data-answer="9" autocomplete="off" /></div>
-      <div class="problem"><span class="problem-eq">5 + 8 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q7" data-answer="13" autocomplete="off" /></div>
-      <div class="problem"><span class="problem-eq">11 &minus; 5 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q8" data-answer="6" autocomplete="off" /></div>
-      <div class="problem"><span class="problem-eq">7 + 9 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q9" data-answer="16" autocomplete="off" /></div>
-      <div class="problem"><span class="problem-eq">20 &minus; 6 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q10" data-answer="14" autocomplete="off" /></div>
-      <div class="problem"><span class="problem-eq">4 + 7 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q11" data-answer="11" autocomplete="off" /></div>
-      <div class="problem"><span class="problem-eq">15 &minus; 9 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q12" data-answer="6" autocomplete="off" /></div>
-      <div class="problem"><span class="problem-eq">8 + 5 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q13" data-answer="13" autocomplete="off" /></div>
-      <div class="problem"><span class="problem-eq">17 &minus; 8 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q14" data-answer="9" autocomplete="off" /></div>
-      <div class="problem"><span class="problem-eq">6 + 9 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q15" data-answer="15" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-eq">43 + 25 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q1" data-answer="68" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-eq">31 + 47 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q2" data-answer="78" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-eq">52 + 36 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q3" data-answer="88" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-eq">24 + 53 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q4" data-answer="77" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-eq">61 + 28 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q5" data-answer="89" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-eq">45 + 14 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q6" data-answer="59" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-eq">72 + 11 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q7" data-answer="83" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-eq">33 + 25 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q8" data-answer="58" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-eq">84 + 13 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q9" data-answer="97" autocomplete="off" /></div>
+      <div class="problem"><span class="problem-eq">50 + 37 =</span><input class="ans-input" type="text" inputmode="numeric" data-save="q10" data-answer="87" autocomplete="off" /></div>
     </div>
 
     <div class="check-row">
@@ -162,40 +181,37 @@
     <div class="ws-header">
       <p class="eyebrow">English &nbsp;&middot;&nbsp; Grade 1</p>
       <h1 class="ws-title">Fill in the Blank</h1>
-      <p class="ws-meta">Nabila &amp; Naviha &nbsp;&middot;&nbsp; Use the word bank to complete each sentence</p>
+      <p class="ws-meta">Nabila &amp; Naviha &nbsp;&middot;&nbsp; Drag a word from the bank onto each blank</p>
     </div>
 
     <div class="wb-box">
       <p class="wb-label">Word Bank</p>
+      <p class="wb-hint">Drag a word onto a blank &mdash; or tap a word, then tap a blank</p>
       <div class="wb-words">
-        <span class="wb-chip" data-word="sun">sun</span>
-        <span class="wb-chip" data-word="dog">dog</span>
-        <span class="wb-chip" data-word="blue">blue</span>
-        <span class="wb-chip" data-word="school">school</span>
-        <span class="wb-chip" data-word="happy">happy</span>
-        <span class="wb-chip" data-word="apple">apple</span>
-        <span class="wb-chip" data-word="water">water</span>
-        <span class="wb-chip" data-word="big">big</span>
-        <span class="wb-chip" data-word="friend">friend</span>
-        <span class="wb-chip" data-word="night">night</span>
-        <span class="wb-chip" data-word="bird">bird</span>
-        <span class="wb-chip" data-word="run">run</span>
+        <span class="wb-chip" data-word="jump">jump</span>
+        <span class="wb-chip" data-word="green">green</span>
+        <span class="wb-chip" data-word="pond">pond</span>
+        <span class="wb-chip" data-word="milk">milk</span>
+        <span class="wb-chip" data-word="star">star</span>
+        <span class="wb-chip" data-word="book">book</span>
+        <span class="wb-chip" data-word="garden">garden</span>
+        <span class="wb-chip" data-word="tree">tree</span>
+        <span class="wb-chip" data-word="cloud">cloud</span>
+        <span class="wb-chip" data-word="flower">flower</span>
       </div>
     </div>
 
     <div class="fitb-list">
-      <div class="fitb-item"><span class="fitb-num">1.</span><p class="fitb-text">The <input class="fitb-input" data-save="f1" data-answer="sun" autocomplete="off" /> shines in the sky every morning.</p></div>
-      <div class="fitb-item"><span class="fitb-num">2.</span><p class="fitb-text">My pet <input class="fitb-input" data-save="f2" data-answer="dog" autocomplete="off" /> loves to play in the park.</p></div>
-      <div class="fitb-item"><span class="fitb-num">3.</span><p class="fitb-text">The sky is <input class="fitb-input" data-save="f3" data-answer="blue" autocomplete="off" /> on a clear day.</p></div>
-      <div class="fitb-item"><span class="fitb-num">4.</span><p class="fitb-text">I learn to read and write at <input class="fitb-input" data-save="f4" data-answer="school" autocomplete="off" />.</p></div>
-      <div class="fitb-item"><span class="fitb-num">5.</span><p class="fitb-text">She smiled because she was very <input class="fitb-input" data-save="f5" data-answer="happy" autocomplete="off" />.</p></div>
-      <div class="fitb-item"><span class="fitb-num">6.</span><p class="fitb-text">An <input class="fitb-input" data-save="f6" data-answer="apple" autocomplete="off" /> is a sweet and crunchy fruit.</p></div>
-      <div class="fitb-item"><span class="fitb-num">7.</span><p class="fitb-text">Fish and frogs live in the <input class="fitb-input" data-save="f7" data-answer="water" autocomplete="off" />.</p></div>
-      <div class="fitb-item"><span class="fitb-num">8.</span><p class="fitb-text">The elephant is a very <input class="fitb-input" data-save="f8" data-answer="big" autocomplete="off" /> animal.</p></div>
-      <div class="fitb-item"><span class="fitb-num">9.</span><p class="fitb-text">My best <input class="fitb-input" data-save="f9" data-answer="friend" autocomplete="off" /> and I play together at recess.</p></div>
-      <div class="fitb-item"><span class="fitb-num">10.</span><p class="fitb-text">The stars come out at <input class="fitb-input" data-save="f10" data-answer="night" autocomplete="off" />.</p></div>
-      <div class="fitb-item"><span class="fitb-num">11.</span><p class="fitb-text">A <input class="fitb-input" data-save="f11" data-answer="bird" autocomplete="off" /> can fly high in the sky.</p></div>
-      <div class="fitb-item"><span class="fitb-num">12.</span><p class="fitb-text">I like to <input class="fitb-input" data-save="f12" data-answer="run" autocomplete="off" /> fast at the park.</p></div>
+      <div class="fitb-item"><span class="fitb-num">1.</span><p class="fitb-text">A frog can <span class="fitb-drop" data-save="f1" data-answer="jump"></span> high over the rocks.</p></div>
+      <div class="fitb-item"><span class="fitb-num">2.</span><p class="fitb-text">The grass in the park is very <span class="fitb-drop" data-save="f2" data-answer="green"></span>.</p></div>
+      <div class="fitb-item"><span class="fitb-num">3.</span><p class="fitb-text">Little ducks swim in the <span class="fitb-drop" data-save="f3" data-answer="pond"></span> every morning.</p></div>
+      <div class="fitb-item"><span class="fitb-num">4.</span><p class="fitb-text">Baby cats love to drink warm <span class="fitb-drop" data-save="f4" data-answer="milk"></span>.</p></div>
+      <div class="fitb-item"><span class="fitb-num">5.</span><p class="fitb-text">Every <span class="fitb-drop" data-save="f5" data-answer="star"></span> in the sky twinkles at night.</p></div>
+      <div class="fitb-item"><span class="fitb-num">6.</span><p class="fitb-text">She read her favorite <span class="fitb-drop" data-save="f6" data-answer="book"></span> all afternoon.</p></div>
+      <div class="fitb-item"><span class="fitb-num">7.</span><p class="fitb-text">Dad grows tomatoes in the <span class="fitb-drop" data-save="f7" data-answer="garden"></span> behind the house.</p></div>
+      <div class="fitb-item"><span class="fitb-num">8.</span><p class="fitb-text">The tall <span class="fitb-drop" data-save="f8" data-answer="tree"></span> gave us shade on a hot day.</p></div>
+      <div class="fitb-item"><span class="fitb-num">9.</span><p class="fitb-text">A fluffy white <span class="fitb-drop" data-save="f9" data-answer="cloud"></span> drifted past the sun.</p></div>
+      <div class="fitb-item"><span class="fitb-num">10.</span><p class="fitb-text">She gave her teacher a bright yellow <span class="fitb-drop" data-save="f10" data-answer="flower"></span>.</p></div>
     </div>
 
     <div class="check-row">
@@ -209,20 +225,20 @@
   <div class="ws-card">
     <div class="ws-header">
       <p class="eyebrow">Reading &nbsp;&middot;&nbsp; Grade 1</p>
-      <h1 class="ws-title">The Rainy Day</h1>
+      <h1 class="ws-title">The Garden Surprise</h1>
       <p class="ws-meta">Read the story, then write a summary below</p>
     </div>
 
     <p class="section-label">Read the story</p>
-    <div class="passage-box">
-      <p>Zara looked out the window and frowned. It was raining again. She had wanted to ride her bike to the park, but the sky was gray and the streets were wet. She sat on the couch and did not know what to do.</p>
-      <p>Then her dad came in with two pieces of paper. He showed Zara how to fold them into paper boats. They took the boats outside and floated them in the puddles on the sidewalk. Zara laughed as her boat sailed all the way to the end of the street. It turned out to be a great day after all.</p>
+    <div class="passage-box" data-no-tts="true">
+      <p>Lila looked out at her backyard and saw a tiny green sprout poking up from the dirt. She had planted a seed there three weeks ago and almost forgotten about it. Her eyes went wide and she ran inside to tell her mom.</p>
+      <p>Together, they went outside and knelt beside the little plant. Mom said it was going to be a sunflower. Every day, Lila watered it and talked to it. Weeks later, a bright yellow flower bigger than Lila&rsquo;s whole face had opened up toward the sky. Lila felt so proud. She had helped something beautiful grow all on her own.</p>
     </div>
 
     <div class="ws-rule"></div>
 
     <p class="section-label">Summary</p>
-    <p class="section-question">What happened in this story? Write 2&ndash;3 sentences in your own words.</p>
+    <p class="section-question">What happened in this story? How did Lila feel at the end? Write 2&ndash;3 sentences in your own words.</p>
     <textarea class="summary-input" data-save="ws1-summary" rows="4" placeholder="In this story…"></textarea>
   </div>
 
@@ -296,8 +312,8 @@
   <script>
     const NS = 'nabila-naviha';
 
-    // ---- MATH ----
-    const mathInputs = document.querySelectorAll('.ans-input[data-save]');
+    // ---- MATH (2-digit addition) ----
+    const mathInputs = document.querySelectorAll('#assigned .ans-input[data-save]');
     mathInputs.forEach(el => {
       const key = NS + ':' + el.dataset.save;
       const saved = localStorage.getItem(key);
@@ -331,65 +347,135 @@
       document.dispatchEvent(new CustomEvent('checkResult', { detail: { correct: correct, total: total } }));
     });
 
-    // ---- FILL IN THE BLANK ----
-    const fitbInputs = document.querySelectorAll('.fitb-input[data-save]');
+    // ---- FILL IN THE BLANK (drag-drop) ----
+    const dropZones = document.querySelectorAll('.fitb-drop[data-save]');
+    const chips = document.querySelectorAll('.wb-chip');
+    let draggedChip = null;
+    let selectedChip = null;
 
     function syncWordBank() {
-      const used = new Set();
-      fitbInputs.forEach(el => {
-        if (el.value.trim().toLowerCase() === el.dataset.answer) used.add(el.dataset.answer);
-      });
-      document.querySelectorAll('.wb-chip').forEach(chip => {
-        chip.classList.toggle('used', used.has(chip.dataset.word));
-      });
+      const usedWords = new Set();
+      dropZones.forEach(z => { if (z.dataset.filled) usedWords.add(z.dataset.filled); });
+      chips.forEach(chip => chip.classList.toggle('used', usedWords.has(chip.dataset.word)));
     }
 
-    fitbInputs.forEach(el => {
-      const key = NS + ':fitb-' + el.dataset.save;
-      const saved = localStorage.getItem(key);
-      if (saved) {
-        el.value = saved;
-        if (saved.trim().toLowerCase() === el.dataset.answer) el.classList.add('correct');
+    function placeWord(zone, word, sourceChip) {
+      if (zone.dataset.filled) {
+        const old = document.querySelector(`.wb-chip[data-word="${zone.dataset.filled}"]`);
+        if (old) old.classList.remove('used');
       }
-      el.addEventListener('input', () => {
-        localStorage.setItem(key, el.value);
-        const val = el.value.trim().toLowerCase();
-        el.classList.remove('correct', 'wrong');
-        if (val && val === el.dataset.answer) el.classList.add('correct');
-        syncWordBank();
+      zone.textContent = word;
+      zone.dataset.filled = word;
+      zone.classList.remove('wrong', 'correct', 'drag-over');
+      if (sourceChip) sourceChip.classList.add('used');
+      localStorage.setItem(NS + ':fitb-' + zone.dataset.save, word);
+      syncWordBank();
+    }
+
+    function removeWord(zone) {
+      if (!zone.dataset.filled) return;
+      const old = document.querySelector(`.wb-chip[data-word="${zone.dataset.filled}"]`);
+      if (old) old.classList.remove('used');
+      zone.textContent = '';
+      delete zone.dataset.filled;
+      zone.classList.remove('correct', 'wrong');
+      localStorage.removeItem(NS + ':fitb-' + zone.dataset.save);
+      syncWordBank();
+    }
+
+    // Chip events (drag + tap-to-select)
+    chips.forEach(chip => {
+      chip.setAttribute('draggable', 'true');
+
+      chip.addEventListener('dragstart', e => {
+        if (chip.classList.contains('used')) { e.preventDefault(); return; }
+        draggedChip = chip;
+        e.dataTransfer.setData('text/plain', chip.dataset.word);
+        e.dataTransfer.effectAllowed = 'move';
+        setTimeout(() => chip.classList.add('dragging'), 0);
       });
-      el.addEventListener('paste', e => e.preventDefault());
-      el.addEventListener('contextmenu', e => e.preventDefault());
-      el.addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && e.key === 'v') e.preventDefault(); });
+
+      chip.addEventListener('dragend', () => {
+        chip.classList.remove('dragging');
+        draggedChip = null;
+      });
+
+      chip.addEventListener('click', () => {
+        if (chip.classList.contains('used')) return;
+        if (selectedChip === chip) {
+          chip.classList.remove('selected');
+          selectedChip = null;
+          return;
+        }
+        if (selectedChip) selectedChip.classList.remove('selected');
+        selectedChip = chip;
+        chip.classList.add('selected');
+      });
+    });
+
+    // Drop zone events
+    dropZones.forEach(zone => {
+      zone.addEventListener('dragover', e => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        zone.classList.add('drag-over');
+      });
+
+      zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+
+      zone.addEventListener('drop', e => {
+        e.preventDefault();
+        zone.classList.remove('drag-over');
+        const word = e.dataTransfer.getData('text/plain');
+        const chip = document.querySelector(`.wb-chip[data-word="${word}"]`);
+        placeWord(zone, word, chip);
+        draggedChip = null;
+      });
+
+      zone.addEventListener('click', () => {
+        if (selectedChip) {
+          placeWord(zone, selectedChip.dataset.word, selectedChip);
+          selectedChip.classList.remove('selected');
+          selectedChip = null;
+        } else if (zone.dataset.filled) {
+          removeWord(zone);
+        }
+      });
+
+      // Restore saved
+      const saved = localStorage.getItem(NS + ':fitb-' + zone.dataset.save);
+      if (saved) {
+        zone.textContent = saved;
+        zone.dataset.filled = saved;
+      }
     });
     syncWordBank();
 
     document.getElementById('fitb-check-btn').addEventListener('click', () => {
       let correct = 0;
-      fitbInputs.forEach(el => {
-        el.classList.remove('correct', 'wrong');
-        const val = el.value.trim().toLowerCase();
-        if (!val) return;
-        if (val === el.dataset.answer) { el.classList.add('correct'); correct++; }
-        else el.classList.add('wrong');
+      dropZones.forEach(zone => {
+        zone.classList.remove('correct', 'wrong');
+        if (!zone.dataset.filled) return;
+        if (zone.dataset.filled === zone.dataset.answer) { zone.classList.add('correct'); correct++; }
+        else zone.classList.add('wrong');
       });
+      const total = dropZones.length;
       const display = document.getElementById('fitb-score');
-      const total = fitbInputs.length;
       display.textContent = correct === total ? correct + ' / ' + total + ' — Perfect score!' : correct + ' / ' + total + ' correct';
       display.className = 'score-display' + (correct === total ? ' perfect' : '');
-      syncWordBank();
       document.dispatchEvent(new CustomEvent('checkResult', { detail: { correct: correct, total: total } }));
     });
 
-    // ---- READING ----
-    const summaryEl = document.querySelector('textarea[data-save]');
-    const summaryKey = NS + ':' + summaryEl.dataset.save;
-    const savedSummary = localStorage.getItem(summaryKey);
-    if (savedSummary) summaryEl.value = savedSummary;
-    summaryEl.addEventListener('input', () => localStorage.setItem(summaryKey, summaryEl.value));
-    summaryEl.addEventListener('paste', e => e.preventDefault());
-    summaryEl.addEventListener('contextmenu', e => e.preventDefault());
-    summaryEl.addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && e.key === 'v') e.preventDefault(); });
+    // ---- READING (summary textarea) ----
+    document.querySelectorAll('#assigned textarea[data-save]').forEach(ta => {
+      const key = NS + ':' + ta.dataset.save;
+      const saved = localStorage.getItem(key);
+      if (saved) ta.value = saved;
+      ta.addEventListener('input', () => localStorage.setItem(key, ta.value));
+      ta.addEventListener('paste', e => e.preventDefault());
+      ta.addEventListener('contextmenu', e => e.preventDefault());
+      ta.addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && e.key === 'v') e.preventDefault(); });
+    });
   </script>
   <script src="tabs.js?v=3"></script>
   <script src="ai-generator.js?v=1"></script>

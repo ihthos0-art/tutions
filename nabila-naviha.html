@@ -347,6 +347,17 @@
       document.dispatchEvent(new CustomEvent('checkResult', { detail: { correct: correct, total: total } }));
     });
 
+    // Shuffle word bank chips so order doesn't reveal answers
+    (function() {
+      const wb = document.querySelector('.wb-words');
+      const arr = Array.from(wb.children);
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        wb.appendChild(arr[j]);
+        arr.splice(j, 1);
+      }
+    })();
+
     // ---- FILL IN THE BLANK (drag-drop) ----
     const dropZones = document.querySelectorAll('.fitb-drop[data-save]');
     const chips = document.querySelectorAll('.wb-chip');

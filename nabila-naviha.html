@@ -242,6 +242,10 @@
     <textarea class="summary-input" data-save="ws1-summary" rows="4" placeholder="In this story…"></textarea>
   </div>
 
+  <div class="reset-bar">
+    <button type="button" class="reset-btn" id="assigned-clear-btn">Clear All Answers</button>
+  </div>
+
   <p class="save-notice">Your answers are saved automatically in this browser.</p>
 
   </div><!-- /assigned -->
@@ -475,6 +479,26 @@
       display.textContent = correct === total ? correct + ' / ' + total + ' — Perfect score!' : correct + ' / ' + total + ' correct';
       display.className = 'score-display' + (correct === total ? ' perfect' : '');
       document.dispatchEvent(new CustomEvent('checkResult', { detail: { correct: correct, total: total } }));
+    });
+
+    // ---- CLEAR ALL (assigned tab) ----
+    document.getElementById('assigned-clear-btn').addEventListener('click', () => {
+      if (!confirm('Clear all answers on this page?')) return;
+      // Math inputs
+      mathInputs.forEach(el => {
+        el.value = '';
+        el.classList.remove('correct', 'wrong');
+        localStorage.removeItem(NS + ':' + el.dataset.save);
+      });
+      document.getElementById('math-score').textContent = '';
+      // FITB drop zones
+      dropZones.forEach(zone => removeWord(zone));
+      document.getElementById('fitb-score').textContent = '';
+      // Summary textarea
+      document.querySelectorAll('#assigned textarea[data-save]').forEach(ta => {
+        ta.value = '';
+        localStorage.removeItem(NS + ':' + ta.dataset.save);
+      });
     });
 
     // ---- READING (summary textarea) ----

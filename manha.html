@@ -87,6 +87,34 @@
       .worksheet + .worksheet { page-break-before: always; }
       .passage-box, .passage-title, .section-question, .section-label, .ws-number { -webkit-user-select: text; user-select: text; }
     }
+    /* === ANCIENT EGYPT INFO SHEET === */
+    .egypt-sheet { max-width: 820px; margin: 0 auto; background: #fff; border: 1px solid #c8c8c8; border-radius: 4px; box-shadow: 0 2px 12px rgba(0,0,0,0.09); padding: 40px 44px 48px; }
+    .egy-title-block { text-align: center; padding-bottom: 14px; border-bottom: 2.5px solid #c9a227; margin-bottom: 16px; }
+    .egy-title { font-size: clamp(26px, 5vw, 40px); font-weight: 700; color: #1a1a1a; letter-spacing: 0.05em; }
+    .egy-subtitle { font-size: 13px; color: #666; font-style: italic; margin-top: 5px; font-family: 'Merriweather Sans', sans-serif; }
+    .egy-intro { background: #fdf6dc; border-left: 3px solid #c9a227; padding: 10px 16px; font-style: italic; color: #7a6010; font-size: 14px; margin-bottom: 24px; font-family: 'Merriweather Sans', sans-serif; border-radius: 0 3px 3px 0; }
+    .egy-section-head { background: #1a4a6b; color: #fff; font-family: 'Merriweather Sans', sans-serif; font-size: 14px; font-weight: 700; padding: 10px 16px; border-radius: 3px; margin-top: 28px; margin-bottom: 14px; }
+    .egy-body p { font-family: 'Merriweather', Georgia, serif; font-size: 14px; line-height: 1.9; color: #222; margin-bottom: 10px; }
+    .egy-wordbank { font-style: italic !important; color: #8a6c00 !important; background: #fdf6dc; padding: 6px 12px !important; border-radius: 3px; font-family: 'Merriweather Sans', sans-serif !important; font-size: 13px !important; margin-bottom: 10px; }
+    .egy-table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 10px 0 6px; }
+    .egy-table th { background: #2c2c2c; color: #fff; padding: 9px 14px; text-align: left; font-family: 'Merriweather Sans', sans-serif; font-size: 13px; font-weight: 700; border: 1px solid #c9a227; }
+    .egy-table td { padding: 8px 14px; border: 1px solid #c9a227; color: #222; line-height: 1.6; vertical-align: top; font-family: 'Merriweather', Georgia, serif; font-size: 14px; }
+    .egy-table tbody tr:nth-child(odd) td { background: #fff; }
+    .egy-table tbody tr:nth-child(even) td { background: #fdf6e8; }
+    .egy-true td { background: #e6f4ea !important; }
+    .egy-false td { background: #fff3e0 !important; }
+    .egy-facts-table td:first-child { font-weight: 700; width: 150px; }
+    .egy-list { padding-left: 22px; margin: 6px 0 12px; }
+    .egy-list li { font-family: 'Merriweather', Georgia, serif; font-size: 14px; line-height: 1.9; color: #222; margin-bottom: 3px; }
+    .egy-subhead { font-weight: 700 !important; font-style: normal !important; font-size: 14px !important; color: #1a1a1a !important; margin: 16px 0 6px !important; font-family: 'Merriweather Sans', sans-serif !important; }
+    .egy-italic-note { font-style: italic; color: #8a6c00; background: #fdf6dc; padding: 6px 12px; border-radius: 3px; font-family: 'Merriweather Sans', sans-serif; font-size: 13px; margin-bottom: 12px; display: block; }
+    .egy-word-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 10px 0 16px; }
+    .egy-word-grid span { background: #fdf6dc; border: 1px solid #c9a227; color: #7a5c00; font-family: 'Merriweather Sans', sans-serif; font-weight: 700; font-size: 13px; padding: 8px; text-align: center; border-radius: 3px; }
+    .egy-footer { background: #fdf6dc; border: 1.5px solid #c9a227; padding: 10px 16px; margin-top: 32px; font-style: italic; color: #7a6010; font-size: 14px; font-family: 'Merriweather Sans', sans-serif; border-radius: 3px; }
+    @media (max-width: 520px) {
+      .egypt-sheet { padding: 24px 16px 32px; }
+      .egy-word-grid { grid-template-columns: repeat(2, 1fr); }
+    }
   </style>
   <script>window.STUDENT_CONFIG = {'name': 'Manha', 'grade': 3, 'math': {'topic': 'multiplication-division', 'count': 8, 'wordProblems': 4, 'max': 10, 'min': 2}, 'ela': {'type': 'narrative', 'questions': 3}};</script>
 </head>
@@ -100,6 +128,7 @@
     <button class='tab-btn active' data-tab='assigned'>Assigned</button>
     <button class='tab-btn' data-tab='math'>Math Practice</button>
     <button class='tab-btn' data-tab='ela'>ELA Practice</button>
+    <button class='tab-btn' data-tab='egypt'>Egypt Info</button>
   </div>
 
   <!-- ASSIGNED TAB -->
@@ -255,6 +284,220 @@
     </div>
     <p class='save-notice'>Your answers are saved automatically in this browser.</p>
   </div>
+
+  <!-- EGYPT INFO TAB -->
+  <div class='tab-content' id='egypt'>
+    <div class='egypt-sheet'>
+
+      <div class='egy-title-block'>
+        <h1 class='egy-title'>ANCIENT EGYPT</h1>
+        <p class='egy-subtitle'>Information Sheet &mdash; Grade 3</p>
+      </div>
+      <div class='egy-intro'>Read this sheet to find answers for your worksheets. Use simple words when you write!</div>
+
+      <div class='egy-section-head'>&#9632; Where Did They Live?</div>
+      <div class='egy-body'>
+        <p>The ancient Egyptians lived in <strong>Egypt</strong>, in the continent of <strong>Africa</strong>.</p>
+        <p>They lived near the <strong>Nile River</strong>. The rest of the land was hot, dry desert.</p>
+        <p>The Nile River gave them water, food, and rich soil to grow plants.</p>
+      </div>
+
+      <div class='egy-section-head'>&#9998;&#9632; Nile River &mdash; Fill in the Blank Answers</div>
+      <div class='egy-body'>
+        <p class='egy-wordbank'>Word Bank: irrigate | fishing | desert | Nile | silt | flood</p>
+        <table class='egy-table'>
+          <thead><tr><th>Blank</th><th>Answer</th></tr></thead>
+          <tbody>
+            <tr><td>...the _____ River</td><td><strong>Nile</strong></td></tr>
+            <tr><td>...hot and dry _____ climate</td><td><strong>desert</strong></td></tr>
+            <tr><td>...bathing, _____</td><td><strong>fishing</strong></td></tr>
+            <tr><td>...farm and _____ their crops</td><td><strong>irrigate</strong></td></tr>
+            <tr><td>Every year the Nile would _____</td><td><strong>flood</strong></td></tr>
+            <tr><td>...thick layer of soil called _____</td><td><strong>silt</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class='egy-section-head'>&#9632;&#9632; What Was the Climate Like?</div>
+      <div class='egy-body'>
+        <p>Egypt was <strong>hot and dry</strong>. It did not rain much.</p>
+        <p>Most of Egypt was <strong>desert</strong>. It could get very, very hot.</p>
+        <p>Near the Nile River, the land was green and good for farming.</p>
+      </div>
+
+      <div class='egy-section-head'>&#9632; Natural Resources Egyptians Used</div>
+      <div class='egy-body'>
+        <p>Here are more than 3 natural resources:</p>
+        <table class='egy-table'>
+          <thead><tr><th>Resource</th><th>How They Used It</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Silt (rich soil)</strong></td><td>Left by the Nile floods. Used to grow food.</td></tr>
+            <tr><td><strong>Water from the Nile</strong></td><td>Used for drinking, bathing, and farming.</td></tr>
+            <tr><td><strong>Papyrus (a plant)</strong></td><td>Used to make paper, baskets, and sandals.</td></tr>
+            <tr><td><strong>Stone</strong></td><td>Used to build pyramids and temples.</td></tr>
+            <tr><td><strong>Mud and clay</strong></td><td>Used to make bricks for houses.</td></tr>
+            <tr><td><strong>Fish</strong></td><td>Caught from the Nile. Used for food.</td></tr>
+            <tr><td><strong>Gold</strong></td><td>Found in the desert. Used for jewelry.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class='egy-section-head'>&#9632; Why Was the Nile River Important?</div>
+      <div class='egy-body'>
+        <p>The Nile River helped Egyptians survive. Here is how:</p>
+        <ul class='egy-list'>
+          <li>It gave them <strong>water</strong> to drink and cook with.</li>
+          <li>They used it to <strong>water their crops</strong> (called irrigation).</li>
+          <li>Every year it flooded and left behind <strong>rich soil</strong> to grow food.</li>
+          <li>They used it to <strong>travel</strong> and move things by boat.</li>
+          <li>They caught <strong>fish</strong> from it for food.</li>
+          <li>Plants like <strong>papyrus</strong> grew along it and were used to make paper.</li>
+        </ul>
+      </div>
+
+      <div class='egy-section-head'>&#9632; Foods They Ate</div>
+      <div class='egy-body'>
+        <ul class='egy-list'>
+          <li><strong>Bread</strong> &mdash; the most important food. Made from wheat.</li>
+          <li><strong>Beer</strong> &mdash; made from grain. Almost everyone drank it.</li>
+          <li><strong>Fish</strong> &mdash; caught from the Nile River.</li>
+          <li><strong>Vegetables</strong> &mdash; onions, garlic, and lentils.</li>
+          <li><strong>Fruit</strong> &mdash; figs, dates, and grapes.</li>
+          <li><strong>Meat</strong> &mdash; rich people ate beef and duck. Poor people ate less meat.</li>
+        </ul>
+      </div>
+
+      <div class='egy-section-head'>&#9632; Pyramids &mdash; True or False? (Color the TRUE ones)</div>
+      <div class='egy-body'>
+        <p>Here are all 6 statements. Color only the TRUE ones!</p>
+        <table class='egy-table'>
+          <thead><tr><th>Statement</th><th>Answer</th></tr></thead>
+          <tbody>
+            <tr class='egy-true'><td>Egyptians worshipped many different gods.</td><td><strong>TRUE &#9632;</strong></td></tr>
+            <tr class='egy-false'><td>Pyramids were built as houses for pharaohs.</td><td><strong>FALSE &#9632;</strong><br/><em>(They were tombs &mdash; burial places!)</em></td></tr>
+            <tr class='egy-false'><td>Embalmers used calcium to dry out bodies.</td><td><strong>FALSE &#9632;</strong><br/><em>(They used NATRON, a type of salt.)</em></td></tr>
+            <tr class='egy-true'><td>A sarcophagus holds a mummified person.</td><td><strong>TRUE &#9632;</strong></td></tr>
+            <tr class='egy-true'><td>Bodies were preserved through mummification.</td><td><strong>TRUE &#9632;</strong></td></tr>
+            <tr class='egy-true'><td>Pyramids had secret chambers to stop robbers.</td><td><strong>TRUE &#9632;</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class='egy-section-head'>&#9632;&#9632; What Were Pyramids Used For?</div>
+      <div class='egy-body'>
+        <p>Pyramids were <strong>burial places</strong> for pharaohs (the kings of Egypt).</p>
+        <p>Egyptians believed in life after death. They wanted to keep the pharaoh&rsquo;s body safe.</p>
+        <ul class='egy-list'>
+          <li>The mummy of the pharaoh was kept inside.</li>
+          <li>Treasures and food were stored inside for the afterlife.</li>
+          <li>The pyramid shape pointed up to the sky and the gods.</li>
+          <li>Secret rooms helped keep robbers away.</li>
+        </ul>
+      </div>
+
+      <div class='egy-section-head'>&#9632;&#9632; Religion and Mummification</div>
+      <div class='egy-body'>
+        <p class='egy-subhead'>Why did pharaohs want big pyramids?</p>
+        <p>Pharaohs thought they were gods. They wanted a big, strong pyramid to be their home after death. A big pyramid showed how powerful they were.</p>
+        <p class='egy-subhead'>How did embalmers dry out the body?</p>
+        <ul class='egy-list'>
+          <li>First, they took out the organs (like the stomach and lungs).</li>
+          <li>They packed the body with <strong>natron</strong> &mdash; a salty powder that soaks up water.</li>
+          <li>The body was left for <strong>40 days</strong> to dry out.</li>
+          <li>Then they wrapped it in cloth called <strong>linen</strong>. Now it was a mummy!</li>
+        </ul>
+        <p class='egy-subhead'>What is a sarcophagus? What goes inside?</p>
+        <p>A sarcophagus is a big, decorated <strong>stone coffin</strong>. It held the mummy safe.</p>
+        <p>Inside you would find:</p>
+        <ul class='egy-list'>
+          <li>The mummy of the pharaoh.</li>
+          <li>Jars called <strong>canopic jars</strong> that held the organs.</li>
+          <li>Jewelry, food, and treasures for the afterlife.</li>
+          <li>A scroll with special spells to help the soul.</li>
+        </ul>
+      </div>
+
+      <div class='egy-section-head'>&#9632; Culture and Daily Life</div>
+      <div class='egy-body'>
+        <p>Pick any 4 facts for your worksheet:</p>
+        <table class='egy-table'>
+          <thead><tr><th>Topic</th><th>Fact</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Clothing</strong></td><td>Egyptians wore light white clothes because it was very hot.</td></tr>
+            <tr><td><strong>Houses</strong></td><td>Most people lived in small mud brick houses with flat roofs.</td></tr>
+            <tr><td><strong>Food</strong></td><td>They ate bread, fish, and vegetables every day.</td></tr>
+            <tr><td><strong>Gods</strong></td><td>Egyptians believed in many gods. They prayed every day.</td></tr>
+            <tr><td><strong>Writing</strong></td><td>They used pictures to write. This is called hieroglyphics.</td></tr>
+            <tr><td><strong>Farming</strong></td><td>Most people were farmers. They grew wheat near the Nile.</td></tr>
+            <tr><td><strong>Music</strong></td><td>People loved music and dancing at celebrations.</td></tr>
+            <tr><td><strong>Families</strong></td><td>Families were very important. Women could own things and go to court.</td></tr>
+          </tbody>
+        </table>
+        <p class='egy-subhead'>Three words to describe life in ancient Egypt:</p>
+        <div class='egy-word-grid'>
+          <span>Hot</span><span>Busy</span><span>Religious</span><span>Farming</span>
+          <span>Powerful</span><span>Ancient</span><span>Creative</span><span>River-based</span>
+        </div>
+      </div>
+
+      <div class='egy-section-head'>&#9632; Egypt &mdash; Country Research Sheet</div>
+      <div class='egy-body'>
+        <span class='egy-italic-note'>This part is for the new worksheet pages about Egypt today.</span>
+        <p class='egy-subhead'>Basic Facts:</p>
+        <table class='egy-table egy-facts-table'>
+          <tbody>
+            <tr><td><strong>Continent:</strong></td><td>Africa</td></tr>
+            <tr><td><strong>Population:</strong></td><td>About 105 million people</td></tr>
+            <tr><td><strong>Capital City:</strong></td><td>Cairo</td></tr>
+            <tr><td><strong>Language:</strong></td><td>Arabic</td></tr>
+          </tbody>
+        </table>
+        <p class='egy-subhead'>Food in Egypt:</p>
+        <ul class='egy-list'>
+          <li><strong>Bread (Aish)</strong> &mdash; flat bread eaten at every meal.</li>
+          <li><strong>Koshari</strong> &mdash; rice, lentils, and pasta mixed together.</li>
+          <li><strong>Falafel</strong> &mdash; small fried balls made from beans.</li>
+          <li><strong>Fava beans (Ful)</strong> &mdash; a popular breakfast food.</li>
+          <li><strong>Dates and figs</strong> &mdash; sweet fruits grown in Egypt.</li>
+        </ul>
+        <p class='egy-subhead'>The Flag:</p>
+        <p>The Egyptian flag has 3 stripes: <strong>Red</strong>, <strong>White</strong>, and <strong>Black</strong>. In the middle there is a golden eagle. The eagle is called the Eagle of Saladin.</p>
+        <p class='egy-subhead'>Famous Landmarks:</p>
+        <ul class='egy-list'>
+          <li><strong>The Great Pyramid of Giza</strong> &mdash; one of the oldest and biggest buildings in the world.</li>
+          <li><strong>The Sphinx</strong> &mdash; a giant statue with a lion body and human head.</li>
+          <li><strong>The Valley of the Kings</strong> &mdash; a place with many royal tombs.</li>
+          <li><strong>Karnak Temple</strong> &mdash; a very large ancient temple.</li>
+        </ul>
+        <p class='egy-subhead'>Holidays and Traditions:</p>
+        <ul class='egy-list'>
+          <li><strong>Sham el-Nessim</strong> &mdash; a spring holiday. Families go outside and share food.</li>
+          <li><strong>Eid al-Fitr</strong> &mdash; a big holiday after a month of fasting. Families eat together and give gifts.</li>
+          <li><strong>Ramadan</strong> &mdash; a holy month. People fast during the day and eat together at night.</li>
+        </ul>
+        <p class='egy-subhead'>Famous People:</p>
+        <ul class='egy-list'>
+          <li><strong>Cleopatra</strong> &mdash; a powerful queen of ancient Egypt.</li>
+          <li><strong>Ramesses II</strong> &mdash; a very strong pharaoh who built many temples.</li>
+          <li><strong>King Tutankhamun (King Tut)</strong> &mdash; a young pharaoh. His tomb was found in 1922.</li>
+          <li><strong>Mohamed Salah</strong> &mdash; a famous Egyptian soccer player today.</li>
+        </ul>
+        <p class='egy-subhead'>Climate:</p>
+        <p>Egypt is <strong>hot and dry</strong>. Most of Egypt is desert. It does not rain much. Summers are very hot. Winters are warm and cool at night.</p>
+        <p class='egy-subhead'>Fun Facts:</p>
+        <ul class='egy-list'>
+          <li>Egyptians invented the <strong>365-day calendar</strong> &mdash; the same one we use today!</li>
+          <li>Cats were special in ancient Egypt. People treated them like sacred animals.</li>
+          <li>Egyptians wrote using pictures called <strong>hieroglyphics</strong>.</li>
+          <li>The Great Pyramid was the tallest building in the world for over 3,000 years.</li>
+          <li>Both men and women in ancient Egypt wore <strong>eye makeup</strong>.</li>
+        </ul>
+      </div>
+
+      <div class='egy-footer'>&#9998;&#9632; Use this sheet to find your answers &mdash; but write them in your OWN words!</div>
+
+    </div>
+  </div><!-- /egypt -->
 
   <script>
     function clearAnswers() {

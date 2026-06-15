@@ -33,8 +33,9 @@
       var data = await res.json();
       var content = data.choices && data.choices[0] && data.choices[0].message ? data.choices[0].message.content : null;
       var provider = res.headers.get('X-Routed-Via') || '';
-      return { content: content, provider: provider };
-    } catch (e) { return { content: null, provider: '' }; }
+      var errDetail = (!content && data.error) ? (data.error.message || JSON.stringify(data.error)) : null;
+      return { content: content, provider: provider, error: errDetail };
+    } catch (e) { return { content: null, provider: '', error: e.message }; }
   }
 
   // ===== INJECT CSS =====
@@ -261,7 +262,7 @@
       ])).then(function (result) {
         typing.remove();
         if (result.content) { history.push({ role: 'assistant', content: result.content }); addMsg('bot', result.content); lastReply = result.content; showProvider(result.provider); }
-        else { addMsg('bot', 'Sorry, try again!'); }
+        else { addMsg('bot', result.error ? 'Oops! ' + result.error : 'Sorry, try again!'); }
       });
     });
 
@@ -319,7 +320,7 @@
           confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
         }
       } else {
-        addMsg('bot', 'Sorry, I couldn\'t connect right now. Please try again!');
+        addMsg('bot', result.error ? 'Oops! ' + result.error : 'Sorry, I couldn\'t connect right now. Please try again!');
       }
     }
 

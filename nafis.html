@@ -61,6 +61,12 @@
     .math-prob input:focus { border-color: #1a1a1a; outline: none; }
     .math-word { font-family: 'Merriweather', serif; font-size: 15px; line-height: 1.7; margin-bottom: 16px; padding: 16px; background: #fafaf8; border-radius: 4px; border: 1px solid #e2e0db; }
     .math-word input { width: 80px; padding: 6px 8px; border: 1.5px solid #bbb; border-radius: 3px; font-family: 'Merriweather Sans', sans-serif; font-size: 14px; text-align: center; }
+    input.correct { border-color: #27ae60 !important; background: #f0fff4 !important; color: #1a6b2e !important; }
+    input.wrong { border-color: #c0392b !important; background: #fff5f5 !important; color: #c0392b !important; }
+    .check-wrap { text-align: center; margin: 24px 0 0; }
+    .check-btn { background: #1a1a1a; color: #fff; border: none; font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; padding: 12px 32px; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
+    .check-btn:hover { background: #333; }
+    .math-score { display: block; font-family: 'Merriweather Sans', sans-serif; font-size: 13px; font-weight: 600; color: #555; margin-top: 12px; }
     @media print {
       .tab-bar, .reset-bar { display: none; }
       .tab-content { display: block !important; }
@@ -203,22 +209,26 @@
       <div class="ws-topbar"><span class="ws-number">Math Drill 01</span></div>
       <p class="section-label">Part 1 &mdash; Solve</p>
       <div class="math-grid">
-        <div class="math-prob">1.  24 + 17 = <input type="text" data-save="m1-1" placeholder="?" /></div>
-        <div class="math-prob">2.  56 &minus; 29 = <input type="text" data-save="m1-2" placeholder="?" /></div>
-        <div class="math-prob">3.  38 + 45 = <input type="text" data-save="m1-3" placeholder="?" /></div>
-        <div class="math-prob">4.  72 &minus; 38 = <input type="text" data-save="m1-4" placeholder="?" /></div>
-        <div class="math-prob">5.  19 + 56 = <input type="text" data-save="m1-5" placeholder="?" /></div>
-        <div class="math-prob">6.  81 &minus; 47 = <input type="text" data-save="m1-6" placeholder="?" /></div>
-        <div class="math-prob">7.  63 + 28 = <input type="text" data-save="m1-7" placeholder="?" /></div>
-        <div class="math-prob">8.  90 &minus; 53 = <input type="text" data-save="m1-8" placeholder="?" /></div>
-        <div class="math-prob">9.  47 + 35 = <input type="text" data-save="m1-9" placeholder="?" /></div>
-        <div class="math-prob">10. 64 &minus; 19 = <input type="text" data-save="m1-10" placeholder="?" /></div>
+        <div class="math-prob">1.  24 + 17 = <input type="text" data-save="m1-1" data-answer="41" placeholder="?" /></div>
+        <div class="math-prob">2.  56 &minus; 29 = <input type="text" data-save="m1-2" data-answer="27" placeholder="?" /></div>
+        <div class="math-prob">3.  38 + 45 = <input type="text" data-save="m1-3" data-answer="83" placeholder="?" /></div>
+        <div class="math-prob">4.  72 &minus; 38 = <input type="text" data-save="m1-4" data-answer="34" placeholder="?" /></div>
+        <div class="math-prob">5.  19 + 56 = <input type="text" data-save="m1-5" data-answer="75" placeholder="?" /></div>
+        <div class="math-prob">6.  81 &minus; 47 = <input type="text" data-save="m1-6" data-answer="34" placeholder="?" /></div>
+        <div class="math-prob">7.  63 + 28 = <input type="text" data-save="m1-7" data-answer="91" placeholder="?" /></div>
+        <div class="math-prob">8.  90 &minus; 53 = <input type="text" data-save="m1-8" data-answer="37" placeholder="?" /></div>
+        <div class="math-prob">9.  47 + 35 = <input type="text" data-save="m1-9" data-answer="82" placeholder="?" /></div>
+        <div class="math-prob">10. 64 &minus; 19 = <input type="text" data-save="m1-10" data-answer="45" placeholder="?" /></div>
       </div>
       <div class="ws-rule"></div>
       <p class="section-label">Part 2 &mdash; Word Problems</p>
-      <div class="math-word">11. Maria has 35 stickers. Her friend gives her 28 more. How many stickers does Maria have now? <input type="text" data-save="m1-11" placeholder="?" /></div>
-      <div class="math-word">12. A bus has 72 seats. 38 seats are filled. How many seats are empty? <input type="text" data-save="m1-12" placeholder="?" /></div>
-      <div class="math-word">13. Jamal buys a snack for $1.25. He pays with $2.00. How much change does he get? <input type="text" data-save="m1-13" placeholder="?" /></div>
+      <div class="math-word">11. Maria has 35 stickers. Her friend gives her 28 more. How many stickers does Maria have now? <input type="text" data-save="m1-11" data-answer="63" placeholder="?" /></div>
+      <div class="math-word">12. A bus has 72 seats. 38 seats are filled. How many seats are empty? <input type="text" data-save="m1-12" data-answer="34" placeholder="?" /></div>
+      <div class="math-word">13. Jamal buys a snack for $1.25. He pays with $2.00. How much change does he get? <input type="text" data-save="m1-13" data-answer="0.75" placeholder="?" /></div>
+      <div class="check-wrap">
+        <button class="check-btn" onclick="checkMath()">Check Answers</button>
+        <span class="math-score" id="math-score"></span>
+      </div>
     </section>
     <div class="reset-bar">
       <button type="button" class="reset-btn" data-reset="math">Reset Math Practice</button>
@@ -264,6 +274,20 @@
   </div>
 
   <script>
+    function checkMath() {
+      var inputs = document.querySelectorAll('#math input[data-answer]');
+      var correct = 0;
+      inputs.forEach(function(inp) {
+        var user = inp.value.trim().replace(/^\$/, '').replace(/,/g, '').toLowerCase();
+        var ans = (inp.dataset.answer || '').trim().replace(/^\$/, '').replace(/,/g, '').toLowerCase();
+        inp.classList.remove('correct', 'wrong');
+        if (!user) return;
+        if (user === ans) { inp.classList.add('correct'); correct++; }
+        else { inp.classList.add('wrong'); }
+      });
+      var sc = document.getElementById('math-score');
+      if (sc) sc.textContent = correct + ' / ' + inputs.length + ' correct';
+    }
     const NS = 'nafis';
     function clearAnswers() {
       if (!confirm('Clear all your saved answers on this page?')) return;

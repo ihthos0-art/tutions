@@ -56,6 +56,12 @@
     .math-prob input:focus { border-color: #1a1a1a; outline: none; }
     .math-word { font-family: 'Merriweather', serif; font-size: 15px; line-height: 1.7; margin-bottom: 16px; padding: 16px; background: #fafaf8; border-radius: 4px; border: 1px solid #e2e0db; }
     .math-word input { width: 80px; padding: 6px 8px; border: 1.5px solid #bbb; border-radius: 3px; font-family: 'Merriweather Sans', sans-serif; font-size: 14px; text-align: center; }
+    input.correct { border-color: #27ae60 !important; background: #f0fff4 !important; color: #1a6b2e !important; }
+    input.wrong { border-color: #c0392b !important; background: #fff5f5 !important; color: #c0392b !important; }
+    .check-wrap { text-align: center; margin: 24px 0 0; }
+    .check-btn { background: #1a1a1a; color: #fff; border: none; font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; padding: 12px 32px; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
+    .check-btn:hover { background: #333; }
+    .math-score { display: block; font-family: 'Merriweather Sans', sans-serif; font-size: 13px; font-weight: 600; color: #555; margin-top: 12px; }
 
     @media (max-width: 540px) {
       .ws-card { padding: 32px 20px 40px; }
@@ -167,25 +173,29 @@
           <span class="formula-label">Part 1 &mdash; Solve</span>
         </div>
         <div class="math-grid">
-          <div class="math-prob">1.  6 &times; 7 = <input type="text" data-save="m1-1" placeholder="?" /></div>
-          <div class="math-prob">2.  48 &divide; 6 = <input type="text" data-save="m1-2" placeholder="?" /></div>
-          <div class="math-prob">3.  8 &times; 9 = <input type="text" data-save="m1-3" placeholder="?" /></div>
-          <div class="math-prob">4.  72 &divide; 8 = <input type="text" data-save="m1-4" placeholder="?" /></div>
-          <div class="math-prob">5.  7 &times; 7 = <input type="text" data-save="m1-5" placeholder="?" /></div>
-          <div class="math-prob">6.  54 &divide; 9 = <input type="text" data-save="m1-6" placeholder="?" /></div>
-          <div class="math-prob">7.  9 &times; 4 = <input type="text" data-save="m1-7" placeholder="?" /></div>
-          <div class="math-prob">8.  63 &divide; 7 = <input type="text" data-save="m1-8" placeholder="?" /></div>
-          <div class="math-prob">9.  5 &times; 8 = <input type="text" data-save="m1-9" placeholder="?" /></div>
-          <div class="math-prob">10. 36 &divide; 4 = <input type="text" data-save="m1-10" placeholder="?" /></div>
+          <div class="math-prob">1.  6 &times; 7 = <input type="text" data-save="m1-1" data-answer="42" placeholder="?" /></div>
+          <div class="math-prob">2.  48 &divide; 6 = <input type="text" data-save="m1-2" data-answer="8" placeholder="?" /></div>
+          <div class="math-prob">3.  8 &times; 9 = <input type="text" data-save="m1-3" data-answer="72" placeholder="?" /></div>
+          <div class="math-prob">4.  72 &divide; 8 = <input type="text" data-save="m1-4" data-answer="9" placeholder="?" /></div>
+          <div class="math-prob">5.  7 &times; 7 = <input type="text" data-save="m1-5" data-answer="49" placeholder="?" /></div>
+          <div class="math-prob">6.  54 &divide; 9 = <input type="text" data-save="m1-6" data-answer="6" placeholder="?" /></div>
+          <div class="math-prob">7.  9 &times; 4 = <input type="text" data-save="m1-7" data-answer="36" placeholder="?" /></div>
+          <div class="math-prob">8.  63 &divide; 7 = <input type="text" data-save="m1-8" data-answer="9" placeholder="?" /></div>
+          <div class="math-prob">9.  5 &times; 8 = <input type="text" data-save="m1-9" data-answer="40" placeholder="?" /></div>
+          <div class="math-prob">10. 36 &divide; 4 = <input type="text" data-save="m1-10" data-answer="9" placeholder="?" /></div>
         </div>
       </div>
       <div class="ws-section">
         <div class="section-header">
           <span class="formula-label">Part 2 &mdash; Word Problems</span>
         </div>
-        <div class="math-word">11. A box holds 8 crayons. How many crayons are in 7 boxes? <input type="text" data-save="m1-11" placeholder="?" /></div>
-        <div class="math-word">12. There are 45 students divided into 5 equal groups. How many students are in each group? <input type="text" data-save="m1-12" placeholder="?" /></div>
-        <div class="math-word">13. A bakery makes 6 trays of cookies. Each tray has 9 cookies. How many cookies total? <input type="text" data-save="m1-13" placeholder="?" /></div>
+        <div class="math-word">11. A box holds 8 crayons. How many crayons are in 7 boxes? <input type="text" data-save="m1-11" data-answer="56" placeholder="?" /></div>
+        <div class="math-word">12. There are 45 students divided into 5 equal groups. How many students are in each group? <input type="text" data-save="m1-12" data-answer="9" placeholder="?" /></div>
+        <div class="math-word">13. A bakery makes 6 trays of cookies. Each tray has 9 cookies. How many cookies total? <input type="text" data-save="m1-13" data-answer="54" placeholder="?" /></div>
+        <div class="check-wrap">
+          <button class="check-btn" onclick="checkMath()">Check Answers</button>
+          <span class="math-score" id="math-score"></span>
+        </div>
       </div>
     </div>
     <div class="reset-bar">
@@ -231,6 +241,20 @@
   </div>
 
   <script>
+    function checkMath() {
+      var inputs = document.querySelectorAll('#math input[data-answer]');
+      var correct = 0;
+      inputs.forEach(function(inp) {
+        var user = inp.value.trim().replace(/^\$/, '').replace(/,/g, '').toLowerCase();
+        var ans = (inp.dataset.answer || '').trim().replace(/^\$/, '').replace(/,/g, '').toLowerCase();
+        inp.classList.remove('correct', 'wrong');
+        if (!user) return;
+        if (user === ans) { inp.classList.add('correct'); correct++; }
+        else { inp.classList.add('wrong'); }
+      });
+      var sc = document.getElementById('math-score');
+      if (sc) sc.textContent = correct + ' / ' + inputs.length + ' correct';
+    }
     const NS = 'sameer';
     document.querySelectorAll('input[data-save]').forEach(el => {
       const key = NS + ':' + el.dataset.save;

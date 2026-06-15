@@ -1,25 +1,63 @@
-const GROQ_MODELS = [
-  'llama-3.3-70b-versatile',
-  'llama-3.1-8b-instant',
-  'gemma2-9b-it'
+// Provider chain — tries each in order until one succeeds
+// All use OpenAI-compatible /chat/completions format
+const PROVIDERS = [
+  {
+    name: 'groq',
+    url: 'https://api.groq.com/openai/v1/chat/completions',
+    model: 'llama-3.3-70b-versatile',
+    keyEnv: 'GROQ_API_KEY'
+  },
+  {
+    name: 'groq-fast',
+    url: 'https://api.groq.com/openai/v1/chat/completions',
+    model: 'llama-3.1-8b-instant',
+    keyEnv: 'GROQ_API_KEY'
+  },
+  {
+    name: 'cerebras',
+    url: 'https://api.cerebras.ai/v1/chat/completions',
+    model: 'llama-3.3-70b',
+    keyEnv: 'CEREBRAS_API_KEY'
+  },
+  {
+    name: 'mistral',
+    url: 'https://api.mistral.ai/v1/chat/completions',
+    model: 'mistral-small-latest',
+    keyEnv: 'MISTRAL_API_KEY'
+  },
+  {
+    name: 'openrouter',
+    url: 'https://openrouter.ai/api/v1/chat/completions',
+    model: 'meta-llama/llama-3.1-8b-instruct:free',
+    keyEnv: 'OPENROUTER_API_KEY'
+  },
+  {
+    name: 'cohere',
+    url: 'https://api.cohere.ai/compatibility/v1/chat/completions',
+    model: 'command-r-plus',
+    keyEnv: 'COHERE_API_KEY'
+  }
 ];
 
-async function callGroq(apiKey, model, body) {
-  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+async function tryProvider(provider, apiKey, body) {
+  const res = await fetch(provider.url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + apiKey
+      'Authorization': 'Bearer ' + apiKey,
+      'HTTP-Referer': 'https://tutions.ihthos0-art.workers.dev',
+      'X-Title': 'NYC Tutoring Center'
     },
     body: JSON.stringify({
-      model: model,
+      model: provider.model,
       messages: body.messages,
       temperature: body.temperature || 0.7,
       max_tokens: body.max_tokens || 1024
     })
   });
   const data = await res.json();
-  return { ok: res.ok, status: res.status, data };
+  const ok = res.ok && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+  return { ok, data, provider: provider.name + '/' + provider.model };
 }
 
 export default {
@@ -27,29 +65,32 @@ export default {
     const url = new URL(request.url);
 
     if (url.pathname === '/api/chat' && request.method === 'POST') {
-      const apiKey = env.GROQ_API_KEY;
-      if (!apiKey) {
-        return new Response(JSON.stringify({ error: 'API key not configured' }), {
-          status: 500,
-          headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
-        });
-      }
-
       try {
         const body = await request.json();
-        let lastError = null;
+        const errors = [];
 
-        for (const model of GROQ_MODELS) {
-          const { ok, status, data } = await callGroq(apiKey, model, body);
-          if (ok && data.choices && data.choices[0]) {
-            return new Response(JSON.stringify(data), {
-              headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
-            });
+        for (const provider of PROVIDERS) {
+          const apiKey = env[provider.keyEnv];
+          if (!apiKey) continue;
+
+          try {
+            const { ok, data, provider: providerName } = await tryProvider(provider, apiKey, body);
+            if (ok) {
+              return new Response(JSON.stringify(data), {
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Access-Control-Allow-Origin': '*',
+                  'X-Routed-Via': providerName
+                }
+              });
+            }
+            errors.push({ provider: providerName, error: data.error || 'no choices' });
+          } catch (e) {
+            errors.push({ provider: provider.name, error: e.message });
           }
-          lastError = { model, status, error: data.error || data };
         }
 
-        return new Response(JSON.stringify({ error: 'All models failed', detail: lastError }), {
+        return new Response(JSON.stringify({ error: 'All providers failed', details: errors }), {
           status: 502,
           headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
         });

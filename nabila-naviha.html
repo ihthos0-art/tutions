@@ -260,18 +260,22 @@
       </div>
       <p class="ws-label">12 Problems &nbsp;&mdash;&nbsp; Numbers 1&ndash;10</p>
       <div class="math-grid">
-        <div class="math-prob"><span class="problem-eq">1 + 2 =</span><input type="text" data-save="m1-1" placeholder="?" /></div>
-        <div class="math-prob"><span class="problem-eq">3 + 4 =</span><input type="text" data-save="m1-2" placeholder="?" /></div>
-        <div class="math-prob"><span class="problem-eq">2 + 5 =</span><input type="text" data-save="m1-3" placeholder="?" /></div>
-        <div class="math-prob"><span class="problem-eq">6 + 1 =</span><input type="text" data-save="m1-4" placeholder="?" /></div>
-        <div class="math-prob"><span class="problem-eq">4 + 3 =</span><input type="text" data-save="m1-5" placeholder="?" /></div>
-        <div class="math-prob"><span class="problem-eq">5 + 2 =</span><input type="text" data-save="m1-6" placeholder="?" /></div>
-        <div class="math-prob"><span class="problem-eq">7 + 2 =</span><input type="text" data-save="m1-7" placeholder="?" /></div>
-        <div class="math-prob"><span class="problem-eq">3 + 5 =</span><input type="text" data-save="m1-8" placeholder="?" /></div>
-        <div class="math-prob"><span class="problem-eq">8 + 1 =</span><input type="text" data-save="m1-9" placeholder="?" /></div>
-        <div class="math-prob"><span class="problem-eq">2 + 6 =</span><input type="text" data-save="m1-10" placeholder="?" /></div>
-        <div class="math-prob"><span class="problem-eq">5 + 4 =</span><input type="text" data-save="m1-11" placeholder="?" /></div>
-        <div class="math-prob"><span class="problem-eq">9 + 0 =</span><input type="text" data-save="m1-12" placeholder="?" /></div>
+        <div class="math-prob"><span class="problem-eq">2 + 4 =</span><input type="text" data-save="m1-1" data-answer="6" placeholder="?" /></div>
+        <div class="math-prob"><span class="problem-eq">1 + 6 =</span><input type="text" data-save="m1-2" data-answer="7" placeholder="?" /></div>
+        <div class="math-prob"><span class="problem-eq">3 + 3 =</span><input type="text" data-save="m1-3" data-answer="6" placeholder="?" /></div>
+        <div class="math-prob"><span class="problem-eq">5 + 3 =</span><input type="text" data-save="m1-4" data-answer="8" placeholder="?" /></div>
+        <div class="math-prob"><span class="problem-eq">4 + 4 =</span><input type="text" data-save="m1-5" data-answer="8" placeholder="?" /></div>
+        <div class="math-prob"><span class="problem-eq">6 + 2 =</span><input type="text" data-save="m1-6" data-answer="8" placeholder="?" /></div>
+        <div class="math-prob"><span class="problem-eq">1 + 8 =</span><input type="text" data-save="m1-7" data-answer="9" placeholder="?" /></div>
+        <div class="math-prob"><span class="problem-eq">3 + 6 =</span><input type="text" data-save="m1-8" data-answer="9" placeholder="?" /></div>
+        <div class="math-prob"><span class="problem-eq">2 + 7 =</span><input type="text" data-save="m1-9" data-answer="9" placeholder="?" /></div>
+        <div class="math-prob"><span class="problem-eq">4 + 6 =</span><input type="text" data-save="m1-10" data-answer="10" placeholder="?" /></div>
+        <div class="math-prob"><span class="problem-eq">5 + 5 =</span><input type="text" data-save="m1-11" data-answer="10" placeholder="?" /></div>
+        <div class="math-prob"><span class="problem-eq">3 + 7 =</span><input type="text" data-save="m1-12" data-answer="10" placeholder="?" /></div>
+      </div>
+      <div class="check-row" style="margin-top:24px;">
+        <button class="check-btn" onclick="checkMathPractice()">Check Answers</button>
+        <span class="score-display" id="math-practice-score"></span>
       </div>
     </div>
     <div class="reset-bar">
@@ -285,26 +289,26 @@
     <div class="ws-card">
       <div class="ws-header">
         <p class="eyebrow">ELA Practice &nbsp;&middot;&nbsp; Grade 1</p>
-        <h1 class="ws-title">The Turtle Who Never Gave Up</h1>
+        <h1 class="ws-title">The Big Red Hat</h1>
         <p class="ws-meta">Nabila &amp; Naviha &nbsp;&middot;&nbsp; Read the story, then answer the questions below</p>
       </div>
       <p class="section-label">Read the story</p>
       <div class="passage-box">
-        <p>Theo was a small turtle who wanted to climb to the top of the big rock in the middle of the pond. Every day he tried, but the rock was too smooth and his feet would slip. The other animals told him to stop trying. But Theo just wiped off his shell and tried again.</p>
-        <p>One sunny morning, Theo found a rough, bumpy spot near the side of the rock. He pressed his feet in carefully and climbed slowly, one step at a time. At last, he reached the very top. The sun was warm and the whole pond sparkled below him. Theo smiled. He had never given up, and now he could see farther than he ever had before.</p>
+        <p>Max found a big red hat on the sidewalk. He put it on his head. But the hat was too big! It fell down over his eyes. He could not see. He walked into the couch. He walked into the door. He even sat on his dog Bingo by mistake!</p>
+        <p>Bingo was not hurt. He got up and grabbed the hat with his teeth. He pulled it right off Max&rsquo;s head. Max could see again! He started to laugh. Bingo wagged his tail. Max said, &ldquo;Good dog, Bingo!&rdquo; Then Max put the big red hat on Bingo instead. It fit just right. They went for a walk, and everyone who saw them smiled.</p>
       </div>
       <div class="ws-rule"></div>
-      <p class="section-label">Question 1 &mdash; What Did Theo Want?</p>
-      <p class="section-question">What did Theo want to do, and why was it hard? Write 1&ndash;2 sentences.</p>
-      <textarea class="summary-input" data-save="ela1-q1" rows="3" placeholder="Theo wanted to…"></textarea>
+      <p class="section-label">Question 1 &mdash; What Happened?</p>
+      <p class="section-question">What happened when Max put the hat on? Write 1&ndash;2 sentences.</p>
+      <textarea class="summary-input" data-save="ela1-q1" rows="3" placeholder="When Max put the hat on…"></textarea>
       <div class="ws-rule"></div>
-      <p class="section-label">Question 2 &mdash; How Did He Do It?</p>
-      <p class="section-question">How did Theo finally reach the top of the rock? Write 2 sentences.</p>
-      <textarea class="summary-input" data-save="ela1-q2" rows="3" placeholder="Theo found…"></textarea>
+      <p class="section-label">Question 2 &mdash; How Did Bingo Help?</p>
+      <p class="section-question">How did Bingo help Max? Write 1&ndash;2 sentences.</p>
+      <textarea class="summary-input" data-save="ela1-q2" rows="3" placeholder="Bingo helped Max by…"></textarea>
       <div class="ws-rule"></div>
-      <p class="section-label">Question 3 &mdash; The Lesson</p>
-      <p class="section-question">What lesson does this story teach? Write one sentence.</p>
-      <textarea class="summary-input" data-save="ela1-conn" rows="3" placeholder="This story teaches us that…"></textarea>
+      <p class="section-label">Question 3 &mdash; How Did Max Feel?</p>
+      <p class="section-question">How did Max feel at the end of the story? Write one sentence.</p>
+      <textarea class="summary-input" data-save="ela1-conn" rows="3" placeholder="At the end, Max felt…"></textarea>
     </div>
     <div class="reset-bar">
       <button type="button" class="reset-btn" data-reset="ela">Reset ELA Practice</button>
@@ -499,6 +503,30 @@
         localStorage.removeItem(NS + ':' + ta.dataset.save);
       });
     });
+
+    // ---- MATH PRACTICE TAB SAVE ----
+    document.querySelectorAll('#math input[data-save]').forEach(el => {
+      const key = NS + ':mp-' + el.dataset.save;
+      const saved = localStorage.getItem(key);
+      if (saved) el.value = saved;
+      el.addEventListener('input', () => localStorage.setItem(key, el.value));
+    });
+
+    // ---- MATH PRACTICE TAB CHECK ----
+    function checkMathPractice() {
+      const inputs = document.querySelectorAll('#math input[data-answer]');
+      let correct = 0;
+      inputs.forEach(inp => {
+        inp.classList.remove('correct', 'wrong');
+        if (!inp.value.trim()) return;
+        if (inp.value.trim() === inp.dataset.answer) { inp.classList.add('correct'); correct++; }
+        else inp.classList.add('wrong');
+      });
+      const sc = document.getElementById('math-practice-score');
+      const total = inputs.length;
+      sc.textContent = correct === total ? correct + ' / ' + total + ' — Perfect!' : correct + ' / ' + total + ' correct';
+      sc.className = 'score-display' + (correct === total ? ' perfect' : '');
+    }
 
     // ---- READING (summary textarea) ----
     document.querySelectorAll('#assigned textarea[data-save]').forEach(ta => {

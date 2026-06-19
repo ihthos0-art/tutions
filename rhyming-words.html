@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Words That Rhyme</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Merriweather+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { background: #e8e8e6; font-family: 'Merriweather', Georgia, serif; color: #1a1a1a; min-height: 100%; }
+    body { max-width: 960px; margin: 0 auto; padding: 32px 20px 80px; }
+
+    .back-nav { margin-bottom: 32px; }
+    .back-btn { font-family: 'Merriweather Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; padding: 8px 20px; border-radius: 3px; border: 1.5px solid #1a1a1a; background: transparent; color: #1a1a1a; cursor: pointer; text-decoration: none; transition: background 0.2s, color 0.2s; }
+    .back-btn:hover { background: #1a1a1a; color: #fff; }
+
+    .page-header { text-align: center; margin-bottom: 48px; }
+    .page-header .eyebrow { font-family: 'Merriweather Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #777; margin-bottom: 10px; }
+    .page-header h1 { font-size: clamp(26px, 4vw, 38px); font-weight: 700; color: #1a1a1a; line-height: 1.2; }
+    .page-header .sub { margin-top: 8px; font-size: 14px; font-style: italic; color: #666; }
+
+    /* Category sections */
+    .category { margin-bottom: 44px; }
+    .category-header { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+    .category-icon { font-size: 22px; line-height: 1; }
+    .category-title { font-family: 'Merriweather Sans', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #1a1a1a; }
+    .category-line { flex: 1; height: 2px; }
+
+    /* Color accent per category */
+    .cat-simple   .category-line { background: #6c8ebf; }
+    .cat-fun      .category-line { background: #e08a2e; }
+    .cat-multi    .category-line { background: #9b59b6; }
+    .cat-nature   .category-line { background: #27ae60; }
+    .cat-animal   .category-line { background: #e74c3c; }
+    .cat-object   .category-line { background: #16a085; }
+    .cat-action   .category-line { background: #2980b9; }
+    .cat-silly    .category-line { background: #e91e8c; }
+
+    /* Rhyme group grid */
+    .rhyme-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+
+    .rhyme-card { background: #fff; border: 1.5px solid #ddd; border-radius: 6px; padding: 16px 18px; transition: box-shadow 0.18s, transform 0.12s; }
+    .rhyme-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); transform: translateY(-2px); }
+
+    .cat-simple  .rhyme-card { border-top: 3px solid #6c8ebf; }
+    .cat-fun     .rhyme-card { border-top: 3px solid #e08a2e; }
+    .cat-multi   .rhyme-card { border-top: 3px solid #9b59b6; }
+    .cat-nature  .rhyme-card { border-top: 3px solid #27ae60; }
+    .cat-animal  .rhyme-card { border-top: 3px solid #e74c3c; }
+    .cat-object  .rhyme-card { border-top: 3px solid #16a085; }
+    .cat-action  .rhyme-card { border-top: 3px solid #2980b9; }
+    .cat-silly   .rhyme-card { border-top: 3px solid #e91e8c; }
+
+    .rhyme-words { display: flex; flex-direction: column; gap: 4px; }
+    .rhyme-word { font-family: 'Merriweather Sans', sans-serif; font-size: 15px; font-weight: 700; color: #1a1a1a; letter-spacing: 0.02em; }
+    .rhyme-sep { display: inline-block; margin: 0 3px; color: #bbb; font-weight: 400; }
+
+    .word-row { font-family: 'Merriweather Sans', sans-serif; font-size: 15px; font-weight: 700; color: #1a1a1a; line-height: 1.8; }
+    .word-row span { display: inline-block; margin-right: 10px; }
+
+    /* Print */
+    @media print {
+      .back-nav { display: none; }
+      html { background: #fff; }
+      body { padding: 0; max-width: 100%; }
+      .rhyme-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+      .rhyme-card:hover { transform: none; }
+    }
+
+    @media (max-width: 480px) {
+      .rhyme-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .rhyme-card { padding: 12px 14px; }
+      .rhyme-word { font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="back-nav">
+    <a class="back-btn" href="index.html">&larr; Menu</a>
+  </nav>
+
+  <div class="page-header">
+    <p class="eyebrow">NYC English Language Arts</p>
+    <h1>Words That Rhyme</h1>
+    <p class="sub">A huge collection for games, teaching, and fun!</p>
+  </div>
+
+  <!-- SIMPLE 3-LETTER RHYMES -->
+  <div class="category cat-simple">
+    <div class="category-header">
+      <span class="category-icon">🔤</span>
+      <span class="category-title">Simple 3-Letter Rhymes</span>
+      <div class="category-line"></div>
+    </div>
+    <div class="rhyme-grid">
+      <div class="rhyme-card"><div class="word-row"><span>hat</span><span>bat</span><span>cat</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>dog</span><span>log</span><span>fog</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>bug</span><span>mug</span><span>rug</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>pin</span><span>tin</span><span>bin</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>hop</span><span>top</span><span>cop</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>map</span><span>tap</span><span>cap</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>pen</span><span>hen</span><span>ten</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>lip</span><span>tip</span><span>dip</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>sun</span><span>run</span><span>fun</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>net</span><span>set</span><span>wet</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>cub</span><span>tub</span><span>rub</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>fig</span><span>big</span><span>dig</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>pot</span><span>dot</span><span>hot</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>bed</span><span>red</span><span>fed</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>cut</span><span>hut</span><span>but</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>bun</span><span>gun</span><span>nun</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>jam</span><span>ham</span><span>ram</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>kit</span><span>bit</span><span>sit</span></div></div>
+    </div>
+  </div>
+
+  <!-- INTERESTING / FUN RHYMES -->
+  <div class="category cat-fun">
+    <div class="category-header">
+      <span class="category-icon">✨</span>
+      <span class="category-title">Interesting / Fun Rhymes</span>
+      <div class="category-line"></div>
+    </div>
+    <div class="rhyme-grid">
+      <div class="rhyme-card"><div class="word-row"><span>cake</span><span>lake</span><span>snake</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>moon</span><span>spoon</span><span>tune</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>ring</span><span>king</span><span>sing</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>rain</span><span>train</span><span>mane</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>beach</span><span>reach</span><span>peach</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>cloud</span><span>crowd</span><span>proud</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>night</span><span>light</span><span>kite</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>fly</span><span>sky</span><span>pie</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>star</span><span>car</span><span>jar</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>dream</span><span>cream</span><span>stream</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>fire</span><span>wire</span><span>tire</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>stone</span><span>bone</span><span>phone</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>slide</span><span>ride</span><span>hide</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>broom</span><span>bloom</span><span>room</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>cheese</span><span>breeze</span><span>trees</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>clown</span><span>crown</span><span>town</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>spark</span><span>dark</span><span>park</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>frost</span><span>lost</span><span>tossed</span></div></div>
+    </div>
+  </div>
+
+  <!-- LONG / MULTI-SYLLABLE RHYMES -->
+  <div class="category cat-multi">
+    <div class="category-header">
+      <span class="category-icon">🔡</span>
+      <span class="category-title">Long / Multi-Syllable Rhymes</span>
+      <div class="category-line"></div>
+    </div>
+    <div class="rhyme-grid">
+      <div class="rhyme-card"><div class="word-row"><span>nation</span><span>station</span><span>vacation</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>double</span><span>trouble</span><span>bubble</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>funny</span><span>bunny</span><span>money</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>butter</span><span>flutter</span><span>clutter</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>dragon</span><span>wagon</span><span>flagging</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>chilly</span><span>hilly</span><span>silly</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>candy</span><span>sandy</span><span>handy</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>flower</span><span>tower</span><span>power</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>letter</span><span>better</span><span>sweater</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>bouncing</span><span>pouncing</span><span>announcing</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>thunder</span><span>wonder</span><span>blunder</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>gloomy</span><span>roomy</span><span>bloomy</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>sleeping</span><span>keeping</span><span>leaping</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>louder</span><span>powder</span><span>prouder</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>hoping</span><span>coping</span><span>sloping</span></div></div>
+    </div>
+  </div>
+
+  <!-- COLOR & NATURE RHYMES -->
+  <div class="category cat-nature">
+    <div class="category-header">
+      <span class="category-icon">🌿</span>
+      <span class="category-title">Color &amp; Nature Rhymes</span>
+      <div class="category-line"></div>
+    </div>
+    <div class="rhyme-grid">
+      <div class="rhyme-card"><div class="word-row"><span>blue</span><span>flew</span><span>dew</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>green</span><span>scene</span><span>bean</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>white</span><span>bright</span><span>night</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>tree</span><span>bee</span><span>free</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>snow</span><span>glow</span><span>flow</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>leaf</span><span>reef</span><span>brief</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>vine</span><span>shine</span><span>mine</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>lake</span><span>shake</span><span>wake</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>hill</span><span>still</span><span>fill</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>wave</span><span>cave</span><span>brave</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>breeze</span><span>freeze</span><span>squeeze</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>soil</span><span>foil</span><span>coil</span></div></div>
+    </div>
+  </div>
+
+  <!-- ANIMAL RHYMES -->
+  <div class="category cat-animal">
+    <div class="category-header">
+      <span class="category-icon">🐾</span>
+      <span class="category-title">Animal Rhymes</span>
+      <div class="category-line"></div>
+    </div>
+    <div class="rhyme-grid">
+      <div class="rhyme-card"><div class="word-row"><span>bear</span><span>hare</span><span>stare</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>fish</span><span>dish</span><span>wish</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>cat</span><span>rat</span><span>mat</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>bat</span><span>flat</span><span>chat</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>crow</span><span>bow</span><span>show</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>frog</span><span>log</span><span>blog</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>owl</span><span>growl</span><span>howl</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>snake</span><span>lake</span><span>wake</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>fox</span><span>box</span><span>locks</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>crab</span><span>lab</span><span>jab</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>deer</span><span>cheer</span><span>near</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>mole</span><span>hole</span><span>role</span></div></div>
+    </div>
+  </div>
+
+  <!-- EVERYDAY OBJECT RHYMES -->
+  <div class="category cat-object">
+    <div class="category-header">
+      <span class="category-icon">🏠</span>
+      <span class="category-title">Everyday Object Rhymes</span>
+      <div class="category-line"></div>
+    </div>
+    <div class="rhyme-grid">
+      <div class="rhyme-card"><div class="word-row"><span>cup</span><span>pup</span><span>up</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>chair</span><span>stair</span><span>fair</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>clock</span><span>sock</span><span>rock</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>kite</span><span>white</span><span>bite</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>broom</span><span>room</span><span>zoom</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>bag</span><span>flag</span><span>wag</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>book</span><span>hook</span><span>cook</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>door</span><span>floor</span><span>more</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>light</span><span>night</span><span>right</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>plate</span><span>gate</span><span>late</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>ball</span><span>hall</span><span>tall</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>box</span><span>fox</span><span>locks</span></div></div>
+    </div>
+  </div>
+
+  <!-- GAME / ACTION RHYMES -->
+  <div class="category cat-action">
+    <div class="category-header">
+      <span class="category-icon">🎮</span>
+      <span class="category-title">Game / Action Rhymes</span>
+      <div class="category-line"></div>
+    </div>
+    <div class="rhyme-grid">
+      <div class="rhyme-card"><div class="word-row"><span>run</span><span>fun</span><span>sun</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>jump</span><span>bump</span><span>pump</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>win</span><span>spin</span><span>grin</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>spin</span><span>pin</span><span>bin</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>dive</span><span>drive</span><span>hive</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>leap</span><span>sleep</span><span>deep</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>play</span><span>say</span><span>day</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>chase</span><span>race</span><span>place</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>throw</span><span>flow</span><span>blow</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>climb</span><span>rhyme</span><span>time</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>beat</span><span>feet</span><span>treat</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>dash</span><span>clash</span><span>flash</span></div></div>
+    </div>
+  </div>
+
+  <!-- SILLY / NONSENSE RHYMES -->
+  <div class="category cat-silly">
+    <div class="category-header">
+      <span class="category-icon">🤪</span>
+      <span class="category-title">Silly / Nonsense Rhymes</span>
+      <div class="category-line"></div>
+    </div>
+    <div class="rhyme-grid">
+      <div class="rhyme-card"><div class="word-row"><span>jelly</span><span>belly</span><span>smelly</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>wiggle</span><span>giggle</span><span>jiggle</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>dizzy</span><span>fizzy</span><span>busy</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>bonk</span><span>honk</span><span>conk</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>zoom</span><span>boom</span><span>loom</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>zing</span><span>ring</span><span>fling</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>zap</span><span>clap</span><span>snap</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>boing</span><span>doing</span><span>going</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>plop</span><span>flop</span><span>hop</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>squish</span><span>swish</span><span>fish</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>zoop</span><span>loop</span><span>scoop</span></div></div>
+      <div class="rhyme-card"><div class="word-row"><span>wacky</span><span>tacky</span><span>snacky</span></div></div>
+    </div>
+  </div>
+
+</body>
+</html>

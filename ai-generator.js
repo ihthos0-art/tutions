@@ -274,6 +274,33 @@
     });
   }
 
+  // ===== RESTORE GENERATED CONTENT ON PAGE LOAD =====
+  function restoreGeneratedContent() {
+    var pagePath = location.pathname.split('/').pop().replace('.html', '') || 'index';
+
+    var savedMath = localStorage.getItem(pagePath + ':gen-math');
+    if (savedMath) {
+      var mathContainer = document.getElementById('math');
+      if (mathContainer) {
+        var grid = mathContainer.querySelector('.math-grid, .problems-grid');
+        if (grid) { grid.innerHTML = savedMath; reinitAutoSave(mathContainer); }
+      }
+    }
+
+    var savedELA = localStorage.getItem(pagePath + ':gen-ela');
+    if (savedELA) {
+      var elaContainer = document.getElementById('ela');
+      if (elaContainer) {
+        try {
+          var story = JSON.parse(savedELA);
+          var passageWrap = elaContainer.querySelector('.passage-wrap');
+          if (passageWrap) { passageWrap.innerHTML = buildELAHTML(story); reinitAutoSave(elaContainer); }
+        } catch (e) {}
+      }
+    }
+  }
+  restoreGeneratedContent();
+
   // ===== PUBLIC API =====
   window.AIGenerator = {
     resetTab: async function (targetId) {
@@ -311,8 +338,10 @@
         var html = buildMathHTML(problems, pattern);
 
         // Replace
+        var pagePath = location.pathname.split('/').pop().replace('.html', '') || 'index';
         if (grid) {
           grid.innerHTML = html;
+          localStorage.setItem(pagePath + ':gen-math', html);
         } else {
           // Fallback: create a math-grid
           var newGrid = document.createElement('div');
@@ -357,10 +386,11 @@
         clearContainerStorage(container);
 
         // Replace passage and questions
+        var pagePath = location.pathname.split('/').pop().replace('.html', '') || 'index';
         var passageWrap = container.querySelector('.passage-wrap');
         if (passageWrap) {
-          // Build new passage-wrap content
           passageWrap.innerHTML = buildELAHTML(story);
+          localStorage.setItem(pagePath + ':gen-ela', JSON.stringify(story));
         } else {
           // Fallback: create passage-wrap
           var newWrap = document.createElement('div');

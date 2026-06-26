@@ -406,8 +406,10 @@
         setStatus('gen-status', 'Generated! Review below, then click Save.', 'ok');
         showPreview(apiSection, d.generated);
       } else {
-        setStatus('gen-status', 'AI error: ' + (d.error || 'unknown'), 'err');
+        var detail = d.detail ? ' Detail: ' + JSON.stringify(d.detail).slice(0, 300) : '';
+        setStatus('gen-status', 'AI error: ' + (d.error || 'unknown') + detail, 'err');
         if (d.raw) console.error('AI raw output:', d.raw);
+        console.error('Full AI error:', d);
       }
     })
     .catch(function(err) {

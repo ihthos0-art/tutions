@@ -3,168 +3,243 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Parent Dashboard | ELA Tutoring</title>
+  <title>Admin Panel | ELA Tutoring</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Merriweather+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { min-height: 100%; background: #e8e8e6; font-family: 'Merriweather', Georgia, serif; color: #1a1a1a; }
-    body { display: flex; flex-direction: column; align-items: center; padding: 40px 20px; }
-    .dashboard-card { background: #fff; border: 1px solid #c8c8c8; border-radius: 6px; box-shadow: 0 2px 16px rgba(0,0,0,0.09); padding: 40px; width: 100%; max-width: 720px; }
-    .eyebrow { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: #888; margin-bottom: 14px; }
-    .dashboard-card h1 { font-size: 28px; font-weight: 700; line-height: 1.2; margin-bottom: 6px; }
-    .sub { font-size: 14px; font-style: italic; color: #666; margin-bottom: 32px; }
-    .stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 32px; }
-    .stat-box { background: #f9f8f5; border: 1.5px solid #e2e0db; border-radius: 6px; padding: 20px; text-align: center; }
-    .stat-box .number { font-family: 'Merriweather', serif; font-size: 32px; font-weight: 700; color: #1a1a1a; }
-    .stat-box .label { font-family: 'Merriweather Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #888; margin-top: 6px; }
-    .section-title { font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #888; margin: 24px 0 12px; padding-bottom: 8px; border-bottom: 1.5px solid #e2e0db; }
-    .activity-list { display: flex; flex-direction: column; gap: 10px; }
-    .activity-item { background: #f9f8f5; border: 1px solid #e2e0db; border-radius: 4px; padding: 12px 16px; font-size: 13px; }
-    .activity-item .date { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; color: #aaa; margin-bottom: 4px; }
-    .btn-row { display: flex; gap: 10px; margin-top: 24px; }
-    .btn { font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.05em; padding: 10px 18px; border-radius: 4px; cursor: pointer; transition: all 0.2s; text-decoration: none; }
-    .btn-primary { background: #1a1a1a; color: #fff; border: none; }
-    .btn-primary:hover { background: #333; }
-    .btn-secondary { background: transparent; color: #1a1a1a; border: 1.5px solid #c8c8c8; }
-    .btn-secondary:hover { border-color: #1a1a1a; }
-    .empty { font-size: 13px; color: #aaa; font-style: italic; text-align: center; padding: 20px; }
-    .badge-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-    .badge { display: flex; align-items: center; gap: 4px; font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; color: #888; background: #f4f3f0; border: 1px solid #dddbd4; border-radius: 20px; padding: 5px 14px; }
-    .back-link { font-family: 'Merriweather Sans', sans-serif; font-size: 12px; color: #888; text-decoration: none; margin-bottom: 20px; }
-    .back-link:hover { color: #1a1a1a; }
-    @media (max-width: 500px) { .stat-grid { grid-template-columns: 1fr; } }
+    html, body { min-height: 100%; background: #1a1a1a; font-family: 'Merriweather Sans', sans-serif; color: #1a1a1a; }
+
+    /* ===== LOGIN ===== */
+    #login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 24px; }
+    .login-card { background: #fff; border-radius: 8px; padding: 48px 44px 52px; width: 100%; max-width: 380px; box-shadow: 0 8px 40px rgba(0,0,0,0.4); }
+    .login-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: #888; margin-bottom: 10px; }
+    .login-card h1 { font-family: 'Merriweather', serif; font-size: 26px; font-weight: 700; margin-bottom: 6px; }
+    .login-card .sub { font-size: 13px; color: #888; font-style: italic; margin-bottom: 32px; }
+    .field { margin-bottom: 16px; }
+    .field label { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #555; margin-bottom: 7px; }
+    .field input { width: 100%; padding: 11px 14px; border: 1.5px solid #d0d0d0; border-radius: 4px; font-family: 'Merriweather Sans', sans-serif; font-size: 15px; outline: none; transition: border-color 0.15s; }
+    .field input:focus { border-color: #1a1a1a; }
+    .login-btn { width: 100%; padding: 13px; background: #1a1a1a; color: #fff; border: none; border-radius: 4px; font-family: 'Merriweather Sans', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; margin-top: 8px; transition: background 0.15s; }
+    .login-btn:hover { background: #333; }
+    .login-error { display: none; font-size: 13px; color: #c0392b; background: #fdf0ef; border: 1px solid #e74c3c; border-radius: 4px; padding: 10px 14px; margin-top: 14px; text-align: center; }
+    .login-error.show { display: block; }
+
+    /* ===== ADMIN PANEL ===== */
+    #admin-panel { display: none; min-height: 100vh; background: #f0efec; }
+    .admin-topbar { background: #1a1a1a; color: #fff; padding: 0 32px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+    .admin-topbar .brand { font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+    .admin-topbar .brand span { color: #888; font-weight: 400; margin-left: 10px; font-size: 11px; letter-spacing: 0.05em; }
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    .topbar-link { font-size: 11px; color: #aaa; text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.15s; }
+    .topbar-link:hover { color: #fff; }
+    .logout-btn { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; background: transparent; border: 1px solid #555; color: #aaa; padding: 6px 14px; border-radius: 3px; cursor: pointer; transition: all 0.15s; }
+    .logout-btn:hover { border-color: #fff; color: #fff; }
+
+    .admin-body { max-width: 860px; margin: 0 auto; padding: 36px 20px 80px; }
+    .admin-notice { background: #fff8e6; border: 1px solid #f0c040; border-radius: 5px; padding: 12px 18px; font-size: 12px; color: #7a5c00; margin-bottom: 28px; line-height: 1.6; }
+    .admin-notice strong { font-weight: 700; }
+
+    .refresh-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .page-heading { font-family: 'Merriweather', serif; font-size: 22px; font-weight: 700; }
+    .refresh-btn { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; background: #fff; border: 1.5px solid #ccc; color: #555; padding: 8px 18px; border-radius: 4px; cursor: pointer; transition: all 0.15s; }
+    .refresh-btn:hover { border-color: #1a1a1a; color: #1a1a1a; }
+
+    .student-card { background: #fff; border: 1px solid #d4d2cc; border-radius: 6px; margin-bottom: 20px; overflow: hidden; }
+    .student-card-header { background: #1a1a1a; color: #fff; padding: 14px 22px; display: flex; align-items: center; justify-content: space-between; }
+    .student-name { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    .student-count { font-size: 11px; color: #aaa; }
+    .student-card-body { padding: 0; }
+
+    .response-item { padding: 16px 22px; border-bottom: 1px solid #eee; }
+    .response-item:last-child { border-bottom: none; }
+    .response-key { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #888; margin-bottom: 6px; }
+    .response-val { font-family: 'Merriweather', serif; font-size: 14px; line-height: 1.7; color: #1a1a1a; white-space: pre-wrap; }
+
+    .no-data { background: #fff; border: 1px solid #d4d2cc; border-radius: 6px; padding: 28px; text-align: center; font-size: 14px; color: #aaa; font-style: italic; margin-bottom: 20px; }
+
+    .empty-state { text-align: center; padding: 60px 20px; }
+    .empty-state p { font-size: 15px; color: #aaa; font-style: italic; }
   </style>
 </head>
 <body>
-  <a href="index.html" class="back-link">← Back to Menu</a>
-  <div class="dashboard-card">
-    <p class="eyebrow">Parent Dashboard</p>
-    <h1>Learning Progress</h1>
-    <p class="sub">Track your child's tutoring activity and achievements</p>
 
-    <div class="stat-grid">
-      <div class="stat-box">
-        <div class="number" id="stat-worksheets">0</div>
-        <div class="label">Worksheets Done</div>
-      </div>
-      <div class="stat-box">
-        <div class="number" id="stat-stars">0</div>
-        <div class="label">Stars Earned</div>
-      </div>
-      <div class="stat-box">
-        <div class="number" id="stat-streak">0</div>
-        <div class="label">Day Streak</div>
-      </div>
-      <div class="stat-box">
-        <div class="number" id="stat-vocab">0</div>
-        <div class="label">Words Learned</div>
+  <!-- ===== LOGIN SCREEN ===== -->
+  <div id="login-screen">
+    <div class="login-card">
+      <p class="login-eyebrow">NYC ELA Tutoring</p>
+      <h1>Admin Panel</h1>
+      <p class="sub">Sign in to view student responses</p>
+      <form id="login-form" autocomplete="off">
+        <div class="field">
+          <label for="uname">Username</label>
+          <input type="text" id="uname" autocomplete="username" spellcheck="false" />
+        </div>
+        <div class="field">
+          <label for="pword">Password</label>
+          <input type="password" id="pword" autocomplete="current-password" />
+        </div>
+        <button type="submit" class="login-btn">Sign In</button>
+        <div class="login-error" id="login-error">Incorrect username or password.</div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== ADMIN PANEL ===== -->
+  <div id="admin-panel">
+    <div class="admin-topbar">
+      <div class="brand">Admin Panel <span>NYC ELA Tutoring</span></div>
+      <div class="topbar-right">
+        <a href="index.html" class="topbar-link">← Student Menu</a>
+        <button class="logout-btn" id="logout-btn">Log Out</button>
       </div>
     </div>
 
-    <p class="section-title">Badges</p>
-    <div class="badge-list" id="badge-list">
-      <span class="empty">No badges yet — keep practicing!</span>
-    </div>
+    <div class="admin-body">
+      <div class="admin-notice">
+        <strong>Note:</strong> Student responses are stored in the browser on the device where they worked. If students use a different device than this one, their answers will not appear here.
+      </div>
 
-    <p class="section-title">Recent Activity</p>
-    <div class="activity-list" id="activity-list">
-      <span class="empty">No activity recorded yet.</span>
-    </div>
+      <div class="refresh-row">
+        <h1 class="page-heading">Student Responses</h1>
+        <button class="refresh-btn" onclick="loadStudentData()">Refresh</button>
+      </div>
 
-    <p class="section-title">Chat History</p>
-    <div class="activity-list" id="chat-list">
-      <span class="empty">No chat history yet.</span>
-    </div>
-
-    <div class="btn-row">
-      <button class="btn btn-primary" id="copy-report">Copy Weekly Report</button>
-      <a href="index.html" class="btn btn-secondary">Back to Worksheets</a>
+      <div id="students-view"></div>
     </div>
   </div>
 
   <script>
-    (function () {
-      'use strict';
+    var AUTH_KEY = 'admin-auth-v1';
+    var U = 'ihthos';
+    var P = 'zidn5649';
 
-      // Load stats
-      var badges = {};
-      try { badges = JSON.parse(localStorage.getItem('ai-badges')) || {}; } catch (e) {}
-      document.getElementById('stat-worksheets').textContent = badges.worksheetsCompleted || 0;
-      document.getElementById('stat-stars').textContent = badges.totalStars || 0;
+    var STUDENTS = [
+      { id: 'nabila-naviha',  name: 'Nabila & Naviha' },
+      { id: 'salma-khadija',  name: 'Salma & Khadija' },
+      { id: 'adnan',          name: 'Adnan' },
+      { id: 'nafis',          name: 'Nafis' },
+      { id: 'nahid',          name: 'Nahid' },
+      { id: 'sameer',         name: 'Sameer' },
+      { id: 'manha',          name: 'Manha' },
+      { id: 'mahiya',         name: 'Mahiya' },
+      { id: 'taha',           name: 'Taha' }
+    ];
 
-      var streak = { count: 0 };
-      try { streak = JSON.parse(localStorage.getItem('ai-streak')) || streak; } catch (e) {}
-      document.getElementById('stat-streak').textContent = streak.count || 0;
+    var KEY_LABELS = {
+      'ws1-summary': 'Story 1 — Tell Your Teacher',
+      'ws2-summary': 'Story 2 — Tell Your Teacher',
+      'ws3-summary': 'Story 3 — Tell Your Teacher',
+      'ws4-summary': 'Story 4 — Tell Your Teacher',
+      'ws5-summary': 'Story 5 — Tell Your Teacher',
+      'ws6-summary': 'Story 6 — Tell Your Teacher',
+      'ela-story':   'ELA Practice — Tell Your Teacher',
+      'ws1-arg':     'Worksheet 1 — Main Argument',
+      'ws1-detail':  'Worksheet 1 — Supporting Detail',
+      'ws2-arg':     'Worksheet 2 — Main Argument',
+      'ws2-detail':  'Worksheet 2 — Supporting Detail',
+      'ela1-ci':     'ELA — Central Idea / Claim',
+      'ela1-detail': 'ELA — Evidence / Detail',
+      'ela1-conn':   'ELA — Written Response',
+      'ws1-fav':     'Assigned — What Did You Think?'
+    };
 
-      var vocabCount = parseInt(localStorage.getItem('ai-vocab-count') || '0');
-      document.getElementById('stat-vocab').textContent = vocabCount;
+    function formatKey(key) {
+      if (KEY_LABELS[key]) return KEY_LABELS[key];
+      return key.replace(/[-_]/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+    }
 
-      // Badges
-      var badgeList = document.getElementById('badge-list');
-      var badgeHtml = '';
-      if (badges.totalStars) badgeHtml += '<span class="badge">⭐ ' + badges.totalStars + ' Stars</span>';
-      if (badges.perfectScores >= 1) badgeHtml += '<span class="badge">🏆 ' + badges.perfectScores + ' Perfect</span>';
-      if (badges.worksheetsCompleted >= 5) badgeHtml += '<span class="badge">📚 Hard Worker</span>';
-      if (badges.worksheetsCompleted >= 15) badgeHtml += '<span class="badge">📖 Bookworm</span>';
-      if (badges.totalStars >= 30) badgeHtml += '<span class="badge">🌟 Star Collector</span>';
-      if (badges.totalStars >= 60) badgeHtml += '<span class="badge">💎 Diamond</span>';
-      if (vocabCount >= 10) badgeHtml += '<span class="badge">📝 ' + vocabCount + ' Words</span>';
-      badgeList.innerHTML = badgeHtml || '<span class="empty">No badges yet — keep practicing!</span>';
+    function escapeHtml(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
 
-      // Activity list
-      var activityList = document.getElementById('activity-list');
-      var activities = [];
-      for (var i = 0; i < localStorage.length; i++) {
-        var key = localStorage.key(i);
-        if (key && key.startsWith('ai-scores:')) {
-          try {
-            var scores = JSON.parse(localStorage.getItem(key)) || [];
-            var pageName = key.replace('ai-scores:', '');
-            scores.forEach(function (s) {
-              activities.push({ date: new Date(s.date), text: pageName + ': ' + s.correct + '/' + s.total + ' correct', correct: s.correct, total: s.total });
-            });
-          } catch (e) {}
+    function isTextResponse(key, val) {
+      if (!val || val.length < 10) return false;
+      if (key.startsWith('gen-')) return false;
+      if (key.startsWith('mp-')) return false;
+      if (key.startsWith('fitb-')) return false;
+      if (key.startsWith('ai-')) return false;
+      if (/^[qfgm]\d+(-\d+)?$/.test(key)) return false; // math/fitb single answers
+      try { JSON.parse(val); return false; } catch(e) {}  // skip raw JSON blobs
+      return true;
+    }
+
+    function loadStudentData() {
+      var view = document.getElementById('students-view');
+      var html = '';
+      var anyData = false;
+
+      STUDENTS.forEach(function (student) {
+        var prefix = student.id + ':';
+        var entries = [];
+
+        for (var i = 0; i < localStorage.length; i++) {
+          var key = localStorage.key(i);
+          if (!key || !key.startsWith(prefix)) continue;
+          var shortKey = key.slice(prefix.length);
+          var val = localStorage.getItem(key) || '';
+          if (isTextResponse(shortKey, val)) {
+            entries.push({ key: shortKey, val: val });
+          }
         }
-      }
-      activities.sort(function (a, b) { return b.date - a.date; });
-      if (activities.length) {
-        activityList.innerHTML = activities.slice(0, 10).map(function (a) {
-          return '<div class="activity-item"><div class="date">' + a.date.toLocaleDateString() + '</div>' + a.text + '</div>';
-        }).join('');
-      }
 
-      // Chat history
-      var chatList = document.getElementById('chat-list');
-      var chatCount = parseInt(localStorage.getItem('ai-chat-count') || '0');
-      if (chatCount > 0) {
-        chatList.innerHTML = '<div class="activity-item"><div class="date">Total sessions</div>' + chatCount + ' chat messages with AI tutor</div>';
-      }
+        if (entries.length === 0) return;
+        anyData = true;
 
-      // Weekly report
-      document.getElementById('copy-report').addEventListener('click', function () {
-        var now = new Date();
-        var weekAgo = new Date(now.getTime() - 7 * 86400000);
-        var weekActivities = activities.filter(function (a) { return a.date >= weekAgo; });
-        var report = '📊 Weekly Learning Report\n\n';
-        report += 'Worksheets completed: ' + (badges.worksheetsCompleted || 0) + '\n';
-        report += 'Total stars: ' + (badges.totalStars || 0) + '\n';
-        report += 'Day streak: ' + (streak.count || 0) + '\n';
-        report += 'Vocabulary words: ' + vocabCount + '\n\n';
-        report += 'This week:\n';
-        if (weekActivities.length) {
-          weekActivities.forEach(function (a) {
-            report += '- ' + a.date.toLocaleDateString() + ': ' + a.text + '\n';
-          });
-        } else {
-          report += '- No worksheets completed this week\n';
-        }
-        navigator.clipboard.writeText(report).then(function () {
-          alert('Report copied to clipboard!');
+        html += '<div class="student-card">';
+        html += '<div class="student-card-header">';
+        html += '<span class="student-name">' + escapeHtml(student.name) + '</span>';
+        html += '<span class="student-count">' + entries.length + ' response' + (entries.length !== 1 ? 's' : '') + '</span>';
+        html += '</div>';
+        html += '<div class="student-card-body">';
+        entries.forEach(function (e) {
+          html += '<div class="response-item">';
+          html += '<div class="response-key">' + escapeHtml(formatKey(e.key)) + '</div>';
+          html += '<div class="response-val">' + escapeHtml(e.val) + '</div>';
+          html += '</div>';
         });
+        html += '</div></div>';
       });
-    })();
+
+      if (!anyData) {
+        html = '<div class="empty-state"><p>No student responses found on this device yet.</p></div>';
+      }
+
+      view.innerHTML = html;
+    }
+
+    function showPanel() {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('admin-panel').style.display = 'block';
+      loadStudentData();
+    }
+
+    function isAuthed() {
+      return sessionStorage.getItem(AUTH_KEY) === '1';
+    }
+
+    document.getElementById('login-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var u = document.getElementById('uname').value.trim();
+      var p = document.getElementById('pword').value;
+      if (u === U && p === P) {
+        sessionStorage.setItem(AUTH_KEY, '1');
+        document.getElementById('login-error').classList.remove('show');
+        showPanel();
+      } else {
+        document.getElementById('login-error').classList.add('show');
+        document.getElementById('pword').value = '';
+        document.getElementById('pword').focus();
+      }
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', function () {
+      sessionStorage.removeItem(AUTH_KEY);
+      location.reload();
+    });
+
+    if (isAuthed()) showPanel();
   </script>
 </body>
 </html>

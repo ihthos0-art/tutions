@@ -13,8 +13,8 @@ run_worker_first = ["/api/*"]
 # Then paste the returned id and preview_id below:
 [[kv_namespaces]]
 binding = "HOMEWORK"
-id = "PASTE_PRODUCTION_ID_HERE"
-preview_id = "PASTE_PREVIEW_ID_HERE"
+id = "9f04fe58a6c44a59be5c12eb7e420fda"
+preview_id = "b8aef6700c334f0988ddb2add1d596a5"
 
 # Secrets pushed via wrangler (never in this file):
 # GROQ_API_KEY, CEREBRAS_API_KEY, MISTRAL_API_KEY, OPENROUTER_API_KEY, COHERE_API_KEY

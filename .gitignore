@@ -1,0 +1,7 @@
+# Local secrets — NEVER commit. Real credential values live here for setup only.
+SECRETS.local.md
+.dev.vars
+.secrets*
+*.local.env
+.wrangler/
+node_modules/

@@ -87,17 +87,24 @@ These require the account owner's terminal / Cloudflare dashboard:
    npx wrangler kv namespace create HOMEWORK
    npx wrangler kv namespace create HOMEWORK --preview
    ```
-2. **Set secrets** (interactive — values never touch the repo):
+2. **Set secrets** (interactive — values never touch the repo; values in `SECRETS.local.md`):
    ```bash
    npx wrangler secret put ADMIN_USERNAME      # enter: ihthos
    npx wrangler secret put ADMIN_PASSWORD      # enter: (the chosen password)
    npx wrangler secret put ADMIN_TOKEN_SECRET  # enter: any long random string (HMAC key)
-   npx wrangler secret put KIMI_API_KEY        # enter: the Kimi/Moonshot API key
+   npx wrangler secret put OLLAMA_API_KEY      # enter: the Ollama Cloud key (Kimi K2.6)
    ```
-3. **Confirm the Kimi endpoint + model string** for the provider the key is for, and tell
-   the executor which to hardcode (see §6.4 TODO). Likely one of:
-   - Moonshot direct: URL `https://api.moonshot.ai/v1/chat/completions`, model `kimi-k2-0905-preview` (or current K2.6 id).
-   - OpenRouter: URL `https://openrouter.ai/api/v1/chat/completions`, model `moonshotai/kimi-k2`.
+3. **Kimi provider — CONFIRMED (Ollama Cloud):** the AI editor uses Ollama Cloud's
+   OpenAI-compatible endpoint. No further confirmation needed.
+   - Endpoint: `https://ollama.com/v1/chat/completions`
+   - Model tag: **`kimi-k2.6:cloud`**
+   - Auth: `Authorization: Bearer <OLLAMA_API_KEY>`
+   - The key is stored locally in `SECRETS.local.md` (git-ignored) and set as the Cloudflare
+     secret `OLLAMA_API_KEY` via `wrangler secret put OLLAMA_API_KEY`.
+
+> **Real credential values live in `SECRETS.local.md`** (git-ignored, never committed). The
+> Cloudflare account id + API token, R2 keys, and the Ollama key are all there. Use them for
+> the `wrangler` commands below; do not paste them into any committed file.
 
 > Until KV id + secrets exist, the worker code is written defensively (missing bindings →
 > clean error, page falls back to static content). So the executor can build & deploy code
@@ -302,7 +309,7 @@ if (url.pathname === '/api/admin/login' && request.method === 'POST') {
 }
 ```
 
-### 6.4 AI generate endpoint (Kimi K2.6) — **TODO: set URL/model from §4 step 3**
+### 6.4 AI generate endpoint (Kimi K2.6 via Ollama Cloud) — CONFIRMED
 
 ```js
 // ---- ADMIN: AI generates homework content from a prompt ----
@@ -310,9 +317,9 @@ if (url.pathname === '/api/admin/generate' && request.method === 'POST') {
   if (!await verifyToken(env, bearer(request))) return json({ error: 'unauthorized' }, 401);
   const { instruction, section, current, grade } = await request.json().catch(() => ({}));
 
-  // TODO: confirm these two for the provider the KIMI_API_KEY belongs to:
-  const KIMI_URL = 'https://api.moonshot.ai/v1/chat/completions';
-  const KIMI_MODEL = 'kimi-k2-0905-preview';
+  // Ollama Cloud, OpenAI-compatible:
+  const KIMI_URL = 'https://ollama.com/v1/chat/completions';
+  const KIMI_MODEL = 'kimi-k2.6:cloud';
 
   const schemaHint = {
     fillBlank: '{"title":string,"instructions":string,"wordBank":string[],"sentences":[{"before":string,"answer":string,"after":string}]}',
@@ -330,7 +337,7 @@ if (url.pathname === '/api/admin/generate' && request.method === 'POST') {
 
   const res = await fetch(KIMI_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + env.KIMI_API_KEY },
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + env.OLLAMA_API_KEY },
     body: JSON.stringify({ model: KIMI_MODEL, temperature: 0.7, max_tokens: 2000,
       messages: [{ role:'system', content: sys }, { role:'user', content: usr }] })
   });
@@ -611,8 +618,8 @@ async function loadAnswers(student) {
 
 ## 12. Open decisions / TODO for the executor
 
-1. **Kimi endpoint + model id** (§6.4) — confirm with the human before wiring; it depends on
-   whether the key is Moonshot-direct or via OpenRouter/other.
+1. ~~Kimi endpoint + model id~~ — **RESOLVED**: Ollama Cloud,
+   `https://ollama.com/v1/chat/completions`, model `kimi-k2.6:cloud`, secret `OLLAMA_API_KEY`.
 2. **Stories/ELA override depth** — Phase 4 note: decide whether to fully rebuild story
    `.ws-card`s from JSON or only swap passage text + prompt. Recommend full rebuild for
    consistency, but verify the `data-save` keys stay stable so existing saved answers map.

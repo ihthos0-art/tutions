@@ -8,7 +8,17 @@ directory = "."
 binding = "ASSETS"
 run_worker_first = ["/api/*"]
 
-# 12 API secrets pushed via wrangler:
-# CLOUDFLARE_API_KEY, GROQ_API_KEY, GEMINI_API_KEY, MISTRAL_API_KEY,
-# CEREBRAS_API_KEY, OPENROUTER_API_KEY, ZHIPU_API_KEY, COHERE_API_KEY,
-# HUGGINGFACE_API_KEY, OLLAMA_API_KEY, NVIDIA_API_KEY, KILO_API_KEY
+# KV namespace for homework content + student answers
+# Run: npx wrangler kv namespace create HOMEWORK
+# Then paste the returned id and preview_id below:
+[[kv_namespaces]]
+binding = "HOMEWORK"
+id = "PASTE_PRODUCTION_ID_HERE"
+preview_id = "PASTE_PREVIEW_ID_HERE"
+
+# Secrets pushed via wrangler (never in this file):
+# GROQ_API_KEY, CEREBRAS_API_KEY, MISTRAL_API_KEY, OPENROUTER_API_KEY, COHERE_API_KEY
+# OLLAMA_API_KEY        ← Kimi K2.6 via Ollama Cloud (admin AI editor)
+# ADMIN_USERNAME        ← admin login username
+# ADMIN_PASSWORD        ← admin login password
+# ADMIN_TOKEN_SECRET    ← HMAC signing key (any long random string)

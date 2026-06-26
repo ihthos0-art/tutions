@@ -273,46 +273,12 @@
     <p class="save-notice">Your answers are saved automatically in this browser.</p>
   </div>
 
-  <script>
-    function checkMath() {
-      var inputs = document.querySelectorAll('#math input[data-answer]');
-      var correct = 0;
-      inputs.forEach(function(inp) {
-        var user = inp.value.trim().replace(/^\$/, '').replace(/,/g, '').toLowerCase();
-        var ans = (inp.dataset.answer || '').trim().replace(/^\$/, '').replace(/,/g, '').toLowerCase();
-        inp.classList.remove('correct', 'wrong');
-        if (!user) return;
-        if (user === ans) { inp.classList.add('correct'); correct++; }
-        else { inp.classList.add('wrong'); }
-      });
-      var sc = document.getElementById('math-score');
-      if (sc) sc.textContent = correct + ' / ' + inputs.length + ' correct';
-    }
-    const NS = 'adnan';
-    function clearAnswers() {
-      if (!confirm('Clear all your saved answers on this page?')) return;
-      document.querySelectorAll('textarea[data-save]').forEach(el => {
-        localStorage.removeItem(NS + ':' + el.dataset.save);
-        el.value = '';
-      });
-    }
-    document.querySelectorAll('textarea[data-save]').forEach(el => {
-      const key = NS + ':' + el.dataset.save;
-      const saved = localStorage.getItem(key);
-      if (saved) el.value = saved;
-      el.addEventListener('input', () => localStorage.setItem(key, el.value));
-    });
-    document.querySelectorAll('.ci-input, .detail-input').forEach(el => {
-      el.addEventListener('paste', e => e.preventDefault());
-      el.addEventListener('contextmenu', e => e.preventDefault());
-      el.addEventListener('keydown', e => {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'v') e.preventDefault();
-      });
-    });
-  </script>
+  <script src="homework-loader.js?v=1"></script>
+  <script src="interactive.js?v=1"></script>
+  <script src="answers-sync.js?v=1"></script>
   <script src="tabs.js?v=3"></script>
   <script src="ai-generator.js?v=1"></script>
-    <script src="ai-tutor.js"></script>
+  <script src="ai-tutor.js"></script>
   <script src="quiz.js"></script>
   <script src="flashcards.js"></script>
 </body>

@@ -499,43 +499,13 @@
     </div>
   </div><!-- /egypt -->
 
-  <script>
-    function clearAnswers() {
-      if (!confirm('Clear all your saved answers on this page?')) return;
-      var pp = location.pathname.split('/').pop().replace('.html', '') || 'index';
-      document.querySelectorAll('[data-save]').forEach(function(el) {
-        localStorage.removeItem(pp + ':' + el.dataset.save);
-        el.value = '';
-      });
-    }
-    document.querySelectorAll('.answer-input').forEach(function(el) {
-      el.addEventListener('paste', function(e) { e.preventDefault(); });
-      el.addEventListener('contextmenu', function(e) { e.preventDefault(); });
-      el.addEventListener('keydown', function(e) {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'v') e.preventDefault();
-      });
-    });
-    function checkMath() {
-      var inputs = document.querySelectorAll('#math input[data-answer]');
-      var correct = 0, total = inputs.length;
-      inputs.forEach(function(inp) {
-        var parent = inp.closest('.math-prob, .math-word, .problem');
-        if (!parent) return;
-        parent.classList.remove('correct', 'wrong');
-        if (inp.value.trim() === String(inp.dataset.answer).trim()) {
-          parent.classList.add('correct');
-          correct++;
-        } else if (inp.value.trim()) {
-          parent.classList.add('wrong');
-        }
-      });
-      document.dispatchEvent(new CustomEvent('checkResult', { detail: { correct: correct, total: total } }));
-    }
-  </script>
-  <script src='tabs.js?v=3'></script>
-  <script src='ai-generator.js?v=1'></script>
-  <script src='ai-tutor.js'></script>
-  <script src='quiz.js'></script>
-  <script src='flashcards.js'></script>
+  <script src="homework-loader.js?v=1"></script>
+  <script src="interactive.js?v=1"></script>
+  <script src="answers-sync.js?v=1"></script>
+  <script src="tabs.js?v=3"></script>
+  <script src="ai-generator.js?v=1"></script>
+  <script src="ai-tutor.js"></script>
+  <script src="quiz.js"></script>
+  <script src="flashcards.js"></script>
 </body>
 </html>

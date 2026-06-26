@@ -210,52 +210,9 @@
     <p class="save-notice" style="max-width:700px;margin:0 auto;text-align:center;font-family:'Merriweather Sans',sans-serif;font-size:11px;color:#aaa;font-style:italic;">Your answers are saved automatically in this browser.</p>
   </div>
 
-  <script>
-    const NS = 'taha';
-    const inputs = document.querySelectorAll('input[data-save]');
-
-    inputs.forEach(el => {
-      const key = NS + ':' + el.dataset.save;
-      const saved = localStorage.getItem(key);
-      if (saved) {
-        el.value = saved;
-        if (saved.trim() === el.dataset.answer) el.classList.add('correct');
-      }
-      el.addEventListener('input', () => {
-        localStorage.setItem(key, el.value);
-        const val = el.value.trim();
-        el.classList.remove('correct', 'wrong');
-        if (val && val === el.dataset.answer) el.classList.add('correct');
-      });
-      el.addEventListener('paste', e => e.preventDefault());
-      el.addEventListener('contextmenu', e => e.preventDefault());
-      el.addEventListener('keydown', e => {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'v') e.preventDefault();
-      });
-    });
-
-    document.getElementById('check-btn').addEventListener('click', () => {
-      let correct = 0;
-      inputs.forEach(el => {
-        el.classList.remove('correct', 'wrong');
-        const val = el.value.trim();
-        if (!val) return;
-        if (val === el.dataset.answer) {
-          el.classList.add('correct');
-          correct++;
-        } else {
-          el.classList.add('wrong');
-        }
-      });
-      const total = inputs.length;
-      const display = document.getElementById('score-display');
-      display.textContent = correct === total
-        ? correct + ' / ' + total + ' — Perfect score!'
-        : correct + ' / ' + total + ' correct';
-      display.className = 'score-display' + (correct === total ? ' perfect' : '');
-      document.dispatchEvent(new CustomEvent('checkResult', { detail: { correct: correct, total: total } }));
-    });
-  </script>
+  <script src="homework-loader.js?v=1"></script>
+  <script src="interactive.js?v=1"></script>
+  <script src="answers-sync.js?v=1"></script>
   <script src="tabs.js?v=3"></script>
   <script src="ai-generator.js?v=1"></script>
   <script src="ai-tutor.js"></script>

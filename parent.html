@@ -23,223 +23,574 @@
     .field input:focus { border-color: #1a1a1a; }
     .login-btn { width: 100%; padding: 13px; background: #1a1a1a; color: #fff; border: none; border-radius: 4px; font-family: 'Merriweather Sans', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; margin-top: 8px; transition: background 0.15s; }
     .login-btn:hover { background: #333; }
+    .login-btn:disabled { background: #888; cursor: not-allowed; }
     .login-error { display: none; font-size: 13px; color: #c0392b; background: #fdf0ef; border: 1px solid #e74c3c; border-radius: 4px; padding: 10px 14px; margin-top: 14px; text-align: center; }
     .login-error.show { display: block; }
 
-    /* ===== ADMIN PANEL ===== */
+    /* ===== TOPBAR ===== */
     #admin-panel { display: none; min-height: 100vh; background: #f0efec; }
     .admin-topbar { background: #1a1a1a; color: #fff; padding: 0 32px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
     .admin-topbar .brand { font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
-    .admin-topbar .brand span { color: #888; font-weight: 400; margin-left: 10px; font-size: 11px; letter-spacing: 0.05em; }
+    .admin-topbar .brand span { color: #888; font-weight: 400; margin-left: 10px; font-size: 11px; }
     .topbar-right { display: flex; align-items: center; gap: 16px; }
-    .topbar-link { font-size: 11px; color: #aaa; text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.15s; }
+    .topbar-link { font-size: 11px; color: #aaa; text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; }
     .topbar-link:hover { color: #fff; }
-    .logout-btn { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; background: transparent; border: 1px solid #555; color: #aaa; padding: 6px 14px; border-radius: 3px; cursor: pointer; transition: all 0.15s; }
+    .logout-btn { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; background: transparent; border: 1px solid #555; color: #aaa; padding: 6px 14px; border-radius: 3px; cursor: pointer; }
     .logout-btn:hover { border-color: #fff; color: #fff; }
 
-    .admin-body { max-width: 860px; margin: 0 auto; padding: 36px 20px 80px; }
-    .admin-notice { background: #fff8e6; border: 1px solid #f0c040; border-radius: 5px; padding: 12px 18px; font-size: 12px; color: #7a5c00; margin-bottom: 28px; line-height: 1.6; }
-    .admin-notice strong { font-weight: 700; }
+    /* ===== MAIN TABS ===== */
+    .admin-body { max-width: 900px; margin: 0 auto; padding: 36px 20px 80px; }
+    .main-tab-bar { display: flex; gap: 4px; margin-bottom: 28px; }
+    .main-tab-btn { font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 11px 22px; border: 1.5px solid #c8c8c8; background: #f4f3f0; color: #666; cursor: pointer; border-radius: 4px; transition: all 0.2s; }
+    .main-tab-btn.active { background: #1a1a1a; border-color: #1a1a1a; color: #fff; }
+    .main-tab-content { display: none; }
+    .main-tab-content.active { display: block; }
 
-    .refresh-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-    .page-heading { font-family: 'Merriweather', serif; font-size: 22px; font-weight: 700; }
-    .refresh-btn { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; background: #fff; border: 1.5px solid #ccc; color: #555; padding: 8px 18px; border-radius: 4px; cursor: pointer; transition: all 0.15s; }
-    .refresh-btn:hover { border-color: #1a1a1a; color: #1a1a1a; }
+    /* ===== SHARED FORM BITS ===== */
+    .form-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #555; margin-bottom: 7px; display: block; }
+    .form-select, .form-input { width: 100%; padding: 10px 14px; border: 1.5px solid #d0d0d0; border-radius: 4px; font-family: 'Merriweather Sans', sans-serif; font-size: 14px; outline: none; background: #fff; transition: border-color 0.15s; }
+    .form-select:focus, .form-input:focus { border-color: #1a1a1a; }
+    .form-textarea { width: 100%; padding: 12px 14px; border: 1.5px solid #d0d0d0; border-radius: 4px; font-family: 'Merriweather Sans', sans-serif; font-size: 14px; line-height: 1.6; outline: none; background: #fff; resize: vertical; min-height: 90px; transition: border-color 0.15s; }
+    .form-textarea:focus { border-color: #1a1a1a; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 18px; }
+    .form-group { margin-bottom: 18px; }
+    .action-btn { font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 11px 24px; border: none; border-radius: 4px; cursor: pointer; transition: all 0.15s; }
+    .action-btn.primary { background: #1a1a1a; color: #fff; }
+    .action-btn.primary:hover { background: #333; }
+    .action-btn.primary:disabled { background: #888; cursor: not-allowed; }
+    .action-btn.secondary { background: #fff; color: #1a1a1a; border: 1.5px solid #ccc; }
+    .action-btn.secondary:hover { border-color: #1a1a1a; }
+    .action-btn.success { background: #27ae60; color: #fff; }
+    .action-btn.success:hover { background: #1e8449; }
+    .btn-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
 
+    /* ===== EDITOR CARD ===== */
+    .editor-card { background: #fff; border: 1px solid #d4d2cc; border-radius: 6px; padding: 28px; margin-bottom: 20px; }
+    .editor-card h2 { font-family: 'Merriweather', serif; font-size: 18px; font-weight: 700; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1.5px solid #eee; }
+
+    /* ===== PREVIEW ===== */
+    .preview-box { background: #f7f6f3; border: 1px solid #dddbd4; border-radius: 4px; padding: 16px 20px; margin-top: 16px; }
+    .preview-box h3 { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #888; margin-bottom: 12px; }
+    .preview-content { font-family: 'Merriweather', serif; font-size: 14px; line-height: 1.8; color: #222; }
+    .preview-content .preview-title { font-weight: 700; font-size: 15px; margin-bottom: 10px; }
+    .preview-content .preview-sentence { margin-bottom: 8px; }
+    .preview-content .preview-blank { display: inline-block; border-bottom: 2px solid #1a1a1a; min-width: 60px; font-weight: 700; color: #1a1a1a; padding: 0 4px; }
+    .preview-content .word-chip { display: inline-block; background: #1a1a1a; color: #fff; border-radius: 20px; padding: 3px 14px; font-size: 12px; font-weight: 700; margin: 3px; font-family: 'Merriweather Sans', sans-serif; }
+    .preview-content .math-row { font-family: 'Merriweather', serif; font-size: 16px; margin-bottom: 8px; }
+    .preview-content .math-ans { display: inline-block; border: 1.5px solid #1a1a1a; border-radius: 3px; padding: 2px 10px; font-weight: 700; color: #1a1a1a; margin-left: 8px; }
+    .preview-raw { font-family: monospace; font-size: 12px; color: #555; white-space: pre-wrap; word-break: break-all; margin-top: 10px; padding-top: 10px; border-top: 1px solid #e0deda; }
+    .status-msg { font-size: 13px; padding: 8px 0; }
+    .status-msg.ok { color: #27ae60; font-weight: 700; }
+    .status-msg.err { color: #c0392b; }
+    .status-msg.working { color: #888; font-style: italic; }
+
+    /* ===== ANSWERS VIEW ===== */
     .student-card { background: #fff; border: 1px solid #d4d2cc; border-radius: 6px; margin-bottom: 20px; overflow: hidden; }
     .student-card-header { background: #1a1a1a; color: #fff; padding: 14px 22px; display: flex; align-items: center; justify-content: space-between; }
     .student-name { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
     .student-count { font-size: 11px; color: #aaa; }
-    .student-card-body { padding: 0; }
-
     .response-item { padding: 16px 22px; border-bottom: 1px solid #eee; }
     .response-item:last-child { border-bottom: none; }
     .response-key { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #888; margin-bottom: 6px; }
     .response-val { font-family: 'Merriweather', serif; font-size: 14px; line-height: 1.7; color: #1a1a1a; white-space: pre-wrap; }
-
-    .no-data { background: #fff; border: 1px solid #d4d2cc; border-radius: 6px; padding: 28px; text-align: center; font-size: 14px; color: #aaa; font-style: italic; margin-bottom: 20px; }
-
+    .response-ts { font-size: 10px; color: #bbb; margin-top: 4px; font-style: italic; }
+    .no-data { padding: 24px 22px; text-align: center; font-size: 13px; color: #aaa; font-style: italic; }
     .empty-state { text-align: center; padding: 60px 20px; }
     .empty-state p { font-size: 15px; color: #aaa; font-style: italic; }
+    .page-heading { font-family: 'Merriweather', serif; font-size: 22px; font-weight: 700; margin-bottom: 20px; }
+    .answers-controls { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; flex-wrap: wrap; }
+    .current-badge { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; background: #e8f5e9; color: #1b5e20; border: 1px solid #81c784; border-radius: 3px; padding: 3px 10px; }
+    @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
 
-  <!-- ===== LOGIN SCREEN ===== -->
-  <div id="login-screen">
-    <div class="login-card">
-      <p class="login-eyebrow">NYC ELA Tutoring</p>
-      <h1>Admin Panel</h1>
-      <p class="sub">Sign in to view student responses</p>
-      <form id="login-form" autocomplete="off">
-        <div class="field">
-          <label for="uname">Username</label>
-          <input type="text" id="uname" autocomplete="username" spellcheck="false" />
-        </div>
-        <div class="field">
-          <label for="pword">Password</label>
-          <input type="password" id="pword" autocomplete="current-password" />
-        </div>
-        <button type="submit" class="login-btn">Sign In</button>
-        <div class="login-error" id="login-error">Incorrect username or password.</div>
-      </form>
+<!-- ===== LOGIN SCREEN ===== -->
+<div id="login-screen">
+  <div class="login-card">
+    <p class="login-eyebrow">NYC ELA Tutoring</p>
+    <h1>Admin Panel</h1>
+    <p class="sub">Sign in to manage homework &amp; view student work</p>
+    <form id="login-form" autocomplete="off">
+      <div class="field">
+        <label for="uname">Username</label>
+        <input type="text" id="uname" autocomplete="username" spellcheck="false" />
+      </div>
+      <div class="field">
+        <label for="pword">Password</label>
+        <input type="password" id="pword" autocomplete="current-password" />
+      </div>
+      <button type="submit" class="login-btn" id="login-btn">Sign In</button>
+      <div class="login-error" id="login-error">Incorrect username or password.</div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== ADMIN PANEL ===== -->
+<div id="admin-panel">
+  <div class="admin-topbar">
+    <div class="brand">Admin Panel <span>NYC ELA Tutoring</span></div>
+    <div class="topbar-right">
+      <a href="index.html" class="topbar-link">← Student Menu</a>
+      <button class="logout-btn" id="logout-btn">Log Out</button>
     </div>
   </div>
 
-  <!-- ===== ADMIN PANEL ===== -->
-  <div id="admin-panel">
-    <div class="admin-topbar">
-      <div class="brand">Admin Panel <span>NYC ELA Tutoring</span></div>
-      <div class="topbar-right">
-        <a href="index.html" class="topbar-link">← Student Menu</a>
-        <button class="logout-btn" id="logout-btn">Log Out</button>
+  <div class="admin-body">
+    <div class="main-tab-bar">
+      <button class="main-tab-btn active" data-tab="editor">Homework Editor</button>
+      <button class="main-tab-btn" data-tab="answers">Student Answers</button>
+    </div>
+
+    <!-- ===== HOMEWORK EDITOR TAB ===== -->
+    <div class="main-tab-content active" id="tab-editor">
+      <div class="editor-card">
+        <h2>Edit Homework</h2>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="sel-student">Student</label>
+            <select class="form-select" id="sel-student">
+              <option value="">— choose a student —</option>
+              <option value="nabila-naviha">Nabila &amp; Naviha (Grade 1)</option>
+              <option value="salma-khadija">Salma &amp; Khadija (Grade 5)</option>
+              <option value="adnan">Adnan (Grade 4)</option>
+              <option value="nafis">Nafis (Grade 4)</option>
+              <option value="nahid">Nahid (Grade 5)</option>
+              <option value="sameer">Sameer (Grade 9)</option>
+              <option value="manha">Manha (Grade 3)</option>
+              <option value="mahiya">Mahiya (Grade 1)</option>
+              <option value="taha">Taha (Grade 2)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="sel-section">Section to Edit</label>
+            <select class="form-select" id="sel-section">
+              <option value="fillBlank">Fill in the Blank (Assigned)</option>
+              <option value="stories">Reading Stories (Assigned)</option>
+              <option value="math-assigned">Assigned Math</option>
+              <option value="math">Math Practice</option>
+              <option value="ela">ELA Practice</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="instruction">Instruction to AI</label>
+          <textarea class="form-textarea" id="instruction" rows="3"
+            placeholder="e.g. Replace fill-in-the-blanks with 10 sentences about animals and nature. Use simple Grade 1 words."></textarea>
+        </div>
+
+        <div class="btn-row">
+          <button class="action-btn primary" id="generate-btn">Generate with AI</button>
+          <button class="action-btn secondary" id="load-current-btn">Load Current Homework</button>
+          <span class="status-msg" id="gen-status"></span>
+        </div>
+      </div>
+
+      <!-- Preview card (hidden until generated) -->
+      <div class="editor-card" id="preview-card" style="display:none">
+        <h2>Preview &amp; Save</h2>
+        <div class="preview-box">
+          <h3>Generated Content</h3>
+          <div class="preview-content" id="preview-rendered"></div>
+          <div class="preview-raw" id="preview-raw" style="display:none"></div>
+        </div>
+        <div class="btn-row" style="margin-top:16px">
+          <button class="action-btn success" id="save-btn">Save &amp; Go Live</button>
+          <button class="action-btn secondary" id="toggle-raw-btn">Show Raw JSON</button>
+          <span class="status-msg" id="save-status"></span>
+        </div>
+      </div>
+
+      <!-- Current homework display -->
+      <div class="editor-card" id="current-card" style="display:none">
+        <h2>Current Homework <span id="current-student-label" class="current-badge"></span></h2>
+        <div class="preview-box">
+          <div class="preview-raw" id="current-raw" style="display:block"></div>
+        </div>
       </div>
     </div>
 
-    <div class="admin-body">
-      <div class="admin-notice">
-        <strong>Note:</strong> Student responses are stored in the browser on the device where they worked. If students use a different device than this one, their answers will not appear here.
+    <!-- ===== STUDENT ANSWERS TAB ===== -->
+    <div class="main-tab-content" id="tab-answers">
+      <h1 class="page-heading">Student Answers</h1>
+      <div class="answers-controls">
+        <select class="form-select" id="answers-student-sel" style="max-width:260px">
+          <option value="">— all students —</option>
+          <option value="nabila-naviha">Nabila &amp; Naviha</option>
+          <option value="salma-khadija">Salma &amp; Khadija</option>
+          <option value="adnan">Adnan</option>
+          <option value="nafis">Nafis</option>
+          <option value="nahid">Nahid</option>
+          <option value="sameer">Sameer</option>
+          <option value="manha">Manha</option>
+          <option value="mahiya">Mahiya</option>
+          <option value="taha">Taha</option>
+        </select>
+        <button class="action-btn secondary" id="refresh-answers-btn">Refresh</button>
+        <span class="status-msg" id="answers-status"></span>
       </div>
-
-      <div class="refresh-row">
-        <h1 class="page-heading">Student Responses</h1>
-        <button class="refresh-btn" onclick="loadStudentData()">Refresh</button>
-      </div>
-
-      <div id="students-view"></div>
+      <div id="answers-view"></div>
     </div>
   </div>
+</div>
 
-  <script>
-    var AUTH_KEY = 'admin-auth-v1';
-    var U = 'ihthos';
-    var P = 'zidn5649';
+<script>
+(function () {
+  'use strict';
 
-    var STUDENTS = [
-      { id: 'nabila-naviha',  name: 'Nabila & Naviha' },
-      { id: 'salma-khadija',  name: 'Salma & Khadija' },
-      { id: 'adnan',          name: 'Adnan' },
-      { id: 'nafis',          name: 'Nafis' },
-      { id: 'nahid',          name: 'Nahid' },
-      { id: 'sameer',         name: 'Sameer' },
-      { id: 'manha',          name: 'Manha' },
-      { id: 'mahiya',         name: 'Mahiya' },
-      { id: 'taha',           name: 'Taha' }
-    ];
+  var TOKEN_KEY = 'admin-token-v2';
+  var token = sessionStorage.getItem(TOKEN_KEY) || '';
+  var generatedResult = null; // { section, generated }
+  var currentContent = {};    // full homework object for selected student
 
-    var KEY_LABELS = {
-      'ws1-summary': 'Story 1 — Tell Your Teacher',
-      'ws2-summary': 'Story 2 — Tell Your Teacher',
-      'ws3-summary': 'Story 3 — Tell Your Teacher',
-      'ws4-summary': 'Story 4 — Tell Your Teacher',
-      'ws5-summary': 'Story 5 — Tell Your Teacher',
-      'ws6-summary': 'Story 6 — Tell Your Teacher',
-      'ela-story':   'ELA Practice — Tell Your Teacher',
-      'ws1-arg':     'Worksheet 1 — Main Argument',
-      'ws1-detail':  'Worksheet 1 — Supporting Detail',
-      'ws2-arg':     'Worksheet 2 — Main Argument',
-      'ws2-detail':  'Worksheet 2 — Supporting Detail',
-      'ela1-ci':     'ELA — Central Idea / Claim',
-      'ela1-detail': 'ELA — Evidence / Detail',
-      'ela1-conn':   'ELA — Written Response',
-      'ws1-fav':     'Assigned — What Did You Think?'
-    };
+  var STUDENT_NAMES = {
+    'nabila-naviha': 'Nabila & Naviha',
+    'salma-khadija': 'Salma & Khadija',
+    'adnan': 'Adnan',
+    'nafis': 'Nafis',
+    'nahid': 'Nahid',
+    'sameer': 'Sameer',
+    'manha': 'Manha',
+    'mahiya': 'Mahiya',
+    'taha': 'Taha'
+  };
 
-    function formatKey(key) {
-      if (KEY_LABELS[key]) return KEY_LABELS[key];
-      return key.replace(/[-_]/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); });
-    }
+  var KEY_LABELS = {
+    'ws1-summary': 'Story 1 — Tell Your Teacher',
+    'ws2-summary': 'Story 2 — Tell Your Teacher',
+    'ws3-summary': 'Story 3 — Tell Your Teacher',
+    'ws4-summary': 'Story 4 — Tell Your Teacher',
+    'ws5-summary': 'Story 5 — Tell Your Teacher',
+    'ws6-summary': 'Story 6 — Tell Your Teacher',
+    'ela-story':   'ELA Practice — Tell Your Teacher',
+    'ws1-arg':     'Worksheet 1 — Main Argument',
+    'ws1-detail':  'Worksheet 1 — Supporting Detail',
+    'ws2-arg':     'Worksheet 2 — Main Argument',
+    'ws2-detail':  'Worksheet 2 — Supporting Detail',
+    'ela1-ci':     'ELA — Central Idea / Claim',
+    'ela1-detail': 'ELA — Evidence / Detail',
+    'ela1-conn':   'ELA — Written Response'
+  };
 
-    function escapeHtml(s) {
-      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-    }
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function formatKey(k) {
+    return KEY_LABELS[k] || k.replace(/[-_]/g,' ').replace(/\b\w/g, function(c){return c.toUpperCase();});
+  }
+  function setStatus(id, msg, cls) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = msg;
+    el.className = 'status-msg' + (cls ? ' ' + cls : '');
+  }
 
-    function isTextResponse(key, val) {
-      if (!val || val.length < 10) return false;
-      if (key.startsWith('gen-')) return false;
-      if (key.startsWith('mp-')) return false;
-      if (key.startsWith('fitb-')) return false;
-      if (key.startsWith('ai-')) return false;
-      if (/^[qfgm]\d+(-\d+)?$/.test(key)) return false; // math/fitb single answers
-      try { JSON.parse(val); return false; } catch(e) {}  // skip raw JSON blobs
-      return true;
-    }
+  // ---- AUTH ----
+  function showPanel() {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'block';
+  }
 
-    function loadStudentData() {
-      var view = document.getElementById('students-view');
-      var html = '';
-      var anyData = false;
-
-      STUDENTS.forEach(function (student) {
-        var prefix = student.id + ':';
-        var entries = [];
-
-        for (var i = 0; i < localStorage.length; i++) {
-          var key = localStorage.key(i);
-          if (!key || !key.startsWith(prefix)) continue;
-          var shortKey = key.slice(prefix.length);
-          var val = localStorage.getItem(key) || '';
-          if (isTextResponse(shortKey, val)) {
-            entries.push({ key: shortKey, val: val });
-          }
-        }
-
-        if (entries.length === 0) return;
-        anyData = true;
-
-        html += '<div class="student-card">';
-        html += '<div class="student-card-header">';
-        html += '<span class="student-name">' + escapeHtml(student.name) + '</span>';
-        html += '<span class="student-count">' + entries.length + ' response' + (entries.length !== 1 ? 's' : '') + '</span>';
-        html += '</div>';
-        html += '<div class="student-card-body">';
-        entries.forEach(function (e) {
-          html += '<div class="response-item">';
-          html += '<div class="response-key">' + escapeHtml(formatKey(e.key)) + '</div>';
-          html += '<div class="response-val">' + escapeHtml(e.val) + '</div>';
-          html += '</div>';
-        });
-        html += '</div></div>';
-      });
-
-      if (!anyData) {
-        html = '<div class="empty-state"><p>No student responses found on this device yet.</p></div>';
-      }
-
-      view.innerHTML = html;
-    }
-
-    function showPanel() {
-      document.getElementById('login-screen').style.display = 'none';
-      document.getElementById('admin-panel').style.display = 'block';
-      loadStudentData();
-    }
-
-    function isAuthed() {
-      return sessionStorage.getItem(AUTH_KEY) === '1';
-    }
-
-    document.getElementById('login-form').addEventListener('submit', function (e) {
-      e.preventDefault();
-      var u = document.getElementById('uname').value.trim();
-      var p = document.getElementById('pword').value;
-      if (u === U && p === P) {
-        sessionStorage.setItem(AUTH_KEY, '1');
+  document.getElementById('login-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var u = document.getElementById('uname').value.trim();
+    var p = document.getElementById('pword').value;
+    var btn = document.getElementById('login-btn');
+    btn.disabled = true;
+    btn.textContent = 'Signing in…';
+    fetch('/api/admin/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: u, password: p })
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(d) {
+      btn.disabled = false;
+      btn.textContent = 'Sign In';
+      if (d.ok && d.token) {
+        token = d.token;
+        sessionStorage.setItem(TOKEN_KEY, token);
         document.getElementById('login-error').classList.remove('show');
         showPanel();
       } else {
+        document.getElementById('login-error').textContent = d.error || 'Incorrect username or password.';
         document.getElementById('login-error').classList.add('show');
         document.getElementById('pword').value = '';
         document.getElementById('pword').focus();
       }
+    })
+    .catch(function() {
+      btn.disabled = false;
+      btn.textContent = 'Sign In';
+      document.getElementById('login-error').textContent = 'Server error — try again.';
+      document.getElementById('login-error').classList.add('show');
+    });
+  });
+
+  document.getElementById('logout-btn').addEventListener('click', function () {
+    token = '';
+    sessionStorage.removeItem(TOKEN_KEY);
+    location.reload();
+  });
+
+  // ---- MAIN TAB SWITCH ----
+  document.querySelectorAll('.main-tab-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.main-tab-btn').forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.main-tab-content').forEach(function(c){ c.classList.remove('active'); });
+      btn.classList.add('active');
+      var tab = document.getElementById('tab-' + btn.dataset.tab);
+      if (tab) { tab.classList.add('active'); }
+      if (btn.dataset.tab === 'answers') loadAnswersView();
+    });
+  });
+
+  // ---- HOMEWORK EDITOR ----
+  document.getElementById('load-current-btn').addEventListener('click', function () {
+    var student = document.getElementById('sel-student').value;
+    if (!student) { alert('Please choose a student first.'); return; }
+    setStatus('gen-status', 'Loading…', 'working');
+    fetch('/api/homework/' + student)
+    .then(function(r){ return r.json(); })
+    .then(function(d) {
+      currentContent = d.content || {};
+      setStatus('gen-status', d.content ? 'Loaded.' : 'No server homework yet (using hardcoded page).', 'ok');
+      var card = document.getElementById('current-card');
+      document.getElementById('current-student-label').textContent = STUDENT_NAMES[student] || student;
+      document.getElementById('current-raw').textContent = JSON.stringify(currentContent, null, 2);
+      card.style.display = 'block';
+    })
+    .catch(function() { setStatus('gen-status', 'Failed to load.', 'err'); });
+  });
+
+  document.getElementById('generate-btn').addEventListener('click', function () {
+    var student = document.getElementById('sel-student').value;
+    var section = document.getElementById('sel-section').value;
+    var instruction = document.getElementById('instruction').value.trim();
+    if (!student) { alert('Please choose a student.'); return; }
+    if (!instruction) { alert('Please type an instruction for the AI.'); return; }
+
+    // Map section selector value to API section + grade from student config
+    var apiSection = section === 'math-assigned' ? 'math' : section;
+    var gradeMap = {
+      'nabila-naviha': 1, 'mahiya': 1, 'taha': 2, 'manha': 3,
+      'adnan': 4, 'nafis': 4, 'nahid': 5, 'salma-khadija': 5, 'sameer': 9
+    };
+    var grade = gradeMap[student] || '?';
+
+    // Get current content for this section as context
+    var current = null;
+    if (section === 'fillBlank') current = (currentContent.assigned || {}).fillBlank || null;
+    else if (section === 'stories') current = (currentContent.assigned || {}).stories || null;
+    else if (section === 'math-assigned') current = (currentContent.assigned || {}).math || null;
+    else if (section === 'math') current = currentContent.math || null;
+    else if (section === 'ela') current = currentContent.ela || null;
+
+    var btn = document.getElementById('generate-btn');
+    btn.disabled = true;
+    setStatus('gen-status', 'Generating with Kimi K2.6…', 'working');
+    document.getElementById('preview-card').style.display = 'none';
+
+    fetch('/api/admin/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ instruction: instruction, section: apiSection, current: current, grade: grade })
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(d) {
+      btn.disabled = false;
+      if (d.ok && d.generated) {
+        generatedResult = { section: section, generated: d.generated };
+        setStatus('gen-status', 'Generated! Review below, then click Save.', 'ok');
+        showPreview(apiSection, d.generated);
+      } else {
+        setStatus('gen-status', 'AI error: ' + (d.error || 'unknown'), 'err');
+        if (d.raw) console.error('AI raw output:', d.raw);
+      }
+    })
+    .catch(function(err) {
+      btn.disabled = false;
+      setStatus('gen-status', 'Request failed: ' + err.message, 'err');
+    });
+  });
+
+  function showPreview(section, data) {
+    var html = '';
+    if (section === 'fillBlank') {
+      html += '<div class="preview-title">' + esc(data.title || 'Fill in the Blank') + '</div>';
+      if (data.wordBank) {
+        html += '<div style="margin-bottom:12px">';
+        data.wordBank.forEach(function(w){ html += '<span class="word-chip">' + esc(w) + '</span>'; });
+        html += '</div>';
+      }
+      if (data.sentences) {
+        data.sentences.forEach(function(s, i) {
+          html += '<p class="preview-sentence">' + (i+1) + '. ' + esc(s.before) +
+            '<span class="preview-blank">' + esc(s.answer) + '</span>' + esc(s.after) + '</p>';
+        });
+      }
+    } else if (section === 'math') {
+      html += '<div class="preview-title">' + esc(data.title || 'Math') + '</div>';
+      if (data.problems) {
+        data.problems.forEach(function(p, i) {
+          html += '<div class="math-row">' + (i+1) + '. ' + esc(p.q) +
+            ' <span class="math-ans">' + esc(p.answer) + '</span></div>';
+        });
+      }
+    } else if (section === 'stories') {
+      if (Array.isArray(data)) {
+        data.forEach(function(s, i) {
+          html += '<div style="margin-bottom:16px"><div class="preview-title">Story ' + (i+1) + ': ' + esc(s.title) + '</div>';
+          if (s.paragraphs) s.paragraphs.forEach(function(p){ html += '<p style="margin-bottom:8px">' + esc(p) + '</p>'; });
+          if (s.prompt) html += '<p style="color:#666;font-style:italic;margin-top:8px">' + esc(s.prompt) + '</p>';
+          html += '</div>';
+        });
+      }
+    } else if (section === 'ela') {
+      html += '<div class="preview-title">' + esc(data.title || 'ELA Practice') + '</div>';
+      if (data.paragraphs) data.paragraphs.forEach(function(p){ html += '<p style="margin-bottom:8px">' + esc(p) + '</p>'; });
+      if (data.questions) {
+        data.questions.forEach(function(q) {
+          html += '<div style="margin-top:12px;padding-top:12px;border-top:1px solid #ddd"><strong>' + esc(q.label) + '</strong><br>' + esc(q.question) + '</div>';
+        });
+      }
+    } else {
+      html = '<pre>' + esc(JSON.stringify(data, null, 2)) + '</pre>';
+    }
+    document.getElementById('preview-rendered').innerHTML = html;
+    document.getElementById('preview-raw').textContent = JSON.stringify(data, null, 2);
+    document.getElementById('preview-card').style.display = 'block';
+    document.getElementById('preview-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  document.getElementById('toggle-raw-btn').addEventListener('click', function () {
+    var raw = document.getElementById('preview-raw');
+    var btn = document.getElementById('toggle-raw-btn');
+    if (raw.style.display === 'none') { raw.style.display = ''; btn.textContent = 'Hide Raw JSON'; }
+    else { raw.style.display = 'none'; btn.textContent = 'Show Raw JSON'; }
+  });
+
+  document.getElementById('save-btn').addEventListener('click', function () {
+    if (!generatedResult) return;
+    var student = document.getElementById('sel-student').value;
+    if (!student) { alert('Please choose a student.'); return; }
+
+    var section = generatedResult.section;
+    var generated = generatedResult.generated;
+
+    // Merge generated data into the current content object at the right path
+    var content = JSON.parse(JSON.stringify(currentContent));
+    content.version = 1;
+    content.student = student;
+    if (section === 'fillBlank') {
+      if (!content.assigned) content.assigned = {};
+      content.assigned.fillBlank = generated;
+    } else if (section === 'stories') {
+      if (!content.assigned) content.assigned = {};
+      content.assigned.stories = generated;
+    } else if (section === 'math-assigned') {
+      if (!content.assigned) content.assigned = {};
+      content.assigned.math = generated;
+    } else if (section === 'math') {
+      content.math = generated;
+    } else if (section === 'ela') {
+      content.ela = generated;
+    }
+
+    var btn = document.getElementById('save-btn');
+    btn.disabled = true;
+    setStatus('save-status', 'Saving…', 'working');
+
+    fetch('/api/homework/' + student, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify(content)
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(d) {
+      btn.disabled = false;
+      if (d.ok) {
+        currentContent = d.content || content;
+        setStatus('save-status', 'Saved! Live for ' + (STUDENT_NAMES[student] || student) + ' — they should refresh.', 'ok');
+      } else {
+        setStatus('save-status', 'Save failed: ' + (d.error || 'unknown'), 'err');
+      }
+    })
+    .catch(function(err) {
+      btn.disabled = false;
+      setStatus('save-status', 'Request failed: ' + err.message, 'err');
+    });
+  });
+
+  // ---- STUDENT ANSWERS ----
+  function loadAnswersView() {
+    var filterStudent = document.getElementById('answers-student-sel').value;
+    var students = filterStudent ? [filterStudent] : Object.keys(STUDENT_NAMES);
+    var view = document.getElementById('answers-view');
+    view.innerHTML = '';
+    setStatus('answers-status', 'Loading…', 'working');
+
+    var fetches = students.map(function(sid) {
+      return fetch('/api/answers/' + sid, {
+        headers: { 'Authorization': 'Bearer ' + token }
+      })
+      .then(function(r){ return r.json(); })
+      .then(function(d){ return { sid: sid, record: d.record }; })
+      .catch(function(){ return { sid: sid, record: null }; });
     });
 
-    document.getElementById('logout-btn').addEventListener('click', function () {
-      sessionStorage.removeItem(AUTH_KEY);
-      location.reload();
+    Promise.all(fetches).then(function(results) {
+      setStatus('answers-status', '', '');
+      var anyData = false;
+      var html = '';
+      results.forEach(function(res) {
+        var record = res.record;
+        if (!record || !record.answers || !Object.keys(record.answers).length) return;
+        var answers = record.answers;
+        var keys = Object.keys(answers).filter(function(k) {
+          return answers[k] && answers[k].length >= 5;
+        });
+        if (!keys.length) return;
+        anyData = true;
+        var ts = record.updatedAt ? new Date(record.updatedAt).toLocaleString() : '';
+        html += '<div class="student-card">';
+        html += '<div class="student-card-header">';
+        html += '<span class="student-name">' + esc(STUDENT_NAMES[res.sid] || res.sid) + '</span>';
+        html += '<span class="student-count">' + keys.length + ' response' + (keys.length !== 1 ? 's' : '') + '</span>';
+        html += '</div>';
+        keys.forEach(function(k) {
+          html += '<div class="response-item">';
+          html += '<div class="response-key">' + esc(formatKey(k)) + '</div>';
+          html += '<div class="response-val">' + esc(answers[k]) + '</div>';
+          if (ts) html += '<div class="response-ts">Last synced: ' + esc(ts) + '</div>';
+          html += '</div>';
+        });
+        html += '</div>';
+      });
+      if (!anyData) {
+        html = '<div class="empty-state"><p>No student answers on the server yet. Students need to type in their pages — answers sync automatically.</p></div>';
+      }
+      view.innerHTML = html;
     });
+  }
 
-    if (isAuthed()) showPanel();
-  </script>
+  document.getElementById('refresh-answers-btn').addEventListener('click', loadAnswersView);
+  document.getElementById('answers-student-sel').addEventListener('change', loadAnswersView);
+
+  // ---- INIT ----
+  if (token) {
+    // Verify token is still valid by making a cheap request
+    fetch('/api/answers/nabila-naviha', { headers: { 'Authorization': 'Bearer ' + token } })
+    .then(function(r) {
+      if (r.status === 401) { token = ''; sessionStorage.removeItem(TOKEN_KEY); }
+      else showPanel();
+    })
+    .catch(function() { showPanel(); }); // network error — show panel optimistically
+  }
+
+})();
+</script>
 </body>
 </html>

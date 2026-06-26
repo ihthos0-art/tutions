@@ -60,10 +60,159 @@ async function tryProvider(provider, apiKey, body) {
   return { ok, data, provider: provider.name + '/' + provider.model };
 }
 
+// ---- Shared helpers ----
+const JSON_HEADERS = {
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
+};
+
+function json(obj, status = 200, extra = {}) {
+  return new Response(JSON.stringify(obj), { status, headers: { ...JSON_HEADERS, ...extra } });
+}
+
+const STUDENT_IDS = [
+  'nabila-naviha', 'salma-khadija', 'adnan', 'nafis', 'nahid',
+  'sameer', 'manha', 'mahiya', 'taha'
+];
+function validStudent(id) { return STUDENT_IDS.includes(id); }
+
+// ---- HMAC-signed admin token (8h, no DB needed) ----
+function b64url(buf) {
+  return btoa(String.fromCharCode(...new Uint8Array(buf)))
+    .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+async function hmac(secret, data) {
+  const key = await crypto.subtle.importKey(
+    'raw', new TextEncoder().encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
+  );
+  const sig = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(data));
+  return b64url(sig);
+}
+async function makeToken(env) {
+  const exp = Date.now() + 1000 * 60 * 60 * 8;
+  const payload = b64url(new TextEncoder().encode(JSON.stringify({ exp })));
+  const sig = await hmac(env.ADMIN_TOKEN_SECRET || 'dev', payload);
+  return payload + '.' + sig;
+}
+async function verifyToken(env, token) {
+  if (!token) return false;
+  const [payload, sig] = token.split('.');
+  if (!payload || !sig) return false;
+  const expected = await hmac(env.ADMIN_TOKEN_SECRET || 'dev', payload);
+  if (sig !== expected) return false;
+  try {
+    const { exp } = JSON.parse(new TextDecoder().decode(
+      Uint8Array.from(atob(payload.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0))
+    ));
+    return Date.now() < exp;
+  } catch { return false; }
+}
+function bearer(request) {
+  const h = request.headers.get('Authorization') || '';
+  return h.startsWith('Bearer ') ? h.slice(7) : '';
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
+    // CORS preflight
+    if (request.method === 'OPTIONS') return new Response(null, { headers: JSON_HEADERS });
+
+    // ---- ADMIN LOGIN ----
+    if (url.pathname === '/api/admin/login' && request.method === 'POST') {
+      const { username, password } = await request.json().catch(() => ({}));
+      if (username === env.ADMIN_USERNAME && password === env.ADMIN_PASSWORD) {
+        return json({ ok: true, token: await makeToken(env) });
+      }
+      return json({ ok: false, error: 'Invalid credentials' }, 401);
+    }
+
+    // ---- HOMEWORK: read (public) / write (admin) ----
+    {
+      const m = url.pathname.match(/^\/api\/homework\/([a-z0-9-]+)$/);
+      if (m && request.method === 'GET') {
+        if (!validStudent(m[1])) return json({ error: 'unknown student' }, 404);
+        if (!env.HOMEWORK) return json({ content: null });
+        const raw = await env.HOMEWORK.get('homework:' + m[1]);
+        return json({ content: raw ? JSON.parse(raw) : null });
+      }
+      if (m && request.method === 'POST') {
+        if (!await verifyToken(env, bearer(request))) return json({ error: 'unauthorized' }, 401);
+        if (!validStudent(m[1])) return json({ error: 'unknown student' }, 404);
+        if (!env.HOMEWORK) return json({ error: 'KV not configured' }, 503);
+        const content = await request.json();
+        content.updatedAt = new Date().toISOString();
+        content.student = m[1];
+        await env.HOMEWORK.put('homework:' + m[1], JSON.stringify(content));
+        return json({ ok: true, content });
+      }
+    }
+
+    // ---- ANSWERS: student submits (public) / admin reads (auth) ----
+    {
+      const m = url.pathname.match(/^\/api\/answers\/([a-z0-9-]+)$/);
+      if (m && request.method === 'POST') {
+        if (!validStudent(m[1])) return json({ error: 'unknown student' }, 404);
+        if (!env.HOMEWORK) return json({ ok: true });
+        const body = await request.json().catch(() => ({}));
+        const record = { updatedAt: new Date().toISOString(), student: m[1], answers: body.answers || {} };
+        await env.HOMEWORK.put('answers:' + m[1], JSON.stringify(record));
+        return json({ ok: true });
+      }
+      if (m && request.method === 'GET') {
+        if (!await verifyToken(env, bearer(request))) return json({ error: 'unauthorized' }, 401);
+        if (!env.HOMEWORK) return json({ answers: null });
+        const raw = await env.HOMEWORK.get('answers:' + m[1]);
+        return json({ record: raw ? JSON.parse(raw) : null });
+      }
+    }
+
+    // ---- ADMIN: AI generates homework via Kimi K2.6 (Ollama Cloud) ----
+    if (url.pathname === '/api/admin/generate' && request.method === 'POST') {
+      if (!await verifyToken(env, bearer(request))) return json({ error: 'unauthorized' }, 401);
+      const { instruction, section, current, grade } = await request.json().catch(() => ({}));
+
+      const KIMI_URL = 'https://ollama.com/v1/chat/completions';
+      const KIMI_MODEL = 'kimi-k2.6:cloud';
+
+      const schemaHint = {
+        fillBlank: '{"title":string,"instructions":string,"wordBank":string[],"sentences":[{"before":string,"answer":string,"after":string}]}',
+        stories:   '[{"title":string,"paragraphs":string[],"prompt":string}]',
+        math:      '{"title":string,"problems":[{"q":string,"answer":string}]}',
+        ela:       '{"title":string,"paragraphs":string[],"questions":[{"label":string,"question":string,"placeholder":string,"save":string}]}'
+      }[section] || '{}';
+
+      const sys = 'You are a curriculum editor for NYC ESL students (Bengali speakers, grades 1-8). ' +
+        'You edit homework content. Return ONLY valid minified JSON matching this schema for the "' +
+        section + '" section: ' + schemaHint +
+        '. For fillBlank, every answer MUST appear in wordBank. Keep language simple and grade-appropriate. No markdown, no commentary.';
+      const usr = 'Grade: ' + (grade || 'unknown') + '\nCurrent content (may be empty):\n' +
+        JSON.stringify(current || null) + '\n\nInstruction: ' + instruction;
+
+      const res = await fetch(KIMI_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + env.OLLAMA_API_KEY },
+        body: JSON.stringify({ model: KIMI_MODEL, temperature: 0.7, max_tokens: 2000,
+          messages: [{ role: 'system', content: sys }, { role: 'user', content: usr }] })
+      });
+      const data = await res.json();
+      const text = data?.choices?.[0]?.message?.content;
+      if (!text) return json({ error: 'AI failed', detail: data }, 502);
+
+      let parsed;
+      try {
+        const clean = text.replace(/```json?/gi, '').replace(/```/g, '').trim();
+        parsed = JSON.parse(clean.match(/[[{][\s\S]*[\]}]/)?.[0] || clean);
+      } catch (e) { return json({ error: 'AI returned non-JSON', raw: text }, 502); }
+
+      return json({ ok: true, section, generated: parsed });
+    }
+
+    // ---- STUDENT AI CHAT (existing multi-provider chain) ----
     if (url.pathname === '/api/chat' && request.method === 'POST') {
       try {
         const body = await request.json();

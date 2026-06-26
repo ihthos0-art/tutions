@@ -1,0 +1,8 @@
+.git/
+node_modules/
+SECRETS.local.md
+ADMIN_AI_EDITOR_PLAN.md
+README.md
+*.md
+*.toml
+*.jsonl

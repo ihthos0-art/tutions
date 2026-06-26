@@ -33,21 +33,26 @@
   function renderStories(stories) {
     var container = document.querySelector('#assigned');
     if (!container || !stories || !stories.length) return;
-    // Find all existing story ws-cards (skip the first card which is fill-in-blank)
-    var cards = container.querySelectorAll('.ws-card[data-story-slot]');
-    if (!cards.length) return;
-    stories.forEach(function (story, i) {
-      var card = cards[i];
-      if (!card) return;
-      var titleEl = card.querySelector('.ws-title');
-      var passageEl = card.querySelector('.passage-box');
-      var questionEl = card.querySelector('.section-question');
-      if (titleEl) titleEl.textContent = story.title;
-      if (passageEl) passageEl.innerHTML = story.paragraphs.map(function (p) {
+    var story = stories[0];
+    if (!story) return;
+
+    // Title: try .passage-title (mahiya/manha) then .ws-title (other pages)
+    var titleEl = container.querySelector('.passage-title') || container.querySelector('.ws-title');
+    if (titleEl) titleEl.textContent = story.title;
+
+    // Passage: first .passage-box in assigned
+    var passageEl = container.querySelector('.passage-box');
+    if (passageEl) {
+      passageEl.innerHTML = story.paragraphs.map(function (p) {
         return '<p>' + esc(p) + '</p>';
       }).join('');
+    }
+
+    // Prompt: first .section-question in assigned
+    if (story.prompt) {
+      var questionEl = container.querySelector('.section-question');
       if (questionEl) questionEl.textContent = story.prompt;
-    });
+    }
   }
 
   function renderEla(ela) {

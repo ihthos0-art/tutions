@@ -196,11 +196,12 @@ export default {
       const res = await fetch(KIMI_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + env.OLLAMA_API_KEY },
-        body: JSON.stringify({ model: KIMI_MODEL, temperature: 0.7, max_tokens: 2000,
+        body: JSON.stringify({ model: KIMI_MODEL, temperature: 0.7, max_tokens: 4000, think: false,
           messages: [{ role: 'system', content: sys }, { role: 'user', content: usr }] })
       });
       const data = await res.json();
-      const text = data?.choices?.[0]?.message?.content;
+      // Kimi K2.6 is a reasoning model — content may be empty; fall back to reasoning field
+      const text = data?.choices?.[0]?.message?.content || data?.choices?.[0]?.message?.reasoning;
       if (!text) return json({ error: 'AI failed', detail: data }, 502);
 
       let parsed;

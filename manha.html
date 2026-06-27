@@ -74,6 +74,52 @@
     .check-btn:hover { background: #444; }
     .ci-input, .detail-input { width: 100%; background: #fff; border: 1.5px solid #bbb; border-radius: 3px; color: #1a1a1a; font-family: 'Merriweather', Georgia, serif; font-size: 14px; padding: 12px 14px; outline: none; transition: border-color 0.2s; line-height: 1.7; resize: none; }
     .ci-input:focus, .detail-input:focus { border-color: #333; }
+    /* === GRADE 4 SUMMER SCHEDULE === */
+    .summer-wrap { max-width: 860px; margin: 0 auto; }
+    .summer-head { text-align: center; margin-bottom: 28px; }
+    .summer-head h1 { font-size: clamp(22px, 3.5vw, 32px); font-weight: 700; color: #1a1a1a; }
+    .summer-head .sub { margin-top: 6px; font-size: 14px; color: #555; font-family: 'Merriweather Sans', sans-serif; }
+    .summer-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 18px; margin-bottom: 24px; font-family: 'Merriweather Sans', sans-serif; font-size: 12px; color: #555; }
+    .summer-legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .summer-legend .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-math { background: #e74c3c; }
+    .dot-ela { background: #3498db; }
+    .dot-science { background: #27ae60; }
+    .dot-social { background: #9b59b6; }
+    .week-nav { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-bottom: 22px; }
+    .week-btn { font-family: 'Merriweather Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 8px 14px; border: 1.5px solid #c8c8c8; background: #f4f3f0; color: #666; cursor: pointer; border-radius: 4px; transition: all 0.2s; }
+    .week-btn:hover { border-color: #1a1a1a; color: #1a1a1a; }
+    .week-btn.active { background: #1a1a1a; border-color: #1a1a1a; color: #fff; }
+    .day-card { background: #fff; border: 1px solid #c8c8c8; border-radius: 4px; box-shadow: 0 2px 12px rgba(0,0,0,0.09); padding: 24px 28px; margin-bottom: 18px; }
+    .day-title { font-family: 'Merriweather Sans', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #333; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid #1a1a1a; }
+    .subject-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .subject-block { border-radius: 4px; padding: 18px; border-left: 5px solid; background: #fafaf8; }
+    .subject-block.math { border-color: #e74c3c; }
+    .subject-block.ela { border-color: #3498db; }
+    .subject-block.science { border-color: #27ae60; }
+    .subject-block.social { border-color: #9b59b6; }
+    .subject-tag { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 4px 10px; border-radius: 3px; color: #fff; display: inline-block; margin-bottom: 10px; }
+    .subject-tag.math { background: #e74c3c; }
+    .subject-tag.ela { background: #3498db; }
+    .subject-tag.science { background: #27ae60; }
+    .subject-tag.social { background: #9b59b6; }
+    .subject-block h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; color: #1a1a1a; }
+    .subject-block p { font-size: 14px; line-height: 1.7; color: #333; margin-bottom: 12px; }
+    .subject-block ul { padding-left: 18px; font-size: 13px; line-height: 1.8; color: #333; margin-bottom: 12px; }
+    .subject-block li { margin-bottom: 4px; }
+    .done-row { display: flex; align-items: center; gap: 10px; font-family: 'Merriweather Sans', sans-serif; font-size: 13px; color: #555; margin-top: 10px; }
+    .done-row input { width: 18px; height: 18px; cursor: pointer; accent-color: #1a1a1a; }
+    .progress-bar { max-width: 860px; margin: 0 auto 28px; background: #fff; border: 1px solid #c8c8c8; border-radius: 4px; padding: 18px 22px; box-shadow: 0 2px 12px rgba(0,0,0,0.09); }
+    .progress-label { display: flex; justify-content: space-between; font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #555; margin-bottom: 10px; }
+    .progress-track { height: 10px; background: #e2e0db; border-radius: 5px; overflow: hidden; }
+    .progress-fill { height: 100%; width: 0%; background: #1a1a1a; border-radius: 5px; transition: width 0.3s; }
+    .vocab-box { max-width: 860px; margin: 0 auto 28px; background: #fff; border: 1px solid #c8c8c8; border-radius: 4px; padding: 22px 26px; box-shadow: 0 2px 12px rgba(0,0,0,0.09); }
+    .vocab-box h2 { font-size: 18px; font-weight: 700; margin-bottom: 14px; }
+    .vocab-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 24px; font-size: 13px; line-height: 1.7; }
+    @media (max-width: 720px) {
+      .subject-pair { grid-template-columns: 1fr; }
+      .vocab-grid { grid-template-columns: 1fr; }
+    }
     @media print {
       .tab-bar, .reset-bar, .check-wrap { display: none; }
       .tab-content { display: block !important; }
@@ -87,36 +133,9 @@
       .worksheet + .worksheet { page-break-before: always; }
       .passage-box, .passage-title, .section-question, .section-label, .ws-number { -webkit-user-select: text; user-select: text; }
     }
-    /* === ANCIENT EGYPT INFO SHEET === */
-    .egypt-sheet { max-width: 820px; margin: 0 auto; background: #fff; border: 1px solid #c8c8c8; border-radius: 4px; box-shadow: 0 2px 12px rgba(0,0,0,0.09); padding: 40px 44px 48px; }
-    .egy-title-block { text-align: center; padding-bottom: 14px; border-bottom: 2.5px solid #c9a227; margin-bottom: 16px; }
-    .egy-title { font-size: clamp(26px, 5vw, 40px); font-weight: 700; color: #1a1a1a; letter-spacing: 0.05em; }
-    .egy-subtitle { font-size: 13px; color: #666; font-style: italic; margin-top: 5px; font-family: 'Merriweather Sans', sans-serif; }
-    .egy-intro { background: #fdf6dc; border-left: 3px solid #c9a227; padding: 10px 16px; font-style: italic; color: #7a6010; font-size: 14px; margin-bottom: 24px; font-family: 'Merriweather Sans', sans-serif; border-radius: 0 3px 3px 0; }
-    .egy-section-head { background: #1a4a6b; color: #fff; font-family: 'Merriweather Sans', sans-serif; font-size: 14px; font-weight: 700; padding: 10px 16px; border-radius: 3px; margin-top: 28px; margin-bottom: 14px; }
-    .egy-body p { font-family: 'Merriweather', Georgia, serif; font-size: 14px; line-height: 1.9; color: #222; margin-bottom: 10px; }
-    .egy-wordbank { font-style: italic !important; color: #8a6c00 !important; background: #fdf6dc; padding: 6px 12px !important; border-radius: 3px; font-family: 'Merriweather Sans', sans-serif !important; font-size: 13px !important; margin-bottom: 10px; }
-    .egy-table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 10px 0 6px; }
-    .egy-table th { background: #2c2c2c; color: #fff; padding: 9px 14px; text-align: left; font-family: 'Merriweather Sans', sans-serif; font-size: 13px; font-weight: 700; border: 1px solid #c9a227; }
-    .egy-table td { padding: 8px 14px; border: 1px solid #c9a227; color: #222; line-height: 1.6; vertical-align: top; font-family: 'Merriweather', Georgia, serif; font-size: 14px; }
-    .egy-table tbody tr:nth-child(odd) td { background: #fff; }
-    .egy-table tbody tr:nth-child(even) td { background: #fdf6e8; }
-    .egy-true td { background: #e6f4ea !important; }
-    .egy-false td { background: #fff3e0 !important; }
-    .egy-facts-table td:first-child { font-weight: 700; width: 150px; }
-    .egy-list { padding-left: 22px; margin: 6px 0 12px; }
-    .egy-list li { font-family: 'Merriweather', Georgia, serif; font-size: 14px; line-height: 1.9; color: #222; margin-bottom: 3px; }
-    .egy-subhead { font-weight: 700 !important; font-style: normal !important; font-size: 14px !important; color: #1a1a1a !important; margin: 16px 0 6px !important; font-family: 'Merriweather Sans', sans-serif !important; }
-    .egy-italic-note { font-style: italic; color: #8a6c00; background: #fdf6dc; padding: 6px 12px; border-radius: 3px; font-family: 'Merriweather Sans', sans-serif; font-size: 13px; margin-bottom: 12px; display: block; }
-    .egy-word-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 10px 0 16px; }
-    .egy-word-grid span { background: #fdf6dc; border: 1px solid #c9a227; color: #7a5c00; font-family: 'Merriweather Sans', sans-serif; font-weight: 700; font-size: 13px; padding: 8px; text-align: center; border-radius: 3px; }
-    .egy-footer { background: #fdf6dc; border: 1.5px solid #c9a227; padding: 10px 16px; margin-top: 32px; font-style: italic; color: #7a6010; font-size: 14px; font-family: 'Merriweather Sans', sans-serif; border-radius: 3px; }
-    @media (max-width: 520px) {
-      .egypt-sheet { padding: 24px 16px 32px; }
-      .egy-word-grid { grid-template-columns: repeat(2, 1fr); }
-    }
   </style>
   <script>window.STUDENT_CONFIG = {'name': 'Manha', 'grade': 3, 'math': {'topic': 'multiplication-division', 'count': 8, 'wordProblems': 4, 'max': 10, 'min': 2}, 'ela': {'type': 'narrative', 'questions': 3}};</script>
+  <link rel="stylesheet" href="summer-games.css?v=1">
 </head>
 <body>
 
@@ -128,7 +147,7 @@
     <button class='tab-btn active' data-tab='assigned'>Assigned</button>
     <button class='tab-btn' data-tab='math'>Math Practice</button>
     <button class='tab-btn' data-tab='ela'>ELA Practice</button>
-    <button class='tab-btn' data-tab='egypt'>Egypt Info</button>
+    <button class='tab-btn' data-tab='summer'>Grade 4 Summer</button>
   </div>
 
   <!-- ASSIGNED TAB -->
@@ -285,219 +304,56 @@
     <p class='save-notice'>Your answers are saved automatically in this browser.</p>
   </div>
 
-  <!-- EGYPT INFO TAB -->
-  <div class='tab-content' id='egypt'>
-    <div class='egypt-sheet'>
+  <!-- GRADE 4 SUMMER TAB -->
+  <div class='tab-content' id='summer'>
+    <div class='summer-wrap'>
+      <header class='summer-head'>
+        <h1>Grade 4 Summer Prep</h1>
+        <p class='sub'>2 months · 4 days/week · 2 subjects/day · Get ahead before Fall</p>
+      </header>
 
-      <div class='egy-title-block'>
-        <h1 class='egy-title'>ANCIENT EGYPT</h1>
-        <p class='egy-subtitle'>Information Sheet &mdash; Grade 3</p>
-      </div>
-      <div class='egy-intro'>Read this sheet to find answers for your worksheets. Use simple words when you write!</div>
-
-      <div class='egy-section-head'>&#9632; Where Did They Live?</div>
-      <div class='egy-body'>
-        <p>The ancient Egyptians lived in <strong>Egypt</strong>, in the continent of <strong>Africa</strong>.</p>
-        <p>They lived near the <strong>Nile River</strong>. The rest of the land was hot, dry desert.</p>
-        <p>The Nile River gave them water, food, and rich soil to grow plants.</p>
+      <div class='summer-legend'>
+        <span><i class='dot dot-math'></i> Math</span>
+        <span><i class='dot dot-ela'></i> ELA</span>
+        <span><i class='dot dot-science'></i> Science</span>
+        <span><i class='dot dot-social'></i> Social Studies</span>
       </div>
 
-      <div class='egy-section-head'>&#9998;&#9632; Nile River &mdash; Fill in the Blank Answers</div>
-      <div class='egy-body'>
-        <p class='egy-wordbank'>Word Bank: irrigate | fishing | desert | Nile | silt | flood</p>
-        <table class='egy-table'>
-          <thead><tr><th>Blank</th><th>Answer</th></tr></thead>
-          <tbody>
-            <tr><td>...the _____ River</td><td><strong>Nile</strong></td></tr>
-            <tr><td>...hot and dry _____ climate</td><td><strong>desert</strong></td></tr>
-            <tr><td>...bathing, _____</td><td><strong>fishing</strong></td></tr>
-            <tr><td>...farm and _____ their crops</td><td><strong>irrigate</strong></td></tr>
-            <tr><td>Every year the Nile would _____</td><td><strong>flood</strong></td></tr>
-            <tr><td>...thick layer of soil called _____</td><td><strong>silt</strong></td></tr>
-          </tbody>
-        </table>
+      <div class='progress-bar'>
+        <div class='progress-label'><span>Summer Progress</span><span id='summer-progress-text'>0 / 32 days</span></div>
+        <div class='progress-track'><div class='progress-fill' id='summer-progress-fill'></div></div>
       </div>
 
-      <div class='egy-section-head'>&#9632;&#9632; What Was the Climate Like?</div>
-      <div class='egy-body'>
-        <p>Egypt was <strong>hot and dry</strong>. It did not rain much.</p>
-        <p>Most of Egypt was <strong>desert</strong>. It could get very, very hot.</p>
-        <p>Near the Nile River, the land was green and good for farming.</p>
+      <div class='week-nav' id='week-nav'>
+        <button class='week-btn active' data-week='0'>Week 1</button>
+        <button class='week-btn' data-week='1'>Week 2</button>
+        <button class='week-btn' data-week='2'>Week 3</button>
+        <button class='week-btn' data-week='3'>Week 4</button>
+        <button class='week-btn' data-week='4'>Week 5</button>
+        <button class='week-btn' data-week='5'>Week 6</button>
+        <button class='week-btn' data-week='6'>Week 7</button>
+        <button class='week-btn' data-week='7'>Week 8</button>
       </div>
 
-      <div class='egy-section-head'>&#9632; Natural Resources Egyptians Used</div>
-      <div class='egy-body'>
-        <p>Here are more than 3 natural resources:</p>
-        <table class='egy-table'>
-          <thead><tr><th>Resource</th><th>How They Used It</th></tr></thead>
-          <tbody>
-            <tr><td><strong>Silt (rich soil)</strong></td><td>Left by the Nile floods. Used to grow food.</td></tr>
-            <tr><td><strong>Water from the Nile</strong></td><td>Used for drinking, bathing, and farming.</td></tr>
-            <tr><td><strong>Papyrus (a plant)</strong></td><td>Used to make paper, baskets, and sandals.</td></tr>
-            <tr><td><strong>Stone</strong></td><td>Used to build pyramids and temples.</td></tr>
-            <tr><td><strong>Mud and clay</strong></td><td>Used to make bricks for houses.</td></tr>
-            <tr><td><strong>Fish</strong></td><td>Caught from the Nile. Used for food.</td></tr>
-            <tr><td><strong>Gold</strong></td><td>Found in the desert. Used for jewelry.</td></tr>
-          </tbody>
-        </table>
+      <div id='summer-weeks'>
+        <!-- Weeks generated by inline script below -->
       </div>
 
-      <div class='egy-section-head'>&#9632; Why Was the Nile River Important?</div>
-      <div class='egy-body'>
-        <p>The Nile River helped Egyptians survive. Here is how:</p>
-        <ul class='egy-list'>
-          <li>It gave them <strong>water</strong> to drink and cook with.</li>
-          <li>They used it to <strong>water their crops</strong> (called irrigation).</li>
-          <li>Every year it flooded and left behind <strong>rich soil</strong> to grow food.</li>
-          <li>They used it to <strong>travel</strong> and move things by boat.</li>
-          <li>They caught <strong>fish</strong> from it for food.</li>
-          <li>Plants like <strong>papyrus</strong> grew along it and were used to make paper.</li>
-        </ul>
-      </div>
-
-      <div class='egy-section-head'>&#9632; Foods They Ate</div>
-      <div class='egy-body'>
-        <ul class='egy-list'>
-          <li><strong>Bread</strong> &mdash; the most important food. Made from wheat.</li>
-          <li><strong>Beer</strong> &mdash; made from grain. Almost everyone drank it.</li>
-          <li><strong>Fish</strong> &mdash; caught from the Nile River.</li>
-          <li><strong>Vegetables</strong> &mdash; onions, garlic, and lentils.</li>
-          <li><strong>Fruit</strong> &mdash; figs, dates, and grapes.</li>
-          <li><strong>Meat</strong> &mdash; rich people ate beef and duck. Poor people ate less meat.</li>
-        </ul>
-      </div>
-
-      <div class='egy-section-head'>&#9632; Pyramids &mdash; True or False? (Color the TRUE ones)</div>
-      <div class='egy-body'>
-        <p>Here are all 6 statements. Color only the TRUE ones!</p>
-        <table class='egy-table'>
-          <thead><tr><th>Statement</th><th>Answer</th></tr></thead>
-          <tbody>
-            <tr class='egy-true'><td>Egyptians worshipped many different gods.</td><td><strong>TRUE &#9632;</strong></td></tr>
-            <tr class='egy-false'><td>Pyramids were built as houses for pharaohs.</td><td><strong>FALSE &#9632;</strong><br/><em>(They were tombs &mdash; burial places!)</em></td></tr>
-            <tr class='egy-false'><td>Embalmers used calcium to dry out bodies.</td><td><strong>FALSE &#9632;</strong><br/><em>(They used NATRON, a type of salt.)</em></td></tr>
-            <tr class='egy-true'><td>A sarcophagus holds a mummified person.</td><td><strong>TRUE &#9632;</strong></td></tr>
-            <tr class='egy-true'><td>Bodies were preserved through mummification.</td><td><strong>TRUE &#9632;</strong></td></tr>
-            <tr class='egy-true'><td>Pyramids had secret chambers to stop robbers.</td><td><strong>TRUE &#9632;</strong></td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class='egy-section-head'>&#9632;&#9632; What Were Pyramids Used For?</div>
-      <div class='egy-body'>
-        <p>Pyramids were <strong>burial places</strong> for pharaohs (the kings of Egypt).</p>
-        <p>Egyptians believed in life after death. They wanted to keep the pharaoh&rsquo;s body safe.</p>
-        <ul class='egy-list'>
-          <li>The mummy of the pharaoh was kept inside.</li>
-          <li>Treasures and food were stored inside for the afterlife.</li>
-          <li>The pyramid shape pointed up to the sky and the gods.</li>
-          <li>Secret rooms helped keep robbers away.</li>
-        </ul>
-      </div>
-
-      <div class='egy-section-head'>&#9632;&#9632; Religion and Mummification</div>
-      <div class='egy-body'>
-        <p class='egy-subhead'>Why did pharaohs want big pyramids?</p>
-        <p>Pharaohs thought they were gods. They wanted a big, strong pyramid to be their home after death. A big pyramid showed how powerful they were.</p>
-        <p class='egy-subhead'>How did embalmers dry out the body?</p>
-        <ul class='egy-list'>
-          <li>First, they took out the organs (like the stomach and lungs).</li>
-          <li>They packed the body with <strong>natron</strong> &mdash; a salty powder that soaks up water.</li>
-          <li>The body was left for <strong>40 days</strong> to dry out.</li>
-          <li>Then they wrapped it in cloth called <strong>linen</strong>. Now it was a mummy!</li>
-        </ul>
-        <p class='egy-subhead'>What is a sarcophagus? What goes inside?</p>
-        <p>A sarcophagus is a big, decorated <strong>stone coffin</strong>. It held the mummy safe.</p>
-        <p>Inside you would find:</p>
-        <ul class='egy-list'>
-          <li>The mummy of the pharaoh.</li>
-          <li>Jars called <strong>canopic jars</strong> that held the organs.</li>
-          <li>Jewelry, food, and treasures for the afterlife.</li>
-          <li>A scroll with special spells to help the soul.</li>
-        </ul>
-      </div>
-
-      <div class='egy-section-head'>&#9632; Culture and Daily Life</div>
-      <div class='egy-body'>
-        <p>Pick any 4 facts for your worksheet:</p>
-        <table class='egy-table'>
-          <thead><tr><th>Topic</th><th>Fact</th></tr></thead>
-          <tbody>
-            <tr><td><strong>Clothing</strong></td><td>Egyptians wore light white clothes because it was very hot.</td></tr>
-            <tr><td><strong>Houses</strong></td><td>Most people lived in small mud brick houses with flat roofs.</td></tr>
-            <tr><td><strong>Food</strong></td><td>They ate bread, fish, and vegetables every day.</td></tr>
-            <tr><td><strong>Gods</strong></td><td>Egyptians believed in many gods. They prayed every day.</td></tr>
-            <tr><td><strong>Writing</strong></td><td>They used pictures to write. This is called hieroglyphics.</td></tr>
-            <tr><td><strong>Farming</strong></td><td>Most people were farmers. They grew wheat near the Nile.</td></tr>
-            <tr><td><strong>Music</strong></td><td>People loved music and dancing at celebrations.</td></tr>
-            <tr><td><strong>Families</strong></td><td>Families were very important. Women could own things and go to court.</td></tr>
-          </tbody>
-        </table>
-        <p class='egy-subhead'>Three words to describe life in ancient Egypt:</p>
-        <div class='egy-word-grid'>
-          <span>Hot</span><span>Busy</span><span>Religious</span><span>Farming</span>
-          <span>Powerful</span><span>Ancient</span><span>Creative</span><span>River-based</span>
+      <div class='vocab-box'>
+        <h2>Key Words to Know</h2>
+        <div class='vocab-grid'>
+          <div><strong>Math:</strong> multiplicative comparison, factor, multiple, prime, composite, equivalent fraction, mixed number, decimal, protractor, area, perimeter</div>
+          <div><strong>ELA:</strong> evidence, inference, theme, central idea, text structure, claim, reason, simile, metaphor, idiom, root word, affix</div>
+          <div><strong>Science:</strong> energy transfer, energy conversion, reflection, structure and function, weathering, erosion, deposition, fossil, wave, amplitude, wavelength</div>
+          <div><strong>Social Studies:</strong> Haudenosaunee, Algonquian, colony, explorer, revolution, patriot, loyalist, government, citizen, immigration, Erie Canal</div>
         </div>
       </div>
 
-      <div class='egy-section-head'>&#9632; Egypt &mdash; Country Research Sheet</div>
-      <div class='egy-body'>
-        <span class='egy-italic-note'>This part is for the new worksheet pages about Egypt today.</span>
-        <p class='egy-subhead'>Basic Facts:</p>
-        <table class='egy-table egy-facts-table'>
-          <tbody>
-            <tr><td><strong>Continent:</strong></td><td>Africa</td></tr>
-            <tr><td><strong>Population:</strong></td><td>About 105 million people</td></tr>
-            <tr><td><strong>Capital City:</strong></td><td>Cairo</td></tr>
-            <tr><td><strong>Language:</strong></td><td>Arabic</td></tr>
-          </tbody>
-        </table>
-        <p class='egy-subhead'>Food in Egypt:</p>
-        <ul class='egy-list'>
-          <li><strong>Bread (Aish)</strong> &mdash; flat bread eaten at every meal.</li>
-          <li><strong>Koshari</strong> &mdash; rice, lentils, and pasta mixed together.</li>
-          <li><strong>Falafel</strong> &mdash; small fried balls made from beans.</li>
-          <li><strong>Fava beans (Ful)</strong> &mdash; a popular breakfast food.</li>
-          <li><strong>Dates and figs</strong> &mdash; sweet fruits grown in Egypt.</li>
-        </ul>
-        <p class='egy-subhead'>The Flag:</p>
-        <p>The Egyptian flag has 3 stripes: <strong>Red</strong>, <strong>White</strong>, and <strong>Black</strong>. In the middle there is a golden eagle. The eagle is called the Eagle of Saladin.</p>
-        <p class='egy-subhead'>Famous Landmarks:</p>
-        <ul class='egy-list'>
-          <li><strong>The Great Pyramid of Giza</strong> &mdash; one of the oldest and biggest buildings in the world.</li>
-          <li><strong>The Sphinx</strong> &mdash; a giant statue with a lion body and human head.</li>
-          <li><strong>The Valley of the Kings</strong> &mdash; a place with many royal tombs.</li>
-          <li><strong>Karnak Temple</strong> &mdash; a very large ancient temple.</li>
-        </ul>
-        <p class='egy-subhead'>Holidays and Traditions:</p>
-        <ul class='egy-list'>
-          <li><strong>Sham el-Nessim</strong> &mdash; a spring holiday. Families go outside and share food.</li>
-          <li><strong>Eid al-Fitr</strong> &mdash; a big holiday after a month of fasting. Families eat together and give gifts.</li>
-          <li><strong>Ramadan</strong> &mdash; a holy month. People fast during the day and eat together at night.</li>
-        </ul>
-        <p class='egy-subhead'>Famous People:</p>
-        <ul class='egy-list'>
-          <li><strong>Cleopatra</strong> &mdash; a powerful queen of ancient Egypt.</li>
-          <li><strong>Ramesses II</strong> &mdash; a very strong pharaoh who built many temples.</li>
-          <li><strong>King Tutankhamun (King Tut)</strong> &mdash; a young pharaoh. His tomb was found in 1922.</li>
-          <li><strong>Mohamed Salah</strong> &mdash; a famous Egyptian soccer player today.</li>
-        </ul>
-        <p class='egy-subhead'>Climate:</p>
-        <p>Egypt is <strong>hot and dry</strong>. Most of Egypt is desert. It does not rain much. Summers are very hot. Winters are warm and cool at night.</p>
-        <p class='egy-subhead'>Fun Facts:</p>
-        <ul class='egy-list'>
-          <li>Egyptians invented the <strong>365-day calendar</strong> &mdash; the same one we use today!</li>
-          <li>Cats were special in ancient Egypt. People treated them like sacred animals.</li>
-          <li>Egyptians wrote using pictures called <strong>hieroglyphics</strong>.</li>
-          <li>The Great Pyramid was the tallest building in the world for over 3,000 years.</li>
-          <li>Both men and women in ancient Egypt wore <strong>eye makeup</strong>.</li>
-        </ul>
+      <div class='reset-bar'>
+        <button type='button' class='reset-btn' id='reset-summer'>Reset Summer Progress</button>
       </div>
-
-      <div class='egy-footer'>&#9998;&#9632; Use this sheet to find your answers &mdash; but write them in your OWN words!</div>
-
     </div>
-  </div><!-- /egypt -->
+  </div>
 
   <script src="homework-loader.js?v=1"></script>
   <script src="interactive.js?v=1"></script>
@@ -507,5 +363,151 @@
   <script src="ai-tutor.js"></script>
   <script src="quiz.js"></script>
   <script src="flashcards.js"></script>
+  <script src="summer-games.js?v=1"></script>
+  <!-- Old static summer schedule below is disabled — replaced by summer-games.js engine (auto-inits). -->
+  <script type="text/plain" data-disabled-summer>
+  (function () {
+    'use strict';
+
+    var SCHEDULE = [
+      [
+        ['Math', 'Place value to 1,000,000; comparing & rounding multi-digit numbers', ['Read and write numbers up to 1,000,000', 'Compare using >, =, <', 'Round to any place'], ['Science', 'What is energy? Forms of energy', ['Sound, light, heat, electrical energy', 'Energy transfers around us', 'Identify energy sources']],
+        ['ELA', 'Close reading — finding text evidence', ['Reread to locate details', 'Use evidence to answer questions', 'Distinguish explicit vs. inferred'], ['Social Studies', 'New York State geography basics', ['Locate NYS on a map', 'Identify major cities', 'Name physical features']],
+        ['Math', 'Multiplicative comparison', ['"Times as many" language', 'Write comparison equations', 'Solve comparison word problems'], ['ELA', 'Summary vs. central idea review', ['Summarize in 2-3 sentences', 'Find the lesson/message', 'Support with key details']],
+        ['Science', 'Energy transfers — sound, light, heat, electric', ['Observe energy changes', 'Describe energy movement', 'Everyday examples'], ['Social Studies', 'Maps: physical, political, thematic', ['Read different map types', 'Use a map key/legend', 'Compare map purposes']]
+      ],
+      [
+        ['Math', 'Multi-digit addition & subtraction algorithms', ['Add/subtract up to 1,000,000', 'Use standard algorithm', 'Check with estimation'], ['Science', 'Energy conversions introduction', ['Devices that change energy forms', 'Battery → light → heat', 'Engineering design basics']],
+        ['ELA', 'Text structure — sequence & cause/effect', ['Signal words: first, then, because', 'Identify sequence in nonfiction', 'Find cause-and-effect relationships'], ['Social Studies', 'Native American groups: Haudenosaunee & Algonquian', ['Who lived here first', 'Longhouses and clans', 'Use of natural resources']],
+        ['Math', 'Multiply 4-digit × 1-digit with area models', ['Use place value strategies', 'Draw area models', 'Check with estimation'], ['ELA', 'Writing paragraphs with topic sentences', ['Start with a clear topic sentence', 'Add supporting details', 'End with a closing sentence']],
+        ['Science', 'Designing devices that convert energy', ['Define a problem', 'Draw a design', 'Explain how it works'], ['Social Studies', 'How geography shaped Native American life', ['Climate and shelter', 'Rivers and food', 'Adaptation to environment']]
+      ],
+      [
+        ['Math', '2-digit × 2-digit multiplication', ['Break apart with area model', 'Partial products', 'Record final product'], ['Science', 'Vision and light — how we see', ['Light travels in straight lines', 'Objects reflect light', 'Eye structures and function']],
+        ['ELA', 'Opinion writing — claim + reasons', ['State a clear claim', 'Give 2-3 reasons', 'Use linking words: because, for example'], ['Social Studies', 'European explorers: Verrazano, Hudson, Champlain', ['Who explored NY waterways', 'Dutch and French interests', 'Impact on Native peoples']],
+        ['Math', 'Division with remainders (4-digit ÷ 1-digit)', ['Interpret the remainder', 'Use multiplication to check', 'Solve real-world problems'], ['ELA', 'Using linking words in writing', ['Transition words: first, next, finally', 'Connecting reasons', 'Connecting events']],
+        ['Science', 'Light reflection and eye structures', ['How mirrors reflect', 'Parts of the eye', 'Why some animals see differently']]
+      ],
+      [
+        ['Math', 'Fraction equivalence with models', ['Draw equivalent fractions', 'Use number lines', 'Recognize same size'], ['Science', 'Animal structures and survival', ['Internal and external structures', 'Functions for survival', 'Compare animals']],
+        ['ELA', 'Informative/explanatory writing', ['Introduce a topic clearly', 'Organize facts in paragraphs', 'Use precise vocabulary'], ['Social Studies', 'Colonial life in New York', ['New Netherland → New York', 'Dutch, English, Africans', 'Daily life in colonies']],
+        ['Math', 'Comparing fractions; common denominators', ['Compare with >, =, <', 'Use benchmarks like 1/2', 'Justify with a model'], ['ELA', 'Greek & Latin roots and affixes', ['Common roots: tele, photo, graph', 'Prefixes: un-, re-, pre-', 'Use roots to figure out words']],
+        ['Science', 'How animals process information from senses', ['Sense receptors', 'Brain receives signals', 'Animals respond to information'], ['Social Studies', 'American Revolution in NY', ['Patriots vs. Loyalists', 'Battle of Long Island', 'Battle of Saratoga']]
+      ],
+      [
+        ['Math', 'Add & subtract fractions with like denominators', ['Join/separate parts of same whole', 'Decompose fractions', 'Solve word problems'], ['Science', 'Earth\'s features — rock layers & fossils', ['Sedimentary rock layers', 'Fossils as evidence', 'Landscape changes over time']],
+        ['ELA', 'Figurative language — similes & metaphors', ['Identify similes and metaphors', 'Explain meaning in context', 'Write your own examples'], ['Social Studies', 'Branches of government', ['Federal: President, Congress, Courts', 'State: Governor, legislature, courts', 'Local: mayor, city council']],
+        ['Math', 'Mixed numbers; whole number × fraction', ['Add/subtract mixed numbers', 'Multiply whole × fraction', 'Solve word problems'], ['ELA', 'Multiple-meaning words & context clues', ['Use sentence clues', 'Choose the right meaning', 'Dictionary practice']],
+        ['Science', 'Weathering, erosion, deposition', ['Water, ice, wind, plants change land', 'Observe local examples', 'Model the processes'], ['Social Studies', 'Brooklyn / Kings County local government', ['Brooklyn is Kings County', 'Borough president role', 'Local elected leaders']]
+      ],
+      [
+        ['Math', 'Decimals — tenths & hundredths', ['Write fractions as decimals', 'Locate on number line', 'Compare decimals'], ['Science', 'Topographic maps & landforms', ['Read elevation maps', 'Identify landforms', 'Describe patterns']],
+        ['ELA', 'Idioms, adages, proverbs', ['Recognize common idioms', 'Explain figurative meaning', 'Use in writing'], ['Social Studies', 'Rights & responsibilities of citizens', ['Constitution protects rights', 'Voting, jury duty, obeying laws', 'Active citizenship']],
+        ['Math', 'Measurement conversions; area & perimeter', ['Convert ft/in, km/m/cm, hr/min', 'Area and perimeter formulas', 'Solve real-world problems'], ['ELA', 'Narrative writing with dialogue', ['Use quotation marks', 'Show character feelings', 'Sequence events clearly']],
+        ['Science', 'Natural hazards & engineering solutions', ['Earthquakes, floods, tsunamis', 'Design protective structures', 'Compare solutions'], ['Social Studies', 'Slavery, abolition, Underground Railroad in NY', ['Slavery in NY', 'Abolition leaders', 'Harriet Tubman & local history']]
+      ],
+      [
+        ['Math', 'Angle measurement with a protractor', ['Measure angles in degrees', 'Draw angles', 'Identify acute, obtuse, right'], ['Science', 'Waves — amplitude, wavelength, sound', ['Model a wave', 'Amplitude = loudness', 'Wavelength = pitch']],
+        ['ELA', 'Primary vs. secondary sources', ['Compare firsthand & secondhand accounts', 'Identify author purpose', 'Use sources as evidence'], ['Social Studies', 'Women\'s rights & Seneca Falls', ['Elizabeth Cady Stanton', 'Susan B. Anthony', 'Fighting for voting rights']],
+        ['Math', 'Additive angles; unknown angles', ['Angles on a straight line add to 180°', 'Angles around a point add to 360°', 'Find missing angle measures'], ['ELA', 'Research note-taking & categorizing facts', ['Take brief notes', 'Sort into categories', 'List sources']],
+        ['Science', 'How dolphins/waves communicate', ['Sound waves underwater', 'Animals send/receive signals', 'Humans encode information'], ['Social Studies', 'Immigration through Ellis Island', ['Why immigrants came', 'Ellis Island experience', 'Push and pull factors']]
+      ],
+      [
+        ['Math', 'Multi-step word problem review', ['Plan steps carefully', 'Choose operations', 'Check reasonableness'], ['Science', 'Engineering design challenge', ['Define problem and criteria', 'Build and test a prototype', 'Improve the design']],
+        ['ELA', 'Write a short informative article', ['Research a topic', 'Organize paragraphs', 'Use facts and definitions'], ['Social Studies', 'Industrialization, Erie Canal, transportation', ['Erie Canal changed NY', 'Steam engine, railroads', 'Factories and cities']],
+        ['Math', 'Mixed Grade 4 skills review', ['Place value, fractions, decimals', 'Operations, measurement', 'Geometry and angles'], ['ELA', 'Oral presentation practice', ['Speak clearly and loudly', 'Use visuals', 'Answer listener questions']],
+        ['Science', 'Science vocabulary review game', ['Energy, light, earth, waves', 'Use flashcards or quiz', 'Explain concepts aloud'], ['Social Studies', 'Famous New Yorkers — then & now', ['Cleopatra, Frederick Douglass', 'Ruth Bader Ginsburg, local leaders', 'What they changed']]
+      ]
+    ];
+
+    var STORAGE_KEY = 'manha:summer-progress';
+    var completed = {};
+    try { completed = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch (e) { completed = {}; }
+
+    function saveProgress() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(completed));
+      updateProgress();
+    }
+
+    function updateProgress() {
+      var totalDays = 0, doneDays = 0;
+      for (var w = 0; w < SCHEDULE.length; w++) {
+        for (var d = 0; d < SCHEDULE[w].length; d++) {
+          var dayKey = w + '-' + d;
+          var subjects = SCHEDULE[w][d];
+          var allDone = true;
+          for (var s = 0; s < subjects.length; s++) {
+            if (!completed[dayKey + '-' + s]) { allDone = false; break; }
+          }
+          totalDays++;
+          if (allDone) doneDays++;
+        }
+      }
+      var pct = totalDays ? Math.round((doneDays / totalDays) * 100) : 0;
+      document.getElementById('summer-progress-fill').style.width = pct + '%';
+      document.getElementById('summer-progress-text').textContent = doneDays + ' / ' + totalDays + ' days (' + pct + '%)';
+    }
+
+    function renderSchedule() {
+      var container = document.getElementById('summer-weeks');
+      var html = '';
+      for (var w = 0; w < SCHEDULE.length; w++) {
+        html += "<div class='week-panel" + (w === 0 ? " active" : "") + "' data-week-panel='" + w + "'>";
+        for (var d = 0; d < SCHEDULE[w].length; d++) {
+          var subjects = SCHEDULE[w][d];
+          var dayNum = d + 1;
+          html += "<div class='day-card'>";
+          html += "<div class='day-title'>Day " + dayNum + "</div>";
+          html += "<div class='subject-pair'>";
+          for (var s = 0; s < subjects.length; s++) {
+            var subj = subjects[s];
+            var cls = subj[0].toLowerCase();
+            var key = w + '-' + d + '-' + s;
+            var checked = completed[key] ? ' checked' : '';
+            html += "<div class='subject-block " + cls + "'>";
+            html += "<span class='subject-tag " + cls + "'>" + subj[0] + "</span>";
+            html += "<h3>" + subj[1] + "</h3>";
+            html += "<ul>";
+            for (var i = 0; i < subj[2].length; i++) {
+              html += "<li>" + subj[2][i] + "</li>";
+            }
+            html += "</ul>";
+            html += "<label class='done-row'><input type='checkbox' data-summer='" + key + "'" + checked + "> Mark done</label>";
+            html += "</div>";
+          }
+          html += "</div></div>";
+        }
+        html += "</div>";
+      }
+      container.innerHTML = html;
+
+      container.querySelectorAll('input[data-summer]').forEach(function (cb) {
+        cb.addEventListener('change', function () {
+          completed[this.dataset.summer] = this.checked;
+          saveProgress();
+        });
+      });
+    }
+
+    document.getElementById('week-nav').addEventListener('click', function (e) {
+      if (!e.target.classList.contains('week-btn')) return;
+      var week = e.target.dataset.week;
+      document.querySelectorAll('.week-btn').forEach(function (b) { b.classList.remove('active'); });
+      e.target.classList.add('active');
+      document.querySelectorAll('.week-panel').forEach(function (p) { p.classList.remove('active'); });
+      document.querySelector(".week-panel[data-week-panel='" + week + "']").classList.add('active');
+    });
+
+    document.getElementById('reset-summer').addEventListener('click', function () {
+      if (!confirm('Reset all Grade 4 Summer progress?')) return;
+      completed = {};
+      saveProgress();
+      document.querySelectorAll('input[data-summer]').forEach(function (cb) { cb.checked = false; });
+    });
+
+    renderSchedule();
+    updateProgress();
+  })();
+  </script>
 </body>
 </html>

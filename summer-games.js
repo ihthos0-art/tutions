@@ -575,10 +575,158 @@
       ]
     } },
 
-    '3-0': { type: 'dragSort', content: { items: [ {text:'Draw 1/2 and 2/4 as models', order:0}, {text:'Compare their sizes', order:1}, {text:'See they are equal', order:2}, {text:'Write: 1/2 = 2/4', order:3} ] } },
-    '3-1': { type: 'match', content: { pairs: [ ['Topic sentence','Starts a paragraph'], ['Supporting details','Prove the topic'], ['Colonist','Lived in a colony'], ['New Netherland','Dutch NY colony'], ['Precise vocabulary','Exact words'] ] } },
-    '3-2': { type: 'wordSearch', content: { words: ['PHOTO', 'GRAPH', 'PREFIX', 'FRACTION', 'BENCHMARK'] } },
-    '3-3': { type: 'quizMC', content: { questions: [ {q:'Sense receptors are found in...', options:['The brain','Eyes, ears, skin','The heart'], a:1}, {q:'Who wanted independence from Britain?', options:['Loyalists','Patriots','Both'], a:1}, {q:'Which battle was a big Patriot win in NY?', options:['Long Island','Saratoga','Yorktown'], a:1} ] } },
+    '3-0': { type: 'mission', content: {
+      title: 'Equal & Survive',
+      intro: 'Slice fractions equally and meet animal super-powers. Learn equivalent fractions and animal structures, then keep the species alive.',
+      winText: '🎉 Fractions matched and structures sorted — species saved!',
+      phases: [
+        { kind: 'lesson', subject: 'Math', title: 'Equivalent Fractions', blocks: [
+          { h: 'What is a fraction?', p: 'A fraction names part of a whole. The top number is the numerator (how many parts you have); the bottom is the denominator (how many equal parts the whole is split into).', example: '1/2 = one part out of two equal parts.' },
+          { h: 'Equivalent = same amount', p: 'Equivalent fractions name the same amount with different numbers. 1/2 and 2/4 cover the same sized piece of a whole — they are equal.', tip: 'Same amount, different numbers → equivalent.' },
+          { h: 'Multiply top & bottom', p: 'Multiply (or divide) the numerator AND denominator by the same number to make an equivalent fraction. 1/2 × 2/2 = 2/4.', example: '×2 on top and bottom: 1/2 → 2/4 → 3/6.' },
+          { h: 'Simplify by dividing', p: 'Divide top and bottom by the same number to simplify. 4/8 ÷ 4/4 = 1/2. Simplified fractions use the smallest numbers.', tip: 'Find a number that divides both evenly.' },
+          { h: 'See it on a number line', p: 'Equivalent fractions land on the same dot on a number line. 1/2, 2/4, and 3/6 all sit at the same spot between 0 and 1.', diagram: '<div class="sg-flow"><span class="sg-flow-in">1/2</span><span class="sg-flow-arrow">=</span><span class="sg-flow-box">2/4</span><span class="sg-flow-arrow">=</span><span class="sg-flow-out">3/6</span></div>' },
+          { h: 'Example: 1/2 = ?/4', p: 'Multiply top and bottom by 2: 1×2 = 2, 2×2 = 4, so 1/2 = 2/4. Same spot on the line.', example: 'To get denominator 4 from 2, multiply by 2.' },
+          { h: 'Why it matters', p: 'Equivalent fractions let you compare, add, and simplify. They are the key to all fraction work.', tip: 'Multiply or divide both numbers by the same thing.' }
+        ] },
+        { kind: 'drill', subject: 'Math', title: 'Tap the Dot (Number Line)', engine: 'numberLine', questions: [
+          { prompt: 'Tap the dot for 1/4', marks: [ {l:'0'},{l:'1/4'},{l:'1/2'},{l:'3/4'},{l:'1'} ], a: 1 },
+          { prompt: 'Tap the dot for 1/2', marks: [ {l:'0'},{l:'1/4'},{l:'1/2'},{l:'3/4'},{l:'1'} ], a: 2 },
+          { prompt: '2/4 is equivalent to 1/2 — tap it', marks: [ {l:'0'},{l:'1/4'},{l:'1/2'},{l:'3/4'},{l:'1'} ], a: 2 },
+          { prompt: 'Tap the dot for 3/4', marks: [ {l:'0'},{l:'1/4'},{l:'1/2'},{l:'3/4'},{l:'1'} ], a: 3 },
+          { prompt: 'Tap the whole (1)', marks: [ {l:'0'},{l:'1/4'},{l:'1/2'},{l:'3/4'},{l:'1'} ], a: 4 }
+        ] },
+        { kind: 'lesson', subject: 'Science', title: 'Animal Structures & Survival', blocks: [
+          { h: 'Structures help animals survive', p: 'A structure is a body part with a job. Animals’ structures help them find food, stay safe, move, and survive in their environment.', example: 'A bird’s beak is a structure shaped for what it eats.' },
+          { h: 'Internal vs external', p: 'External structures are on the outside (shell, fur, wings). Internal structures are inside (bones, heart, stomach). Both help survival.', tip: 'External = outside; internal = inside.' },
+          { h: 'Sense structures', p: 'Eyes, ears, nose, tongue, and skin are sense structures. They gather information about the world so animals can respond.', example: 'A deer’s large ears hear predators far away.' },
+          { h: 'Defense structures', p: 'Some structures protect animals: shells (turtles), quills (porcupines), camouflage (chameleons), and poison (some frogs).', diagram: '<div class="sg-energy-forms"><span>🐢 Shell</span><span>🦔 Quills</span><span>🦎 Camouflage</span><span>🦷 Teeth</span><span>🏃 Speed</span></div>' },
+          { h: 'Movement structures', p: 'Wings, fins, legs, and tails are movement structures. Their shape fits how the animal moves and where it lives.', example: 'Fish fins swim; bird wings fly; cheetah legs run.' },
+          { h: 'Structures fit the environment', p: 'A structure works best in the environment it evolved in. Webbed feet help in water; long legs help on grasslands.', tip: 'Match the structure to where the animal lives.' },
+          { h: 'Why it matters', p: 'Studying structures explains how animals survive and inspires human designs (swim fins, camouflage, planes).', tip: 'Every part has a job that helps survival.' }
+        ] },
+        { kind: 'practice', subject: 'Science', title: 'Sort the Structures (Categorize)', mode: 'categorize', bins: ['Sense', 'Defense', 'Move'], items: [
+          { text: 'Eyes', bin: 0 }, { text: 'Shell', bin: 1 }, { text: 'Wings', bin: 2 }, { text: 'Ears', bin: 0 }, { text: 'Quills', bin: 1 }, { text: 'Fins', bin: 2 }
+        ] },
+        { kind: 'activity', title: 'Equal & Survive', stages: [
+          { type: 'quiz', subject: 'Math · Equivalence', story: 'First, find the missing number. 1/2 = ?/4', prompt: '1/2 = ?/4', options: ['2', '1', '3'], a: 0, okMsg: '1/2 = 2/4 — equivalent! Gene 1 on.' },
+          { type: 'match', subject: 'Science · Structures', story: 'Match each structure to its job.', pairs: [ ['Eyes','See'], ['Shell','Protect'], ['Wings','Fly'], ['Camouflage','Hide'] ] },
+          { type: 'input', subject: 'Math · Simplify', story: 'Simplify 4/8 to lowest terms (numerator).', prompt: '4/8 = ?/2  (type the numerator):', accept: ['1'], okMsg: '1/2 — simplified! Gene 3 on.' },
+          { type: 'fillBlank', subject: 'Math · Rule', story: 'Finish the equivalence rule to seal the genome.', sentence: 'To make an equivalent fraction, multiply top and bottom by the * number. 1/2 × 2/2 = * /4.', blanks: ['same', '2'] }
+        ] }
+      ]
+    } },
+
+    '3-1': { type: 'mission', content: {
+      title: 'Report from the Colony',
+      intro: 'Write it clearly and live it back then. Learn informative writing and colonial life in NY, then file your report.',
+      winText: '🎉 Report filed and colonial timeline built — dispatch sent!',
+      phases: [
+        { kind: 'lesson', subject: 'ELA', title: 'Informative/Explanatory Writing', blocks: [
+          { h: 'What is informative writing?', p: 'Informative writing explains a topic with facts, definitions, and details — not opinions. It teaches the reader something true.', example: '“Colonial children helped on the farm” is a fact, not an opinion.' },
+          { h: 'Introduce the topic', p: 'Start with a clear topic sentence that tells what the writing explains. The reader should know the subject right away.', tip: 'Topic sentence = “This is about ____.”' },
+          { h: 'Facts, definitions, details', p: 'Support the topic with facts, definitions, and concrete details. Each sentence adds true information.', example: 'Define terms and give real examples.' },
+          { h: 'Group related info', p: 'Put related information together in paragraphs. Each paragraph covers one part of the topic.', tip: 'One paragraph = one sub-topic.' },
+          { h: 'Linking words + precise vocabulary', p: 'Use linking words (also, for example, however) and precise domain vocabulary so the writing flows and sounds expert.', example: '“For example, colonists grew corn.”' },
+          { h: 'Concluding statement', p: 'End with a conclusion that wraps up the topic — a final true sentence, not a new opinion.', tip: 'Conclusion = restate the topic in a closing way.' },
+          { h: 'Why it matters', p: 'Informative writing teaches you to explain clearly with evidence — used in reports, articles, and science.', tip: 'Topic → facts → groups → links → conclusion.' }
+        ] },
+        { kind: 'drill', subject: 'ELA', title: 'Rebuild the Topic Sentence', engine: 'scramble', words: ['Colonial', 'life', 'in', 'New', 'York', 'was', 'hard', 'work'] },
+        { kind: 'lesson', subject: 'Social Studies', title: 'Colonial Life in NY', blocks: [
+          { h: 'Who lived in colonial NY', p: 'Colonial NY was home to Dutch and English colonists, other European settlers, enslaved and free Africans, and Native peoples — a diverse colony.', example: 'People from many nations lived side by side.' },
+          { h: 'Farming & work', p: 'Most colonists farmed — growing wheat, corn, and vegetables. Others were tradespeople: blacksmiths, coopers, weavers, and carpenters.', tip: 'Farms + trades filled the colony’s days.' },
+          { h: 'Homes & daily life', p: 'Colonial homes were simple, often one room with a fireplace for cooking and heat. Whole families worked together on chores.', example: 'Children fetched water and helped in fields.' },
+          { h: 'Schools & church', p: 'Some children went to school or were taught at home; many learned a trade instead. The church was a center of community life.', diagram: '<div class="sg-energy-forms"><span>🌾 Farming</span><span>🔨 Trades</span><span>🏫 School</span><span>⛪ Church</span><span>🛒 Markets</span></div>' },
+          { h: 'Trade & cities', p: 'New York City and Albany were busy trade ports. Goods moved by river and road — furs, grain, and imported tools and cloth.', example: 'The Hudson River carried trade to Albany.' },
+          { h: 'Enslaved & indentured workers', p: 'Enslaved Africans and indentured servants did much hard labor. Their work built much of the colony’s wealth, though their freedom was denied.', tip: 'Not all colonists were free; many were forced to work.' },
+          { h: 'Why it matters', p: 'Colonial life shaped NY’s economy, diversity, and the tensions that led to the Revolution. It set the stage for the state’s future.', tip: 'Diverse people, hard work, growing trade — colonial NY.' }
+        ] },
+        { kind: 'practice', subject: 'Social Studies', title: 'Colonial Timeline', mode: 'timeline', eras: ['Early 1600s', '1664', '1700s'], events: [
+          { text: 'Dutch settle New Netherland', era: 0 }, { text: 'English rename it New York', era: 1 }, { text: 'Colonial farms & trade grow', era: 2 }
+        ] },
+        { kind: 'activity', title: 'Report from the Colony', stages: [
+          { type: 'twoTruths', subject: 'ELA · Informative writing', story: 'One statement is FALSE. Tap the lie to open the report.', statements: [ {t:'Informative writing uses facts and details', a:true}, {t:'Informative writing shares your opinion as the main point', a:false}, {t:'A clear topic sentence introduces the topic', a:true} ] },
+          { type: 'match', subject: 'ELA · Terms', story: 'Match each writing term to its meaning.', pairs: [ ['Topic sentence','Introduces the topic'], ['Detail','A fact that supports'], ['Conclusion','Wraps it up'], ['Definition','Explains a term'] ] },
+          { type: 'input', subject: 'SS · 1664', story: 'Colonial NY was renamed by the ___ in 1664.', prompt: 'Colonial NY was renamed by the ___ in 1664:', accept: ['english'], okMsg: 'English — New York! Section 3 filed.' },
+          { type: 'dragSort', subject: 'ELA · Paragraph order', story: 'Order the parts of an informative paragraph.', items: [ {text:'Introduce the topic', order:0}, {text:'Give facts and details', order:1}, {text:'Group related info', order:2}, {text:'Conclude', order:3} ] }
+        ] }
+      ]
+    } },
+
+    '3-2': { type: 'mission', content: {
+      title: 'Roots & Ranks',
+      intro: 'Rank the fractions and crack the word roots. Learn comparing fractions and Greek & Latin roots, then rank the cards.',
+      winText: '🎉 Fractions ranked and roots cracked — hand won!',
+      phases: [
+        { kind: 'lesson', subject: 'Math', title: 'Comparing Fractions', blocks: [
+          { h: 'Compare same denominator', p: 'When denominators are the same, the fraction with the bigger numerator is bigger. 3/5 > 2/5 because 3 > 2.', example: 'Same-sized slices → more slices = bigger.' },
+          { h: 'Compare same numerator', p: 'When numerators are the same, the fraction with the bigger denominator is SMALLER. 1/4 < 1/2 because fourths are smaller pieces.', tip: 'Same number of slices → smaller slices (bigger denom) = smaller fraction.' },
+          { h: 'Benchmark to 1/2', p: 'Compare to 1/2 as a benchmark. 3/8 is less than 1/2 (3 < 4); 5/8 is more than 1/2 (5 > 4).', example: 'Is the numerator more or less than half the denominator?' },
+          { h: 'Common denominator', p: 'For different denominators, rewrite both with a common denominator, then compare numerators. 1/2 vs 1/3 → 3/6 vs 2/6 → 1/2 is bigger.', diagram: '<div class="sg-flow"><span class="sg-flow-in">1/2 vs 1/3</span><span class="sg-flow-arrow">→</span><span class="sg-flow-box">3/6 vs 2/6</span><span class="sg-flow-arrow">→</span><span class="sg-flow-out">1/2 bigger</span></div>' },
+          { h: 'Use a number line', p: 'Place fractions on a number line — the one farther right is bigger. This works for any fractions once placed.', tip: 'Right on the line = bigger.' },
+          { h: 'Use <, >, =', p: 'Write comparisons with < (less than), > (greater than), or = (equal). 2/3 > 1/3; 1/4 < 1/2; 2/4 = 1/2.', example: 'The open side points to the bigger number.' },
+          { h: 'Why it matters', p: 'Comparing fractions is used in cooking, measuring, and data. Common denominators and benchmarks make it reliable.', tip: 'Same denom → numerator. Same numer → denom flips. Else common denom.' }
+        ] },
+        { kind: 'drill', subject: 'Math', title: 'Higher or Lower? (Fraction Cards)', engine: 'higherLower', prompt: 'Will the next fraction be higher or lower?', cards: [
+          { label: '1/4', val: 0.25 }, { label: '1/2', val: 0.5 }, { label: '3/4', val: 0.75 }, { label: '1/3', val: 0.333 }, { label: '2/3', val: 0.667 }
+        ] },
+        { kind: 'lesson', subject: 'ELA', title: 'Greek & Latin Roots and Affixes', blocks: [
+          { h: 'What are roots & affixes?', p: 'Many English words are built from roots (the core meaning) plus affixes (prefixes before, suffixes after). Knowing them unlocks word meanings.', example: 're + view = view again.' },
+          { h: 'Prefixes', p: 'Prefixes go before a root and change meaning: re- (again), un- (not), pre- (before), dis- (not).', tip: 're- = again; un- = not.' },
+          { h: 'Suffixes', p: 'Suffixes go after a root and often change the word’s job: -ful (full of), -less (without), -ly (in that way), -er (one who).', example: 'hope + -ful = hopeful (full of hope).' },
+          { h: 'Latin roots', p: 'Latin roots carry core meanings: port (carry), dict (speak), vis (see), tract (pull).', diagram: '<div class="sg-energy-forms"><span>port = carry</span><span>dict = speak</span><span>vis = see</span><span>tract = pull</span></div>' },
+          { h: 'Greek roots', p: 'Greek roots appear in science words: photo (light), tele (far), graph (write), hydro (water).', example: 'tele + phone = sound from far.' },
+          { h: 'Decode with roots', p: 'Break a word into parts to guess its meaning: “transport” = trans + port = carry across. Check with context.', tip: 'Split → read each part → combine meanings.' },
+          { h: 'Why it matters', p: 'Roots and affixes let you decode thousands of words and spell them — a huge boost for reading and vocab.', tip: 'Prefix + root + suffix = most English words.' }
+        ] },
+        { kind: 'practice', subject: 'ELA', title: 'Match the Roots', mode: 'match', pairs: [ ['port','carry'], ['dict','speak'], ['vis','see'], ['photo','light'], ['tele','far'], ['graph','write'] ] },
+        { kind: 'activity', title: 'Roots & Ranks', stages: [
+          { type: 'numberLine', subject: 'Math · Compare', story: 'Tap the BIGGER fraction: 3/4 (vs 1/4).', prompt: 'Tap the bigger fraction, 3/4:', marks: [ {l:'0'},{l:'1/4'},{l:'1/2'},{l:'3/4'},{l:'1'} ], a: 3 },
+          { type: 'categorize', subject: 'ELA · Affixes', story: 'Sort each part as Prefix, Suffix, or Root.', bins: ['Prefix', 'Suffix', 'Root'], items: [ {text:'re-', bin:0}, {text:'-ful', bin:1}, {text:'port', bin:2}, {text:'un-', bin:0}, {text:'-less', bin:1}, {text:'vis', bin:2} ] },
+          { type: 'input', subject: 'ELA · Build a word', story: 'un- + happy = ?', prompt: 'un- + happy = ?', accept: ['unhappy'], okMsg: 'unhappy — “not happy”! Card 3 flipped.' },
+          { type: 'dragSort', subject: 'Math · Compare steps', story: 'Order the steps to compare fractions.', items: [ {text:'Check the denominators', order:0}, {text:'If same, compare numerators', order:1}, {text:'If different, find a common denominator', order:2}, {text:'Compare and pick < > =', order:3} ] }
+        ] }
+      ]
+    } },
+
+    '3-3': { type: 'mission', content: {
+      title: 'Sense the Revolution',
+      intro: 'Feel the world and pick your side. Learn senses & processing and the American Revolution in NY, then signal the rebels.',
+      winText: '🎉 Senses mapped and sides sorted — signal sent!',
+      phases: [
+        { kind: 'lesson', subject: 'Science', title: 'Senses & Processing Information', blocks: [
+          { h: 'Senses gather information', p: 'Sense organs gather information about the world — light, sound, smell, taste, and touch. This information helps animals (and us) survive.', example: 'Your eyes gather light; your ears gather sound.' },
+          { h: 'The five senses + organs', p: 'Sight (eyes), hearing (ears), smell (nose), taste (tongue), touch (skin). Each organ handles one kind of information.', tip: 'Eyes-ears-nose-tongue-skin = the five.' },
+          { h: 'Signals to the brain', p: 'Sense organs turn information into signals that travel to the brain. The brain is what actually processes the information.', example: 'Ears make signals; the brain makes sense of them.' },
+          { h: 'Brain processes & responds', p: 'The brain processes the signals, decides what they mean, and sends a response — move, duck, eat, run. Processing leads to action.', diagram: '<div class="sg-flow"><span class="sg-flow-in">👁️ Sense</span><span class="sg-flow-arrow">→</span><span class="sg-flow-box">🧠 Brain</span><span class="sg-flow-arrow">→</span><span class="sg-flow-out">⚡ Response</span></div>' },
+          { h: 'Different animals, different senses', p: 'Animals have different senses tuned to their needs: eagles see far, dogs smell keenly, bats use sound (echolocation).', tip: 'Senses fit how an animal lives.' },
+          { h: 'Protecting your senses', p: 'Senses can be damaged — loud noise hurts hearing, bright light hurts eyes. Protect them so they keep working.', example: 'Wear sunglasses and ear protection.' },
+          { h: 'Why it matters', p: 'Sensing and processing let animals react and survive. The same loop drives robots and computers (sensors → processor → action).', tip: 'Sense → brain → response = how animals act.' }
+        ] },
+        { kind: 'drill', subject: 'Science', title: 'Spot the Lie (Senses)', engine: 'twoTruths', statements: [
+          { t: 'The brain processes signals from the senses', a: true }, { t: 'Eyes gather light information', a: true }, { t: 'Skin only senses heat, not touch', a: false }
+        ] },
+        { kind: 'lesson', subject: 'Social Studies', title: 'American Revolution in NY', blocks: [
+          { h: 'Causes of the Revolution', p: 'Colonists rebelled because Britain taxed them (“no taxation without representation”) and ruled without their consent. Tensions grew into war.', example: 'Stamp Act and tea taxes angered colonists.' },
+          { h: 'Patriots vs Loyalists', p: 'Patriots wanted independence from Britain. Loyalists wanted to stay loyal to the king. NY had many of both — a divided colony.', tip: 'Patriot = independence; Loyalist = stay with Britain.' },
+          { h: 'NY was divided', p: 'NY was split: Patriots, Loyalists, and many who were unsure. Neighbors sometimes fought neighbors during the war.', example: 'Families in NY were torn apart by loyalties.' },
+          { h: 'Key NY events', p: 'The Battle of Brooklyn (1776) was a British victory. The Battle of Saratoga (1777) was a huge Patriot win and a turning point.', diagram: '<div class="sg-energy-forms"><span>1776 Brooklyn</span><span>1777 Saratoga</span><span>🗽 Turning point</span><span>⚔️ Patriots</span><span>👑 Loyalists</span></div>' },
+          { h: 'Saratoga = turning point', p: 'The Patriot victory at Saratoga convinced France to join the war on the American side, which helped win independence.', tip: 'Saratoga → French help → independence.' },
+          { h: 'NY’s role', p: 'NY was a major battleground and British base (occupied NYC). Its location and battles made it central to the war.', example: 'Britain held New York City for much of the war.' },
+          { h: 'Why it matters', p: 'The Revolution made NY (and the US) independent. The Patriot/Loyalist divide shaped NY politics for years after.', tip: 'Taxes → war → Saratoga → independence.' }
+        ] },
+        { kind: 'practice', subject: 'Social Studies', title: 'Flip the Facts (Revolution)', mode: 'flip', cards: [
+          { front: 'Patriot', back: 'Wanted independence' }, { front: 'Loyalist', back: 'Stayed loyal to Britain' },
+          { front: 'Saratoga', back: 'Turning-point victory, 1777' }, { front: 'Brooklyn', back: 'British win, 1776' }, { front: 'Taxation', back: 'A cause of the war' }
+        ] },
+        { kind: 'activity', title: 'Sense the Revolution', stages: [
+          { type: 'quiz', subject: 'SS · Turning point', story: 'Which battle was the turning point of the Revolution?', prompt: 'Which battle was the turning point?', options: ['Saratoga', 'Brooklyn', 'Yorktown'], a: 0, okMsg: 'Saratoga — turning point! Signal 1 lit.' },
+          { type: 'labelDiagram', subject: 'Science · Senses path', story: 'Label the sense-and-process path.', slots: [ {hint:'Organ that sees'}, {hint:'Organ that hears'}, {hint:'Organ that smells'}, {hint:'Processes the signals'} ], labels: [ {label:'Eye', slot:0}, {label:'Ear', slot:1}, {label:'Nose', slot:2}, {label:'Brain', slot:3} ] },
+          { type: 'input', subject: 'SS · Sides', story: 'Who wanted independence from Britain?', prompt: 'Who wanted independence? (P___):', accept: ['patriots', 'patriot'], okMsg: 'Patriots! Signal 3 lit.' },
+          { type: 'venn', subject: 'SS · Sides in NY', story: 'Sort each trait into Patriot, Loyalist, both, or neither.', left: 'Patriot', right: 'Loyalist', items: [ {text:'Wanted independence from Britain', set:0}, {text:'Stayed loyal to the king', set:1}, {text:'Lived in NY colony', set:2}, {text:'Ruled NY from overseas', set:3} ] }
+        ] }
+      ]
+    } },
 
     '4-0': { type: 'fillBlank', content: { sentence: '2/5 + 1/5 = *. Fossils are evidence of * that lived long ago, found in * rock.', blanks: ['3/5', 'life', 'sedimentary'] } },
     '4-1': { type: 'hangman', content: { word: 'metaphor', hint: 'A comparison without "like" or "as"' } },
@@ -1257,6 +1405,76 @@
     wrap.appendChild(pool); stage.appendChild(wrap);
   }
 
+  // 8h. NUMBER LINE (tap the correct dot; supports single or multi-question)
+  function renderNumberLine(stage, c, ctx) {
+    var qs = c.questions ? c.questions : [{ prompt: c.prompt, marks: c.marks, a: c.a }];
+    var qi = 0, wrap = el('div', 'sg-nl');
+    function renderQ() {
+      wrap.innerHTML = '';
+      var q = qs[qi];
+      wrap.appendChild(el('div', 'sg-nl-prompt', esc(q.prompt)));
+      var line = el('div', 'sg-nl-line');
+      q.marks.forEach(function (m, mi) {
+        (function (mi) {
+          var dot = el('button', 'sg-nl-dot');
+          dot.innerHTML = '<span class="sg-nl-peg"></span><span class="sg-nl-lab">' + esc(m.l) + '</span>';
+          dot.addEventListener('click', function () {
+            if (dot.classList.contains('locked')) return;
+            if (mi === q.a) {
+              dot.classList.add('correct'); sound.play('correct'); SG.praise.show('correct');
+              Array.prototype.forEach.call(line.querySelectorAll('.sg-nl-dot'), function (d) { d.classList.add('locked'); });
+              qi++;
+              ctx.setRing(ringPctOf(qi, qs.length));
+              if (qi >= qs.length) { ctx.onWin(); }
+              else { setTimeout(function () { sound.play('click'); renderQ(); }, 600); }
+            } else {
+              dot.classList.add('shake'); sound.play('wrong'); SG.praise.show('wrong'); SG.mascot.setMood('think');
+              setTimeout(function () { dot.classList.remove('shake'); }, 400);
+            }
+          });
+          line.appendChild(dot);
+        })(mi);
+      });
+      wrap.appendChild(line); stage.appendChild(wrap);
+    }
+    renderQ();
+  }
+
+  // 8i. HIGHER / LOWER (reveal a card, guess if next is higher or lower; survive the chain)
+  function renderHigherLower(stage, c, ctx) {
+    var cards = c.cards, i = 0, solved = false;
+    var wrap = el('div', 'sg-nl');
+    wrap.appendChild(el('div', 'sg-nl-prompt', esc(c.prompt || 'Will the next card be higher or lower?')));
+    var stage2 = el('div', 'sg-hl-stage'); wrap.appendChild(stage2);
+    var ctrl = el('div', 'sg-hl-ctrl');
+    var hi = el('button', 'sg-hl-btn up', '▲ Higher'); var lo = el('button', 'sg-hl-btn down', '▼ Lower');
+    ctrl.appendChild(hi); ctrl.appendChild(lo); wrap.appendChild(ctrl); stage.appendChild(wrap);
+    function showPair() {
+      stage2.innerHTML = '';
+      var cur = el('div', 'sg-hl-card cur', esc(cards[i].label));
+      var next = el('div', 'sg-hl-card next', i < cards.length - 1 ? '?' : '★');
+      stage2.appendChild(cur); stage2.appendChild(el('div', 'sg-hl-vs', 'vs')); stage2.appendChild(next);
+      hi.disabled = false; lo.disabled = false;
+    }
+    function guess(isHigher) {
+      if (solved || i >= cards.length - 1) return;
+      var ok = isHigher ? (cards[i + 1].val > cards[i].val) : (cards[i + 1].val < cards[i].val);
+      if (ok) {
+        sound.play('correct'); SG.praise.show('correct');
+        var next = stage2.querySelector('.next'); next.textContent = cards[i + 1].label; next.classList.add('reveal');
+        i++; ctx.setRing(ringPctOf(i, cards.length - 1));
+        if (i >= cards.length - 1) { solved = true; hi.disabled = true; lo.disabled = true; setTimeout(function () { ctx.onWin(); }, 500); }
+        else { setTimeout(function () { sound.play('click'); showPair(); }, 700); }
+      } else {
+        sound.play('wrong'); SG.praise.show('wrong'); SG.mascot.setMood('think');
+        var card = stage2.querySelector('.cur'); card.classList.add('shake'); setTimeout(function () { card.classList.remove('shake'); }, 400);
+      }
+    }
+    hi.addEventListener('click', function () { guess(true); });
+    lo.addEventListener('click', function () { guess(false); });
+    showPair();
+  }
+
   // 8. QUIZ (multiple choice; covers T/F with 2 options)
   function renderQuiz(stage, c, ctx) {
     var qs = c.questions, i = 0, score = 0, answered = false;
@@ -1598,7 +1816,7 @@
   }
   function labelForPrev(phases, pi) { return pi > 0 ? (phases[pi - 1].title || phases[pi - 1].kind) : 'start'; }
 
-  var RENDERERS = { scratch: renderScratch, wordSearch: renderWordSearch, match: renderMatch, dragSort: renderDragSort, flip: renderFlip, hangman: renderHangman, fillBlank: renderFillBlank, quizMC: renderQuiz, trueFalse: renderTrueFalse, scramble: renderScramble, timeline: renderTimeline, categorize: renderCategorize, twoTruths: renderTwoTruths, labelDiagram: renderLabelDiagram, venn: renderVenn, mission: renderMission };
+  var RENDERERS = { scratch: renderScratch, wordSearch: renderWordSearch, match: renderMatch, dragSort: renderDragSort, flip: renderFlip, hangman: renderHangman, fillBlank: renderFillBlank, quizMC: renderQuiz, trueFalse: renderTrueFalse, scramble: renderScramble, timeline: renderTimeline, categorize: renderCategorize, twoTruths: renderTwoTruths, labelDiagram: renderLabelDiagram, venn: renderVenn, numberLine: renderNumberLine, higherLower: renderHigherLower, mission: renderMission };
 
   /* ---------- ripple ---------- */
   function attachRipple(btn) {

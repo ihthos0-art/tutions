@@ -1378,6 +1378,110 @@
   };
   document.addEventListener('pointerdown', function () { ac(); }, { once: true });
 
+  /* ---------- READ ALOUD (Web Speech) ---------- */
+  var synth = window.speechSynthesis || null;
+  var sgVoice = null;
+  function sgPickVoice() {
+    if (!synth) return;
+    var vs = synth.getVoices(); if (!vs || !vs.length) return;
+    var pref = ['Google US English', 'Samantha', 'Microsoft Aria', 'Microsoft Jenny', 'Microsoft Zira',
+      'Aria Online (Natural)', 'Jenny Online (Natural)', 'Libby Online (Natural)', 'Google UK English Female',
+      'Karen', 'Serena', 'Daniel', 'Google हिन्दी'];
+    for (var i = 0; i < pref.length; i++) { for (var j = 0; j < vs.length; j++) { if (vs[j].name && vs[j].name.indexOf(pref[i]) !== -1) { sgVoice = vs[j]; return; } } }
+    for (var k = 0; k < vs.length; k++) { if (/en[-_]?US/i.test(vs[k].lang)) { sgVoice = vs[k]; return; } }
+    for (var k = 0; k < vs.length; k++) { if (/^en/i.test(vs[k].lang)) { sgVoice = vs[k]; return; } }
+    sgVoice = vs[0];
+  }
+  if (synth) { sgPickVoice(); if ('onvoiceschanged' in synth) synth.onvoiceschanged = sgPickVoice; }
+  SG.speak = {
+    _btn: null, _chunks: [],
+    toggle: function (text, btn) {
+      if (this._btn) { this.stop(); if (this._btn === btn) return; }
+      if (!synth || !text) return;
+      this._btn = btn; if (btn) { btn.classList.add('speaking'); if (btn.classList.contains('sg-speak-btn')) btn.textContent = '⏹ Stop'; }
+      var parts = String(text).replace(/\s+/g, ' ').match(/[^.!?;:]+[.!?;:]*/g) || [String(text)];
+      this._chunks = parts.slice();
+      var self = this;
+      function step() {
+        if (!self._chunks.length) { self._clear(); return; }
+        var u = new SpeechSynthesisUtterance(self._chunks.shift().trim());
+        u.rate = 0.85; u.pitch = 1.0; u.volume = 1;
+        if (sgVoice) { try { u.voice = sgVoice; } catch (e) {} }
+        u.onend = step; u.onerror = step;
+        try { synth.speak(u); } catch (e) { self._clear(); }
+      }
+      try { synth.cancel(); } catch (e) {}
+      step();
+    },
+    _clear: function () { var b = this._btn; if (b) { b.classList.remove('speaking'); if (b.classList.contains('sg-speak-btn')) b.textContent = '🔊 Read aloud'; } this._btn = null; this._chunks = []; },
+    stop: function () { if (synth) { try { synth.cancel(); } catch (e) {} } this._clear(); },
+    isOn: function () { return !!this._btn; }
+  };
+
+  /* ---------- ILLUSTRATIONS (inline SVG) ---------- */
+  var ILL_C = { math: '#e0624f', science: '#3fae6a', ela: '#3a8fd0', social: '#9a6bb8', amber: '#d9a441', ink: '#4a4438', line: '#c9bda6' };
+  var SCENES = {
+    pv: '<svg viewBox="0 0 240 124" class="sg-ill-svg" role="img" aria-label="Place value chart"><g font-family="inherit" font-weight="700" text-anchor="middle"><rect x="24" y="26" width="44" height="50" rx="8" fill="#fff3f0" stroke="#e0624f" stroke-width="3"/><text x="46" y="60" font-size="24" fill="#e0624f">3</text><text x="46" y="98" font-size="11" fill="#9a7b74">Th</text><rect x="78" y="26" width="44" height="50" rx="8" fill="#fff3f0" stroke="#e0624f" stroke-width="3"/><text x="100" y="60" font-size="24" fill="#e0624f">4</text><text x="100" y="98" font-size="11" fill="#9a7b74">H</text><rect x="132" y="26" width="44" height="50" rx="8" fill="#fff3f0" stroke="#e0624f" stroke-width="3"/><text x="154" y="60" font-size="24" fill="#e0624f">2</text><text x="154" y="98" font-size="11" fill="#9a7b74">T</text><rect x="186" y="26" width="44" height="50" rx="8" fill="#fff3f0" stroke="#e0624f" stroke-width="3"/><text x="208" y="60" font-size="24" fill="#e0624f">7</text><text x="208" y="98" font-size="11" fill="#9a7b74">O</text></g></svg>',
+    energy: '<svg viewBox="0 0 240 124" class="sg-ill-svg" role="img" aria-label="Forms of energy"><circle cx="46" cy="46" r="20" fill="#ffe9a8" stroke="#d9a441" stroke-width="3"/><g stroke="#d9a441" stroke-width="3" stroke-linecap="round"><line x1="46" y1="14" x2="46" y2="4"/><line x1="46" y1="88" x2="46" y2="78"/><line x1="14" y1="46" x2="4" y2="46"/><line x1="88" y1="46" x2="78" y2="46"/><line x1="24" y1="24" x2="17" y2="17"/><line x1="68" y1="68" x2="75" y2="75"/></g><path d="M138 18 L116 70 L138 70 L128 104 L168 54 L146 54 Z" fill="#ffd24a" stroke="#e08a2b" stroke-width="2.5" stroke-linejoin="round"/><rect x="186" y="40" width="14" height="34" rx="3" fill="#fff" stroke="#3fae6a" stroke-width="3"/><rect x="190" y="58" width="6" height="12" fill="#3fae6a"/><line x1="193" y1="34" x2="193" y2="40" stroke="#3fae6a" stroke-width="3"/></svg>',
+    eye: '<svg viewBox="0 0 240 124" class="sg-ill-svg" role="img" aria-label="Eye and light"><path d="M70 62 Q120 22 170 62 Q120 102 70 62 Z" fill="#fff" stroke="#3fae6a" stroke-width="3"/><circle cx="120" cy="62" r="16" fill="#3fae6a"/><circle cx="126" cy="56" r="5" fill="#fff"/><line x1="14" y1="62" x2="98" y2="62" stroke="#d9a441" stroke-width="3" stroke-dasharray="6 5" marker-end="url(#ar)"/><defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#d9a441"/></marker></defs></svg>',
+    ship: '<svg viewBox="0 0 240 124" class="sg-ill-svg" role="img" aria-label="Explorer ship"><path d="M30 78 H150 L138 100 H42 Z" fill="#c4865a" stroke="#8a5a36" stroke-width="2.5"/><line x1="90" y1="78" x2="90" y2="20" stroke="#7a5236" stroke-width="3"/><path d="M90 24 L138 46 L90 56 Z" fill="#fdfdfd" stroke="#9a6bb8" stroke-width="2.5"/><path d="M90 24 L52 46 L90 56 Z" fill="#f4eef9" stroke="#9a6bb8" stroke-width="2.5"/><path d="M0 104 Q30 96 60 104 T120 104 T180 104 T240 104" fill="none" stroke="#3a8fd0" stroke-width="3"/><path d="M150 96 Q176 90 200 96 L194 104 Q176 100 156 104 Z" fill="#8a5a36" stroke="#5a3a22" stroke-width="2"/></svg>',
+    grid: '<svg viewBox="0 0 240 124" class="sg-ill-svg" role="img" aria-label="Area model"><rect x="30" y="22" width="180" height="80" fill="none" stroke="#e0624f" stroke-width="3"/><line x1="120" y1="22" x2="120" y2="102" stroke="#e0624f" stroke-width="3"/><line x1="30" y1="62" x2="210" y2="62" stroke="#e0624f" stroke-width="3"/><rect x="30" y="22" width="90" height="40" fill="#fdeef0"/><rect x="120" y="22" width="90" height="40" fill="#fff3f0"/><rect x="30" y="62" width="90" height="40" fill="#fff3f0"/><rect x="120" y="62" width="90" height="40" fill="#fdeef0"/><text x="75" y="46" font-size="14" text-anchor="middle" fill="#e0624f" font-weight="700">20</text><text x="165" y="86" font-size="14" text-anchor="middle" fill="#e0624f" font-weight="700">6</text></svg>',
+    pie: '<svg viewBox="0 0 240 124" class="sg-ill-svg" role="img" aria-label="Fraction pie"><path d="M120 24 A50 50 0 1 1 70 74 L120 74 Z" fill="#9a6bb8"/><path d="M120 24 A50 50 0 0 1 170 74 L120 74 Z" fill="#e8ddf2"/><circle cx="120" cy="74" r="50" fill="none" stroke="#6b4a82" stroke-width="3"/><line x1="120" y1="74" x2="120" y2="24" stroke="#6b4a82" stroke-width="3"/><line x1="120" y1="74" x2="170" y2="74" stroke="#6b4a82" stroke-width="3"/></svg>',
+    numline: '<svg viewBox="0 0 240 124" class="sg-ill-svg" role="img" aria-label="Number line"><line x1="20" y1="62" x2="220" y2="62" stroke="#4a4438" stroke-width="3"/><path d="M214 56 L224 62 L214 68" fill="none" stroke="#4a4438" stroke-width="3"/><g stroke="#4a4438" stroke-width="2"><line x1="40" y1="56" x2="40" y2="68"/><line x1="90" y1="56" x2="90" y2="68"/><line x1="140" y1="56" x2="140" y2="68"/><line x1="190" y1="56" x2="190" y2="68"/></g><g font-size="11" text-anchor="middle" fill="#4a4438"><text x="40" y="86">0</text><text x="90" y="86">1</text><text x="140" y="86">2</text><text x="190" y="86">3</text></g><circle cx="115" cy="62" r="6" fill="#e0624f"/></svg>',
+    strata: '<svg viewBox="0 0 240 124" class="sg-ill-svg" role="img" aria-label="Rock layers"><path d="M0 96 H240 L210 78 H30 Z" fill="#c9b48a" stroke="#8a6a3a" stroke-width="2"/><path d="M30 78 H210 L195 60 H45 Z" fill="#b89368" stroke="#8a6a3a" stroke-width="2"/><path d="M45 60 H195 L180 42 H60 Z" fill="#a87f52" stroke="#8a6a3a" stroke-width="2"/><path d="M60 42 H180 V26 H60 Z" fill="#9a7340" stroke="#8a6a3a" stroke-width="2"/><path d="M104 86 q6 -8 14 -4 l-3 10 z" fill="#6b4a2a"/><circle cx="150" cy="68" r="3" fill="#6b4a2a"/></svg>',
+    branches: '<svg viewBox="0 0 240 124" class="sg-ill-svg" role="img" aria-label="Branches of government"><rect x="95" y="12" width="50" height="22" rx="6" fill="#9a6bb8" stroke="#6b4a82" stroke-width="2"/><text x="120" y="27" font-size="10" text-anchor="middle" fill="#fff" font-weight="700">GOV</text><line x1="120" y1="34" x2="50" y2="64" stroke="#9a6bb8" stroke-width="2.5"/><line x1="120" y1="34" x2="120" y2="64" stroke="#9a6bb8" stroke-width="2.5"/><line x1="120" y1="34" x2="190" y2="64" stroke="#9a6bb8" stroke-width="2.5"/><rect x="20" y="64" width="60" height="26" rx="6" fill="#f4eef9" stroke="#9a6bb8" stroke-width="2"/><rect x="90" y="64" width="60" height="26" rx="6" fill="#f4eef9" stroke="#9a6bb8" stroke-width="2"/><rect x="160" y="64" width="60" height="26" rx="6" fill="#f4eef9" stroke="#9a6bb8" stroke-width="2"/><g font-size="9" text-anchor="middle" fill="#6b4a82" font-weight="700"><text x="50" y="80">Legislative</text><text x="120" y="80">Executive</text><text x="190" y="80">Judicial</text></g></svg>',
+    protractor: '<svg viewBox="0 0 240 124" class="sg-ill-svg" role="img" aria-label="Angle and protractor"><path d="M30 96 A80 80 0 0 1 190 96" fill="#f4eef9" stroke="#9a6bb8" stroke-width="2.5"/><line x1="30" y1="96" x2="210" y2="96" stroke="#4a4438" stroke-width="2.5"/><line x1="110" y1="96" x2="170" y2="40" stroke="#e0624f" stroke-width="3"/><circle cx="110" cy="96" r="4" fill="#e0624f"/><path d="M128 90 A24 24 0 0 1 132 110" fill="none" stroke="#e0624f" stroke-width="2"/></svg>',
+    wave: '<svg viewBox="0 0 240 124" class="sg-ill-svg" role="img" aria-label="Wave"><line x1="10" y1="62" x2="230" y2="62" stroke="#c9bda6" stroke-width="2" stroke-dasharray="4 4"/><path d="M10 62 Q35 20 60 62 T110 62 T160 62 T210 62" fill="none" stroke="#3fae6a" stroke-width="3"/><line x1="35" y1="62" x2="35" y2="32" stroke="#d9a441" stroke-width="2.5"/><line x1="85" y1="62" x2="85" y2="32" stroke="#d9a441" stroke-width="2.5"/><text x="60" y="118" font-size="10" text-anchor="middle" fill="#4a4438">wavelength</text><text x="28" y="26" font-size="10" fill="#d9a441">amplitude</text></svg>',
+    canal: '<svg viewBox="0 0 240 124" class="sg-ill-svg" role="img" aria-label="Erie Canal boat"><path d="M0 30 H70 V104 H0 Z" fill="#9a7340"/><path d="M170 30 H240 V104 H170 Z" fill="#9a7340"/><rect x="0" y="98" width="240" height="6" fill="#8a6a3a"/><path d="M70 70 H170 L160 92 H80 Z" fill="#c4865a" stroke="#8a5a36" stroke-width="2"/><rect x="112" y="30" width="16" height="40" fill="#7a5236"/><path d="M70 84 Q100 78 120 84 T170 84" fill="none" stroke="#3a8fd0" stroke-width="2.5"/></svg>',
+    lantern: '<svg viewBox="0 0 240 124" class="sg-ill-svg" role="img" aria-label="Lantern of freedom"><circle cx="120" cy="62" r="48" fill="#fff7d6" opacity="0.55"/><rect x="104" y="34" width="32" height="8" rx="2" fill="#6b4a2a"/><rect x="98" y="42" width="44" height="44" rx="8" fill="#ffd24a" stroke="#b8861f" stroke-width="3"/><line x1="120" y1="22" x2="120" y2="34" stroke="#6b4a2a" stroke-width="3"/><rect x="106" y="86" width="28" height="8" rx="2" fill="#6b4a2a"/><path d="M118 50 L112 64 L120 64 L114 78 L130 60 L122 60 Z" fill="#fff7d6"/></svg>',
+    ellis: '<svg viewBox="0 0 240 124" class="sg-ill-svg" role="img" aria-label="Ellis Island"><rect x="50" y="44" width="120" height="56" fill="#e8e0d0" stroke="#8a7a5a" stroke-width="2.5"/><polygon points="40,44 110,8 180,44" fill="#c4865a" stroke="#8a5a36" stroke-width="2.5"/><rect x="68" y="58" width="14" height="24" fill="#6b4a82"/><rect x="102" y="58" width="14" height="24" fill="#6b4a82"/><rect x="136" y="58" width="14" height="24" fill="#6b4a82"/><rect x="148" y="22" width="8" height="26" fill="#9a6bb8"/><path d="M152 22 L168 30 L152 38 Z" fill="#d9a441"/><rect x="150" y="20" width="4" height="10" fill="#6b4a2a"/></svg>',
+    signal: '<svg viewBox="0 0 240 124" class="sg-ill-svg" role="img" aria-label="Dolphin signal"><path d="M0 96 Q60 70 120 96 T240 96" fill="none" stroke="#3a8fd0" stroke-width="2.5" opacity="0.5"/><path d="M70 90 Q95 60 150 78 Q140 96 110 96 Q80 96 70 90 Z" fill="#3a8fd0" stroke="#2a6a9a" stroke-width="2"/><path d="M150 78 q20 -6 30 6" fill="none" stroke="#2a6a9a" stroke-width="2"/><path d="M120 64 q0 -16 14 -16 q-14 0 -14 -16" fill="none" stroke="#3fae6a" stroke-width="2.5"/><path d="M150 50 q0 -12 10 -12 q-10 0 -10 -12" fill="none" stroke="#3fae6a" stroke-width="2.5"/></svg>',
+    flag: '<svg viewBox="0 0 240 124" class="sg-ill-svg" role="img" aria-label="Flag"><line x1="70" y1="14" x2="70" y2="110" stroke="#4a4438" stroke-width="4"/><circle cx="70" cy="14" r="4" fill="#d9a441"/><path d="M70 22 H180 L160 44 L180 66 H70 Z" fill="#9a6bb8" stroke="#6b4a82" stroke-width="2.5"/><path d="M82 30 H168 M82 38 H168 M82 46 H160" stroke="#fff" stroke-width="2"/></svg>',
+    senses: '<svg viewBox="0 0 240 124" class="sg-ill-svg" role="img" aria-label="Senses"><g stroke="#3fae6a" stroke-width="2.5" fill="none"><path d="M20 56 Q40 36 60 56 Q40 76 20 56"/><circle cx="40" cy="56" r="8"/></g><g stroke="#3a8fd0" stroke-width="2.5" fill="none"><path d="M100 40 q-10 0 -10 12 v8 a8 8 0 0 0 16 0 v-8 q0 -12 -6 -12"/><line x1="104" y1="44" x2="120" y2="44"/><line x1="104" y1="52" x2="120" y2="52"/><line x1="104" y1="60" x2="118" y2="60"/></g><path d="M180 70 q-22 -28 -44 0 q22 16 44 0 Z" fill="#fff" stroke="#9a6bb8" stroke-width="2.5"/><circle cx="158" cy="62" r="7" fill="#9a6bb8"/></svg>',
+    map: '<svg viewBox="0 0 240 124" class="sg-ill-svg" role="img" aria-label="Map"><path d="M30 30 Q60 16 110 24 Q160 14 200 34 Q224 60 206 86 Q170 104 120 96 Q70 104 40 84 Q14 58 30 30 Z" fill="#dce6c8" stroke="#7a8a4a" stroke-width="2.5"/><path d="M150 60 Q176 50 196 64 Q210 80 194 92 Q174 100 158 90 Q146 76 150 60 Z" fill="#b8d0e8" stroke="#3a8fd0" stroke-width="2"/><path d="M118 58 l0 -16 a4 4 0 0 1 8 0 l0 16 a4 4 0 1 1 -8 0" fill="#e0624f"/><circle cx="122" cy="50" r="3" fill="#fff"/></svg>',
+    book: '<svg viewBox="0 0 240 124" class="sg-ill-svg" role="img" aria-label="Open book"><path d="M120 40 Q90 28 30 34 V96 Q90 90 120 102 Q150 90 210 96 V34 Q150 28 120 40 Z" fill="#3a8fd0" stroke="#2a6a9a" stroke-width="2.5"/><path d="M120 40 V102" stroke="#2a6a9a" stroke-width="2.5"/><g stroke="#fff" stroke-width="2" opacity="0.8"><line x1="46" y1="50" x2="100" y2="46"/><line x1="46" y1="62" x2="100" y2="58"/><line x1="46" y1="74" x2="100" y2="70"/><line x1="140" y1="46" x2="194" y2="50"/><line x1="140" y1="58" x2="194" y2="62"/><line x1="140" y1="70" x2="194" y2="74"/></g></svg>',
+    flask: '<svg viewBox="0 0 240 124" class="sg-ill-svg" role="img" aria-label="Science flask"><path d="M104 16 H136 V44 L168 92 Q172 104 158 104 H82 Q68 104 72 92 L104 44 Z" fill="#e8f5ee" stroke="#3fae6a" stroke-width="3"/><rect x="104" y="16" width="32" height="8" fill="#3fae6a"/><path d="M82 84 Q120 74 158 84 L168 92 Q172 104 158 104 H82 Q68 104 72 92 Z" fill="#3fae6a" opacity="0.55"/><circle cx="110" cy="90" r="4" fill="#3fae6a"/><circle cx="132" cy="86" r="3" fill="#3fae6a"/></svg>',
+    cap: '<svg viewBox="0 0 240 124" class="sg-ill-svg" role="img" aria-label="Graduation cap"><polygon points="120,28 210,62 120,96 30,62" fill="#3a3a3a" stroke="#1a1a1a" stroke-width="2"/><path d="M70 74 V96 Q120 116 170 96 V74" fill="#4a4a4a" stroke="#1a1a1a" stroke-width="2"/><line x1="210" y1="62" x2="210" y2="92" stroke="#d9a441" stroke-width="3"/><circle cx="210" cy="96" r="5" fill="#d9a441"/></svg>',
+    gear: '<svg viewBox="0 0 240 124" class="sg-ill-svg" role="img" aria-label="Engineering design"><g fill="none" stroke="#3fae6a" stroke-width="3"><circle cx="90" cy="62" r="30"/><circle cx="90" cy="62" r="10"/></g><g fill="#3fae6a"><rect x="86" y="22" width="8" height="14"/><rect x="86" y="88" width="8" height="14"/><rect x="50" y="58" width="14" height="8"/><rect x="116" y="58" width="14" height="8"/><rect x="62" y="34" width="12" height="12" transform="rotate(45 68 40)"/><rect x="106" y="78" width="12" height="12" transform="rotate(45 112 84)"/><rect x="62" y="78" width="12" height="12" transform="rotate(45 68 84)"/><rect x="106" y="34" width="12" height="12" transform="rotate(45 112 40)"/></g><line x1="150" y1="62" x2="220" y2="62" stroke="#4a4438" stroke-width="3"/><path d="M150 40 H210 V84 H150" fill="none" stroke="#9a6bb8" stroke-width="2.5"/><path d="M160 40 V84 M175 40 V84 M190 40 V84 M205 40 V84" stroke="#9a6bb8" stroke-width="2"/></svg>',
+    ruler: '<svg viewBox="0 0 240 124" class="sg-ill-svg" role="img" aria-label="Measurement"><rect x="20" y="46" width="200" height="36" rx="6" fill="#fdeef0" stroke="#e0624f" stroke-width="3"/><g stroke="#e0624f" stroke-width="2.5"><line x1="40" y1="46" x2="40" y2="62"/><line x1="60" y1="46" x2="60" y2="70"/><line x1="80" y1="46" x2="80" y2="62"/><line x1="100" y1="46" x2="100" y2="70"/><line x1="120" y1="46" x2="120" y2="62"/><line x1="140" y1="46" x2="140" y2="70"/><line x1="160" y1="46" x2="160" y2="62"/><line x1="180" y1="46" x2="180" y2="70"/><line x1="200" y1="46" x2="200" y2="62"/></g><g font-size="9" fill="#9a7b74" text-anchor="middle"><text x="40" y="78">0</text><text x="60" y="78">1</text><text x="100" y="78">3</text><text x="140" y="78">5</text><text x="180" y="78">7</text></g></svg>'
+  };
+  var ILL_KEYS = [
+    ['place value', 'pv'], ['expanded', 'pv'],
+    ['energy', 'energy'], ['conversion', 'energy'],
+    ['vision', 'eye'], ['light', 'eye'], ['reflect', 'eye'],
+    ['explor', 'ship'],
+    ['area model', 'grid'], ['multiplication', 'grid'], ['divide', 'grid'], ['division', 'grid'], ['remainder', 'grid'],
+    ['fraction', 'pie'], ['mixed number', 'pie'],
+    ['decimal', 'numline'], ['round', 'numline'], ['number line', 'numline'], ['comparing', 'numline'],
+    ['rock', 'strata'], ['fossil', 'strata'], ['erosion', 'strata'], ['weathering', 'strata'],
+    ['government', 'branches'], ['branch', 'branches'], ['citizen', 'branches'], ['right', 'branches'], ['responsibilit', 'branches'],
+    ['angle', 'protractor'], ['protractor', 'protractor'],
+    ['wave', 'wave'], ['amplitude', 'wave'], ['wavelength', 'wave'], ['sound', 'wave'],
+    ['canal', 'canal'], ['erie', 'canal'], ['industrial', 'canal'], ['transport', 'canal'],
+    ['underground', 'lantern'], ['slavery', 'lantern'], ['abolition', 'lantern'],
+    ['immigr', 'ellis'], ['ellis', 'ellis'],
+    ['dolphin', 'signal'], ['communicat', 'signal'], ['signal', 'signal'],
+    ['colony', 'flag'], ['new netherland', 'flag'], ['revolution', 'flag'], ['loyalist', 'flag'], ['patriot', 'flag'], ['suffrage', 'flag'], ['women', 'flag'],
+    ['sense', 'senses'], ['process', 'senses'],
+    ['topograph', 'map'], ['map', 'map'], ['geograph', 'map'], ['borough', 'map'], ['brooklyn', 'map'], ['county', 'map'],
+    ['simile', 'book'], ['metaphor', 'book'], ['idiom', 'book'], ['adage', 'book'], ['proverb', 'book'], ['root', 'book'], ['affix', 'book'], ['meaning', 'book'], ['vowel', 'book'],
+    ['opinion', 'book'], ['informative', 'book'], ['narrative', 'book'], ['article', 'book'], ['source', 'book'], ['note', 'book'], ['presentation', 'book'], ['research', 'book'], ['summary', 'book'], ['central idea', 'book'], ['paragraph', 'book'], ['structure', 'book'], ['dialogue', 'book'], ['close reading', 'book'], ['evidence', 'book'], ['linking', 'book'], ['word', 'book'],
+    ['review', 'cap'], ['capstone', 'cap'], ['skill', 'cap'],
+    ['engineering', 'gear'], ['design', 'gear'],
+    ['measurement', 'ruler'], ['perimeter', 'ruler'], ['conversion', 'ruler']
+  ];
+  SG.ill = function (subject, title) {
+    var t = (title || '').toLowerCase();
+    var pick = '';
+    for (var i = 0; i < ILL_KEYS.length; i++) { if (t.indexOf(ILL_KEYS[i][0]) !== -1) { pick = ILL_KEYS[i][1]; break; } }
+    if (!pick) {
+      var s = (subject || '').toLowerCase();
+      pick = (s.indexOf('math') !== -1) ? 'numline' : (s.indexOf('sci') !== -1) ? 'flask' : (s.indexOf('ela') !== -1 || s.indexOf('english') !== -1 || s.indexOf('read') !== -1) ? 'book' : (s.indexOf('social') !== -1) ? 'map' : 'book';
+    }
+    var svg = SCENES[pick] || SCENES.book;
+    return '<div class="sg-ill">' + svg + '</div>';
+  };
+
   /* ---------- CONFETTI ---------- */
   var ccCanvas, ccCtx, ccRAF, ccParts = [];
   function ensureConfetti() {
@@ -2369,16 +2473,22 @@
         });
         opts.appendChild(b);
       });
-      host.appendChild(q); host.appendChild(opts);
+      host.appendChild(q);
+      var qs = el('button', 'sg-q-speak'); qs.type = 'button'; qs.innerHTML = '🔊'; qs.setAttribute('aria-label', 'Read question aloud');
+      qs.addEventListener('click', function (e) { e.preventDefault(); var t = g.prompt || ''; if (g.options) t += '. ' + g.options.join(', '); SG.speak.toggle(t, qs); });
+      host.appendChild(qs);
+      host.appendChild(opts);
     }
 
     function inputInto(host, g, onDone) {
       var q = el('div', 'sg-mis-q', esc(g.prompt));
+      var qs = el('button', 'sg-q-speak'); qs.type = 'button'; qs.innerHTML = '🔊'; qs.setAttribute('aria-label', 'Read question aloud');
+      qs.addEventListener('click', function (e) { e.preventDefault(); SG.speak.toggle(g.prompt || '', qs); });
       var row = el('div', 'sg-mis-input-row');
       var inp = el('input', 'sg-mis-input'); inp.type = 'text'; inp.setAttribute('autocomplete', 'off'); inp.placeholder = 'Type your answer…';
       var btn = el('button', 'sg-btn', 'Check ▸');
       row.appendChild(inp); row.appendChild(btn);
-      host.appendChild(q); host.appendChild(row); inp.focus();
+      host.appendChild(q); host.appendChild(qs); host.appendChild(row); inp.focus();
       function check() {
         var v = String(inp.value).trim().toLowerCase().replace(/,/g, '');
         var accept = (g.accept || []).map(function (a) { return String(a).toLowerCase().replace(/,/g, ''); });
@@ -2429,6 +2539,19 @@
       var blocks = ph.blocks || [];
       var card = el('div', 'sg-lesson');
       card.innerHTML = '<div class="sg-les-subj">' + esc(ph.subject) + '</div><h3 class="sg-les-title">' + esc(ph.title) + '</h3>';
+      var illWrap = el('div', 'sg-les-ill'); illWrap.innerHTML = SG.ill(ph.subject, ph.title);
+      if (illWrap.firstChild) card.appendChild(illWrap.firstChild);
+      var speakBtn = el('button', 'sg-speak-btn'); speakBtn.type = 'button'; speakBtn.textContent = '🔊 Read aloud';
+      speakBtn.setAttribute('aria-label', 'Read this lesson aloud');
+      card.appendChild(speakBtn);
+      speakBtn.addEventListener('click', function () {
+        var txt = esc(ph.title) + '. ';
+        var bs = body.querySelectorAll('.sg-les-block');
+        Array.prototype.forEach.call(bs, function (blk) {
+          Array.prototype.forEach.call(blk.querySelectorAll('.sg-les-h, .sg-les-p, .sg-les-example, .sg-les-tip'), function (n) { txt += n.textContent + '. '; });
+        });
+        SG.speak.toggle(txt, speakBtn);
+      });
       var body = el('div', 'sg-les-body'); card.appendChild(body);
       var btns = el('div', 'sg-les-btns'); card.appendChild(btns);
       scene.innerHTML = ''; scene.appendChild(card); fbClear();
@@ -2480,7 +2603,7 @@
         scene.appendChild(bar); scene.appendChild(host);
         function renderQ() {
           bar.textContent = 'Question ' + (qi + 1) + ' of ' + qs.length + ' · Score ' + score;
-          host.innerHTML = '';
+          host.innerHTML = ''; if (SG.speak) SG.speak.stop();
           quizInto(host, qs[qi], function (ok) { if (ok) score++; qi++; if (qi < qs.length) renderQ(); else drillDone(); });
           ringOf(qi, qs.length);
         }
@@ -2530,7 +2653,7 @@
       } else if (ph.mode === 'quiz') { // quiz recap
         var qi = 0, score = 0;
         function showQ() {
-          host.innerHTML = '';
+          host.innerHTML = ''; if (SG.speak) SG.speak.stop();
           quizInto(host, items[qi], function (ok) { if (ok) score++; qi++; if (qi < items.length) showQ(); else { host.innerHTML = '<div class="sg-drill-done">Recap done! ' + score + ' / ' + items.length + ' 🎉</div>'; var n = el('button', 'sg-btn sg-go-btn', 'On to ' + labelForNext(phases, pi) + ' ▸'); n.addEventListener('click', function () { sound.play('click'); nextPhase(false); }); host.appendChild(n); practiceDone(); } });
           ringOf(qi, items.length);
         }
@@ -2557,7 +2680,7 @@
       function setBlockState(i, state) { var b = gtrack.children[i]; b.className = 'sg-mis-block ' + state; b.querySelector('.blk-ic').textContent = state === 'done' ? '⚡' : (state === 'cur' ? '📍' : '🔒'); }
       function showStory() { var g = gates[gi]; sub.innerHTML = '<span class="sg-mis-subj">' + esc(g.subject) + '</span> ' + esc(g.story); }
       function renderGate() {
-        var g = gates[gi]; fbClear(); showStory(); host.innerHTML = '';
+        var g = gates[gi]; fbClear(); showStory(); host.innerHTML = ''; if (SG.speak) SG.speak.stop();
         if (g.type === 'quiz') quizInto(host, g, gateDone);
         else if (g.type === 'input') inputInto(host, g, gateDone);
         else if (g.type === 'seek') seekInto(host, g, gateDone);
@@ -2575,6 +2698,7 @@
     // ---------- phase driver ----------
     function renderPhase() {
       var ph = phases[pi];
+      if (SG.speak) SG.speak.stop();
       navRow.style.visibility = pi > 0 ? 'visible' : 'hidden';
       if (pi > 0) backBtn.textContent = '‹ Back to ' + labelForPrev(phases, pi);
       if (ph.kind === 'lesson') renderLesson(ph);

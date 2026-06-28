@@ -553,3 +553,20 @@ span.ripple { position: absolute; border-radius: 50%; transform: scale(0);
 .sg-fb2-seg.filled { background: var(--sg-amber); border-color: var(--sg-amber); }
 .sg-fb2-seg.filled.correct { background: var(--sg-go); border-color: var(--sg-go); }
 .sg-fb2-seg.locked { cursor: default; }
+
+/* crossword */
+.sg-cw { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; align-items: flex-start; }
+.sg-cw-grid { display: grid; gap: 3px; max-width: 260px; }
+.sg-cw-blk { background: var(--sg-ink); border-radius: 2px; aspect-ratio: 1; }
+.sg-cw-cell { aspect-ratio: 1; border: 2px solid var(--sg-line); border-radius: 3px; display: flex; align-items: center; justify-content: center; font-family: var(--sg-head); font-weight: 700; font-size: 1rem; color: var(--sg-ink-soft); background: #fff; }
+.sg-cw-cell.filled { color: var(--sg-go); border-color: var(--sg-go); background: #eaf7ee; }
+.sg-cw-clues { display: flex; gap: 24px; flex-wrap: wrap; max-width: 360px; }
+.sg-cw-col { display: flex; flex-direction: column; gap: 8px; }
+.sg-cw-head { font-family: var(--sg-head); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--sg-ink-soft); border-bottom: 2px solid var(--sg-line); padding-bottom: 4px; }
+.sg-cw-clue { display: flex; align-items: center; gap: 6px; font-size: 0.82rem; }
+.sg-cw-num { font-family: var(--sg-head); font-weight: 700; color: var(--sg-ela); }
+.sg-cw-txt { color: var(--sg-ink); flex: 1; }
+.sg-cw-inp { width: 70px; padding: 4px 6px; border: 1.5px solid var(--sg-line); border-radius: 4px; font-family: var(--sg-body); font-size: 0.85rem; text-transform: uppercase; }
+.sg-cw-inp:focus { border-color: var(--sg-ela); outline: none; }
+.sg-cw-inp.done { border-color: var(--sg-go); background: #eaf7ee; color: var(--sg-go); }
+.sg-cw-ok { color: var(--sg-go); font-weight: 700; }

@@ -884,10 +884,161 @@
       ]
     } },
 
-    '5-0': { type: 'match', content: { pairs: [ ['Tenths','0.1 place'], ['Hundredths','0.01 place'], ['Elevation','Height above sea'], ['Landform','A shape of land'], ['Plain','Flat low land'] ] } },
-    '5-1': { type: 'hangman', content: { word: 'proverb', hint: 'A short saying with a lesson' } },
-    '5-2': { type: 'dragSort', content: { items: [ {text:'Pick the characters & setting', order:0}, {text:'Use quotation marks for dialogue', order:1}, {text:'Show character feelings', order:2}, {text:'Sequence the events clearly', order:3} ] } },
-    '5-3': { type: 'flip', content: { cards: [ {front:'A flood is a natural ?',back:'Hazard'}, {front:'The Underground Railroad helped people ?',back:'Escape slavery'}, {front:'An engineer designs ?',back:'Solutions'}, {front:'Harriet Tubman was from ?',back:'New York (Auburn)'} ] } },
+    '5-0': { type: 'mission', content: {
+      title: 'Decimals & Heights',
+      intro: 'Place the decimals and read the land. Learn decimals and topographic maps, then summit the peak.',
+      winText: '🎉 Decimals placed and landforms read — summit reached!',
+      phases: [
+        { kind: 'lesson', subject: 'Math', title: 'Decimals: Tenths & Hundredths', blocks: [
+          { h: 'Decimals name parts of a whole', p: 'A decimal is another way to write fractions, using a decimal point. 0.3 = 3/10 (three tenths); 0.07 = 7/100 (seven hundredths).', example: '0.1 = one tenth = 1/10.' },
+          { h: 'Tenths place', p: 'The first digit right of the decimal point is tenths. 0.4 means four tenths, a little less than half.', tip: '1st after the point = tenths.' },
+          { h: 'Hundredths place', p: 'The second digit right of the point is hundredths. 0.45 = 4 tenths and 5 hundredths (45/100).', example: '0.45 = 45 hundredths.' },
+          { h: 'Read the place value', p: 'Read 0.62 as “sixty-two hundredths.” The denominator is always 10 (one digit) or 100 (two digits) after the point.', diagram: '<div class="sg-flow"><span class="sg-flow-in">0.62</span><span class="sg-flow-arrow">→</span><span class="sg-flow-box">6 tenths + 2 hundredths</span><span class="sg-flow-arrow">→</span><span class="sg-flow-out">62/100</span></div>' },
+          { h: 'Compare decimals', p: 'Compare place by place left to right. 0.6 > 0.58 because 6 tenths > 5 tenths. Line up the decimal point.', tip: 'Line up points; compare tenths first.' },
+          { h: 'Decimals on a number line', p: 'Decimals sit between whole numbers on a number line. 0.5 is halfway between 0 and 1; 0.25 is a quarter of the way.', example: '0.1, 0.2, … 0.9, 1.0 — tenths step up.' },
+          { h: 'Why it matters', p: 'Decimals are used in money ($0.99), times, and measurements. Place value keeps them accurate.', tip: 'Tenths, then hundredths — read like fractions of 10 and 100.' }
+        ] },
+        { kind: 'drill', subject: 'Math', title: 'Tap the Decimal (Number Line)', engine: 'numberLine', questions: [
+          { prompt: 'Tap 0.5 (five tenths)', marks: [ {l:'0'},{l:'0.2'},{l:'0.5'},{l:'0.7'},{l:'1.0'} ], a: 2 },
+          { prompt: 'Tap 0.2 (two tenths)', marks: [ {l:'0'},{l:'0.2'},{l:'0.5'},{l:'0.7'},{l:'1.0'} ], a: 1 },
+          { prompt: 'Tap 0.7 (seven tenths)', marks: [ {l:'0'},{l:'0.2'},{l:'0.5'},{l:'0.7'},{l:'1.0'} ], a: 3 },
+          { prompt: 'Tap 1.0 (one whole)', marks: [ {l:'0'},{l:'0.2'},{l:'0.5'},{l:'0.7'},{l:'1.0'} ], a: 4 },
+          { prompt: 'Tap 0 (zero)', marks: [ {l:'0'},{l:'0.2'},{l:'0.5'},{l:'0.7'},{l:'1.0'} ], a: 0 }
+        ] },
+        { kind: 'lesson', subject: 'Science', title: 'Topographic Maps & Landforms', blocks: [
+          { h: 'What is a topographic map?', p: 'A topographic map shows the shape and height of the land using contour lines. Close lines mean steep slopes; far apart means flat.', example: 'Hikers use topo maps to see hills and valleys.' },
+          { h: 'Contour lines', p: 'Each contour line connects points of equal elevation (height above sea level). Crossing lines mark cliffs; rings mark peaks.', tip: 'Close lines = steep; wide lines = gentle.' },
+          { h: 'Elevation', p: 'Elevation is height above sea level. Contour lines are labeled with elevation numbers so you can read how tall the land is.', example: 'A 1000 ft contour marks land 1000 ft above sea.' },
+          { h: 'Landforms', p: 'Landforms are shapes of the land: mountains, hills, plains, valleys, plateaus, canyons. Topo maps reveal them.', diagram: '<div class="sg-energy-forms"><span>⛰️ Mountain</span><span>🟫 Plain</span><span>🏞️ Valley</span><span>📈 Contour</span><span>📏 Elevation</span></div>' },
+          { h: 'Reading slopes', p: 'Where contour lines bunch together, the slope is steep. Where they spread out, the land is flat or rolling.', tip: 'Bunched lines = steep climb.' },
+          { h: 'Depression & peaks', p: 'Hatched contour lines mark a depression (a dip). Concentric rings with increasing elevation mark a mountain peak.', example: 'The innermost high ring = the summit.' },
+          { h: 'Why it matters', p: 'Topographic maps guide hiking, building, and rescue. They let you “see” 3D land on flat paper.', tip: 'Contour lines = elevation; spacing = steepness.' }
+        ] },
+        { kind: 'practice', subject: 'Science', title: 'Label the Map', mode: 'labelDiagram', slots: [
+          { hint: 'Tallest landform, pointed' }, { hint: 'Flat, low land' }, { hint: 'Low area between hills' }, { hint: 'Height above sea level' }
+        ], labels: [ { label: 'Mountain', slot: 0 }, { label: 'Plain', slot: 1 }, { label: 'Valley', slot: 2 }, { label: 'Elevation', slot: 3 } ] },
+        { kind: 'activity', title: 'Decimals & Heights', stages: [
+          { type: 'quiz', subject: 'Math · Place value', story: 'What place is the 2 in 0.52?', prompt: 'In 0.52, the 2 is in the…', options: ['Hundredths', 'Tenths', 'Ones'], a: 0, okMsg: 'Hundredths — 0.52 = 52/100! Crampon 1 on.' },
+          { type: 'match', subject: 'Science · Terms', story: 'Match each term to its meaning.', pairs: [ ['Contour line','Equal elevation'], ['Elevation','Height above sea'], ['Plain','Flat low land'], ['Mountain','Tall peaked land'] ] },
+          { type: 'input', subject: 'Math · Compare', story: 'Which is bigger, 0.6 or 0.58? Type the bigger one.', prompt: 'Bigger: 0.6 or 0.58? Type it:', accept: ['0.6'], okMsg: '0.6 (6 tenths > 5 tenths)! Crampon 3 on.' },
+          { type: 'fillBlank', subject: 'Math · Read', story: 'Finish the decimal read-out to plant the flag.', sentence: '0.45 = * tenths and * hundredths = 45 / * .', blanks: ['4', '5', '100'] }
+        ] }
+      ]
+    } },
+
+    '5-1': { type: 'mission', content: {
+      title: 'Sayings & Citizenship',
+      intro: 'Crack the sayings and know your rights. Learn idioms/adages/proverbs and rights & responsibilities, then earn your badge.',
+      winText: '🎉 Sayings solved and rights reviewed — badge earned!',
+      phases: [
+        { kind: 'lesson', subject: 'ELA', title: 'Idioms, Adages & Proverbs', blocks: [
+          { h: 'Figures of speech vs sayings', p: 'Idioms, adages, and proverbs are short sayings. Idioms mean something different from their words; adages and proverbs give advice or a lesson.', example: '“It’s raining cats and dogs” = raining hard (idiom).' },
+          { h: 'Idioms', p: 'An idiom is a phrase whose meaning isn’t literal. “Kick the bucket” doesn’t mean kicking — it’s an idiom. You learn them by exposure.', tip: 'Idiom = can’t guess from the words alone.' },
+          { h: 'Adages', p: 'An adage is a short traditional saying expressing a common truth. “Better safe than sorry” is an adage about caution.', example: '“A stitch in time saves nine” = fix problems early.' },
+          { h: 'Proverbs', p: 'A proverb is a short saying that gives advice or a lesson, often from many cultures. “Don’t judge a book by its cover.”', diagram: '<div class="sg-energy-forms"><span>🗣️ Idiom</span><span>📜 Adage</span><span>💡 Proverb</span><span>🎯 Lesson</span><span>👵 Tradition</span></div>' },
+          { h: 'Find the lesson', p: 'Many sayings teach a lesson. Ask: what advice is hidden here? “Look before you leap” = think before acting.', tip: 'What’s the advice inside the saying?' },
+          { h: 'Use context', p: 'Context helps decode sayings. If a story says “she burned the candle at both ends,” the tired outcome shows it means overworking.', example: 'Surrounding events reveal the meaning.' },
+          { h: 'Why it matters', p: 'Sayings are everywhere in speech and writing. Knowing them sharpens reading and makes your own writing colorful.', tip: 'Idiom = phrase; adage/proverb = advice.' }
+        ] },
+        { kind: 'drill', subject: 'ELA', title: 'Mini Crossword (Sayings)', engine: 'crossword', cols: 5, rows: 5, blocks: [0,2,3,4,7,9,12,13,14,17,18,19,22,23,24], words: [
+          { num: 1, dir: 'across', clue: 'A phrase whose meaning differs from its words (5)', answer: 'IDIOM', cells: [5,6,7,8,9] },
+          { num: 1, dir: 'down', clue: 'A short traditional saying (5)', answer: 'ADAGE', cells: [1,6,11,16,21] },
+          { num: 2, dir: 'down', clue: '"_ your best" (2)', answer: 'DO', cells: [3,8] }
+        ] },
+        { kind: 'lesson', subject: 'Social Studies', title: 'Rights & Responsibilities of Citizens', blocks: [
+          { h: 'What is a citizen?', p: 'A citizen is an official member of a community or country. Citizens have rights (freedoms protected by law) and responsibilities (duties they should do).', example: 'US citizens have rights under the Constitution.' },
+          { h: 'Rights', p: 'Rights include freedom of speech, freedom of religion, and the right to vote. Rights are protected but not unlimited.', tip: 'Rights = freedoms protected by law.' },
+          { h: 'Responsibilities', p: 'Responsibilities include obeying laws, paying taxes, serving on a jury, and voting. They keep the community working.', example: 'Voting is both a right and a responsibility.' },
+          { h: 'Rights + responsibilities balance', p: 'Your rights end where others’ begin. Exercising rights responsibly keeps fairness for everyone.', diagram: '<div class="sg-energy-forms"><span>🗣️ Free speech</span><span>🗳️ Vote</span><span>⚖️ Obey laws</span><span>💰 Pay taxes</span><span>👥 Jury duty</span></div>' },
+          { h: 'Civic participation', p: 'Citizens can attend meetings, contact leaders, volunteer, and vote. Participation is how democracy stays strong.', tip: 'Participate = be a good citizen.' },
+          { h: 'Respect differences', p: 'Good citizens respect others’ rights and opinions even when disagreeing. Respect keeps peace.', example: 'Debate respectfully; don’t silence others.' },
+          { h: 'Why it matters', p: 'Rights and responsibilities make communities fair and free. Knowing them helps you be an active citizen.', tip: 'Rights + responsibilities = citizenship.' }
+        ] },
+        { kind: 'practice', subject: 'Social Studies', title: 'Flip the Facts (Citizenship)', mode: 'flip', cards: [
+          { front: 'Right', back: 'A freedom protected by law' }, { front: 'Responsibility', back: 'A duty citizens should do' },
+          { front: 'Vote', back: 'Both a right and a duty' }, { front: 'Jury duty', back: 'A citizen responsibility' }, { front: 'Free speech', back: 'A citizen right' }
+        ] },
+        { kind: 'activity', title: 'Sayings & Citizenship', stages: [
+          { type: 'quiz', subject: 'ELA · Sayings', story: '“Better safe than sorry” is best called an…', prompt: '"Better safe than sorry" is best called an…', options: ['Adage', 'Idiom', 'Decimal'], a: 0, okMsg: 'Adage — a wise saying! Badge 1.' },
+          { type: 'match', subject: 'ELA + SS · Terms', story: 'Match each term to its meaning.', pairs: [ ['Idiom','Non-literal phrase'], ['Proverb','Short advice saying'], ['Right','A protected freedom'], ['Responsibility','A citizen duty'] ] },
+          { type: 'input', subject: 'ELA · Idiom', story: '“It’s raining cats and ___” means raining hard.', prompt: '"It\'s raining cats and ___":', accept: ['dogs'], okMsg: 'dogs — idiom for heavy rain! Badge 3.' },
+          { type: 'dragSort', subject: 'SS · Be a good citizen', story: 'Order the steps of civic participation.', items: [ {text:'Learn about an issue', order:0}, {text:'Form an opinion', order:1}, {text:'Vote or contact leaders', order:2}, {text:'Respect the outcome', order:3} ] }
+        ] }
+      ]
+    } },
+
+    '5-2': { type: 'mission', content: {
+      title: 'Convert & Narrate',
+      intro: 'Convert the units and tell the tale. Learn measurement conversions/area/perimeter and narrative writing, then finish the story.',
+      winText: '🎉 Units converted and story finished — tale told!',
+      phases: [
+        { kind: 'lesson', subject: 'Math', title: 'Measurement Conversions, Area & Perimeter', blocks: [
+          { h: 'Convert units', p: 'To convert within one system, multiply or divide by the relationship. 1 m = 100 cm, so 3 m = 300 cm; 1 ft = 12 in, so 2 ft = 24 in.', example: 'Bigger→smaller unit: multiply.' },
+          { h: 'Know the relationships', p: 'Common facts: 1 km = 1000 m; 1 m = 100 cm; 1 hr = 60 min; 1 min = 60 s; 1 gal = 4 qt; 1 lb = 16 oz.', tip: 'Memorize the key conversions.' },
+          { h: 'Perimeter', p: 'Perimeter is the distance around a shape. For a rectangle: P = 2 × (length + width). Add all the sides.', example: 'Rectangle 5×3 → P = 2×(5+3) = 16.' },
+          { h: 'Area', p: 'Area is the space inside a shape. For a rectangle: A = length × width. It’s measured in square units (sq cm, sq ft).', diagram: '<div class="sg-flow"><span class="sg-flow-in">Rectangle</span><span class="sg-flow-arrow">→</span><span class="sg-flow-box">P = 2(L+W)</span><span class="sg-flow-arrow">+</span><span class="sg-flow-out">A = L×W</span></div>' },
+          { h: 'Units matter', p: 'Perimeter uses plain units (cm, m); area uses square units (sq cm, sq m). Mixing them is a common mistake.', tip: 'Perimeter = around; area = inside.' },
+          { h: 'Solve word problems', p: 'Read carefully: fence = perimeter; carpet = area. Pick the right measure, convert units if needed, then compute.', example: 'Fencing a garden → perimeter.' },
+          { h: 'Why it matters', p: 'Conversions, area, and perimeter are used in building, crafts, and design. They turn measurements into real plans.', tip: 'Convert with facts; P = around; A = inside.' }
+        ] },
+        { kind: 'drill', subject: 'Math', title: 'Fill the Conversion', engine: 'fillBlank', sentence: '1 m = * cm, so 2 m = * cm. A 4×3 rectangle has perimeter * and area * sq units.', blanks: ['100', '200', '14', '12'] },
+        { kind: 'lesson', subject: 'ELA', title: 'Narrative Writing with Dialogue', blocks: [
+          { h: 'What is narrative writing?', p: 'A narrative tells a story — real or imagined — with characters, a setting, and a sequence of events.', example: 'A short story about a day at the beach.' },
+          { h: 'Characters & setting', p: 'Establish who is in the story (characters) and where/when it happens (setting) early so readers can picture it.', tip: 'Who + where + when = the opening.' },
+          { h: 'Plot in order', p: 'Sequence events clearly: beginning, middle (problem), end (resolution). Use transition words to move time along.', example: 'First, then, suddenly, finally.' },
+          { h: 'Use dialogue', p: 'Dialogue shows what characters say, in quotation marks. “Watch out!” she shouted. It reveals character and moves the plot.', diagram: '<div class="sg-energy-forms"><span>“ ” Quotes</span><span>🗣️ Dialogue</span><span>😊 Feelings</span><span>⏳ Order</span><span>🎬 Show, don’t tell</span></div>' },
+          { h: 'Show feelings', p: 'Show emotions through actions and dialogue, not just telling. “He slammed the door” beats “He was angry.”', tip: 'Show, don’t just tell.' },
+          { h: 'Strong ending', p: 'End with a resolution or reflection. Wrap up the problem and leave the reader with a feeling or thought.', example: 'Resolve the problem; reflect on it.' },
+          { h: 'Why it matters', p: 'Narrative writing builds imagination and storytelling skill — used in fiction, memoirs, and even explanations.', tip: 'Characters, setting, plot, dialogue, ending.' }
+        ] },
+        { kind: 'practice', subject: 'ELA', title: 'Order the Story (Drag)', engine: 'scramble', words: ['The', 'hero', 'opened', 'the', 'old', 'map'] },
+        { kind: 'activity', title: 'Convert & Narrate', stages: [
+          { type: 'twoTruths', subject: 'Math · Measures', story: 'One statement is FALSE. Tap the lie to start the tale.', statements: [ {t:'Perimeter is the distance around a shape', a:true}, {t:'Area of a rectangle = length × width', a:true}, {t:'Area uses plain units like cm, not square units', a:false} ] },
+          { type: 'match', subject: 'Math · Terms', story: 'Match each term to its meaning.', pairs: [ ['Perimeter','Distance around'], ['Area','Space inside'], ['1 m','100 cm'], ['1 hr','60 min'] ] },
+          { type: 'input', subject: 'Math · Perimeter', story: 'A 5×3 rectangle: perimeter = ?  (2×(5+3)).', prompt: 'Perimeter of a 5×3 rectangle:', accept: ['16'], okMsg: '16 — around the shape! Plot point 3.' },
+          { type: 'dragSort', subject: 'ELA · Story order', story: 'Order the parts of a narrative.', items: [ {text:'Introduce characters & setting', order:0}, {text:'Build the problem', order:1}, {text:'Add dialogue and feelings', order:2}, {text:'Resolve and end', order:3} ] }
+        ] }
+      ]
+    } },
+
+    '5-3': { type: 'mission', content: {
+      title: 'Hazards & Freedom',
+      intro: 'Face the hazards and follow the road to freedom. Learn natural hazards/engineering and slavery/abolition/Underground Railroad, then light the lantern.',
+      winText: '🎉 Hazards engineered out and lantern lit — freedom road found!',
+      phases: [
+        { kind: 'lesson', subject: 'Science', title: 'Natural Hazards & Engineering', blocks: [
+          { h: 'What are natural hazards?', p: 'Natural hazards are events like floods, hurricanes, earthquakes, and wildfires that can harm people and places.', example: 'A hurricane brings wind, rain, and flooding.' },
+          { h: 'Types of hazards', p: 'Hazards include floods, hurricanes, earthquakes, volcanoes, tsunamis, and wildfires. Each affects regions differently.', tip: 'Different regions face different hazards.' },
+          { h: 'Engineering solutions', p: 'Engineers design solutions: levees and seawalls for floods, earthquake-resistant buildings, fire breaks for wildfires.', diagram: '<div class="sg-energy-forms"><span>🌊 Flood</span><span>🌀 Hurricane</span><span>🏚️ Quake</span><span>🔥 Wildfire</span><span>🛡️ Engineering</span></div>' },
+          { h: 'Design process', p: 'Engineers use a design process: identify the problem, brainstorm, build a model, test, improve. Testing reveals weaknesses.', tip: 'Problem → design → test → improve.' },
+          { h: 'Test & improve', p: 'A solution is tested under hazard conditions and improved. A levee is tested for how much water it holds back.', example: 'Fail in test → redesign → test again.' },
+          { h: 'Reduce harm', p: 'Good engineering reduces harm and saves lives: early-warning systems, strong buildings, safe evacuation routes.', tip: 'Engineering protects people.' },
+          { h: 'Why it matters', p: 'Understanding hazards and engineering helps communities prepare and survive. It saves lives and property.', tip: 'Hazards happen; engineering reduces harm.' }
+        ] },
+        { kind: 'drill', subject: 'Science', title: 'Sort the Hazards (Categorize)', engine: 'categorize', bins: ['Water hazard', 'Fire/heat hazard', 'Ground hazard'], items: [
+          { text: 'Flood', bin: 0 }, { text: 'Hurricane', bin: 0 }, { text: 'Wildfire', bin: 1 }, { text: 'Volcano', bin: 1 }, { text: 'Earthquake', bin: 2 }, { text: 'Tsunami', bin: 2 }
+        ] },
+        { kind: 'lesson', subject: 'Social Studies', title: 'Slavery, Abolition & the Underground Railroad', blocks: [
+          { h: 'Slavery in the US', p: 'For centuries, millions of Africans were enslaved in America, denied freedom and rights. Enslaved people resisted and sought freedom.', example: 'Enslaved people were forced to work without pay or freedom.' },
+          { h: 'Abolition', p: 'Abolitionists were people who fought to end slavery. They spoke, wrote, and organized against it in the North and South.', tip: 'Abolition = the movement to end slavery.' },
+          { h: 'The Underground Railroad', p: 'The Underground Railroad was a secret network of routes and safe houses that helped enslaved people escape to freedom in the North and Canada.', example: '“Conductors” guided people to freedom.' },
+          { h: 'Harriet Tubman', p: 'Harriet Tubman was a famous conductor who returned many times to guide others to freedom. She later lived in Auburn, New York.', diagram: '<div class="sg-energy-forms"><span>🚂 Underground RR</span><span>🕯️ Lantern</span><span>✊ Tubman</span><span>🆓 Freedom</span><span>🗽 NY & Canada</span></div>' },
+          { h: 'NY’s role', p: 'New York was a destination and route for freedom-seekers, with abolitionist communities. Tubman made her home in Auburn, NY.', tip: 'NY had strong abolitionist support.' },
+          { h: 'Risks & courage', p: 'Escaping and helping escape were dangerous and illegal. The courage of freedom-seekers and helpers was extraordinary.', example: 'Helpers risked prison; escapees risked capture.' },
+          { h: 'Why it matters', p: 'The fight against slavery and the Underground Railroad show the struggle for freedom that shaped US history.', tip: 'Slavery → abolition → Underground Railroad → freedom.' }
+        ] },
+        { kind: 'practice', subject: 'Social Studies', title: 'Freedom Timeline', mode: 'timeline', eras: ['Enslaved', 'Escape', 'Freedom'], events: [
+          { text: 'Millions are enslaved in the US', era: 0 }, { text: 'Abolitionists fight to end slavery', era: 0 },
+          { text: 'The Underground Railroad helps people flee', era: 1 }, { text: 'Freedom-seekers reach the North & Canada', era: 2 }
+        ] },
+        { kind: 'activity', title: 'Hazards & Freedom', stages: [
+          { type: 'quiz', subject: 'Science · Solutions', story: 'Which engineering solution helps with floods?', prompt: 'Which helps with floods?', options: ['Levee / seawall', 'Fire break', 'Lightning rod'], a: 0, okMsg: 'Levee holds back water! Lantern 1 lit.' },
+          { type: 'venn', subject: 'SS · People', story: 'Sort each trait into Enslaved people, Abolitionists, both, or neither.', left: 'Enslaved', right: 'Abolitionists', items: [ {text:'Were denied freedom', set:0}, {text:'Fought to end slavery', set:1}, {text:'Risked their safety for freedom', set:2}, {text:'Owned enslaved people', set:3} ] },
+          { type: 'input', subject: 'SS · Conductor', story: 'The famous conductor who lived in Auburn, NY: first name.', prompt: 'Famous conductor, first name:', accept: ['harriet'], okMsg: 'Harriet Tubman! Lantern 3 lit.' },
+          { type: 'dragSort', subject: 'Science · Design steps', story: 'Order the engineering design steps.', items: [ {text:'Identify the hazard problem', order:0}, {text:'Brainstorm a solution', order:1}, {text:'Build and test a model', order:2}, {text:'Improve the design', order:3} ] }
+        ] }
+      ]
+    } },
 
     '6-0': { type: 'dragSort', content: { items: [ {text:'Place the protractor center on the vertex', order:0}, {text:'Line up one ray with 0°', order:1}, {text:'Read where the other ray points', order:2}, {text:'Record the degrees', order:3} ] } },
     '6-1': { type: 'match', content: { pairs: [ ['Primary source','Firsthand account'], ['Secondary source','Report by others'], ['Diary','A primary source'], ['Stanton','Women’s rights leader'], ['Anthony','Fought for voting rights'] ] } },
@@ -1661,6 +1812,45 @@
     renderQ();
   }
 
+  // 8k. CROSSWORD (mini grid; type each clue's answer, letters fill the grid)
+  function renderCrossword(stage, c, ctx) {
+    var cols = c.cols, rows = c.rows, words = c.words;
+    var blocked = {}; c.blocks.forEach(function (i) { blocked[i] = true; });
+    var letter = {}; words.forEach(function (w) { w.answer.split('').forEach(function (ch, k) { letter[w.cells[k]] = ch; }); });
+    var solved = 0, wrap = el('div', 'sg-cw');
+    var grid = el('div', 'sg-cw-grid'); grid.style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)';
+    var cellEls = [];
+    for (var i = 0; i < cols * rows; i++) {
+      (function (i) {
+        if (blocked[i]) { var b = el('div', 'sg-cw-blk'); grid.appendChild(b); cellEls.push(null); return; }
+        var cell = el('div', 'sg-cw-cell'); cellEls.push(cell); grid.appendChild(cell);
+      })(i);
+    }
+    wrap.appendChild(grid);
+    var clues = el('div', 'sg-cw-clues');
+    var across = el('div', 'sg-cw-col'), down = el('div', 'sg-cw-col');
+    across.appendChild(el('div', 'sg-cw-head', 'Across')); down.appendChild(el('div', 'sg-cw-head', 'Down'));
+    words.forEach(function (w) {
+      var row = el('div', 'sg-cw-clue');
+      row.appendChild(el('span', 'sg-cw-num', w.num + (w.dir === 'across' ? 'A' : 'D')));
+      row.appendChild(el('span', 'sg-cw-txt', esc(w.clue)));
+      var inp = el('input', 'sg-cw-inp'); inp.setAttribute('autocomplete', 'off'); inp.size = Math.max(3, w.answer.length);
+      var ok = el('span', 'sg-cw-ok');
+      inp.addEventListener('input', function () {
+        var v = inp.value.toUpperCase().replace(/[^A-Z]/g, '');
+        if (v === w.answer.toUpperCase()) {
+          inp.disabled = true; inp.classList.add('done'); ok.textContent = '✓'; sound.play('correct'); SG.praise.show('correct');
+          w.cells.forEach(function (ci, k) { if (cellEls[ci]) { cellEls[ci].textContent = w.answer[k]; cellEls[ci].classList.add('filled'); } });
+          solved++; ctx.setRing(ringPctOf(solved, words.length));
+          if (solved === words.length) ctx.onWin();
+        }
+      });
+      row.appendChild(inp); row.appendChild(ok);
+      (w.dir === 'across' ? across : down).appendChild(row);
+    });
+    clues.appendChild(across); clues.appendChild(down); wrap.appendChild(clues); stage.appendChild(wrap);
+  }
+
   // 8. QUIZ (multiple choice; covers T/F with 2 options)
   function renderQuiz(stage, c, ctx) {
     var qs = c.questions, i = 0, score = 0, answered = false;
@@ -2002,7 +2192,7 @@
   }
   function labelForPrev(phases, pi) { return pi > 0 ? (phases[pi - 1].title || phases[pi - 1].kind) : 'start'; }
 
-  var RENDERERS = { scratch: renderScratch, wordSearch: renderWordSearch, match: renderMatch, dragSort: renderDragSort, flip: renderFlip, hangman: renderHangman, fillBlank: renderFillBlank, quizMC: renderQuiz, trueFalse: renderTrueFalse, scramble: renderScramble, timeline: renderTimeline, categorize: renderCategorize, twoTruths: renderTwoTruths, labelDiagram: renderLabelDiagram, venn: renderVenn, numberLine: renderNumberLine, higherLower: renderHigherLower, fractionBar: renderFractionBar, mission: renderMission };
+  var RENDERERS = { scratch: renderScratch, wordSearch: renderWordSearch, match: renderMatch, dragSort: renderDragSort, flip: renderFlip, hangman: renderHangman, fillBlank: renderFillBlank, quizMC: renderQuiz, trueFalse: renderTrueFalse, scramble: renderScramble, timeline: renderTimeline, categorize: renderCategorize, twoTruths: renderTwoTruths, labelDiagram: renderLabelDiagram, venn: renderVenn, numberLine: renderNumberLine, higherLower: renderHigherLower, fractionBar: renderFractionBar, crossword: renderCrossword, mission: renderMission };
 
   /* ---------- ripple ---------- */
   function attachRipple(btn) {

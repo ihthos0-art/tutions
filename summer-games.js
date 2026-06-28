@@ -86,13 +86,40 @@
   SG.GAMES = {
     '0-0': { type: 'mission', content: {
       title: 'Power Up the City',
-      intro: 'A blackout hit Brooklyn! Restore power block by block. Solve each challenge to advance the story.',
+      intro: 'A blackout hit Brooklyn! Learn the skills, then restore power block by block.',
       winText: '🎉 The city is lit! You powered through Day 1.',
-      stages: [
-        { type: 'quiz', subject: 'Math · Place value', story: 'The first meter reads 342,891. Find the value of the digit 4 to unlock Block 1.', prompt: 'What is the value of digit 4 in 342,891?', options: ['4,000', '40,000', '400,000'], a: 1, okMsg: '40,000 — the ten-thousands place. Block 1 online!' },
-        { type: 'seek', subject: 'Science · Energy forms', story: 'Block 2 needs energy sources. Spot every form of energy in the yard.', prompt: 'Tap every item that is a form of energy:', items: [ {label:'💡 Light'}, {label:'🔥 Heat'}, {label:'🔊 Sound'}, {label:'🪨 Rock'}, {label:'💧 Water'} ], correct: [0,1,2], okMsg: 'Light, heat, sound — all energy! Block 2 online!' },
-        { type: 'input', subject: 'Math · Rounding', story: 'Block 3\'s meter shows 742,318. Round it to the nearest thousand to calibrate.', prompt: 'Round 742,318 to the nearest thousand (type the number):', accept: ['742000', '742,000'], okMsg: '742,000 — calibrated! Block 3 online!' },
-        { type: 'quiz', subject: 'Science · Energy transfer', story: 'Final block. A lamp is plugged in. What happens to the electrical energy?', prompt: 'A lamp changes electrical energy into ___?', options: ['Light and heat', 'Nothing — it vanishes', 'Food'], a: 0, okMsg: 'Electrical → light + heat. Whole city online!' }
+      phases: [
+        { kind: 'lesson', subject: 'Math', title: 'Place Value to 1,000,000', blocks: [
+          { h: 'What is place value?', p: 'Every digit in a number has a value based on its position. The farther left a digit sits, the bigger its value — each place is 10× the one to its right.', example: 'In 342,891: the 3 means 300,000; the 4 means 40,000; the 2 means 2,000; the 8 means 800; the 9 means 90; the 1 means 1.' },
+          { h: 'Read it in groups of three', p: 'Read big numbers in groups of three from the right: ones, thousands, millions. Each group has ones, tens, hundreds.', example: '742,318 → “seven hundred forty-two thousand, three hundred eighteen.” The comma marks the thousands group.', tip: 'Say the group name (thousand / million) at each comma — never at the last group.' },
+          { h: 'Compare and round', p: 'Compare digit by digit from the left. To round: look at the digit to the right of your target place — 5 or more rounds up, less rounds down.', example: '845,210 vs 845,199 → same until the tens: 1 ten vs 9 tens, so 845,210 is bigger. Round 742,318 to the nearest thousand → 742,000 (the hundreds digit 3 is less than 5).' }
+        ] },
+        { kind: 'drill', subject: 'Math', title: 'Place Value Drill', questions: [
+          { prompt: 'What is the value of the digit 4 in 342,891?', options: ['4,000', '40,000', '400,000'], a: 1, okMsg: '40,000 — the ten-thousands place.' },
+          { prompt: 'Which digit is in the hundred-thousands place in 742,318?', options: ['7', '4', '2'], a: 0, okMsg: '7 → 700,000.' },
+          { prompt: 'Round 742,318 to the nearest thousand.', options: ['742,000', '740,000', '743,000'], a: 0, okMsg: '742,000 — the 3 hundreds rounds down.' },
+          { prompt: 'Compare: 845,210 ___ 845,199', options: ['>', '<', '='], a: 0, okMsg: 'Greater — bigger tens digit.' },
+          { prompt: 'In 912,004, the 9 is in which place?', options: ['Hundred-thousands', 'Ten-thousands', 'Millions'], a: 0, okMsg: 'Hundred-thousands — 900,000.' },
+          { prompt: 'Write: three hundred twenty-four thousand, five.', options: ['324,005', '324,500', '32,405'], a: 0, okMsg: '324,005 — the “five” sits in the ones.' }
+        ] },
+        { kind: 'lesson', subject: 'Science', title: 'Forms of Energy', blocks: [
+          { h: 'Energy makes things happen', p: 'Energy is what makes objects move, glow, heat up, or make sound. It cannot be created or destroyed — it only changes form.', example: 'A toaster changes electrical energy into heat. A lamp changes electrical energy into light and heat.' },
+          { h: 'The main forms', p: 'Sound (what we hear), light (what we see), heat (thermal), electrical (from outlets and batteries), and motion (movement).', tip: 'Watch for clues: glows = light, hums = sound, warm = heat, plugged in = electrical, moving = motion.' },
+          { h: 'Energy transfers', p: 'Energy moves and changes. A rolling ball passes motion to whatever it hits. A flashlight turns stored energy into light you can use.', example: 'A fan changes electrical energy into motion (spinning blades) + a little sound + heat.' }
+        ] },
+        { kind: 'practice', subject: 'Science', title: 'Energy Recap', mode: 'flash', items: [
+          { front: '🔊 Sound', back: 'A form of energy we hear.' },
+          { front: '💡 Light', back: 'Energy we see; travels in straight lines.' },
+          { front: '🔥 Heat', back: 'Thermal energy; moves warm → cool.' },
+          { front: '⚡ Electrical', back: 'Energy from outlets and batteries.' },
+          { front: '🔄 Energy transfer', back: 'Energy changes from one form into another.' }
+        ] },
+        { kind: 'activity', title: 'Power Up the City', stages: [
+          { type: 'quiz', subject: 'Math · Place value', story: 'The first meter reads 342,891. Find the value of the digit 4 to unlock Block 1.', prompt: 'What is the value of digit 4 in 342,891?', options: ['4,000', '40,000', '400,000'], a: 1, okMsg: '40,000 — ten-thousands. Block 1 online!' },
+          { type: 'seek', subject: 'Science · Energy forms', story: 'Block 2 needs energy sources. Spot every form of energy in the yard.', prompt: 'Tap every item that is a form of energy:', items: [ {label:'💡 Light'}, {label:'🔥 Heat'}, {label:'🔊 Sound'}, {label:'🪨 Rock'}, {label:'💧 Water'} ], correct: [0,1,2], okMsg: 'Light, heat, sound — all energy! Block 2 online!' },
+          { type: 'input', subject: 'Math · Rounding', story: 'Block 3’s meter shows 742,318. Round it to the nearest thousand to calibrate.', prompt: 'Round 742,318 to the nearest thousand (type the number):', accept: ['742000', '742,000'], okMsg: '742,000 — calibrated! Block 3 online!' },
+          { type: 'quiz', subject: 'Science · Energy transfer', story: 'Final block. A lamp is plugged in. What happens to the electrical energy?', prompt: 'A lamp changes electrical energy into ___?', options: ['Light and heat', 'Nothing — it vanishes', 'Food'], a: 0, okMsg: 'Electrical → light + heat. Whole city online!' }
+        ] }
       ]
     } },
     '0-1': { type: 'mission', content: {
@@ -322,10 +349,27 @@
       sound.play('correct');
       setTimeout(function () { SG.praise.show('correct'); SG.mascot.setMood('happy'); }, 90);
       setTimeout(function () { SG.confetti({ count: 100 }); }, 180);
+      // unlock the next day's card after the celebration
+      setTimeout(function () { unlockNext(dayKey); }, 1400);
     } else {
       // replay win — light feedback only
       sound.play('correct'); SG.praise.show('correct'); if (ringSvg) SG.ring.set(ringSvg, 100);
     }
+  }
+
+  function unlockNext(dayKey) {
+    var parts = dayKey.split('-'), w = +parts[0], d = +parts[1];
+    var nw = w, nd = d + 1;
+    if (nd >= (SG.SCHEDULE[w] || []).length) { nw = w + 1; nd = 0; }
+    if (nw >= SG.SCHEDULE.length) return;
+    var nextKey = nw + '-' + nd;
+    var old = document.querySelector(".day-game-card[data-day='" + nextKey + "']");
+    if (!old) return;
+    var fresh = buildDayCard(nw, nd);
+    old.parentNode.replaceChild(fresh, old);
+    revealObserve(fresh.parentNode);
+    // gentle nudge: scroll the newly unlocked card into view
+    setTimeout(function () { fresh.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 120);
   }
 
   /* ============================================================
@@ -601,42 +645,46 @@
    * beat, and advances the character. All gates done = day won.
    * Gate drill types: 'quiz' (MC), 'input' (type answer), 'seek' (tap all correct).
    */
+  /* ---------- MISSION engine (phase-runner: lesson → drill → practice → activity) ----------
+   * content.phases = [ {kind, subject, title, ...}, ... ]
+   *   kind 'lesson'   : { blocks:[ {h, p, example, tip}... ] }
+   *   kind 'drill'    : { questions:[ {prompt, options, a, okMsg}... ] }   (5-6, one at a time)
+   *   kind 'practice' : { mode:'flash'|'quiz', items:[ {front,back} | {prompt,options,a} ] }
+   *   kind 'activity' : { stages:[ {type, subject, story, prompt, ...}... ] }  (quiz/input/seek gates)
+   */
   function renderMission(stage, c, ctx) {
-    var gates = c.stages, gi = 0, solved = 0;
+    // compat: old entries used { stages:[...] } — wrap as a single activity phase
+    var phases = c.phases || (c.stages ? [{ kind: 'activity', title: c.title, stages: c.stages }] : []);
+    var pi = 0;
     var wrap = el('div', 'sg-mission');
     var head = el('div', 'sg-mis-head');
     head.innerHTML = '<div class="sg-mis-title">🗺️ ' + esc(c.title) + '</div><div class="sg-mis-intro">' + esc(c.intro) + '</div>';
     wrap.appendChild(head);
 
-    // city block track — one block per gate
-    var track = el('div', 'sg-mis-track');
-    gates.forEach(function (g, i) {
-      var b = el('div', 'sg-mis-block ' + (i === 0 ? 'cur' : 'lock'));
-      b.innerHTML = '<span class="blk-ic">🔒</span><span class="blk-idx">' + (i + 1) + '</span>';
+    // phase track
+    var track = el('div', 'sg-phase-track');
+    phases.forEach(function (ph, i) {
+      var b = el('div', 'sg-phase-dot ' + (i === 0 ? 'cur' : 'lock'));
+      b.innerHTML = '<span class="phd-ic">' + phaseIcon(ph.kind) + '</span><span class="phd-lbl">' + esc(ph.subject || '') + '</span>';
       track.appendChild(b);
     });
     wrap.appendChild(track);
 
-    var story = el('div', 'sg-mis-story'); wrap.appendChild(story);
     var scene = el('div', 'sg-mis-scene'); wrap.appendChild(scene);
     var feedback = el('div', 'sg-mis-fb'); wrap.appendChild(feedback);
 
-    function setBlockState(i, state) {
+    function setPhaseState(i, state) {
       var b = track.children[i];
-      b.className = 'sg-mis-block ' + state;
-      b.querySelector('.blk-ic').textContent = state === 'done' ? '⚡' : (state === 'cur' ? '📍' : '🔒');
+      b.className = 'sg-phase-dot ' + state;
+      b.querySelector('.phd-ic').textContent = state === 'done' ? '✓' : phaseIcon(phases[i].kind);
     }
-
-    function showStory() {
-      var g = gates[gi];
-      story.innerHTML = '<span class="sg-mis-subj">' + esc(g.subject) + '</span> ' + esc(g.story);
-    }
-
     function fbOk(msg) { feedback.className = 'sg-mis-fb ok'; feedback.textContent = '✅ ' + msg; }
     function fbNo(msg) { feedback.className = 'sg-mis-fb no'; feedback.textContent = '🌱 ' + msg; }
+    function fbClear() { feedback.textContent = ''; feedback.className = 'sg-mis-fb'; }
+    function ringOf(part, total) { ctx.setRing(total ? Math.round((part / total) * 100) : 0); }
 
-    // ---- gate renderers ----
-    function gateQuiz(g) {
+    // ---------- reusable gate renderers (render into `host`, call onDone) ----------
+    function quizInto(host, g, onDone) {
       var q = el('div', 'sg-mis-q', esc(g.prompt));
       var opts = el('div', 'sg-mis-opts');
       var answered = false;
@@ -645,42 +693,47 @@
         b.addEventListener('click', function () {
           if (answered) return; answered = true;
           var ok = idx === g.a;
-          if (ok) { b.classList.add('correct'); b.querySelector('.ic').textContent = '✓'; sound.play('correct'); fbOk(g.okMsg || 'Nice!'); advance(); }
-          else { b.classList.add('incorrect'); b.querySelector('.ic').textContent = '✗'; opts.children[g.a].classList.add('correct'); opts.children[g.a].querySelector('.ic').textContent = '✓'; sound.play('wrong'); SG.mascot.setMood('think'); fbNo('Almost — look again.'); }
+          if (ok) { b.classList.add('correct'); b.querySelector('.ic').textContent = '✓'; sound.play('correct'); SG.praise.show('correct'); }
+          else { b.classList.add('incorrect'); b.querySelector('.ic').textContent = '✗'; opts.children[g.a].classList.add('correct'); opts.children[g.a].querySelector('.ic').textContent = '✓'; sound.play('wrong'); SG.mascot.setMood('think'); }
           Array.prototype.forEach.call(opts.children, function (x) { x.classList.add('disabled'); });
+          fbOk(ok ? (g.okMsg || 'Correct!') : 'Answer shown — tap Next.');
+          var next = el('button', 'sg-btn sg-next-btn', 'Next ›');
+          next.addEventListener('click', function () { sound.play('click'); onDone(ok); });
+          host.appendChild(next);
         });
         opts.appendChild(b);
       });
-      scene.innerHTML = ''; scene.appendChild(q); scene.appendChild(opts);
+      host.appendChild(q); host.appendChild(opts);
     }
 
-    function gateInput(g) {
+    function inputInto(host, g, onDone) {
       var q = el('div', 'sg-mis-q', esc(g.prompt));
       var row = el('div', 'sg-mis-input-row');
       var inp = el('input', 'sg-mis-input'); inp.type = 'text'; inp.setAttribute('autocomplete', 'off'); inp.placeholder = 'Type your answer…';
       var btn = el('button', 'sg-btn', 'Check ▸');
       row.appendChild(inp); row.appendChild(btn);
-      scene.innerHTML = ''; scene.appendChild(q); scene.appendChild(row);
-      inp.focus();
-      var tried = false;
+      host.appendChild(q); host.appendChild(row); inp.focus();
       function check() {
         var v = String(inp.value).trim().toLowerCase().replace(/,/g, '');
         var accept = (g.accept || []).map(function (a) { return String(a).toLowerCase().replace(/,/g, ''); });
         if (!v) return;
-        var ok = accept.indexOf(v) !== -1;
-        if (ok) { sound.play('correct'); fbOk(g.okMsg || 'Got it!'); advance(); }
-        else { tried = true; sound.play('wrong'); SG.mascot.setMood('think'); fbNo('Not quite — try again 💪'); inp.classList.add('shake'); setTimeout(function () { inp.classList.remove('shake'); }, 350); }
+        if (accept.indexOf(v) !== -1) {
+          sound.play('correct'); SG.praise.show('correct'); fbOk(g.okMsg || 'Got it!');
+          inp.disabled = true; btn.disabled = true;
+          var next = el('button', 'sg-btn sg-next-btn', 'Next ›');
+          next.addEventListener('click', function () { sound.play('click'); onDone(true); });
+          host.appendChild(next);
+        } else { sound.play('wrong'); SG.mascot.setMood('think'); fbNo('Not quite — try again 💪'); inp.classList.add('shake'); setTimeout(function () { inp.classList.remove('shake'); }, 350); }
       }
       btn.addEventListener('click', check);
       inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') check(); });
     }
 
-    function gateSeek(g) {
-      // tap every correct item; wrong taps cost. finish when all correct found.
+    function seekInto(host, g, onDone) {
       var q = el('div', 'sg-mis-q', esc(g.prompt));
       var grid = el('div', 'sg-mis-seek');
       var found = {};
-      scene.innerHTML = ''; scene.appendChild(q); scene.appendChild(grid);
+      host.appendChild(q); host.appendChild(grid);
       g.items.forEach(function (it, idx) {
         var b = el('button', 'sg-mis-tile'); b.innerHTML = '<span class="tile-ic">' + esc(it.label) + '</span>';
         var isCorrect = g.correct.indexOf(idx) !== -1;
@@ -688,42 +741,145 @@
           if (b.classList.contains('correct') || b.classList.contains('wrong-tap')) return;
           if (isCorrect) {
             b.classList.add('correct'); found[idx] = true; sound.play('correct');
-            if (Object.keys(found).length === g.correct.length) { fbOk(g.okMsg || 'Found them all!'); advance(); }
-            else { fbOk('Keep going — ' + (g.correct.length - Object.keys(found).length) + ' more!'); ctx.setRing(ringPctOf(Object.keys(found).length + solved, gates.length)); }
-          } else {
-            b.classList.add('wrong-tap'); sound.play('wrong'); SG.mascot.setMood('think'); fbNo('Not energy — try another.');
-          }
+            if (Object.keys(found).length === g.correct.length) { fbOk(g.okMsg || 'Found them all!'); var next = el('button', 'sg-btn sg-next-btn', 'Next ›'); next.addEventListener('click', function () { sound.play('click'); onDone(true); }); host.appendChild(next); }
+            else { fbOk('Keep going — ' + (g.correct.length - Object.keys(found).length) + ' more!'); }
+          } else { b.classList.add('wrong-tap'); sound.play('wrong'); SG.mascot.setMood('think'); fbNo('Not one — try another.'); }
         });
         grid.appendChild(b);
       });
     }
 
-    function renderGate() {
-      var g = gates[gi];
-      feedback.textContent = ''; feedback.className = 'sg-mis-fb';
-      showStory();
-      if (g.type === 'quiz') gateQuiz(g);
-      else if (g.type === 'input') gateInput(g);
-      else if (g.type === 'seek') gateSeek(g);
-      ctx.setRing(ringPctOf(solved, gates.length));
+    // ---------- phase renderers ----------
+    function renderLesson(ph) {
+      var card = el('div', 'sg-lesson');
+      card.innerHTML = '<div class="sg-les-subj">' + esc(ph.subject) + '</div><h3 class="sg-les-title">' + esc(ph.title) + '</h3>';
+      (ph.blocks || []).forEach(function (bk) {
+        var b = el('div', 'sg-les-block');
+        if (bk.h) b.appendChild(el('div', 'sg-les-h', esc(bk.h)));
+        if (bk.p) b.appendChild(el('p', 'sg-les-p', esc(bk.p)));
+        if (bk.example) { var ex = el('div', 'sg-les-example'); ex.innerHTML = '💡 <b>Example:</b> ' + esc(bk.example); b.appendChild(ex); }
+        if (bk.tip) { var tp = el('div', 'sg-les-tip'); tp.innerHTML = '✅ <b>Tip:</b> ' + esc(bk.tip); b.appendChild(tp); }
+        card.appendChild(b);
+      });
+      var btns = el('div', 'sg-les-btns');
+      var skip = el('button', 'sg-btn sg-skip-btn', 'Skip lesson ▸');
+      var go = el('button', 'sg-btn sg-go-btn', 'Start ' + labelForNext(phases, pi) + ' ▸');
+      skip.addEventListener('click', function () { sound.play('click'); nextPhase(false); });
+      go.addEventListener('click', function () { sound.play('click'); nextPhase(false); });
+      btns.appendChild(skip); btns.appendChild(go);
+      card.appendChild(btns);
+      scene.innerHTML = ''; scene.appendChild(card); fbClear();
     }
 
-    function advance() {
-      setBlockState(gi, 'done'); solved++; gi++;
-      if (gi >= gates.length) {
-        scene.innerHTML = '<div class="sg-mis-win">' + (c.winText || '🎉 Mission complete! Day done.') + '</div>';
-        story.textContent = ''; feedback.textContent = ''; ctx.setRing(100); ctx.onWin();
-        return;
+    function renderDrill(ph) {
+      var qs = ph.questions, qi = 0, score = 0;
+      var bar = el('div', 'sg-drill-bar', 'Question 1 of ' + qs.length + ' · Score 0');
+      var host = el('div', 'sg-drill-host');
+      scene.innerHTML = ''; scene.appendChild(el('div', 'sg-phase-label', esc(ph.subject) + ' · Drill — ' + esc(ph.title))); scene.appendChild(bar); scene.appendChild(host);
+      function renderQ() {
+        bar.textContent = 'Question ' + (qi + 1) + ' of ' + qs.length + ' · Score ' + score;
+        host.innerHTML = '';
+        quizInto(host, qs[qi], function (ok) { if (ok) score++; qi++; if (qi < qs.length) renderQ(); else drillDone(); });
+        ringOf(qi, qs.length);
       }
-      setBlockState(gi, 'cur');
-      // brief beat, then next gate
-      setTimeout(function () { sound.play('click'); renderGate(); }, 480);
+      function drillDone() {
+        ringOf(qi, qs.length);
+        host.innerHTML = '<div class="sg-drill-done">Drill done! You scored ' + score + ' / ' + qs.length + ' 🎉</div>';
+        var next = el('button', 'sg-btn sg-go-btn', 'On to ' + labelForNext(phases, pi) + ' ▸');
+        next.addEventListener('click', function () { sound.play('click'); nextPhase(false); });
+        host.appendChild(next);
+        if (score === qs.length) { SG.mascot.setMood('happy'); SG.confetti({ count: 60 }); }
+      }
+      renderQ();
     }
 
-    setBlockState(0, 'cur');
-    renderGate();
-    wrap.appendChild(scene); // re-append safe (no-op if already child)
+    function renderPractice(ph) {
+      var items = ph.items, ii = 0;
+      scene.innerHTML = '';
+      scene.appendChild(el('div', 'sg-phase-label', esc(ph.subject) + ' · Recap — ' + esc(ph.title)));
+      var host = el('div', 'sg-practice-host'); scene.appendChild(host);
+      if (ph.mode === 'flash') {
+        function showCard() {
+          var card = el('div', 'sg-flashcard');
+          card.innerHTML = '<div class="sg-fc-face sg-fc-front">' + esc(items[ii].front) + '</div><div class="sg-fc-face sg-fc-back">' + esc(items[ii].back) + '</div>';
+          card.addEventListener('click', function () { card.classList.toggle('flipped'); sound.play('click'); });
+          host.innerHTML = ''; host.appendChild(card);
+          var cnt = el('div', 'sg-flash-ctrl');
+          var prev = el('button', 'sg-btn sg-mini', '‹ Prev'); prev.disabled = ii === 0;
+          var prog = el('span', 'sg-flash-prog', (ii + 1) + ' / ' + items.length);
+          var nextB = el('button', 'sg-btn sg-mini', ii === items.length - 1 ? 'Done ▸' : 'Next ›');
+          prev.addEventListener('click', function () { if (ii > 0) { ii--; showCard(); } });
+          nextB.addEventListener('click', function () { if (ii < items.length - 1) { ii++; showCard(); } else { sound.play('correct'); practiceDone(); } });
+          cnt.appendChild(prev); cnt.appendChild(prog); cnt.appendChild(nextB);
+          host.appendChild(cnt);
+          ringOf(ii, items.length);
+        }
+        showCard();
+      } else { // quiz recap
+        var qi = 0, score = 0;
+        function showQ() {
+          host.innerHTML = '';
+          quizInto(host, items[qi], function (ok) { if (ok) score++; qi++; if (qi < items.length) showQ(); else { host.innerHTML = '<div class="sg-drill-done">Recap done! ' + score + ' / ' + items.length + ' 🎉</div>'; var n = el('button', 'sg-btn sg-go-btn', 'On to ' + labelForNext(phases, pi) + ' ▸'); n.addEventListener('click', function () { sound.play('click'); nextPhase(false); }); host.appendChild(n); practiceDone(); } });
+          ringOf(qi, items.length);
+        }
+        showQ();
+      }
+      function practiceDone() { ringOf(1, 1); if (!host.querySelector('.sg-go-btn')) { var n = el('button', 'sg-btn sg-go-btn', 'On to ' + labelForNext(phases, pi) + ' ▸'); n.addEventListener('click', function () { sound.play('click'); nextPhase(false); }); host.appendChild(n); } }
+    }
+
+    function renderActivity(ph) {
+      var gates = ph.stages, gi = 0, solved = 0;
+      var sub = el('div', 'sg-mis-story');
+      var host = el('div', 'sg-act-host');
+      var gtrack = el('div', 'sg-mis-track');
+      gates.forEach(function (g, i) {
+        var b = el('div', 'sg-mis-block ' + (i === 0 ? 'cur' : 'lock'));
+        b.innerHTML = '<span class="blk-ic">' + (i === 0 ? '📍' : '🔒') + '</span><span class="blk-idx">' + (i + 1) + '</span>';
+        gtrack.appendChild(b);
+      });
+      scene.innerHTML = '';
+      scene.appendChild(el('div', 'sg-phase-label', '🎯 Activity — ' + esc(ph.title || c.title)));
+      scene.appendChild(gtrack); scene.appendChild(sub); scene.appendChild(host);
+      function setBlockState(i, state) { var b = gtrack.children[i]; b.className = 'sg-mis-block ' + state; b.querySelector('.blk-ic').textContent = state === 'done' ? '⚡' : (state === 'cur' ? '📍' : '🔒'); }
+      function showStory() { var g = gates[gi]; sub.innerHTML = '<span class="sg-mis-subj">' + esc(g.subject) + '</span> ' + esc(g.story); }
+      function renderGate() {
+        var g = gates[gi]; fbClear(); showStory(); host.innerHTML = '';
+        if (g.type === 'quiz') quizInto(host, g, gateDone);
+        else if (g.type === 'input') inputInto(host, g, gateDone);
+        else if (g.type === 'seek') seekInto(host, g, gateDone);
+        ringOf(solved, gates.length);
+      }
+      function gateDone() {
+        setBlockState(gi, 'done'); solved++; gi++;
+        if (gi >= gates.length) { host.innerHTML = '<div class="sg-mis-win">' + (c.winText || '🎉 Mission complete! Day done.') + '</div>'; sub.textContent = ''; ringOf(1, 1); ctx.onWin(); return; }
+        setBlockState(gi, 'cur'); setTimeout(function () { sound.play('click'); renderGate(); }, 420);
+      }
+      renderGate();
+    }
+
+    // ---------- phase driver ----------
+    function renderPhase() {
+      var ph = phases[pi];
+      if (ph.kind === 'lesson') renderLesson(ph);
+      else if (ph.kind === 'drill') renderDrill(ph);
+      else if (ph.kind === 'practice') renderPractice(ph);
+      else if (ph.kind === 'activity') renderActivity(ph);
+    }
+    function nextPhase() {
+      if (pi > 0) setPhaseState(pi - 1, 'done');
+      if (pi >= phases.length - 1) return; // safety
+      pi++; setPhaseState(pi, 'cur'); renderPhase();
+    }
+
+    setPhaseState(0, 'cur');
+    renderPhase();
     stage.appendChild(wrap);
+  }
+
+  function phaseIcon(kind) { return { lesson: '📖', drill: '✏️', practice: '🔄', activity: '🎯' }[kind] || '•'; }
+  function labelForNext(phases, pi) {
+    for (var j = pi + 1; j < phases.length; j++) { if (phases[j].kind === 'activity') return 'the activity'; return phases[j].title || phases[j].kind; }
+    return 'next';
   }
 
   var RENDERERS = { scratch: renderScratch, wordSearch: renderWordSearch, match: renderMatch, dragSort: renderDragSort, flip: renderFlip, hangman: renderHangman, fillBlank: renderFillBlank, quizMC: renderQuiz, mission: renderMission };
@@ -752,10 +908,20 @@
   }
   function subjectClass(name) { return { Math: 'math', ELA: 'ela', Science: 'science', 'Social Studies': 'social' }[name] || 'math'; }
 
+  // a day is unlocked if every earlier day (linear order across weeks) is done
+  function priorDone(w, d) {
+    for (var wi = 0; wi <= w; wi++) {
+      var maxD = (wi === w) ? d : (SG.SCHEDULE[wi].length);
+      for (var di = 0; di < maxD; di++) { if (!done[wi + '-' + di]) return false; }
+    }
+    return true;
+  }
+
   function buildDayCard(w, d) {
     var dayKey = w + '-' + d, day = SG.SCHEDULE[w][d], g = SG.GAMES[dayKey];
     var isDone = !!done[dayKey];
-    var card = el('div', 'day-game-card sg-reveal ' + pairClass(day) + (isDone ? ' done' : ''));
+    var unlocked = isDone || priorDone(w, d);
+    var card = el('div', 'day-game-card sg-reveal ' + pairClass(day) + (isDone ? ' done' : '') + (unlocked ? '' : ' locked'));
     card.dataset.day = dayKey; card.style.setProperty('--i', d);
     var ribbon = el('div', 'day-ribbon'); card.appendChild(ribbon);
 
@@ -771,8 +937,16 @@
     card.appendChild(tags);
 
     var topics = el('div', 'game-topics');
-    day.forEach(function (s) { topics.appendChild(el('div', 'gt', '<b>' + esc(s[0]) + '</b>' + esc(s[1]))); });
+    day.forEach(function (s) { topics.appendChild(el('div', 'gt', '<b>' + esc(s[0]) + '</b> ' + esc(s[1]))); });
     card.appendChild(topics);
+
+    if (!unlocked) {
+      var prevDay = d === 0 ? ('Week ' + w + ', Day 4') : ('Day ' + d);
+      var ov = el('div', 'day-lock-overlay');
+      ov.innerHTML = '<div class="lock-ic">🔒</div><div class="lock-title">Locked</div><div class="lock-msg">Finish ' + (d === 0 ? ('Week ' + w + ', Day 4') : ('Day ' + d)) + ' to unlock Day ' + (d + 1) + '.</div>';
+      card.appendChild(ov);
+      return card;
+    }
 
     var title = el('div', 'game-title', '🎯 Activity: ' + activityName(g.type));
     card.appendChild(title);

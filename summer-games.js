@@ -1194,10 +1194,165 @@
       ]
     } },
 
-    '7-0': { type: 'quizMC', content: { questions: [ {q:'First step in a multi-step problem:', options:['Pick the answer','Plan the steps','Guess'], a:1}, {q:'A prototype is...', options:['The final product','A first test model','A drawing only'], a:1}, {q:'After testing, you should...', options:['Stop','Improve the design','Quit'], a:1} ] } },
-    '7-1': { type: 'fillBlank', content: { sentence: 'The * Canal helped goods move across NY. An informative article uses * and definitions in organized *.', blanks: ['Erie', 'facts', 'paragraphs'] } },
-    '7-2': { type: 'hangman', content: { word: 'protractor', hint: 'Tool to measure angles' } },
-    '7-3': { type: 'match', content: { pairs: [ ['Amplitude','Loudness of a wave'], ['Wavelength','Pitch of a sound'], ['Douglass','Abolitionist leader'], ['Ginsburg','Supreme Court justice'], ['Energy','Power to do work'] ] } }
+    '7-0': { type: 'mission', content: {
+      title: 'Design & Solve',
+      intro: 'Solve in steps and build like an engineer. Learn multi-step word problems and the engineering design challenge, then ship the prototype.',
+      winText: '🎉 Problems solved and prototype shipped — capstone 1 complete!',
+      phases: [
+        { kind: 'lesson', subject: 'Math', title: 'Multi-Step Word Problems', blocks: [
+          { h: 'What is a multi-step problem?', p: 'A multi-step word problem needs more than one operation to solve. You may add, then multiply, or subtract after dividing.', example: '“3 boxes of 8 pens, give away 5” → 3×8, then −5.' },
+          { h: 'Step 1: understand', p: 'Read carefully. Identify what you know and what you must find. Underline the question and the numbers.', tip: 'Know the given and the goal.' },
+          { h: 'Step 2: plan', p: 'Decide the operations and order. Will you multiply first? Subtract after? A plan prevents random guessing.', diagram: '<div class="sg-flow"><span class="sg-flow-in">Read</span><span class="sg-flow-arrow">→</span><span class="sg-flow-box">Plan steps</span><span class="sg-flow-arrow">→</span><span class="sg-flow-out">Solve & check</span></div>' },
+          { h: 'Hidden info & intermediate steps', p: 'Some numbers are hidden (“each box holds 8”). Find them and compute intermediate results before the final step.', tip: 'Watch for “each,” “per,” “left over.”' },
+          { h: 'Choose operations', p: 'Pick +, −, ×, ÷ by the situation: totals (add/multiply), differences/leftovers (subtract), sharing/groups (divide).', example: 'Groups of equal size → multiply or divide.' },
+          { h: 'Check reasonableness', p: 'Estimate the answer first, then check the final result is reasonable. Re-read to confirm it answers the question.', tip: 'Estimate → solve → check back.' },
+          { h: 'Why it matters', p: 'Multi-step problems mirror real life — shopping, building, planning. The plan-solve-check routine handles them all.', tip: 'Understand → plan → solve → check.' }
+        ] },
+        { kind: 'drill', subject: 'Math', title: 'Multi-Step Drill', questions: [
+          { prompt: '3 boxes × 8 pens = ? pens', options: ['24', '11', '32'], a: 0, okMsg: '24 pens. Now subtract.' },
+          { prompt: '24 pens, give away 5 → ?', options: ['19', '29', '15'], a: 0, okMsg: '19 left. Two steps done!' },
+          { prompt: 'First step in a multi-step problem:', options: ['Plan the steps', 'Pick the answer', 'Guess'], a: 0, okMsg: 'Plan first.' },
+          { prompt: '6 bags × 4 apples, eat 3 → ?', options: ['21', '27', '24'], a: 0, okMsg: '6×4=24, 24−3=21.' },
+          { prompt: '“Each” is a clue to…', options: ['Multiply or divide', 'Only add', 'Ignore it'], a: 0, okMsg: '“Each” → × or ÷.' },
+          { prompt: 'After solving, you should…', options: ['Check it’s reasonable', 'Stop and move on', 'Erase your work'], a: 0, okMsg: 'Check reasonableness.' }
+        ] },
+        { kind: 'lesson', subject: 'Science', title: 'Engineering Design Challenge', blocks: [
+          { h: 'Define the problem', p: 'Engineering starts with a clear problem to solve: what must the design do, and for whom? A sharp problem guides everything.', example: '“Design a levee that holds back floodwater.”' },
+          { h: 'Brainstorm solutions', p: 'Generate many ideas before choosing. Wild ideas can spark good ones. Don’t judge yet — just list.', tip: 'Many ideas first, judge later.' },
+          { h: 'Choose & plan', p: 'Pick the most promising idea and plan how to build it: materials, steps, constraints (size, cost, safety).', diagram: '<div class="sg-energy-forms"><span>🎯 Problem</span><span>💡 Brainstorm</span><span>🏗️ Build</span><span>🧪 Test</span><span>🔧 Improve</span></div>' },
+          { h: 'Build a prototype', p: 'A prototype is a first test model. Build it simply and quickly to learn how the idea works in real life.', tip: 'Prototype = first test model.' },
+          { h: 'Test & observe', p: 'Test the prototype under real conditions and observe what works and what fails. Record the results.', example: 'Pour water against the levee model.' },
+          { h: 'Improve & iterate', p: 'Use test results to improve the design, then test again. Iterating — redesign and retest — is how designs get better.', tip: 'Test → improve → test again.' },
+          { h: 'Why it matters', p: 'The engineering design process solves real problems — from flood control to phones. It rewards testing and improving.', tip: 'Define → brainstorm → build → test → improve.' }
+        ] },
+        { kind: 'practice', subject: 'Science', title: 'Order the Design Steps (Drag)', engine: 'dragSort', items: [
+          { text: 'Define the problem', order: 0 }, { text: 'Brainstorm solutions', order: 1 },
+          { text: 'Build a prototype', order: 2 }, { text: 'Test and observe', order: 3 }, { text: 'Improve the design', order: 4 }
+        ] },
+        { kind: 'activity', title: 'Design & Solve (Capstone)', stages: [
+          { type: 'match', subject: 'Math + Sci · Terms', story: 'Match each term to its meaning.', pairs: [ ['Multi-step problem','More than one operation'], ['Prototype','First test model'], ['Iterate','Improve and retest'], ['Plan','Decide steps before solving'] ] },
+          { type: 'input', subject: 'Math · Two steps', story: '3 boxes × 8 pens, give away 5. How many left?', prompt: '3×8 = 24; 24 − 5 = ?', accept: ['19'], okMsg: '19 left — two steps! Part 2 shipped.' },
+          { type: 'fillBlank', subject: 'Math · Routine', story: 'Finish the solve routine.', sentence: 'Solve step by step: 3×8 = * , then 24 − 5 = * .', blanks: ['24', '19'] },
+          { type: 'twoTruths', subject: 'Sci · Design', story: 'One statement is FALSE. Tap the lie.', statements: [ {t:'A prototype is a first test model', a:true}, {t:'Testing shows what fails so you can improve', a:true}, {t:'You should never redesign after testing', a:false} ] },
+          { type: 'numberLine', subject: 'Math · Check', story: 'Your design passed 3/4 of tests — tap 3/4 to ship it.', prompt: 'Tap 3/4 (tests passed):', marks: [ {l:'0'},{l:'1/4'},{l:'1/2'},{l:'3/4'},{l:'1'} ], a: 3 }
+        ] }
+      ]
+    } },
+
+    '7-1': { type: 'mission', content: {
+      title: 'Print & Progress',
+      intro: 'Write the article and move the goods. Learn informative articles and industrialization/Erie Canal, then publish the story.',
+      winText: '🎉 Article published and canal opened — story printed!',
+      phases: [
+        { kind: 'lesson', subject: 'ELA', title: 'Write a Short Informative Article', blocks: [
+          { h: 'Topic + purpose', p: 'An informative article explains a topic clearly with facts. Start by choosing a focused topic and a purpose: teach the reader something true.', example: 'Topic: “How the Erie Canal changed NY.”' },
+          { h: 'Research & facts', p: 'Gather facts from reliable sources, take notes, and cite them. Articles stand on evidence, not opinion.', tip: 'Facts + sources = a strong article.' },
+          { h: 'Organize into sections', p: 'Group related facts into sections: introduction, body paragraphs (one sub-topic each), and a conclusion.', diagram: '<div class="sg-energy-forms"><span>🆕 Intro</span><span>📑 Body</span><span>🔗 Links</span><span>🏁 Conclusion</span><span>✏️ Revise</span></div>' },
+          { h: 'Intro, body, conclusion', p: 'Introduce the topic, develop it with facts in the body, and conclude by wrapping up — not by adding new info.', tip: 'Intro hooks; body proves; conclusion wraps.' },
+          { h: 'Headings + linking words', p: 'Use headings to label sections and linking words (also, however, for example) to connect ideas so it flows.', example: 'Heading “The Canal Opens” + “However,…”' },
+          { h: 'Edit & revise', p: 'Revise for clarity and facts; edit for spelling, punctuation, and complete sentences. Read it aloud to catch errors.', tip: 'Revise content; edit mechanics.' },
+          { h: 'Why it matters', p: 'Informative articles are how news, science, and history are shared. Strong structure + facts make them credible.', tip: 'Topic → facts → sections → links → revise.' }
+        ] },
+        { kind: 'drill', subject: 'ELA', title: 'Rebuild the Lead', engine: 'scramble', words: ['The', 'Erie', 'Canal', 'linked', 'Buffalo', 'and', 'Albany'] },
+        { kind: 'lesson', subject: 'Social Studies', title: 'Industrialization, Erie Canal & Transport', blocks: [
+          { h: 'What is industrialization?', p: 'Industrialization is the shift to making goods in factories with machines. It changed how people worked and where they lived.', example: 'Factories replaced hand-making goods.' },
+          { h: 'The Erie Canal (1825)', p: 'The Erie Canal, opened in 1825, linked Buffalo (on Lake Erie) to Albany (on the Hudson), connecting the Great Lakes to NYC.', tip: 'Erie Canal = Buffalo to Albany, 1825.' },
+          { h: 'Canals & railroads move goods', p: 'Canals and later railroads moved goods and people far faster and cheaper than wagons, expanding trade across NY and the US.', diagram: '<div class="sg-flow"><span class="sg-flow-in">🚣 Canal</span><span class="sg-flow-arrow">→</span><span class="sg-flow-box">🚂 Railroad</span><span class="sg-flow-arrow">→</span><span class="sg-flow-out">📈 Trade</span></div>' },
+          { h: 'Factories & cities grow', p: 'With cheaper transport, factories and cities grew. NYC boomed as goods flowed through its port from the canal.', example: 'NYC became America’s busiest port.' },
+          { h: 'Effects on NY', p: 'The canal made NY an economic powerhouse. Towns along the canal grew; NYC became the nation’s trade capital.', tip: 'Erie Canal → NY’s wealth and growth.' },
+          { h: 'People & work change', p: 'Industrialization brought jobs but also hard factory conditions and the growth of cities, reshaping daily life and labor.', example: 'Many moved from farms to factory towns.' },
+          { h: 'Why it matters', p: 'Transport and industry built modern NY. The Erie Canal is a landmark of how infrastructure changes a region.', tip: 'Canal + rail + factories → modern NY.' }
+        ] },
+        { kind: 'practice', subject: 'Social Studies', title: 'Transport Timeline', mode: 'timeline', eras: ['Before 1825', '1825', 'After 1825'], events: [
+          { text: 'Goods moved slowly by wagon', era: 0 }, { text: 'Erie Canal opens', era: 1 },
+          { text: 'NYC becomes a huge trade port', era: 2 }, { text: 'Railroads spread further', era: 2 }
+        ] },
+        { kind: 'activity', title: 'Print & Progress', stages: [
+          { type: 'quiz', subject: 'SS · Canal', story: 'The Erie Canal connected which two cities?', prompt: 'The Erie Canal connected…', options: ['Buffalo and Albany', 'NYC and Boston', 'Albany and DC'], a: 0, okMsg: 'Buffalo–Albany! Press 1 run.' },
+          { type: 'match', subject: 'SS · Terms', story: 'Match each term to its meaning.', pairs: [ ['Erie Canal','Buffalo–Albany waterway'], ['Industrialization','Factory-based production'], ['Railroad','Land transport'], ['1825','Erie Canal opens'] ] },
+          { type: 'input', subject: 'SS · Year', story: 'The Erie Canal opened in which year?', prompt: 'Erie Canal opened in (year):', accept: ['1825'], okMsg: '1825! Press 3 run.' },
+          { type: 'dragSort', subject: 'ELA · Article order', story: 'Order the steps to write an article.', items: [ {text:'Write an introduction', order:0}, {text:'Add body sections with facts', order:1}, {text:'Use headings & linking words', order:2}, {text:'Write a conclusion & revise', order:3} ] }
+        ] }
+      ]
+    } },
+
+    '7-2': { type: 'mission', content: {
+      title: 'Review & Present',
+      intro: 'Review the year’s math and own the stage. Learn mixed Grade 4 skills and oral presentation, then deliver the talk.',
+      winText: '🎉 Skills reviewed and talk delivered — capstone complete!',
+      phases: [
+        { kind: 'lesson', subject: 'Math', title: 'Mixed Grade 4 Skills Review', blocks: [
+          { h: 'Round numbers', p: 'Round using place value: 5 or more rounds up. 48 to nearest 10 = 50; 432 to nearest 100 = 400.', example: 'Look at the digit right of the target place.' },
+          { h: 'Multiply & divide', p: 'Recall multi-digit multiplication and division with remainders. Estimate first, then compute, then check.', tip: 'Multiply/divide: estimate → compute → check.' },
+          { h: 'Fractions: add & compare', p: 'Add like denominators by adding numerators. Compare with common denominators or benchmarks to 1/2.', diagram: '<div class="sg-energy-forms"><span>🔢 Rounding</span><span>✕ × ÷</span><span>🍕 Fractions</span><span>🔟 Decimals</span><span>📐 Area</span></div>' },
+          { h: 'Decimals & money', p: 'Decimals name tenths and hundredths. Use them for money: $0.99 = 99 cents. Line up the decimal point to add.', tip: 'Money = decimals; line up points.' },
+          { h: 'Area & perimeter', p: 'Perimeter = around (2×(L+W)); area = inside (L×W). Watch the units: perimeter plain, area square.', example: '5×3 rectangle: P=16, A=15.' },
+          { h: 'Word problems', p: 'Use the plan-solve-check routine: understand, plan operations, solve, and check reasonableness.', tip: 'Understand → plan → solve → check.' },
+          { h: 'Why it matters', p: 'Grade 4 skills build the base for Grade 5: bigger numbers, deeper fractions, and decimals in real life.', tip: 'Round, ×÷, fractions, decimals, area, word problems.' }
+        ] },
+        { kind: 'drill', subject: 'Math', title: 'Higher or Lower? (Decimals)', engine: 'higherLower', prompt: 'Will the next decimal be higher or lower?', cards: [
+          { label: '0.5', val: 0.5 }, { label: '0.25', val: 0.25 }, { label: '0.75', val: 0.75 }, { label: '1.0', val: 1.0 }, { label: '0.4', val: 0.4 }
+        ] },
+        { kind: 'lesson', subject: 'ELA', title: 'Oral Presentation Practice', blocks: [
+          { h: 'Prepare your topic', p: 'A good presentation starts with preparation: know your topic, main points, and audience before you speak.', example: 'Outline 3 main points to cover.' },
+          { h: 'Organize main points', p: 'Order your points clearly — beginning, middle, end — so listeners can follow. Signpost with “first, next, finally.”', tip: 'Clear order = easy to follow.' },
+          { h: 'Speak clearly & pace', p: 'Speak clearly and at a steady pace — not too fast. Pause between points so listeners can absorb them.', diagram: '<div class="sg-energy-forms"><span>🎤 Clear voice</span><span>👁️ Eye contact</span><span>⏱️ Pace</span><span>🖼️ Visuals</span><span>🙋 Q&A</span></div>' },
+          { h: 'Eye contact & body language', p: 'Look at the audience, stand tall, and use natural gestures. Body language shows confidence and keeps attention.', tip: 'Eyes up; stand tall; gesture naturally.' },
+          { h: 'Use visuals', p: 'Pictures, slides, or props support your points and help the audience remember. Don’t read slides word-for-word.', example: 'A chart makes data clear.' },
+          { h: 'Handle questions', p: 'Listen to questions, answer calmly, and say “I’ll find out” if you don’t know. Questions deepen understanding.', tip: 'Listen, answer, admit unknowns.' },
+          { h: 'Why it matters', p: 'Presentation skills share your ideas in class, work, and life. Preparation + delivery builds confidence.', tip: 'Prepare → organize → deliver → engage.' }
+        ] },
+        { kind: 'practice', subject: 'ELA', title: 'Flip the Presentation Tips', mode: 'flip', cards: [
+          { front: 'Pace', back: 'Don’t rush; speak steadily' }, { front: 'Eye contact', back: 'Look at the audience' },
+          { front: 'Volume', back: 'Speak loud enough to hear' }, { front: 'Visuals', back: 'Pictures/slides support points' }, { front: 'Practice', back: 'Rehearse before presenting' }
+        ] },
+        { kind: 'activity', title: 'Review & Present', stages: [
+          { type: 'twoTruths', subject: 'Math · Review', story: 'One statement is FALSE. Tap the lie to start the talk.', statements: [ {t:'1/2 + 1/2 = 1', a:true}, {t:'Area of a rectangle = L × W', a:true}, {t:'0.3 is bigger than 0.5', a:false} ] },
+          { type: 'match', subject: 'Math · Skills', story: 'Match each item to its answer/meaning.', pairs: [ ['Round 48 to nearest 10','50'], ['Area of 6×4','24'], ['0.5 as a fraction','1/2'], ['Pace','Speak steadily'] ] },
+          { type: 'input', subject: 'Math · Perimeter', story: 'Perimeter of a 6×4 rectangle (2×(6+4)) = ?', prompt: 'Perimeter of a 6×4 rectangle:', accept: ['20'], okMsg: '20 — around the shape! Slide 3 shown.' },
+          { type: 'dragSort', subject: 'ELA · Present', story: 'Order the steps to prepare and deliver a talk.', items: [ {text:'Choose & research your topic', order:0}, {text:'Organize main points', order:1}, {text:'Rehearse aloud', order:2}, {text:'Present with eye contact', order:3} ] }
+        ] }
+      ]
+    } },
+
+    '7-3': { type: 'mission', content: {
+      title: 'Vocab & Voices',
+      intro: 'Lock in the science words and meet the New Yorkers. Learn science vocabulary review and famous New Yorkers, then take the stage.',
+      winText: '🎉 Vocab cracked and voices heard — final capstone complete! You finished Grade 4 prep! 🎓',
+      phases: [
+        { kind: 'lesson', subject: 'Science', title: 'Science Vocabulary Review', blocks: [
+          { h: 'Energy & waves', p: 'Energy is the ability to do work. Waves carry energy: amplitude = height/loudness, wavelength = length, frequency = pitch.', example: 'Sound and light travel as waves.' },
+          { h: 'Structures & survival', p: 'Animal structures help survival: sense structures (eyes, ears), defense (shells, camouflage), and movement (wings, fins).', tip: 'Every structure has a survival job.' },
+          { h: 'Rocks, fossils, hazards', p: 'Rock layers (strata) hold fossils — evidence of past life; deeper = older. Natural hazards (floods, quakes) are met by engineering.', diagram: '<div class="sg-energy-forms"><span>⚡ Energy</span><span>🌊 Waves</span><span>🦴 Fossils</span><span>🛡️ Engineering</span><span>👁️ Senses</span></div>' },
+          { h: 'Senses & processing', p: 'Sense organs gather information; signals travel to the brain, which processes them and sends a response.', tip: 'Sense → brain → response.' },
+          { h: 'Engineering design', p: 'Engineers define a problem, brainstorm, build a prototype, test, and improve. Iteration makes designs better.', example: 'Levees and seawalls reduce flood harm.' },
+          { h: 'Properties of matter', p: 'Matter has properties (mass, volume, state) we can measure and compare. Tools (rulers, scales) help us observe them.', tip: 'Observe and measure to compare matter.' },
+          { h: 'Why it matters', p: 'These ideas connect the year’s science: energy, life, Earth, and design. They explain how the world works.', tip: 'Energy, life, Earth, design — the big four.' }
+        ] },
+        { kind: 'drill', subject: 'Science', title: 'Vocab Crossword', engine: 'crossword', cols: 5, rows: 5, blocks: [0,1,2,3,4,9,10,12,14,15,17,19,20,22,24], words: [
+          { num: 1, dir: 'across', clue: 'A traveling disturbance that carries energy (4)', answer: 'WAVE', cells: [5,6,7,8] },
+          { num: 1, dir: 'down', clue: 'Tiny particle of an element (4)', answer: 'ATOM', cells: [6,11,16,21] },
+          { num: 2, dir: 'down', clue: 'A reflected sound (4)', answer: 'ECHO', cells: [8,13,18,23] }
+        ] },
+        { kind: 'lesson', subject: 'Social Studies', title: 'Famous New Yorkers Then & Now', blocks: [
+          { h: 'Why NY figures matter', p: 'New Yorkers have shaped US history, rights, science, and culture. Studying them shows how individuals change a state and nation.', example: 'Leaders, reformers, artists, and scientists.' },
+          { h: 'Then: Hamilton, Stanton, Tubman, Roosevelt', p: 'Alexander Hamilton was a founding father and NY leader. Elizabeth Cady Stanton led women’s rights. Harriet Tubman guided freedom-seekers. Theodore Roosevelt was NY governor and president.', diagram: '<div class="sg-energy-forms"><span>⚖️ Hamilton</span><span>✊ Stanton</span><span>🕯️ Tubman</span><span>🦁 T. Roosevelt</span><span>🗽 NY</span></div>' },
+          { h: 'Now: leaders, artists, scientists', p: 'Today’s New Yorkers continue to lead in government, science, arts, and business — building on the work of earlier generations.', tip: 'Past and present New Yorkers shape the state.' },
+          { h: 'Contributions', p: 'Each figure contributed differently: laws and rights (Stanton, Tubman), leadership (Hamilton, Roosevelt), culture and discovery (many others).', example: 'Tubman’s courage; Stanton’s organizing.' },
+          { h: 'NY as a stage', p: 'NY’s diversity and energy make it a stage for change — Seneca Falls, Auburn, NYC, and Albany all hosted turning points.', tip: 'NY places host big moments.' },
+          { h: 'Connect past & present', p: 'Linking past figures to today shows continuity: the fight for rights and progress continues in new forms.', example: 'Suffrage then → civic participation now.' },
+          { h: 'Why it matters', p: 'Famous New Yorkers inspire civic action and show how individuals shape history. NY’s story is America’s story in miniature.', tip: 'Then & now, New Yorkers lead change.' }
+        ] },
+        { kind: 'practice', subject: 'Social Studies', title: 'Match the New Yorkers', mode: 'match', pairs: [ ['Hamilton','Founding father, NY leader'], ['Stanton','Women’s rights leader'], ['Tubman','Underground Railroad conductor'], ['T. Roosevelt','NY governor & president'] ] },
+        { kind: 'activity', title: 'Vocab & Voices (Capstone)', stages: [
+          { type: 'quiz', subject: 'SS · Figure', story: 'Who was the Underground Railroad conductor who lived in Auburn, NY?', prompt: 'Who was the Auburn, NY conductor?', options: ['Harriet Tubman', 'Hamilton', 'Roosevelt'], a: 0, okMsg: 'Harriet Tubman! Spotlight 1 on.' },
+          { type: 'venn', subject: 'SS · Then & now', story: 'Sort each trait into Then, Now, both, or neither.', left: 'Then (history)', right: 'Now (today)', items: [ {text:'Lived in the 1800s', set:0}, {text:'A living New Yorker today', set:1}, {text:'Shaped NY history', set:2}, {text:'Lived in ancient Rome', set:3} ] },
+          { type: 'input', subject: 'SS · Hamilton', story: 'Hamilton was a ___ father (key word).', prompt: 'Hamilton was a ___ father:', accept: ['founding'], okMsg: 'Founding father! Spotlight 3 on.' },
+          { type: 'labelDiagram', subject: 'Sci · Vocab recap', story: 'Label the science terms to close the show.', slots: [ {hint:'Carries energy in waves'}, {hint:'Reflected sound'}, {hint:'Tiny particle of an element'}, {hint:'Evidence of past life'} ], labels: [ {label:'Wave', slot:0}, {label:'Echo', slot:1}, {label:'Atom', slot:2}, {label:'Fossil', slot:3} ] },
+          { type: 'dragSort', subject: 'SS · NY timeline', story: 'Order these NY history events.', items: [ {text:'Erie Canal opens (1825)', order:0}, {text:'Seneca Falls (1848)', order:1}, {text:'Harriet Tubman guides freedom-seekers', order:2}, {text:'Ellis Island opens (1892)', order:3} ] }
+        ] }
+      ]
+    } }
   };
 
   /* ---------- AUDIO ---------- */

@@ -25,10 +25,8 @@
   var DONE_KEY = 'manha:summer-game-done';      // { "w-d": true }
   var STREAK_KEY = 'manha:summer-streak';        // { count, lastDay }
   var XP_KEY = 'manha:summer-xp';               // { total, level }
-  var PREVIEW_KEY = 'manha:summer-preview';     // { all: true } — unlock every day for review
   var completed = loadObj(STORAGE_KEY);
   var done = loadObj(DONE_KEY);
-  var previewAll = loadObj(PREVIEW_KEY).all === true;
 
   /* ---------- SCHEDULE (32 days; Week 3 fixed to 4 days) ---------- */
   // Each day: [ [Subject, topic, [bullets]], [Subject, topic, [bullets]] ]
@@ -2461,11 +2459,9 @@
           });
           btns.appendChild(more);
         } else {
-          var skip = el('button', 'sg-btn sg-skip-btn', 'Skip ▸');
-          skip.addEventListener('click', function () { sound.play('click'); nextPhase(); });
           var go = el('button', 'sg-btn sg-go-btn', 'Start ' + labelForNext(phases, pi) + ' ▸');
           go.addEventListener('click', function () { sound.play('click'); nextPhase(); });
-          btns.appendChild(skip); btns.appendChild(go);
+          btns.appendChild(go);
         }
       }
 
@@ -2646,7 +2642,7 @@
   function buildDayCard(w, d) {
     var dayKey = w + '-' + d, day = SG.SCHEDULE[w][d], g = SG.GAMES[dayKey];
     var isDone = !!done[dayKey];
-    var unlocked = isDone || priorDone(w, d) || previewAll;
+    var unlocked = isDone || priorDone(w, d);
     var card = el('div', 'day-game-card sg-reveal ' + pairClass(day) + (isDone ? ' done' : '') + (unlocked ? '' : ' locked'));
     card.dataset.day = dayKey; card.style.setProperty('--i', d);
     var ribbon = el('div', 'day-ribbon'); card.appendChild(ribbon);
@@ -2717,15 +2713,6 @@
     if (!container) return;
     container.innerHTML = '';
     container.classList.add('summer-weeks');
-    var bar = el('div', 'sg-preview-bar');
-    var btn = el('button', 'sg-preview-btn' + (previewAll ? ' on' : ''), previewAll ? '🔒 Re-lock weeks (sequential)' : '🔓 Unlock all weeks (preview)');
-    btn.addEventListener('click', function () {
-      previewAll = !previewAll; saveObj(PREVIEW_KEY, { all: previewAll });
-      sound.play('click'); renderGameCards();
-    });
-    bar.appendChild(btn);
-    if (previewAll) bar.appendChild(el('span', 'sg-preview-note', 'Preview mode — every day open. Click again to re-lock.'));
-    container.appendChild(bar);
     for (var w = 0; w < SG.SCHEDULE.length; w++) {
       var panel = el('div', 'week-panel'); panel.dataset.weekPanel = w;
       panel.appendChild(el('div', 'week-panel-title', 'Week ' + (w + 1)));

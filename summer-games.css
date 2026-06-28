@@ -349,7 +349,6 @@ span.ripple { position: absolute; border-radius: 50%; transform: scale(0);
 .sg-les-tip { margin-top: 8px; background: #ecfdf5; border: 1px solid #bfe6cd; border-radius: 10px; padding: 9px 11px; font-family: var(--sg-body); font-size: 0.87rem; color: #1b6e4a; line-height: 1.5; }
 .sg-les-body { display: flex; flex-direction: column; gap: 10px; }
 .sg-les-btns { display: flex; gap: 10px; margin-top: 14px; justify-content: flex-end; flex-wrap: wrap; }
-.sg-skip-btn { background: #f3ede2 !important; color: var(--sg-ink-soft) !important; border: 2px solid #d8ccb6 !important; box-shadow: none !important; }
 .sg-go-btn { background: var(--sg-go) !important; color: #fff !important; border: none !important; }
 
 /* ---- lesson diagrams ---- */
@@ -594,9 +593,4 @@ span.ripple { position: absolute; border-radius: 50%; transform: scale(0);
 .sg-crypt-q { font-family: var(--sg-head); font-weight: 600; font-size: 0.95rem; color: var(--sg-ink); margin-bottom: 6px; }
 .sg-crypt-opts { display: flex; flex-wrap: wrap; gap: 8px; }
 
-/* preview / unlock-all bar */
-.sg-preview-bar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
-.sg-preview-btn { font-family: var(--sg-head); font-weight: 700; font-size: 0.85rem; padding: 10px 16px; border-radius: 999px; border: 2px solid var(--sg-ink-soft); background: #fff; color: var(--sg-ink); cursor: pointer; transition: background .15s, border-color .15s, transform .08s; }
-.sg-preview-btn:hover { transform: translateY(-1px); border-color: var(--sg-ink); }
-.sg-preview-btn.on { background: var(--sg-amber); border-color: var(--sg-amber); color: #fff; }
-.sg-preview-note { font-family: var(--sg-body); font-size: 0.8rem; color: var(--sg-ink-soft); font-style: italic; }
+/* preview / unlock-all bar (removed) */

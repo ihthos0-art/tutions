@@ -13,8 +13,16 @@
       contents.forEach(function (c) { c.classList.remove('active'); });
       this.classList.add('active');
       document.getElementById(target).classList.add('active');
+      if (history.replaceState) history.replaceState(null, '', '#' + target);
     });
   });
+
+  // deep-link: open a tab via URL hash (e.g. manha.html#summer)
+  var hash = location.hash.replace('#', '');
+  if (hash) {
+    var t = document.querySelector('.tab-btn[data-tab="' + hash + '"]');
+    if (t) t.click();
+  }
 
   // ===== RESET BUTTONS =====
   document.querySelectorAll('.reset-btn').forEach(function (btn) {

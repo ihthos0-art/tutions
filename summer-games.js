@@ -84,10 +84,50 @@
 
   /* ---------- GAMES content (keyed "w-d") ---------- */
   SG.GAMES = {
-    '0-0': { type: 'scratch', content: { fact: 'Energy comes in many forms: sound, light, heat, and electrical! ⚡' } },
-    '0-1': { type: 'wordSearch', content: { words: ['PROOF', 'EVIDENCE', 'RIVER', 'MAP', 'CITY', 'MOUNTAIN'] } },
-    '0-2': { type: 'fillBlank', content: { sentence: '6 is * as many as 3. A good * names the main idea in 2-3 *.', blanks: ['times', 'summary', 'sentences'] } },
-    '0-3': { type: 'flip', content: { cards: [ {front:'Sound is a form of ?',back:'Energy'}, {front:'A map key tells us ?',back:"What symbols mean"}, {front:'Heat moves from ?',back:'Warm to cool'}, {front:'A thematic map shows ?',back:'Patterns (rain, population)'} ] } },
+    '0-0': { type: 'mission', content: {
+      title: 'Power Up the City',
+      intro: 'A blackout hit Brooklyn! Restore power block by block. Solve each challenge to advance the story.',
+      winText: '🎉 The city is lit! You powered through Day 1.',
+      stages: [
+        { type: 'quiz', subject: 'Math · Place value', story: 'The first meter reads 342,891. Find the value of the digit 4 to unlock Block 1.', prompt: 'What is the value of digit 4 in 342,891?', options: ['4,000', '40,000', '400,000'], a: 1, okMsg: '40,000 — the ten-thousands place. Block 1 online!' },
+        { type: 'seek', subject: 'Science · Energy forms', story: 'Block 2 needs energy sources. Spot every form of energy in the yard.', prompt: 'Tap every item that is a form of energy:', items: [ {label:'💡 Light'}, {label:'🔥 Heat'}, {label:'🔊 Sound'}, {label:'🪨 Rock'}, {label:'💧 Water'} ], correct: [0,1,2], okMsg: 'Light, heat, sound — all energy! Block 2 online!' },
+        { type: 'input', subject: 'Math · Rounding', story: 'Block 3\'s meter shows 742,318. Round it to the nearest thousand to calibrate.', prompt: 'Round 742,318 to the nearest thousand (type the number):', accept: ['742000', '742,000'], okMsg: '742,000 — calibrated! Block 3 online!' },
+        { type: 'quiz', subject: 'Science · Energy transfer', story: 'Final block. A lamp is plugged in. What happens to the electrical energy?', prompt: 'A lamp changes electrical energy into ___?', options: ['Light and heat', 'Nothing — it vanishes', 'Food'], a: 0, okMsg: 'Electrical → light + heat. Whole city online!' }
+      ]
+    } },
+    '0-1': { type: 'mission', content: {
+      title: 'Map the Evidence',
+      intro: 'A clue is hidden across New York. Use text evidence and map skills to follow the trail.',
+      winText: '🎉 Case cracked — you tracked the clue across NY!',
+      stages: [
+        { type: 'quiz', subject: 'SS · NYS geography', story: 'Start in NY. Which two Great Lakes touch New York State?', prompt: 'New York borders which Great Lakes?', options: ['Erie & Ontario', 'Superior & Huron', 'Michigan only'], a: 0, okMsg: 'Erie & Ontario — western & northern borders. Clue 1 found!' },
+        { type: 'seek', subject: 'ELA · Text evidence', story: 'Good readers prove answers from the text. Tap every move that uses real evidence.', prompt: 'Tap every way to use text evidence:', items: [ {label:'“The text says…”'}, {label:'Direct quote'}, {label:'I just guess'}, {label:'Reread the passage'}, {label:'My opinion'} ], correct: [0,1,3], okMsg: 'Quote, cite, reread — that\'s evidence. Clue 2!' },
+        { type: 'quiz', subject: 'SS · NY cities', story: 'The trail leads to a big city. Which one is actually in New York?', prompt: 'Which is a major New York city?', options: ['Buffalo', 'Chicago', 'Miami'], a: 0, okMsg: 'Buffalo — western NY. Clue 3!' },
+        { type: 'input', subject: 'ELA · Explicit vs inferred', story: 'A detail stated right in the text has a name. Type it to crack the case.', prompt: 'A detail stated directly in the text is ___ (one word):', accept: ['explicit'], okMsg: 'Explicit — stated right there. Case closed!' }
+      ]
+    } },
+    '0-2': { type: 'mission', content: {
+      title: 'Times the Trouble',
+      intro: 'The baker\'s oven is acting up. Scale the recipes with "times as many" and summarize the fix.',
+      winText: '🎉 Recipes scaled, fix summarized — kitchen saved!',
+      stages: [
+        { type: 'quiz', subject: 'Math · Multiplicative comparison', story: 'A recipe needs 4× as many eggs as one batch. One batch = 3 eggs.', prompt: '12 is ___ as many as 3.', options: ['4 times', '3 times', '7 times'], a: 0, okMsg: '4 times — because 4 × 3 = 12. Recipe 1 scaled!' },
+        { type: 'quiz', subject: 'ELA · Summary', story: 'The logbook is messy. How long should a good summary be?', prompt: 'A summary should be about how long?', options: ['2-3 sentences', '10 pages', 'One word'], a: 0, okMsg: '2-3 sentences — short and in your words.' },
+        { type: 'input', subject: 'Math · Comparison equation', story: '4 dogs each have 4 legs. How many legs total? (4 × 4)', prompt: 'Type the total number of legs (4 × 4):', accept: ['16'], okMsg: '16 legs — 4 times as many as 4!' },
+        { type: 'seek', subject: 'ELA · Central idea', story: 'Find the signals that point to the central idea.', prompt: 'Tap every phrase that means "central idea":', items: [ {label:'The main lesson'}, {label:'A tiny detail'}, {label:'The big message'}, {label:'A random fact'}, {label:'What it\'s mostly about'} ], correct: [0,2,4], okMsg: 'Main lesson, big message, mostly-about — all central idea!' }
+      ]
+    } },
+    '0-3': { type: 'mission', content: {
+      title: 'Energy Journey',
+      intro: 'Track energy moving through a home, then read the right map to find the way home.',
+      winText: '🎉 Energy traced and maps mastered — journey done!',
+      stages: [
+        { type: 'quiz', subject: 'Science · Energy transfer', story: 'Energy never disappears — it changes. Pick the true statement.', prompt: 'Energy can ___?', options: ['Change from one form to another', 'Turn into nothing', 'Only ever stay the same'], a: 0, okMsg: 'It transfers — one form into another. Stop 1!' },
+        { type: 'quiz', subject: 'SS · Map types', story: 'You need a map that shows city borders and names.', prompt: 'Which map shows borders and cities?', options: ['Political map', 'Thematic map', 'Physical map'], a: 0, okMsg: 'Political map — borders, cities, states. Stop 2!' },
+        { type: 'input', subject: 'Science · Energy conversion', story: 'A toaster runs. It changes electrical energy into ___ (besides light).', prompt: 'A toaster turns electrical energy into ___ (one word):', accept: ['heat', 'thermal'], okMsg: 'Heat — your toast! Stop 3!' },
+        { type: 'seek', subject: 'SS · Map types', story: 'Last stretch: spot every real type of map.', prompt: 'Tap every real type of map:', items: [ {label:'Political'}, {label:'Physical'}, {label:'Thematic'}, {label:'Pizza map'}, {label:'Menu'} ], correct: [0,1,2], okMsg: 'Political, physical, thematic — all real maps. Home!' }
+      ]
+    } },
 
     '1-0': { type: 'match', content: { pairs: [ ['Algorithm','Step-by-step method'], ['Estimate','A close guess'], ['Conversion','Changing one form to another'], ['Battery','Stores electrical energy'], ['Prototype','A first test model'] ] } },
     '1-1': { type: 'dragSort', content: { items: [ {text:'Native peoples lived in NY first', order:0}, {text:'They built longhouses in clans', order:1}, {text:'They used rivers for food & travel', order:2}, {text:'Geography shaped how they lived', order:3} ] } },
@@ -555,7 +595,138 @@
     render();
   }
 
-  var RENDERERS = { scratch: renderScratch, wordSearch: renderWordSearch, match: renderMatch, dragSort: renderDragSort, flip: renderFlip, hangman: renderHangman, fillBlank: renderFillBlank, quizMC: renderQuiz };
+  /* ---------- MISSION engine (story-advancing multi-stage quest) ----------
+   * A mission = sequence of "gates". Each gate is one drill tied to the day's
+   * subjects. Solving a gate powers up one city block, reveals the next story
+   * beat, and advances the character. All gates done = day won.
+   * Gate drill types: 'quiz' (MC), 'input' (type answer), 'seek' (tap all correct).
+   */
+  function renderMission(stage, c, ctx) {
+    var gates = c.stages, gi = 0, solved = 0;
+    var wrap = el('div', 'sg-mission');
+    var head = el('div', 'sg-mis-head');
+    head.innerHTML = '<div class="sg-mis-title">🗺️ ' + esc(c.title) + '</div><div class="sg-mis-intro">' + esc(c.intro) + '</div>';
+    wrap.appendChild(head);
+
+    // city block track — one block per gate
+    var track = el('div', 'sg-mis-track');
+    gates.forEach(function (g, i) {
+      var b = el('div', 'sg-mis-block ' + (i === 0 ? 'cur' : 'lock'));
+      b.innerHTML = '<span class="blk-ic">🔒</span><span class="blk-idx">' + (i + 1) + '</span>';
+      track.appendChild(b);
+    });
+    wrap.appendChild(track);
+
+    var story = el('div', 'sg-mis-story'); wrap.appendChild(story);
+    var scene = el('div', 'sg-mis-scene'); wrap.appendChild(scene);
+    var feedback = el('div', 'sg-mis-fb'); wrap.appendChild(feedback);
+
+    function setBlockState(i, state) {
+      var b = track.children[i];
+      b.className = 'sg-mis-block ' + state;
+      b.querySelector('.blk-ic').textContent = state === 'done' ? '⚡' : (state === 'cur' ? '📍' : '🔒');
+    }
+
+    function showStory() {
+      var g = gates[gi];
+      story.innerHTML = '<span class="sg-mis-subj">' + esc(g.subject) + '</span> ' + esc(g.story);
+    }
+
+    function fbOk(msg) { feedback.className = 'sg-mis-fb ok'; feedback.textContent = '✅ ' + msg; }
+    function fbNo(msg) { feedback.className = 'sg-mis-fb no'; feedback.textContent = '🌱 ' + msg; }
+
+    // ---- gate renderers ----
+    function gateQuiz(g) {
+      var q = el('div', 'sg-mis-q', esc(g.prompt));
+      var opts = el('div', 'sg-mis-opts');
+      var answered = false;
+      g.options.forEach(function (txt, idx) {
+        var b = el('button', 'sg-mis-opt'); b.innerHTML = '<span class="txt">' + esc(txt) + '</span><span class="ic"></span>';
+        b.addEventListener('click', function () {
+          if (answered) return; answered = true;
+          var ok = idx === g.a;
+          if (ok) { b.classList.add('correct'); b.querySelector('.ic').textContent = '✓'; sound.play('correct'); fbOk(g.okMsg || 'Nice!'); advance(); }
+          else { b.classList.add('incorrect'); b.querySelector('.ic').textContent = '✗'; opts.children[g.a].classList.add('correct'); opts.children[g.a].querySelector('.ic').textContent = '✓'; sound.play('wrong'); SG.mascot.setMood('think'); fbNo('Almost — look again.'); }
+          Array.prototype.forEach.call(opts.children, function (x) { x.classList.add('disabled'); });
+        });
+        opts.appendChild(b);
+      });
+      scene.innerHTML = ''; scene.appendChild(q); scene.appendChild(opts);
+    }
+
+    function gateInput(g) {
+      var q = el('div', 'sg-mis-q', esc(g.prompt));
+      var row = el('div', 'sg-mis-input-row');
+      var inp = el('input', 'sg-mis-input'); inp.type = 'text'; inp.setAttribute('autocomplete', 'off'); inp.placeholder = 'Type your answer…';
+      var btn = el('button', 'sg-btn', 'Check ▸');
+      row.appendChild(inp); row.appendChild(btn);
+      scene.innerHTML = ''; scene.appendChild(q); scene.appendChild(row);
+      inp.focus();
+      var tried = false;
+      function check() {
+        var v = String(inp.value).trim().toLowerCase().replace(/,/g, '');
+        var accept = (g.accept || []).map(function (a) { return String(a).toLowerCase().replace(/,/g, ''); });
+        if (!v) return;
+        var ok = accept.indexOf(v) !== -1;
+        if (ok) { sound.play('correct'); fbOk(g.okMsg || 'Got it!'); advance(); }
+        else { tried = true; sound.play('wrong'); SG.mascot.setMood('think'); fbNo('Not quite — try again 💪'); inp.classList.add('shake'); setTimeout(function () { inp.classList.remove('shake'); }, 350); }
+      }
+      btn.addEventListener('click', check);
+      inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') check(); });
+    }
+
+    function gateSeek(g) {
+      // tap every correct item; wrong taps cost. finish when all correct found.
+      var q = el('div', 'sg-mis-q', esc(g.prompt));
+      var grid = el('div', 'sg-mis-seek');
+      var found = {};
+      scene.innerHTML = ''; scene.appendChild(q); scene.appendChild(grid);
+      g.items.forEach(function (it, idx) {
+        var b = el('button', 'sg-mis-tile'); b.innerHTML = '<span class="tile-ic">' + esc(it.label) + '</span>';
+        var isCorrect = g.correct.indexOf(idx) !== -1;
+        b.addEventListener('click', function () {
+          if (b.classList.contains('correct') || b.classList.contains('wrong-tap')) return;
+          if (isCorrect) {
+            b.classList.add('correct'); found[idx] = true; sound.play('correct');
+            if (Object.keys(found).length === g.correct.length) { fbOk(g.okMsg || 'Found them all!'); advance(); }
+            else { fbOk('Keep going — ' + (g.correct.length - Object.keys(found).length) + ' more!'); ctx.setRing(ringPctOf(Object.keys(found).length + solved, gates.length)); }
+          } else {
+            b.classList.add('wrong-tap'); sound.play('wrong'); SG.mascot.setMood('think'); fbNo('Not energy — try another.');
+          }
+        });
+        grid.appendChild(b);
+      });
+    }
+
+    function renderGate() {
+      var g = gates[gi];
+      feedback.textContent = ''; feedback.className = 'sg-mis-fb';
+      showStory();
+      if (g.type === 'quiz') gateQuiz(g);
+      else if (g.type === 'input') gateInput(g);
+      else if (g.type === 'seek') gateSeek(g);
+      ctx.setRing(ringPctOf(solved, gates.length));
+    }
+
+    function advance() {
+      setBlockState(gi, 'done'); solved++; gi++;
+      if (gi >= gates.length) {
+        scene.innerHTML = '<div class="sg-mis-win">' + (c.winText || '🎉 Mission complete! Day done.') + '</div>';
+        story.textContent = ''; feedback.textContent = ''; ctx.setRing(100); ctx.onWin();
+        return;
+      }
+      setBlockState(gi, 'cur');
+      // brief beat, then next gate
+      setTimeout(function () { sound.play('click'); renderGate(); }, 480);
+    }
+
+    setBlockState(0, 'cur');
+    renderGate();
+    wrap.appendChild(scene); // re-append safe (no-op if already child)
+    stage.appendChild(wrap);
+  }
+
+  var RENDERERS = { scratch: renderScratch, wordSearch: renderWordSearch, match: renderMatch, dragSort: renderDragSort, flip: renderFlip, hangman: renderHangman, fillBlank: renderFillBlank, quizMC: renderQuiz, mission: renderMission };
 
   /* ---------- ripple ---------- */
   function attachRipple(btn) {
@@ -624,7 +795,7 @@
   }
 
   function activityName(t) {
-    return { scratch: 'Scratch & Reveal', wordSearch: 'Word Search', match: 'Match the Pairs', dragSort: 'Drag to Order', flip: 'Flip the Cards', hangman: 'Guess the Word', fillBlank: 'Fill the Blanks', quizMC: 'Quick Quiz' }[t] || 'Game';
+    return { scratch: 'Scratch & Reveal', wordSearch: 'Word Search', match: 'Match the Pairs', dragSort: 'Drag to Order', flip: 'Flip the Cards', hangman: 'Guess the Word', fillBlank: 'Fill the Blanks', quizMC: 'Quick Quiz', mission: 'Story Mission' }[t] || 'Game';
   }
   function activityHint(t) {
     return {
@@ -632,6 +803,7 @@
       wordSearch: 'Drag across the letters to find each word.',
       match: 'Tap a word, then tap its meaning.',
       dragSort: 'Drag the steps into the right order, then Check.',
+      mission: 'Solve each challenge to power up a block and advance the story.',
       flip: 'Tap each card to flip and reveal.',
       hangman: 'Guess the letters before you run out of hearts.',
       fillBlank: 'Tap a word, then a blank. Check when ready.',
@@ -725,6 +897,39 @@
   }
 
   /* ---------- INIT ---------- */
+  /* ---------- skip-lesson nav (TEST: jump to any day without completing prior) ---------- */
+  function wireSkipNav() {
+    if (document.getElementById('sg-skip-fab')) return;
+    var fab = el('button', 'sg-skip-fab'); fab.id = 'sg-skip-fab'; fab.type = 'button';
+    fab.innerHTML = '⏭<span class="sg-skip-label">Skip to…</span>'; fab.title = 'Test: jump to any lesson';
+    var panel = el('div', 'sg-skip-panel'); panel.id = 'sg-skip-panel';
+    var html = '<div class="sg-skip-hd">Jump to a lesson <button class="sg-skip-x" aria-label="Close">×</button></div><div class="sg-skip-grid">';
+    for (var w = 0; w < SG.SCHEDULE.length; w++) {
+      html += '<div class="sg-skip-wk"><div class="sg-skip-wkt">Week ' + (w + 1) + '</div>';
+      for (var d = 0; d < SG.SCHEDULE[w].length; d++) {
+        html += '<button class="sg-skip-day" data-skip="' + w + '-' + d + '">D' + (d + 1) + '</button>';
+      }
+      html += '</div>';
+    }
+    html += '</div>';
+    panel.innerHTML = html;
+    document.body.appendChild(fab); document.body.appendChild(panel);
+
+    fab.addEventListener('click', function (e) { e.stopPropagation(); panel.classList.toggle('open'); fab.classList.toggle('active'); });
+    panel.querySelector('.sg-skip-x').addEventListener('click', function () { panel.classList.remove('open'); fab.classList.remove('active'); });
+    document.addEventListener('click', function (e) { if (!panel.contains(e.target) && e.target !== fab) { panel.classList.remove('open'); fab.classList.remove('active'); } });
+    panel.querySelectorAll('.sg-skip-day').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var key = b.dataset.skip, parts = key.split('-'), w = +parts[0], d = +parts[1];
+        var card = document.querySelector(".day-game-card[data-day='" + key + "']");
+        // make sure the week's week-btn is active (if week nav exists)
+        var wb = document.querySelector(".week-btn[data-week='" + w + "']"); if (wb) wb.click();
+        if (card) { card.scrollIntoView({ behavior: 'smooth', block: 'center' }); card.classList.add('sg-flash'); setTimeout(function () { card.classList.remove('sg-flash'); }, 900); }
+        panel.classList.remove('open'); fab.classList.remove('active'); sound.play('click');
+      });
+    });
+  }
+
   SG.init = function () {
     if (!document.getElementById('summer-weeks')) return;
     buildOverlays();
@@ -733,6 +938,7 @@
     wireReset();
     updateProgress();
     wireRipples();
+    wireSkipNav();
     // re-wire ripples for dynamically created buttons
     var obs = new MutationObserver(function () { document.querySelectorAll('.sg-btn:not([data-rip])').forEach(function (b) { b.dataset.rip = '1'; attachRipple(b); }); });
     var weeks = document.getElementById('summer-weeks'); if (weeks) obs.observe(weeks, { childList: true, subtree: true });

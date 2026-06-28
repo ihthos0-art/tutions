@@ -203,7 +203,7 @@
           { text: 'Closing: Teamwork helped Mia find her place.', order: 4 }
         ] },
         { kind: 'activity', title: 'Times the Trouble', stages: [
-          { type: 'quiz', subject: 'Math · Multiplicative comparison', story: 'A recipe needs 4× as many eggs as one batch. One batch = 3 eggs.', prompt: '12 is ___ as many as 3.', options: ['4 times', '3 times', '7 times'], a: 0, okMsg: '4 times — because 4 × 3 = 12. Recipe 1 scaled!' },
+          { type: 'hangman', subject: 'Math · Comparison clue', story: 'Decode the clue word for “times as many” to scale the first recipe.', word: 'times', hint: 'Clue word: “___ as many” means multiply' },
           { type: 'fillBlank', subject: 'ELA · Summary', story: 'The logbook needs a clean summary line. Fill the missing words.', sentence: 'A good summary retells a text in your * words in about * to three sentences.', blanks: ['own', 'two'] },
           { type: 'input', subject: 'Math · Comparison equation', story: '4 dogs each have 4 legs. How many legs total? (4 × 4)', prompt: 'Type the total number of legs (4 × 4):', accept: ['16'], okMsg: '16 legs — 4 times as many as 4!' },
           { type: 'match', subject: 'ELA · Terms', story: 'Match each term to what it means to close the case.', pairs: [ ['Summary','Short retelling in your own words'], ['Central idea','The big message of the text'], ['Multiplier','The “times” number'], ['Key detail','Proves the central idea'] ] }
@@ -252,7 +252,7 @@
           { type: 'quiz', subject: 'Science · Energy transfer', story: 'Energy never disappears — it changes. Pick the true statement.', prompt: 'Energy can ___?', options: ['Change from one form to another', 'Turn into nothing', 'Only ever stay the same'], a: 0, okMsg: 'It transfers — one form into another. Stop 1!' },
           { type: 'match', subject: 'SS · Map types', story: 'Match each map type to the job it does best.', pairs: [ ['Political map','Find borders & cities'], ['Physical map','See mountains & rivers'], ['Thematic map','Show rainfall or population'], ['Map key','Explain symbols & colors'] ] },
           { type: 'input', subject: 'Science · Energy conversion', story: 'A toaster runs. It changes electrical energy into ___ (besides light).', prompt: 'A toaster turns electrical energy into ___ (one word):', accept: ['heat', 'thermal'], okMsg: 'Heat — your toast! Stop 3!' },
-          { type: 'dragSort', subject: 'SS · Reading a map', story: 'Last stretch: put the map-reading steps in order.', items: [ {text:'Read the title', order:0}, {text:'Check the map key', order:1}, {text:'Locate your place', order:2}, {text:'Use the scale if needed', order:3} ] }
+          { type: 'scratch', subject: 'SS · Map secret', story: 'Last stretch: wipe the card to reveal the final map fact.', fact: 'A physical map shows mountains, rivers, and lakes — not borders or cities! 🗺️' }
         ] }
       ]
     } },

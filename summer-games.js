@@ -257,10 +257,166 @@
       ]
     } },
 
-    '1-0': { type: 'match', content: { pairs: [ ['Algorithm','Step-by-step method'], ['Estimate','A close guess'], ['Conversion','Changing one form to another'], ['Battery','Stores electrical energy'], ['Prototype','A first test model'] ] } },
-    '1-1': { type: 'dragSort', content: { items: [ {text:'Native peoples lived in NY first', order:0}, {text:'They built longhouses in clans', order:1}, {text:'They used rivers for food & travel', order:2}, {text:'Geography shaped how they lived', order:3} ] } },
-    '1-2': { type: 'quizMC', content: { questions: [ {q:'A topic sentence goes...', options:['At the end','At the start','In the middle'], a:1}, {q:'24 × 3 = ?', options:['62','72','81'], a:1}, {q:'Supporting details...', options:['Prove the topic','Are random','Are not needed'], a:0} ] } },
-    '1-3': { type: 'scratch', content: { fact: 'A good design solves a problem — then you test it and make it better! 🔧' } },
+    '1-0': { type: 'mission', content: {
+      title: 'Power the Block',
+      intro: 'A city block needs power. Master multi-digit add & subtract, learn how energy converts, then switch on the block.',
+      winText: '🎉 Power flowing — the block is lit!',
+      phases: [
+        { kind: 'lesson', subject: 'Math', title: 'Multi-Digit Addition & Subtraction', blocks: [
+          { h: 'Line up by place value', p: 'To add or subtract big numbers, stack them so ones line up with ones, tens with tens, hundreds with hundreds. The decimal/comma stays in the same column.', example: '  4,528 + 1,346 — line up the thousands, then hundreds, tens, ones.' },
+          { h: 'Add: right to left, carry', p: 'Start at the ones. Add each column. If a column sums to 10 or more, carry the extra ten into the next column to the left.', tip: 'Carry = trade 10 ones for 1 ten, or 10 tens for 1 hundred.' },
+          { h: 'Subtract: right to left, regroup', p: 'Start at the ones. If the top digit is too small, borrow (regroup) 1 from the column to the left — that becomes 10 in the current column.', example: '  5,000 − 1,263: the ones need borrowing because 0 < 3.' },
+          { h: 'Regrouping across zeros', p: 'When you borrow across a zero, the zero becomes 9 after you take 1 from the first non-zero column to the left. Work carefully column by column.', tip: '5,000 − 1,263 = 3,737. Check: 3,737 + 1,263 = 5,000 ✓.' },
+          { h: 'Check with an estimate', p: 'Round each number to the nearest hundred or thousand and compute roughly. If your exact answer is far from the estimate, re-check your work.', example: '4,528 + 1,346 ≈ 4,500 + 1,300 = 5,800. Exact = 5,874 — close ✓.' },
+          { h: 'Word problems', p: 'Read the problem, decide add or subtract, line up the numbers, then compute and check. “How many more” usually means subtract; “in all” usually means add.', example: 'A block uses 4,528 kWh in June and 1,346 more in July. July = 4,528 + 1,346 = 5,874 kWh.' },
+          { h: 'Why it matters', p: 'Multi-digit add and subtract are used everywhere — money, measurements, data. Getting the columns right is the whole secret.', tip: 'Always line up places and always estimate-check.' }
+        ] },
+        { kind: 'drill', subject: 'Math', title: 'Add & Subtract Drill', questions: [
+          { prompt: '4,528 + 1,346 = ?', options: ['5,874', '5,784', '5,864'], a: 0, okMsg: '5,874 — carried correctly.' },
+          { prompt: '5,000 − 1,263 = ?', options: ['3,737', '3,837', '4,737'], a: 0, okMsg: '3,737 — borrowed across zeros.' },
+          { prompt: '6,200 + 2,705 = ?', options: ['8,905', '8,805', '8,915'], a: 0, okMsg: '8,905.' },
+          { prompt: '9,000 − 4,518 = ?', options: ['4,482', '4,582', '5,482'], a: 0, okMsg: '4,482.' },
+          { prompt: 'Estimate 3,910 + 2,080 (round to thousands).', options: ['6,000', '5,000', '7,000'], a: 0, okMsg: '4,000 + 2,000 = 6,000.' },
+          { prompt: '“How many more” signals…', options: ['Subtract', 'Add', 'Multiply'], a: 0, okMsg: 'Subtract — find the difference.' }
+        ] },
+        { kind: 'lesson', subject: 'Science', title: 'Energy Conversions', blocks: [
+          { h: 'Conversion = change form', p: 'An energy conversion is energy changing from one form into another. The device is the converter; the forms are what go in and what come out.', example: 'A fan converts electrical energy into motion (and a little sound).' },
+          { h: 'Electrical → other forms', p: 'Most home devices take electrical energy in and convert it to useful outputs: light, heat, motion, or sound.', tip: 'Look for the plug or battery — that is usually the electrical input.' },
+          { h: 'Everyday converters', p: 'Lamp: electrical → light + heat. Toaster: electrical → heat. TV: electrical → light + sound. Fan: electrical → motion + sound.', example: 'A phone turns electrical energy from the battery into light (screen) and sound (speaker).' },
+          { h: 'The IN → OUT pattern', p: 'Trace every converter as IN → [device] → OUT. The output is what you see, hear, feel, or measure.', diagram: '<div class="sg-flow"><span class="sg-flow-in">⚡ Electrical</span><span class="sg-flow-arrow">→</span><span class="sg-flow-box">🔆 Lamp</span><span class="sg-flow-arrow">→</span><span class="sg-flow-out">💡 Light + 🔥 Heat</span></div>' },
+          { h: 'Conservation', p: 'Energy is never lost in a conversion — the total amount stays the same. Some output (like heat) may be “wasted” but it still exists.', tip: 'Input energy = useful output + wasted output. Nothing disappears.' },
+          { h: 'Where energy comes from', p: 'Electrical energy comes from sources. Renewable sources (sunlight, wind, water) replenish naturally. Non-renewable sources (coal, oil, natural gas) are used up.', example: 'Solar panels convert light into electricity; burning coal converts stored energy into heat.' },
+          { h: 'Why it matters', p: 'Understanding conversions helps you choose efficient devices and protect the environment by favoring renewable sources.', tip: 'When a device runs, ask: what form goes in, what forms come out?' }
+        ] },
+        { kind: 'practice', subject: 'Science', title: 'Sort the Energy Sources', mode: 'categorize', bins: ['Renewable', 'Non-renewable'], items: [
+          { text: 'Sunlight', bin: 0 }, { text: 'Wind', bin: 0 }, { text: 'Water (hydro)', bin: 0 },
+          { text: 'Coal', bin: 1 }, { text: 'Oil', bin: 1 }, { text: 'Natural gas', bin: 1 }
+        ] },
+        { kind: 'activity', title: 'Power the Block', stages: [
+          { type: 'trueFalse', subject: 'Math · Add & subtract', story: 'Check the meters. Tap True or False for each statement.', statements: [ {t:'4,528 + 1,346 = 5,874', a:true}, {t:'5,000 − 1,263 = 4,737', a:false}, {t:'Estimating helps you catch mistakes', a:true} ] },
+          { type: 'match', subject: 'Science · Converters', story: 'Match each device to what it converts.', pairs: [ ['Solar panel','Light → Electrical'], ['Lamp','Electrical → Light'], ['Fan','Electrical → Motion'], ['Toaster','Electrical → Heat'] ] },
+          { type: 'input', subject: 'Math · Subtract', story: 'One building used 6,000 kWh and another used 2,400 kWh. How many more did the first use?', prompt: '6,000 − 2,400 = ?', accept: ['3600', '3,600'], okMsg: '3,600 — the difference! Breaker 3 on.' },
+          { type: 'fillBlank', subject: 'Science · Conversion', story: 'Finish the conversion sentence to close the circuit.', sentence: 'A lamp changes * energy into light and *.', blanks: ['electrical', 'heat'] }
+        ] }
+      ]
+    } },
+
+    '1-1': { type: 'mission', content: {
+      title: 'The Longhouse Trail',
+      intro: 'Walk the trail into NY’s first communities. Learn how texts are built and how the Haudenosaunee & Algonquian lived, then map the longhouse.',
+      winText: '🎉 Trail mapped — the longhouse stands!',
+      phases: [
+        { kind: 'lesson', subject: 'ELA', title: 'Text Structure: Sequence & Cause/Effect', blocks: [
+          { h: 'What is text structure?', p: 'Text structure is how a writer organizes information. Spotting the structure helps you follow and remember what you read.', example: 'A recipe uses sequence; a science article often uses cause and effect.' },
+          { h: 'Sequence', p: 'Sequence tells events or steps in time order. Signal words: first, next, then, after, finally. Use it for steps, timelines, and how-tos.', tip: 'See first/next/finally → the structure is sequence.' },
+          { h: 'Cause and effect', p: 'Cause and effect explains why something happens (cause) and what happens because of it (effect). One event makes another happen.', example: 'Cause: it rained. Effect: the trail got muddy.' },
+          { h: 'Signal words for cause/effect', p: 'Because, so, since, therefore, as a result, due to. These words point from a cause to its effect.', tip: '“Because” introduces the cause; “so” introduces the effect.' },
+          { h: 'Telling them apart', p: 'Sequence = time order (when). Cause/effect = reason (why). A text can mix both: steps in order, each step causing the next.', example: '“First she planted seeds, so they grew” mixes sequence (first) and cause/effect (so).' },
+          { h: 'Use structure to understand', p: 'Once you know the structure, you can predict what comes next and find the main points faster. It turns a wall of text into a map.', tip: 'Ask: is the author telling me WHEN or WHY?' },
+          { h: 'Why it matters', p: 'Strong readers use structure as a roadmap. It makes summarizing and answering questions easier and more accurate.', tip: 'On a test, name the structure and the signal words that prove it.' }
+        ] },
+        { kind: 'drill', subject: 'ELA', title: 'Rebuild the Sequence', engine: 'scramble', words: ['First', 'read', 'the', 'text', 'then', 'find', 'evidence'] },
+        { kind: 'lesson', subject: 'Social Studies', title: 'Haudenosaunee & Algonquian', blocks: [
+          { h: 'Native peoples first', p: 'Long before Europeans arrived, Native peoples lived in what is now New York. They had rich cultures, governments, and ways of life tied to the land.', example: 'The Haudenosaunee and Algonquian were two major groups in NY.' },
+          { h: 'The Haudenosaunee', p: 'The Haudenosaunee (also called the Iroquois) were a confederacy of six nations in central and northern NY. They are famous for their longhouses and a peaceful alliance.', tip: 'Haudenosaunee = “people of the longhouse.”' },
+          { h: 'The Algonquian', p: 'Algonquian peoples lived in eastern NY and along rivers and coasts. They relied heavily on water for food, travel, and trade.', example: 'Algonquian communities often lived near rivers and the Atlantic shore.' },
+          { h: 'Longhouse & clan life', p: 'Longhouses were large wood-and-bark homes that held several families from one clan. A clan is a group of related families.', diagram: '<div class="sg-energy-forms"><span>🏠 Longhouse</span><span>👨‍👩‍👧 Clan</span><span>🌽 Three Sisters</span><span>🛶 Rivers</span><span>🦌 Hunting</span><span>🤝 Confederacy</span></div>' },
+          { h: 'Three Sisters farming', p: 'The Haudenosaunee planted the “Three Sisters” — corn, beans, and squash — together. Each plant helped the others grow.', example: 'Corn gives beans a pole to climb; beans add nutrients to the soil; squash shades the ground.' },
+          { h: 'Rivers for food & travel', p: 'Rivers and lakes provided fish, water, and easy travel by canoe. They also connected communities for trade.', tip: 'Geography shaped life: water nearby meant food and trade.' },
+          { h: 'Why it matters', p: 'Native peoples of NY built lasting societies that shaped the state’s history. Their ideas (like the confederacy) even influenced the U.S. government.', tip: 'Remember: Native peoples were here first and their cultures continue today.' }
+        ] },
+        { kind: 'practice', subject: 'Social Studies', title: 'Build the NY History Timeline', mode: 'timeline', eras: ['Long ago', '1400s', '1500s'], events: [
+          { text: 'Native peoples first settle NY', era: 0 },
+          { text: 'Haudenosaunee nations unite as a confederacy', era: 1 },
+          { text: 'Algonquian & Haudenosaunee trade & share land', era: 2 }
+        ] },
+        { kind: 'activity', title: 'The Longhouse Trail', stages: [
+          { type: 'quiz', subject: 'SS · Haudenosaunee', story: 'A guide asks: which group built the famous longhouses?', prompt: 'Which NY group is known for longhouses?', options: ['Haudenosaunee', 'Aztec', 'Inca'], a: 0, okMsg: 'Haudenosaunee — people of the longhouse. Trail marker 1!' },
+          { type: 'match', subject: 'SS · Village life', story: 'Match each term to its meaning.', pairs: [ ['Longhouse','Large shared home'], ['Clan','Group of related families'], ['Three Sisters','Corn, beans, squash'], ['Wampum','Beaded belt / record'] ] },
+          { type: 'input', subject: 'SS · Another name', story: 'The Haudenosaunee are also called the ___ (starts with I).', prompt: 'The Haudenosaunee are also called the ___ (one word):', accept: ['iroquois'], okMsg: 'Iroquois — same people. Marker 3!' },
+          { type: 'dragSort', subject: 'ELA · Text structure', story: 'Put the close-reading steps in sequence.', items: [ {text:'First, read for time order', order:0}, {text:'Next, find signal words', order:1}, {text:'Then, notice cause and effect', order:2}, {text:'Finally, name the structure', order:3} ] }
+        ] }
+      ]
+    } },
+
+    '1-2': { type: 'mission', content: {
+      title: 'Build the Paragraph',
+      intro: 'Construct a strong paragraph while multiplying 4-digit numbers with area models. Then assemble the final build.',
+      winText: '🎉 Paragraph built and product found — build complete!',
+      phases: [
+        { kind: 'lesson', subject: 'Math', title: '4-Digit × 1-Digit with Area Models', blocks: [
+          { h: 'Multiply = groups of', p: 'Multiplication is repeated addition. 3,426 × 3 means 3 groups of 3,426. The area model breaks the big number into place-value parts.', example: '3,426 × 3 = 3,426 + 3,426 + 3,426.' },
+          { h: 'The area model', p: 'Split the big number into thousands, hundreds, tens, ones. Draw a box for each part. Multiply each part by the single digit, then add the partial products.', tip: 'Area model = break, multiply each part, add.' },
+          { h: '4-digit example', p: '3,426 × 3: split into 3,000 + 400 + 20 + 6. Multiply each by 3: 9,000 + 1,200 + 60 + 18. Add them up.', example: '9,000 + 1,200 = 10,200; + 60 = 10,260; + 18 = 10,278.' },
+          { h: 'Partial products', p: 'Each box gives a partial product (9,000; 1,200; 60; 18). Adding all partial products gives the final product.', tip: 'Write each partial product on its own line, then add — fewer mistakes.' },
+          { h: 'Record the final product', p: 'The standard algorithm is the area model compressed: multiply ones, tens, hundreds, thousands, carrying as you go. Both give the same answer.', example: '3,426 × 3 = 10,278 (area model and algorithm agree).' },
+          { h: 'Estimate to check', p: 'Round 3,426 to 3,000 and multiply: 3,000 × 3 = 9,000. Your answer 10,278 is in the right ballpark.', tip: 'Estimate first so a wrong digit doesn’t sneak past.' },
+          { h: 'Why it matters', p: 'The area model builds number sense — you see WHY the algorithm works, not just how. It scales to bigger numbers and to 2-digit × 2-digit.', tip: 'Break it, multiply each part, add — works every time.' }
+        ] },
+        { kind: 'drill', subject: 'Math', title: 'Area Model — Fill the Parts', engine: 'fillBlank', sentence: '3,426 × 3: split 3,426 into * , 400, * and 6. Then add 9,000 + 1,200 + 60 + 18 to get the product *.', blanks: ['3000', '20', '10278'] },
+        { kind: 'lesson', subject: 'ELA', title: 'Building a Paragraph', blocks: [
+          { h: 'What is a paragraph?', p: 'A paragraph is a group of sentences about one main idea. It usually has 3–7 sentences and is indented or separated by a blank line.', example: 'A paragraph about soccer should stay on soccer, not switch to pizza.' },
+          { h: 'The topic sentence', p: 'The topic sentence states the main idea of the paragraph. It is usually the first sentence and tells the reader what to expect.', tip: 'Topic sentence = the paragraph’s promise. Put it first.' },
+          { h: 'Supporting details', p: 'Supporting details prove, explain, or describe the topic sentence. Pick details that matter — not random facts.', example: 'Topic: “Soccer is fast.” Detail: “A pro sprint can reach 20 mph during a match.”' },
+          { h: 'Order & linking words', p: 'Put details in a clear order and connect them with linking words: first, also, for example, in addition, however. This guides the reader.', tip: 'Linking words are the glue between sentences.' },
+          { h: 'Indent & paragraph breaks', p: 'Indent the first line or leave a blank line to show a new paragraph. Start a new paragraph when the topic changes.', example: 'New topic → new paragraph. One main idea per paragraph.' },
+          { h: 'Closing sentence', p: 'A closing sentence wraps up the paragraph by restating the main idea or giving a final thought. It signals the reader the paragraph is ending.', tip: 'Closing sentence = the paragraph’s “done.”' },
+          { h: 'Why it matters', p: 'Strong paragraphs make strong essays and reports. One idea per paragraph, in a clear order, is the backbone of Grade 4 writing.', tip: 'Every paragraph: topic, details, closing — in order.' }
+        ] },
+        { kind: 'practice', subject: 'ELA', title: 'Rebuild the Topic Sentence', engine: 'scramble', words: ['Soccer', 'is', 'fast', 'and', 'fun', 'to', 'play'] },
+        { kind: 'activity', title: 'Build the Paragraph', stages: [
+          { type: 'trueFalse', subject: 'ELA · Paragraphs', story: 'Inspect the blueprint. True or False for each.', statements: [ {t:'A topic sentence usually comes first', a:true}, {t:'Supporting details are random facts', a:false}, {t:'A paragraph needs a closing sentence', a:true} ] },
+          { type: 'dragSort', subject: 'ELA · Build order', story: 'Stack the paragraph parts in the right order.', items: [ {text:'Topic sentence', order:0}, {text:'First supporting detail', order:1}, {text:'Second supporting detail', order:2}, {text:'Closing sentence', order:3} ] },
+          { type: 'input', subject: 'Math · Product', story: 'The build needs the final product. 3,426 × 3 = ?', prompt: '3,426 × 3 = ?', accept: ['10278', '10,278'], okMsg: '10,278 — area model confirmed! Beam 3 placed.' },
+          { type: 'match', subject: 'Math + ELA · Terms', story: 'Match each term to lock the build.', pairs: [ ['Topic sentence','States the main idea'], ['Supporting detail','Proves the topic'], ['Area model','Splits by place value'], ['Partial product','One part of the product'] ] }
+        ] }
+      ]
+    } },
+
+    '1-3': { type: 'mission', content: {
+      title: 'Design the Solution',
+      intro: 'Be an engineer. Learn the design process for energy devices and how geography shaped Native life, then design a working solution.',
+      winText: '🎉 Prototype designed, tested, improved — solution shipped!',
+      phases: [
+        { kind: 'lesson', subject: 'Science', title: 'Designing Energy Devices', blocks: [
+          { h: 'The engineering design process', p: 'Engineers solve problems with a process: identify the problem, design a solution, build a prototype, test it, then improve it. It loops — improve and test again.', tip: 'Design is a cycle, not a straight line. Improve → test → improve.' },
+          { h: 'Identify the problem', p: 'Start with a clear question: what do you need the device to do, and for whom? A sharp problem guides every later choice.', example: 'Problem: light a room using sunlight so it needs no electricity.' },
+          { h: 'Design a converter', p: 'Plan a device that converts energy from an input to the output you need. Sketch it and label the IN and OUT forms.', diagram: '<div class="sg-flow"><span class="sg-flow-in">☀️ Sunlight</span><span class="sg-flow-arrow">→</span><span class="sg-flow-box">🔭 Device</span><span class="sg-flow-arrow">→</span><span class="sg-flow-out">💡 Light</span></div>' },
+          { h: 'Build a prototype', p: 'A prototype is a first, simple test model. It does not have to be perfect — it has to show whether your idea works.', tip: 'Prototype = first test model. Build simple, test fast.' },
+          { h: 'Test & measure', p: 'Test the prototype and measure the results. Does it convert enough energy? Does it do the job? Record what worked and what failed.', example: 'Measure how bright the light is and how long it lasts.' },
+          { h: 'Improve (iterate)', p: 'Use the test results to make it better, then test again. Each cycle improves the design. Engineers iterate many times.', tip: 'Improve = change one thing, test again, compare.' },
+          { h: 'Why it matters', p: 'Engineering design turns ideas into devices that solve real problems — from lamps to clean-energy machines. The process works for any problem.', tip: 'Problem → design → prototype → test → improve. Repeat.' }
+        ] },
+        { kind: 'drill', subject: 'Science', title: 'Design Process Drill', questions: [
+          { prompt: 'A prototype is…', options: ['A first test model', 'The final product', 'A drawing only'], a: 0, okMsg: 'First test model.' },
+          { prompt: 'First step of the design process?', options: ['Identify the problem', 'Build it', 'Sell it'], a: 0, okMsg: 'Identify the problem first.' },
+          { prompt: 'After testing, you should…', options: ['Improve the design', 'Quit', 'Throw it away'], a: 0, okMsg: 'Improve — then test again.' },
+          { prompt: 'A device that converts energy has…', options: ['An input and output form', 'No energy', 'Only heat'], a: 0, okMsg: 'IN form → OUT form.' },
+          { prompt: 'The design process is…', options: ['A cycle that repeats', 'One straight step', 'Always the same'], a: 0, okMsg: 'A cycle — iterate!' },
+          { prompt: 'Why build a prototype?', options: ['To test if the idea works', 'To look nice', 'To skip testing'], a: 0, okMsg: 'To test the idea.' }
+        ] },
+        { kind: 'lesson', subject: 'Social Studies', title: 'How Geography Shaped Native Life', blocks: [
+          { h: 'Geography = land + water + climate', p: 'Geography is the natural features of a place — landforms, water, and climate. It shapes how people live, eat, travel, and build.', example: 'A group near rivers lives differently than a group in mountains.' },
+          { h: 'NY landforms', p: 'New York has mountains (Adirondacks, Catskills), plains, rivers (Hudson, Mohawk), and lakes (Erie, Ontario). Each feature offered different resources.', tip: 'Landforms = mountains, plains, valleys; waterways = rivers, lakes.' },
+          { h: 'Rivers helped', p: 'Rivers and lakes gave fish and fresh water, and made travel and trade easy by canoe. Communities often grew near water.', example: 'The Hudson and Mohawk rivers were natural highways.' },
+          { h: 'Forests shaped homes', p: 'Forests provided wood for longhouses, fuel, and animals to hunt. The Haudenosaunee built longhouses from wood and bark.', diagram: '<div class="sg-energy-forms"><span>🏞️ Rivers</span><span>🌲 Forests</span><span>🏔️ Mountains</span><span>🌽 Farming</span><span>🦌 Hunting</span><span>🛶 Travel</span></div>' },
+          { h: 'Farming on the land', p: 'Fertile land let the Haudenosaunee farm the Three Sisters (corn, beans, squash). Farming fed larger communities.', tip: 'Good land + water → farming → bigger villages.' },
+          { h: 'Seasons & resources', p: 'NY’s seasons shaped life: planting in spring, harvest in fall, hunting in winter. People used each season’s resources wisely.', example: 'Store food in fall to last through the frozen winter.' },
+          { h: 'Why it matters', p: 'Geography drove how Native peoples lived — and how all people live. Reading land and water explains where cities, farms, and roads grow.', tip: 'Where people settle is no accident — follow the water and land.' }
+        ] },
+        { kind: 'practice', subject: 'Social Studies', title: 'Where Did It Come From?', mode: 'categorize', bins: ['From the river', 'From the forest', 'From farming'], items: [
+          { text: 'Fish', bin: 0 }, { text: 'Travel by canoe', bin: 0 },
+          { text: 'Wood for longhouses', bin: 1 }, { text: 'Deer hunting', bin: 1 },
+          { text: 'Corn', bin: 2 }, { text: 'Beans & squash', bin: 2 }
+        ] },
+        { kind: 'activity', title: 'Design the Solution', stages: [
+          { type: 'dragSort', subject: 'Science · Design steps', story: 'Put the engineering design steps in order.', items: [ {text:'Identify the problem', order:0}, {text:'Design a solution', order:1}, {text:'Build a prototype', order:2}, {text:'Test and improve', order:3} ] },
+          { type: 'match', subject: 'Science · Terms', story: 'Match each design term to its meaning.', pairs: [ ['Prototype','First test model'], ['Test','Check if it works'], ['Improve','Make it better'], ['Problem','What needs solving'] ] },
+          { type: 'input', subject: 'Science · The model', story: 'A first test model has a name. Type it.', prompt: 'A first test model is called a ___ (one word):', accept: ['prototype'], okMsg: 'Prototype — build it! Step 3 done.' },
+          { type: 'timeline', subject: 'Science · Build cycle', story: 'Place each build stage on the timeline.', eras: ['Plan', 'Build', 'Test', 'Improve'], events: [ {text:'Identify the problem', era:0}, {text:'Make a prototype', era:1}, {text:'Test the device', era:2}, {text:'Make it better', era:3} ] }
+        ] }
+      ]
+    } },
 
     '2-0': { type: 'fillBlank', content: { sentence: '23 × 14: split 23 into * and 3. Light travels in * lines so we can *.', blanks: ['20', 'straight', 'see'] } },
     '2-1': { type: 'hangman', content: { word: 'hudson', hint: 'An explorer who sailed NY waters' } },
@@ -707,6 +863,147 @@
     });
   }
 
+  // 8a. TRUE/FALSE (sequential statements; distinct from MCQ)
+  function renderTrueFalse(stage, c, ctx) {
+    var qs = c.statements, i = 0, score = 0, answered = false;
+    var scoreEl = el('div', 'sg-quiz-score', 'Score: 0 / ' + qs.length);
+    var prog = el('div', 'sg-quiz-prog');
+    var qEl = el('div', 'sg-quiz-q');
+    var opts = el('div', 'sg-quiz-opts row tf');
+    var nextWrap = el('div', 'sg-quiz-controls');
+    var nextBtn = el('button', 'sg-btn', 'Next ›'); nextBtn.style.display = 'none'; nextWrap.appendChild(nextBtn);
+    stage.appendChild(scoreEl); stage.appendChild(prog); stage.appendChild(qEl); stage.appendChild(opts); stage.appendChild(nextWrap);
+    function render() {
+      answered = false; prog.textContent = 'Statement ' + (i + 1) + ' of ' + qs.length; qEl.textContent = qs[i].t; opts.innerHTML = '';
+      [true, false].forEach(function (val) {
+        var b = el('button', 'sg-tf-opt'); b.innerHTML = '<span class="txt">' + esc(val ? 'True' : 'False') + '</span><span class="ic"></span>';
+        b.addEventListener('click', function () { select(val, b); });
+        opts.appendChild(b);
+      });
+      nextBtn.style.display = 'none';
+    }
+    function select(val, btn) {
+      if (answered) return; answered = true;
+      var correct = val === qs[i].a;
+      if (correct) { btn.classList.add('correct'); btn.querySelector('.ic').textContent = '✓'; score++; scoreEl.textContent = 'Score: ' + score + ' / ' + qs.length; sound.play('correct'); SG.praise.show('correct'); }
+      else {
+        btn.classList.add('incorrect'); btn.querySelector('.ic').textContent = '✗';
+        var other = btn === opts.children[0] ? opts.children[1] : opts.children[0];
+        other.classList.add('correct'); other.querySelector('.ic').textContent = '✓';
+        sound.play('wrong'); SG.mascot.setMood('think');
+      }
+      Array.prototype.forEach.call(opts.children, function (x) { x.classList.add('disabled'); });
+      ctx.setRing(ringPctOf(i + 1, qs.length));
+      nextBtn.style.display = '';
+    }
+    nextBtn.addEventListener('click', function () { sound.play('click'); i++; if (i < qs.length) render(); else { qEl.textContent = 'Done! ' + score + ' / ' + qs.length + ' correct 🎉'; opts.innerHTML = ''; nextBtn.style.display = 'none'; prog.textContent = ''; ctx.onWin(); } });
+    render();
+  }
+
+  // 8b. SCRAMBLE (tap word tiles to rebuild a sentence)
+  function renderScramble(stage, c, ctx) {
+    var correct = c.words.slice();
+    var placed = new Array(correct.length).fill(null);
+    var slots = [], poolTiles = [];
+    var board = el('div', 'sg-scram');
+    var slotRow = el('div', 'sg-scram-slots');
+    correct.forEach(function (w, s) {
+      var sl = el('div', 'sg-scram-slot');
+      sl.addEventListener('click', function () {
+        if (!placed[s]) return;
+        var rw = placed[s]; placed[s] = null; sl.textContent = ''; sl.classList.remove('filled', 'wrong');
+        poolTiles.forEach(function (t) { if (t.dataset.w === rw && t.classList.contains('used')) t.classList.remove('used'); });
+        sound.play('click');
+      });
+      slotRow.appendChild(sl); slots.push(sl);
+    });
+    var pool = el('div', 'sg-scram-pool');
+    shuffle(correct).forEach(function (w) {
+      var t = el('span', 'sg-scram-word', esc(w)); t.dataset.w = w;
+      t.addEventListener('click', function () {
+        if (t.classList.contains('used')) return;
+        var empty = placed.indexOf(null); if (empty < 0) return;
+        placed[empty] = w; slots[empty].textContent = w; slots[empty].classList.add('filled'); slots[empty].classList.remove('wrong'); t.classList.add('used'); sound.play('click');
+      });
+      pool.appendChild(t); poolTiles.push(t);
+    });
+    var ctrl = el('div', 'sg-fb-controls'); var checkBtn = el('button', 'sg-btn', 'Check'); var status = el('div', 'game-status'); ctrl.appendChild(checkBtn);
+    board.appendChild(slotRow); board.appendChild(pool); board.appendChild(ctrl); board.appendChild(status);
+    stage.appendChild(board);
+    checkBtn.addEventListener('click', function () {
+      sound.play('click'); var ok = 0;
+      slots.forEach(function (sl, i) { sl.classList.remove('wrong'); if (placed[i] === correct[i]) { sl.classList.add('filled'); ok++; } else { sl.classList.add('wrong'); } });
+      if (ok === correct.length) { status.textContent = 'Sentence rebuilt! 🎉'; status.className = 'game-status ok'; ctx.setRing(100); ctx.onWin(); }
+      else { status.textContent = ok + ' of ' + correct.length + ' in the right place — try again!'; status.className = 'game-status no'; sound.play('wrong'); SG.praise.show('wrong'); SG.mascot.setMood('think'); }
+    });
+  }
+
+  // 8c. TIMELINE (tap event, then tap the era slot it belongs in)
+  function renderTimeline(stage, c, ctx) {
+    var eras = c.eras, events = c.events, placed = 0, sel = null;
+    var wrap = el('div', 'sg-tl');
+    var track = el('div', 'sg-tl-track');
+    eras.forEach(function (label, ei) {
+      var slot = el('div', 'sg-tl-slot');
+      slot.appendChild(el('div', 'sg-tl-era', esc(label)));
+      var drop = el('div', 'sg-tl-drop'); slot.appendChild(drop);
+      slot.addEventListener('click', function () {
+        if (!sel) return;
+        var card = sel, ev = events[+card.dataset.i];
+        if (ev.era === ei) {
+          drop.appendChild(card); card.classList.add('placed'); card.classList.remove('sel'); sound.play('correct'); SG.praise.show('correct');
+          placed++; ctx.setRing(ringPctOf(placed, events.length)); sel = null;
+          if (placed === events.length) ctx.onWin();
+        } else { card.classList.add('shake'); setTimeout(function () { card.classList.remove('shake'); }, 400); sound.play('wrong'); SG.praise.show('wrong'); SG.mascot.setMood('think'); }
+      });
+      track.appendChild(slot);
+    });
+    var pool = el('div', 'sg-tl-pool');
+    shuffle(events.map(function (e, i) { return { e: e, i: i }; })).forEach(function (o) {
+      var card = el('div', 'sg-tl-card', esc(o.e.text)); card.dataset.i = o.i;
+      card.addEventListener('click', function () {
+        if (card.classList.contains('placed')) return;
+        if (sel) sel.classList.remove('sel');
+        sel = card; card.classList.add('sel'); sound.play('click');
+      });
+      pool.appendChild(card);
+    });
+    wrap.appendChild(track); wrap.appendChild(pool); stage.appendChild(wrap);
+  }
+
+  // 8d. CATEGORIZE (tap item, then tap the bin it belongs in)
+  function renderCategorize(stage, c, ctx) {
+    var bins = c.bins, items = c.items, placed = 0, sel = null;
+    var wrap = el('div', 'sg-cat');
+    var binRow = el('div', 'sg-cat-bins');
+    bins.forEach(function (label, bi) {
+      var bin = el('div', 'sg-cat-bin');
+      bin.appendChild(el('div', 'sg-cat-bin-head', esc(label)));
+      var body = el('div', 'sg-cat-bin-body'); bin.appendChild(body);
+      bin.addEventListener('click', function () {
+        if (!sel) return;
+        var card = sel, it = items[+card.dataset.i];
+        if (it.bin === bi) {
+          body.appendChild(card); card.classList.add('placed'); card.classList.remove('sel'); sound.play('correct'); SG.praise.show('correct');
+          placed++; ctx.setRing(ringPctOf(placed, items.length)); sel = null;
+          if (placed === items.length) ctx.onWin();
+        } else { card.classList.add('shake'); setTimeout(function () { card.classList.remove('shake'); }, 400); sound.play('wrong'); SG.praise.show('wrong'); SG.mascot.setMood('think'); }
+      });
+      binRow.appendChild(bin);
+    });
+    var pool = el('div', 'sg-cat-pool');
+    shuffle(items.map(function (it, i) { return { it: it, i: i }; })).forEach(function (o) {
+      var card = el('div', 'sg-cat-card', esc(o.it.text)); card.dataset.i = o.i;
+      card.addEventListener('click', function () {
+        if (card.classList.contains('placed')) return;
+        if (sel) sel.classList.remove('sel');
+        sel = card; card.classList.add('sel'); sound.play('click');
+      });
+      pool.appendChild(card);
+    });
+    wrap.appendChild(binRow); wrap.appendChild(pool); stage.appendChild(wrap);
+  }
+
   // 8. QUIZ (multiple choice; covers T/F with 2 options)
   function renderQuiz(stage, c, ctx) {
     var qs = c.questions, i = 0, score = 0, answered = false;
@@ -1048,7 +1345,7 @@
   }
   function labelForPrev(phases, pi) { return pi > 0 ? (phases[pi - 1].title || phases[pi - 1].kind) : 'start'; }
 
-  var RENDERERS = { scratch: renderScratch, wordSearch: renderWordSearch, match: renderMatch, dragSort: renderDragSort, flip: renderFlip, hangman: renderHangman, fillBlank: renderFillBlank, quizMC: renderQuiz, mission: renderMission };
+  var RENDERERS = { scratch: renderScratch, wordSearch: renderWordSearch, match: renderMatch, dragSort: renderDragSort, flip: renderFlip, hangman: renderHangman, fillBlank: renderFillBlank, quizMC: renderQuiz, trueFalse: renderTrueFalse, scramble: renderScramble, timeline: renderTimeline, categorize: renderCategorize, mission: renderMission };
 
   /* ---------- ripple ---------- */
   function attachRipple(btn) {

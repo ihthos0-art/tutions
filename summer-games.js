@@ -418,10 +418,162 @@
       ]
     } },
 
-    '2-0': { type: 'fillBlank', content: { sentence: '23 × 14: split 23 into * and 3. Light travels in * lines so we can *.', blanks: ['20', 'straight', 'see'] } },
-    '2-1': { type: 'hangman', content: { word: 'hudson', hint: 'An explorer who sailed NY waters' } },
-    '2-2': { type: 'quizMC', content: { questions: [ {q:'45 ÷ 6 = ? remainder ?', options:['7 r 3','8 r 0','7 r 5'], a:0}, {q:'A linking word that shows order:', options:['Because','Next','However'], a:1}, {q:'The remainder is what is...', options:['Left over','Added','Multiplied'], a:0} ] } },
-    '2-3': { type: 'match', content: { pairs: [ ['Retina','Light enters here'], ['Mirror','Reflects light'], ['Pupil','The black hole'], ['Colony','A new settlement'], ['Dutch','First colonists of NY'], ] } },
+    '2-0': { type: 'mission', content: {
+      title: 'See the Light',
+      intro: 'Open your eyes — and your math. Master 2-digit × 2-digit, learn how we see, then light up the room.',
+      winText: '🎉 Product found and eye labeled — the room is lit!',
+      phases: [
+        { kind: 'lesson', subject: 'Math', title: '2-Digit × 2-Digit Multiplication', blocks: [
+          { h: 'Why two digits', p: '2-digit × 2-digit means multiplying numbers like 23 × 14. The area model breaks both numbers into place-value parts so every step is small and clear.', example: '23 × 14 = ? Break both into tens and ones.' },
+          { h: 'The area model', p: 'Split each number into tens and ones. Draw a box for every combination. 23 = 20 + 3 and 14 = 10 + 4, giving four boxes.', tip: 'Two splits each → 2 × 2 = four partial products.' },
+          { h: 'Partial products', p: 'Multiply each pair: 20×10, 20×4, 3×10, 3×4. These four partial products add up to the final product.', example: '20×10=200, 20×4=80, 3×10=30, 3×4=12.' },
+          { h: 'Example: 23 × 14', p: 'Add the four partial products: 200 + 80 + 30 + 12 = 322. So 23 × 14 = 322.', diagram: '<div class="sg-flow"><span class="sg-flow-in">23 × 14</span><span class="sg-flow-arrow">→</span><span class="sg-flow-box">200+80+30+12</span><span class="sg-flow-arrow">→</span><span class="sg-flow-out">= 322</span></div>' },
+          { h: 'Standard algorithm', p: 'The algorithm compresses the area model: multiply 23 by the 4 (ones), then 23 by the 10 (tens, shifted left), then add. Same answer: 322.', tip: 'Tens row is shifted one place left — that is the “0” you imagine.' },
+          { h: 'Estimate to check', p: 'Round 23 → 20 and 14 → 10, so 20 × 10 = 200. Your answer 322 is bigger because you rounded both down. Reasonable ✓.', example: 'If you got 322 or 32.2, the estimate catches the decimal error.' },
+          { h: 'Why it matters', p: '2-digit × 2-digit is used for area, money, and scaling. The area model makes the algorithm make sense.', tip: 'Break both, multiply each pair, add — works every time.' }
+        ] },
+        { kind: 'drill', subject: 'Math', title: 'Area Model — Fill the Parts', engine: 'fillBlank', sentence: '23 × 14: split 23 into 20 and * , split 14 into 10 and * . Then 200 + 80 + 30 + 12 = the product *.', blanks: ['3', '4', '322'] },
+        { kind: 'lesson', subject: 'Science', title: 'Vision and Light', blocks: [
+          { h: 'Light travels in straight lines', p: 'Light moves in straight lines called rays. It cannot bend around corners, which is why shadows have sharp edges.', example: 'A flashlight beam is a bundle of straight rays.' },
+          { h: 'How we see', p: 'We see when light enters our eyes. Objects that give off their own light (the Sun, a lamp) are light sources; most objects only reflect light to us.', tip: 'No light entering the eye = nothing seen (a dark room).' },
+          { h: 'Reflection', p: 'Reflection is light bouncing off a surface. We see a book because light bounces off it and into our eyes — the book is not a light source.', example: 'A mirror reflects light smoothly so you see an image.' },
+          { h: 'Parts of the eye', p: 'The eye has key parts: the pupil (hole that lets light in), the iris (colored ring that changes pupil size), the lens (focuses light), and the retina (back layer that senses light).', diagram: '<div class="sg-energy-forms"><span>⚫ Pupil</span><span>🎨 Iris</span><span>🔍 Lens</span><span>🩷 Retina</span></div>' },
+          { h: 'Forming an image', p: 'Light enters through the pupil, the lens focuses it, and the retina senses it. Signals travel to the brain, which builds the image you see.', tip: 'Eye gathers → lens focuses → retina senses → brain sees.' },
+          { h: 'Light source vs. reflected', p: 'The Sun and lamps make light; a chair, a tree, and the Moon only reflect it. Knowing the difference explains why some things glow and others don’t.', example: 'The Moon shines because it reflects sunlight, not because it makes light.' },
+          { h: 'Why it matters', p: 'Vision and light drive cameras, glasses, safety lights, and art. Understanding how we see helps you protect your eyes and design devices.', tip: 'If you can see it, light is entering your eye — from a source or a reflection.' }
+        ] },
+        { kind: 'practice', subject: 'Science', title: 'Label the Eye', mode: 'labelDiagram', slots: [
+          { hint: 'Black opening in the center' }, { hint: 'Colored ring around it' }, { hint: 'Focuses light onto the back' }, { hint: 'Back layer that senses light' }
+        ], labels: [ { label: 'Pupil', slot: 0 }, { label: 'Iris', slot: 1 }, { label: 'Lens', slot: 2 }, { label: 'Retina', slot: 3 } ] },
+        { kind: 'activity', title: 'See the Light', stages: [
+          { type: 'quiz', subject: 'Science · Light', story: 'First, how does light travel?', prompt: 'Light travels in…', options: ['Straight lines', 'Curves', 'Circles'], a: 0, okMsg: 'Straight lines — sharp shadows. Switch 1 on!' },
+          { type: 'match', subject: 'Science · Eye parts', story: 'Match each eye part to its job.', pairs: [ ['Pupil','Hole that lets light in'], ['Iris','Colored ring'], ['Lens','Focuses light'], ['Retina','Senses light'] ] },
+          { type: 'input', subject: 'Math · Product', story: 'The lamp needs the product. 23 × 14 = ?', prompt: '23 × 14 = ?', accept: ['322'], okMsg: '322 — area model confirmed! Bulb in.' },
+          { type: 'twoTruths', subject: 'Science · Light & eye', story: 'One statement is FALSE. Tap the lie to close the circuit.', statements: [ {t:'Light travels in straight lines', a:true}, {t:'We see objects because light bounces off them into our eyes', a:true}, {t:'The retina focuses light onto the lens', a:false} ] }
+        ] }
+      ]
+    } },
+
+    '2-1': { type: 'mission', content: {
+      title: 'Chart the Coast',
+      intro: 'Sail with the explorers and argue your case. Learn opinion writing and NY’s European explorers, then chart the coast.',
+      winText: '🎉 Claim made and coast charted — anchor down!',
+      phases: [
+        { kind: 'lesson', subject: 'ELA', title: 'Opinion Writing: Claim + Reasons', blocks: [
+          { h: 'What is opinion writing?', p: 'Opinion writing shares what you think about a topic and backs it up with reasons. It is persuasive — you want the reader to agree.', example: '“Soccer is the best sport for kids” is an opinion to defend.' },
+          { h: 'Make a claim', p: 'A claim is your main opinion stated clearly in one sentence — the topic sentence of your argument. It tells the reader your position.', tip: 'Claim = “I think/believe ____ because.” Put it early.' },
+          { h: 'Support with reasons', p: 'Give 2–3 reasons that explain why your claim is true. Each reason is a separate point that supports the claim.', example: 'Claim: soccer is best. Reason: it builds teamwork and fitness.' },
+          { h: 'Add evidence', p: 'Back each reason with evidence — facts, examples, or details. Evidence makes reasons convincing instead of just opinions.', tip: 'Reasons explain why; evidence proves it.' },
+          { h: 'Counterclaim', p: 'A strong writer acknowledges the other side (counterclaim) and explains why their own view still holds. This is fair and persuasive.', example: '“Some say basketball is best, but soccer is played worldwide.”' },
+          { h: 'Strong conclusion', p: 'End by restating your claim in a new way and leaving the reader with a final thought. Don’t just repeat — wrap up.', tip: 'Conclusion = restate claim + final punch.' },
+          { h: 'Why it matters', p: 'Opinion writing teaches you to argue with reasons and evidence — a skill for essays, debates, and life.', tip: 'Claim → reasons → evidence → counterclaim → conclusion.' }
+        ] },
+        { kind: 'drill', subject: 'ELA', title: 'Rebuild the Claim', engine: 'scramble', words: ['I', 'believe', 'soccer', 'is', 'the', 'best', 'sport'] },
+        { kind: 'lesson', subject: 'Social Studies', title: 'European Explorers of NY', blocks: [
+          { h: 'Why Europeans explored', p: 'In the 1500s–1600s, European nations sailed to North America seeking trade routes, riches, and furs. They claimed land for their kings.', example: 'Furs from North America were valuable in Europe.' },
+          { h: 'Verrazano (1524)', p: 'Giovanni da Verrazano, sailing for France, was the first European to explore New York Harbor (1524). He met Native peoples along the coast.', tip: 'Verrazano = 1524, NY Harbor, for France.' },
+          { h: 'Henry Hudson (1609)', p: 'Henry Hudson, sailing for the Dutch, explored the river later named for him in 1609. His trip helped the Dutch claim the region.', example: 'The Hudson River is named after Henry Hudson.' },
+          { h: 'Champlain (1608)', p: 'Samuel de Champlain founded Quebec in 1608 and built New France to the north. He allied with some Native nations and traded furs.', diagram: '<div class="sg-energy-forms"><span>⛵ Verrazano 1524</span><span>🗺️ Hudson 1609</span><span>🏰 Champlain 1608</span><span>🦦 Fur trade</span><span>🤝 Native alliances</span></div>' },
+          { h: 'Explorers & Native peoples', p: 'Explorers met Native peoples who already lived here. Some traded and allied; others brought conflict and disease that harmed Native communities.', tip: 'Native peoples were here first; explorers changed their world.' },
+          { h: 'Effects on NY', p: 'These voyages led to European claims, the fur trade, and later colonies (New Netherland, New France). They reshaped NY’s history.', example: 'Hudson’s trip opened the door for the Dutch colony.' },
+          { h: 'Why it matters', p: 'Exploration began the colonial era in NY. Knowing who came, when, and why explains the state’s later history.', tip: 'Verrazano, Hudson, Champlain — three explorers, three nations.' }
+        ] },
+        { kind: 'practice', subject: 'Social Studies', title: 'Explorer Timeline', mode: 'timeline', eras: ['1524', '1608', '1609'], events: [
+          { text: 'Verrazano reaches NY harbor', era: 0 },
+          { text: 'Champlain founds Quebec', era: 1 },
+          { text: 'Hudson explores the Hudson River', era: 2 }
+        ] },
+        { kind: 'activity', title: 'Chart the Coast', stages: [
+          { type: 'quiz', subject: 'SS · Explorers', story: 'A sailor asks: who explored the river named for him in 1609?', prompt: 'Who explored the Hudson River in 1609?', options: ['Hudson', 'Verrazano', 'Champlain'], a: 0, okMsg: 'Hudson — the river bears his name. Marker 1!' },
+          { type: 'match', subject: 'SS + ELA · Terms', story: 'Match each explorer and term to its detail.', pairs: [ ['Verrazano','Reached NY harbor, 1524'], ['Hudson','Sailed the Hudson R., 1609'], ['Champlain','Founded Quebec'], ['Claim','Your opinion statement'] ] },
+          { type: 'input', subject: 'SS · Explorer name', story: 'The last name of the 1609 explorer (also a river name).', prompt: 'Henry ___ explored NY waters in 1609 (last name):', accept: ['hudson'], okMsg: 'Hudson — charted! Marker 3!' },
+          { type: 'dragSort', subject: 'ELA · Opinion order', story: 'Order the parts of an opinion paragraph.', items: [ {text:'State your claim', order:0}, {text:'Give a first reason', order:1}, {text:'Add evidence', order:2}, {text:'Restate the claim', order:3} ] }
+        ] }
+      ]
+    } },
+
+    '2-2': { type: 'mission', content: {
+      title: 'Split the Load',
+      intro: 'Divide fairly and link your ideas. Learn division with remainders and linking words, then split the load.',
+      winText: '🎉 Loads divided and paragraphs linked — camp set!',
+      phases: [
+        { kind: 'lesson', subject: 'Math', title: 'Division with Remainders', blocks: [
+          { h: 'Division = sharing', p: 'Division splits a number into equal groups. 45 ÷ 6 asks: how many groups of 6 fit in 45, and what is left over?', example: '45 split into groups of 6 → 7 groups, 3 left over.' },
+          { h: 'Quotient & remainder', p: 'The quotient is the whole-number result. The remainder is what is left over when it does not divide evenly. 45 ÷ 6 = 7 r 3.', tip: 'quotient r remainder — the “r” means remainder.' },
+          { h: 'How to divide', p: 'Estimate, then multiply to check: 6 × 7 = 42, and 45 − 42 = 3, so 45 ÷ 6 = 7 r 3.', example: 'Pick the biggest multiple of 6 under 45: 42. Subtract: 45 − 42 = 3.' },
+          { h: 'The remainder is left over', p: 'The remainder is always less than the divisor. If it’s not, your quotient is too small — bump it up.', tip: 'remainder < divisor, always.' },
+          { h: 'Check your answer', p: 'Check with: quotient × divisor + remainder = dividend. 7 × 6 + 3 = 42 + 3 = 45 ✓.', example: 'If the check doesn’t equal the dividend, re-do it.' },
+          { h: 'Word problems', p: 'In word problems, the remainder can mean “left over,” “make one more,” or “drop it.” Read the situation to decide.', tip: '“How many full groups” → drop remainder. “How many needed” → round up.' },
+          { h: 'Why it matters', p: 'Division with remainders appears in sharing, measurement, and schedules. Checking with multiply + add catches mistakes.', tip: 'quotient × divisor + remainder = dividend. Always check.' }
+        ] },
+        { kind: 'drill', subject: 'Math', title: 'Division Drill', questions: [
+          { prompt: '45 ÷ 6 = ? r ?', options: ['7 r 3', '8 r 0', '7 r 5'], a: 0, okMsg: '7 r 3 — 6×7=42, 45−42=3.' },
+          { prompt: '50 ÷ 7 = ? r ?', options: ['7 r 1', '7 r 2', '8 r 1'], a: 0, okMsg: '7 r 1 — 7×7=49, 50−49=1.' },
+          { prompt: 'The remainder must be…', options: ['Less than the divisor', 'Bigger than the divisor', 'Zero always'], a: 0, okMsg: 'Less than the divisor.' },
+          { prompt: 'Check 7 r 3 for 45 ÷ 6:', options: ['7×6 + 3 = 45', '7+6+3 = 16', '7×3 + 6 = 27'], a: 0, okMsg: '7×6 + 3 = 45 ✓.' },
+          { prompt: '38 ÷ 5 = ? r ?', options: ['7 r 3', '8 r 2', '7 r 2'], a: 0, okMsg: '7 r 3 — 5×7=35, 38−35=3.' },
+          { prompt: '“How many full boxes” means…', options: ['Drop the remainder', 'Round up', 'Ignore the quotient'], a: 0, okMsg: 'Drop the remainder — full boxes only.' }
+        ] },
+        { kind: 'lesson', subject: 'ELA', title: 'Linking Words in Writing', blocks: [
+          { h: 'What are linking words?', p: 'Linking words connect ideas so writing flows. They show how sentences and reasons relate — order, addition, cause, or contrast.', example: '“First we packed. Next we hiked.” Linking words show order.' },
+          { h: 'Sequence words', p: 'Sequence words show order: first, next, then, after, finally. Use them for steps, timelines, and how-tos.', tip: 'first → next → then → finally = clear order.' },
+          { h: 'Addition words', p: 'Addition words add more support: also, in addition, furthermore, another. Use them to stack reasons.', example: '“Also, soccer builds fitness.”' },
+          { h: 'Cause/effect words', p: 'Cause/effect words show why: because, so, since, therefore, as a result. They link a cause to its effect.', tip: '“because” gives the cause; “so” gives the effect.' },
+          { h: 'Contrast words', p: 'Contrast words show a turn: however, but, although, on the other hand. Use them for counterclaims.', example: '“Some prefer basketball; however, soccer is worldwide.”' },
+          { h: 'Choose the right link', p: 'Match the linking word to the job: order, add, cause, or contrast. The wrong link confuses the reader.', tip: 'Ask: am I ordering, adding, causing, or turning?' },
+          { h: 'Why it matters', p: 'Linking words turn choppy sentences into smooth, clear writing. They are the glue of strong paragraphs.', tip: 'Pick the link that matches the relationship.' }
+        ] },
+        { kind: 'practice', subject: 'ELA', title: 'Order the Trip (Drag in Sequence)', mode: 'dragSort', items: [
+          { text: 'First, we packed supplies', order: 0 }, { text: 'Next, we hiked the trail', order: 1 },
+          { text: 'Then, we set up camp', order: 2 }, { text: 'Finally, we watched the stars', order: 3 }
+        ] },
+        { kind: 'activity', title: 'Split the Load', stages: [
+          { type: 'twoTruths', subject: 'Math · Division', story: 'One statement is FALSE. Tap the lie to start the load.', statements: [ {t:'The remainder is what is left over', a:true}, {t:'45 ÷ 6 = 7 r 3', a:true}, {t:'To check: quotient + divisor = dividend', a:false} ] },
+          { type: 'match', subject: 'Math · Terms', story: 'Match each division term to its meaning.', pairs: [ ['Quotient','The result of dividing'], ['Remainder','What is left over'], ['Divisor','Number you divide by'], ['Dividend','Number being divided'] ] },
+          { type: 'input', subject: 'Math · Remainder', story: 'What is the remainder of 45 ÷ 6?', prompt: '45 ÷ 6 = 7 r ?  (type the remainder):', accept: ['3'], okMsg: '3 — left over! Load 3 split.' },
+          { type: 'fillBlank', subject: 'ELA · Linking words', story: 'Fill the linking words to finish the trip plan.', sentence: 'First we packed. * we hiked. Then we camped. * we watched stars.', blanks: ['Next', 'Finally'] }
+        ] }
+      ]
+    } },
+
+    '2-3': { type: 'mission', content: {
+      title: 'Colony Swap',
+      intro: 'Watch light bounce and a colony change hands. Learn reflection and the New Netherland → New York story, then swap the flag.',
+      winText: '🎉 Reflection traced and colony renamed — flag swapped!',
+      phases: [
+        { kind: 'lesson', subject: 'Science', title: 'Light Reflection & the Eye', blocks: [
+          { h: 'Reflection = light bounces', p: 'Reflection is light bouncing off a surface. The incoming ray hits the surface and bounces back as the reflected ray.', example: 'A flashlight on a mirror bounces a beam across the room.' },
+          { h: 'Smooth vs. rough surfaces', p: 'Smooth, shiny surfaces (mirrors) reflect light in one direction — a clear image. Rough surfaces scatter light in many directions — no clear image.', tip: 'Smooth → clear reflection. Rough → scattered, dull.' },
+          { h: 'Mirrors', p: 'A mirror reflects light smoothly so you see an image of yourself. The image appears “behind” the mirror but is really light bouncing back to your eyes.', example: 'A bathroom mirror shows a clear reflection.' },
+          { h: 'How the eye uses reflected light', p: 'Most objects don’t make light — we see them because they reflect light into our eyes. The eye then focuses that light to form an image.', diagram: '<div class="sg-flow"><span class="sg-flow-in">💡 Light</span><span class="sg-flow-arrow">→</span><span class="sg-flow-box">🪞 Surface</span><span class="sg-flow-arrow">→</span><span class="sg-flow-out">👁️ Eye</span></div>' },
+          { h: 'Seeing non-light sources', p: 'A chair, a tree, the Moon — we see them only by reflected light. Without a light source shining on them (or making light), they’d be invisible.', tip: 'If it doesn’t glow, you see it by reflection.' },
+          { h: 'Colors we see', p: 'A red apple reflects red light and absorbs the other colors. The color you see is the color an object reflects most.', example: 'A leaf reflects green; a blue shirt reflects blue.' },
+          { h: 'Why it matters', p: 'Reflection explains mirrors, how we see, and how cameras and glasses work. It is the basis of safe lighting and vision tools.', tip: 'To see a non-glowing object, light must reflect from it to your eye.' }
+        ] },
+        { kind: 'drill', subject: 'Science', title: 'Spot the Lie (Reflection)', engine: 'twoTruths', statements: [
+          { t: 'A mirror reflects light smoothly', a: true }, { t: 'We see a chair because it gives off its own light', a: false }, { t: 'Rough surfaces scatter light in many directions', a: true }
+        ] },
+        { kind: 'lesson', subject: 'Social Studies', title: 'New Netherland → New York', blocks: [
+          { h: 'The Dutch found New Netherland', p: 'In the early 1600s, the Dutch founded the colony of New Netherland in the Hudson River region, led by the Dutch West India Company.', example: 'The Dutch wanted furs and trade, not large settlements at first.' },
+          { h: 'New Amsterdam', p: 'New Amsterdam, at the tip of Manhattan, was the colony’s capital and main port. It later became New York City.', tip: 'New Amsterdam = Dutch capital = today’s lower Manhattan.' },
+          { h: 'Fur trade', p: 'The colony’s economy centered on the fur trade. Dutch traders exchanged goods with Native peoples for beaver pelts, valuable in Europe.', example: 'Beaver fur hats were fashionable in Europe.' },
+          { h: 'A diverse colony', p: 'New Netherland welcomed people from many nations and backgrounds, including enslaved Africans and European settlers. Diversity shaped the colony.', diagram: '<div class="sg-energy-forms"><span>🇳🇱 Dutch</span><span>🦦 Fur trade</span><span>🏙️ New Amsterdam</span><span>🌍 Diversity</span><span>🪙 Trade goods</span><span>🏴 English 1664</span></div>' },
+          { h: '1664: English take over', p: 'In 1664, the English took New Netherland without a fight and renamed it New York (after the Duke of York). New Amsterdam became New York City.', tip: '1664 → New Netherland becomes New York.' },
+          { h: 'Dutch influences remain', p: 'Even after the English took over, Dutch people, place names (Harlem, Brooklyn), and customs stayed. NY kept its mixed character.', example: '“Brooklyn” and “Harlem” come from Dutch names.' },
+          { h: 'Why it matters', p: 'The Dutch-to-English swap shaped NY’s culture, names, and trade. The colony’s diversity set the pattern for NY’s identity.', tip: 'Dutch founded it (1620s), English renamed it (1664), diversity stayed.' }
+        ] },
+        { kind: 'practice', subject: 'Social Studies', title: 'Dutch or English? (Venn)', mode: 'venn', left: 'Dutch', right: 'English', items: [
+          { text: 'Founded New Netherland', set: 0 }, { text: 'Renamed it New York in 1664', set: 1 },
+          { text: 'Wanted fur trade & land', set: 2 }, { text: 'Lived in NY first (Native peoples)', set: 3 }
+        ] },
+        { kind: 'activity', title: 'Colony Swap', stages: [
+          { type: 'quiz', subject: 'SS · 1664', story: 'Who took over New Netherland in 1664 and renamed it New York?', prompt: 'Who took over in 1664?', options: ['The English', 'The French', 'The Spanish'], a: 0, okMsg: 'The English — New York is born! Flag 1 raised.' },
+          { type: 'match', subject: 'SS + Sci · Terms', story: 'Match each term to its meaning.', pairs: [ ['New Amsterdam','Dutch capital (later NYC)'], ['1664','English took over'], ['Reflection','Light bouncing off a surface'], ['Mirror','Smooth, shiny reflector'] ] },
+          { type: 'input', subject: 'SS · Capital name', story: 'The Dutch capital was New ___ (one word).', prompt: 'The Dutch capital was New ___ (one word):', accept: ['amsterdam'], okMsg: 'Amsterdam — New Amsterdam! Flag 3 raised.' },
+          { type: 'labelDiagram', subject: 'Science · Reflection path', story: 'Label the reflection path to swap the flag.', slots: [ {hint:'Comes from the light source'}, {hint:'Bounces off the surface'}, {hint:'Smooth, shiny surface'}, {hint:'Enters your eye so you see'} ], labels: [ {label:'Light ray', slot:0}, {label:'Reflection', slot:1}, {label:'Mirror', slot:2}, {label:'Image', slot:3} ] }
+        ] }
+      ]
+    } },
 
     '3-0': { type: 'dragSort', content: { items: [ {text:'Draw 1/2 and 2/4 as models', order:0}, {text:'Compare their sizes', order:1}, {text:'See they are equal', order:2}, {text:'Write: 1/2 = 2/4', order:3} ] } },
     '3-1': { type: 'match', content: { pairs: [ ['Topic sentence','Starts a paragraph'], ['Supporting details','Prove the topic'], ['Colonist','Lived in a colony'], ['New Netherland','Dutch NY colony'], ['Precise vocabulary','Exact words'] ] } },
@@ -1004,6 +1156,107 @@
     wrap.appendChild(binRow); wrap.appendChild(pool); stage.appendChild(wrap);
   }
 
+  // 8e. TWO TRUTHS & A LIE (tap the false statement)
+  function renderTwoTruths(stage, c, ctx) {
+    var stmts = c.statements, solved = false;
+    var wrap = el('div', 'sg-ttl');
+    wrap.appendChild(el('div', 'sg-ttl-prompt', 'One statement is FALSE. Tap the lie.'));
+    var grid = el('div', 'sg-ttl-grid');
+    stmts.forEach(function (s) {
+      var b = el('button', 'sg-ttl-item'); b.innerHTML = '<span class="ic"></span><span class="txt">' + esc(s.t) + '</span>';
+      b.addEventListener('click', function () {
+        if (solved) return;
+        if (!s.a) {
+          b.classList.add('correct'); b.querySelector('.ic').textContent = '✓'; solved = true;
+          sound.play('correct'); SG.praise.show('correct'); ctx.setRing(100); ctx.onWin();
+          Array.prototype.forEach.call(grid.children, function (x) { x.classList.add('disabled'); });
+        } else {
+          b.classList.add('incorrect'); b.querySelector('.ic').textContent = '✗'; b.classList.add('shake');
+          setTimeout(function () { if (solved) return; b.classList.remove('incorrect', 'shake'); b.querySelector('.ic').textContent = ''; }, 650);
+          sound.play('wrong'); SG.praise.show('wrong'); SG.mascot.setMood('think');
+        }
+      });
+      grid.appendChild(b);
+    });
+    wrap.appendChild(grid); stage.appendChild(wrap);
+  }
+
+  // 8f. LABEL THE DIAGRAM (tap a label, then tap the matching slot/hotspot)
+  function renderLabelDiagram(stage, c, ctx) {
+    var slots = c.slots, labels = c.labels, placed = 0, sel = null;
+    var wrap = el('div', 'sg-label');
+    var dia = el('div', 'sg-label-diagram');
+    slots.forEach(function (sl, si) {
+      (function (si) {
+        var box = el('div', 'sg-label-slot');
+        box.innerHTML = '<span class="sg-label-hint">' + esc(sl.hint) + '</span><span class="sg-label-tag"></span>';
+        box.addEventListener('click', function () {
+          if (!sel) return;
+          var lab = sel, item = labels[+lab.dataset.i];
+          if (item.slot === si) {
+            box.classList.add('filled'); box.querySelector('.sg-label-tag').textContent = item.label;
+            lab.classList.add('placed'); lab.classList.remove('sel'); sound.play('correct'); SG.praise.show('correct');
+            placed++; ctx.setRing(ringPctOf(placed, labels.length)); sel = null;
+            if (placed === labels.length) ctx.onWin();
+          } else { lab.classList.add('shake'); setTimeout(function () { lab.classList.remove('shake'); }, 400); sound.play('wrong'); SG.praise.show('wrong'); SG.mascot.setMood('think'); }
+        });
+        dia.appendChild(box);
+      })(si);
+    });
+    var pool = el('div', 'sg-label-pool');
+    shuffle(labels.map(function (l, i) { return { l: l, i: i }; })).forEach(function (o) {
+      var chip = el('span', 'sg-label-chip', esc(o.l.label)); chip.dataset.i = o.i;
+      chip.addEventListener('click', function () {
+        if (chip.classList.contains('placed')) return;
+        if (sel) sel.classList.remove('sel');
+        sel = chip; chip.classList.add('sel'); sound.play('click');
+      });
+      pool.appendChild(chip);
+    });
+    wrap.appendChild(dia); wrap.appendChild(pool); stage.appendChild(wrap);
+  }
+
+  // 8g. VENN DIAGRAM SORT (tap item, then tap left-only / both / right-only / neither)
+  function renderVenn(stage, c, ctx) {
+    var left = c.left, right = c.right, items = c.items, placed = 0, sel = null;
+    var wrap = el('div', 'sg-venn');
+    var dia = el('div', 'sg-venn-diagram');
+    dia.innerHTML = '<div class="sg-venn-circ left"></div><div class="sg-venn-circ right"></div>' +
+      '<div class="sg-venn-lab left">' + esc(left) + '</div><div class="sg-venn-lab right">' + esc(right) + '</div>';
+    var regions = {};
+    function makeRegion(cls, set, label) {
+      var r = el('div', 'sg-venn-region ' + cls);
+      r.innerHTML = '<span class="sg-venn-rlabel">' + esc(label) + '</span><div class="sg-venn-drop"></div>';
+      r.addEventListener('click', function () {
+        if (!sel) return;
+        var card = sel, it = items[+card.dataset.i];
+        if (it.set === set) {
+          r.querySelector('.sg-venn-drop').appendChild(card); card.classList.add('placed'); card.classList.remove('sel');
+          sound.play('correct'); SG.praise.show('correct'); placed++; ctx.setRing(ringPctOf(placed, items.length)); sel = null;
+          if (placed === items.length) ctx.onWin();
+        } else { card.classList.add('shake'); setTimeout(function () { card.classList.remove('shake'); }, 400); sound.play('wrong'); SG.praise.show('wrong'); SG.mascot.setMood('think'); }
+      });
+      return r;
+    }
+    var rL = makeRegion('rleft', 0, left + ' only');
+    var rBoth = makeRegion('rboth', 2, 'Both');
+    var rR = makeRegion('rright', 1, right + ' only');
+    dia.appendChild(rL); dia.appendChild(rBoth); dia.appendChild(rR);
+    var neither = makeRegion('neither', 3, 'Neither');
+    wrap.appendChild(dia); wrap.appendChild(neither);
+    var pool = el('div', 'sg-venn-pool');
+    shuffle(items.map(function (it, i) { return { it: it, i: i }; })).forEach(function (o) {
+      var card = el('div', 'sg-venn-card', esc(o.it.text)); card.dataset.i = o.i;
+      card.addEventListener('click', function () {
+        if (card.classList.contains('placed')) return;
+        if (sel) sel.classList.remove('sel');
+        sel = card; card.classList.add('sel'); sound.play('click');
+      });
+      pool.appendChild(card);
+    });
+    wrap.appendChild(pool); stage.appendChild(wrap);
+  }
+
   // 8. QUIZ (multiple choice; covers T/F with 2 options)
   function renderQuiz(stage, c, ctx) {
     var qs = c.questions, i = 0, score = 0, answered = false;
@@ -1345,7 +1598,7 @@
   }
   function labelForPrev(phases, pi) { return pi > 0 ? (phases[pi - 1].title || phases[pi - 1].kind) : 'start'; }
 
-  var RENDERERS = { scratch: renderScratch, wordSearch: renderWordSearch, match: renderMatch, dragSort: renderDragSort, flip: renderFlip, hangman: renderHangman, fillBlank: renderFillBlank, quizMC: renderQuiz, trueFalse: renderTrueFalse, scramble: renderScramble, timeline: renderTimeline, categorize: renderCategorize, mission: renderMission };
+  var RENDERERS = { scratch: renderScratch, wordSearch: renderWordSearch, match: renderMatch, dragSort: renderDragSort, flip: renderFlip, hangman: renderHangman, fillBlank: renderFillBlank, quizMC: renderQuiz, trueFalse: renderTrueFalse, scramble: renderScramble, timeline: renderTimeline, categorize: renderCategorize, twoTruths: renderTwoTruths, labelDiagram: renderLabelDiagram, venn: renderVenn, mission: renderMission };
 
   /* ---------- ripple ---------- */
   function attachRipple(btn) {

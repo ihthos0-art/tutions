@@ -91,7 +91,7 @@
       phases: [
         { kind: 'lesson', subject: 'Math', title: 'Place Value to 1,000,000', blocks: [
           { h: 'What is place value?', p: 'Every digit in a number has a value based on its position. The farther left a digit sits, the bigger its value — each place is 10× the one to its right.', example: 'In 342,891: the 3 means 300,000; the 4 means 40,000; the 2 means 2,000; the 8 means 800; the 9 means 90; the 1 means 1.' },
-          { h: 'Read it in groups of three', p: 'Read big numbers in groups of three from the right: ones, thousands, millions. Each group has ones, tens, hundreds.', example: '742,318 → “seven hundred forty-two thousand, three hundred eighteen.” The comma marks the thousands group.', tip: 'Say the group name (thousand / million) at each comma — never at the last group.' },
+          { h: 'Read it in groups of three', p: 'Read big numbers in groups of three from the right: ones, thousands, millions. Each group has ones, tens, hundreds.', diagram: '<div class="sg-pv"><div class="sg-pv-group"><span class="sg-pv-glabel">Thousands</span><div class="sg-pv-cells"><b>7</b><b>4</b><b>2</b></div><div class="sg-pv-cols"><span>Hundred-thousands</span><span>Ten-thousands</span><span>Thousands</span></div></div><div class="sg-pv-comma">,</div><div class="sg-pv-group"><span class="sg-pv-glabel">Ones</span><div class="sg-pv-cells"><b>3</b><b>1</b><b>8</b></div><div class="sg-pv-cols"><span>Hundreds</span><span>Tens</span><span>Ones</span></div></div></div><div class="sg-pv-cap">742,318 → “seven hundred forty-two thousand, three hundred eighteen”</div>', example: '742,318 → “seven hundred forty-two thousand, three hundred eighteen.” The comma marks the thousands group.', tip: 'Say the group name (thousand / million) at each comma — never at the last group.' },
           { h: 'Compare and round', p: 'Compare digit by digit from the left. To round: look at the digit to the right of your target place — 5 or more rounds up, less rounds down.', example: '845,210 vs 845,199 → same until the tens: 1 ten vs 9 tens, so 845,210 is bigger. Round 742,318 to the nearest thousand → 742,000 (the hundreds digit 3 is less than 5).' }
         ] },
         { kind: 'drill', subject: 'Math', title: 'Place Value Drill', questions: [
@@ -103,9 +103,13 @@
           { prompt: 'Write: three hundred twenty-four thousand, five.', options: ['324,005', '324,500', '32,405'], a: 0, okMsg: '324,005 — the “five” sits in the ones.' }
         ] },
         { kind: 'lesson', subject: 'Science', title: 'Forms of Energy', blocks: [
-          { h: 'Energy makes things happen', p: 'Energy is what makes objects move, glow, heat up, or make sound. It cannot be created or destroyed — it only changes form.', example: 'A toaster changes electrical energy into heat. A lamp changes electrical energy into light and heat.' },
-          { h: 'The main forms', p: 'Sound (what we hear), light (what we see), heat (thermal), electrical (from outlets and batteries), and motion (movement).', tip: 'Watch for clues: glows = light, hums = sound, warm = heat, plugged in = electrical, moving = motion.' },
-          { h: 'Energy transfers', p: 'Energy moves and changes. A rolling ball passes motion to whatever it hits. A flashlight turns stored energy into light you can use.', example: 'A fan changes electrical energy into motion (spinning blades) + a little sound + heat.' }
+          { h: 'What is energy?', p: 'Energy is the ability to make things happen — to move, glow, heat up, make sound, or grow. Nothing around you can change without energy. It is in your food, the wind, a battery, and sunlight.', example: 'When you run, you use energy from food. When a TV turns on, it uses electrical energy.' },
+          { h: 'The big rule: energy never disappears', p: 'Energy cannot be created or destroyed — it only changes form. The total amount of energy always stays the same. Scientists call this the law of conservation of energy.', tip: '“Disappear” is a trick — energy just changes into a form you can’t see, like heat spreading into the air.' },
+          { h: 'The main forms of energy', p: 'Scientists sort energy into forms: sound (what you hear), light (what you see), heat or thermal (warmth), electrical (from outlets and batteries), motion (movement), and stored energy (like food or a stretched rubber band).', diagram: '<div class="sg-energy-forms"><span>🔊 Sound</span><span>💡 Light</span><span>🔥 Heat</span><span>⚡ Electrical</span><span>🏃 Motion</span><span>🔋 Stored</span></div>' },
+          { h: 'Spot the clues', p: 'You can tell the form of energy by what it does: glows = light, hums or is loud = sound, feels warm = heat, needs a plug or battery = electrical, moving = motion.', example: 'A flashlight glows (light) and gets warm (heat). A speaker hums (sound) and vibrates (motion).' },
+          { h: 'Energy changes form (conversion)', p: 'Devices convert energy from one form into another. Something goes IN and something comes OUT. Usually electrical energy goes in, and light, heat, sound, or motion comes out.', diagram: '<div class="sg-flow"><span class="sg-flow-in">⚡ Electrical</span><span class="sg-flow-arrow">→</span><span class="sg-flow-box">💡 Lamp</span><span class="sg-flow-arrow">→</span><span class="sg-flow-out">💡 Light + 🔥 Heat</span></div><div class="sg-flow"><span class="sg-flow-in">⚡ Electrical</span><span class="sg-flow-arrow">→</span><span class="sg-flow-box">🌀 Fan</span><span class="sg-flow-arrow">→</span><span class="sg-flow-out">🏃 Motion + 🔊 Sound</span></div>' },
+          { h: 'Energy transfers', p: 'Energy also moves from object to object. A rolling ball carries motion energy and passes it to whatever it hits. The total energy is conserved — it just travels.', example: 'A bowling ball transfers motion to the pins — the pins fly (motion) and you hear a crash (sound).' },
+          { h: 'Why it matters', p: 'Understanding energy helps you read science texts, explain how machines work, and save energy at home. Watch for the IN→OUT pattern whenever a device is described.', tip: 'On a test, look for “changes into” or “turns into” — that signals an energy conversion.' }
         ] },
         { kind: 'practice', subject: 'Science', title: 'Energy Recap', mode: 'flash', items: [
           { front: '🔊 Sound', back: 'A form of energy we hear.' },
@@ -752,6 +756,13 @@
     });
     wrap.appendChild(track);
 
+    // back-nav row (review a previous phase if stuck)
+    var navRow = el('div', 'sg-phase-nav');
+    var backBtn = el('button', 'sg-btn sg-mini sg-back-btn', '‹ Back');
+    backBtn.addEventListener('click', function () { sound.play('click'); prevPhase(); });
+    navRow.appendChild(backBtn);
+    wrap.appendChild(navRow);
+
     var scene = el('div', 'sg-mis-scene'); wrap.appendChild(scene);
     var feedback = el('div', 'sg-mis-fb'); wrap.appendChild(feedback);
 
@@ -833,24 +844,50 @@
 
     // ---------- phase renderers ----------
     function renderLesson(ph) {
+      var blocks = ph.blocks || [];
       var card = el('div', 'sg-lesson');
       card.innerHTML = '<div class="sg-les-subj">' + esc(ph.subject) + '</div><h3 class="sg-les-title">' + esc(ph.title) + '</h3>';
-      (ph.blocks || []).forEach(function (bk) {
-        var b = el('div', 'sg-les-block');
+      var body = el('div', 'sg-les-body'); card.appendChild(body);
+      var btns = el('div', 'sg-les-btns'); card.appendChild(btns);
+      scene.innerHTML = ''; scene.appendChild(card); fbClear();
+
+      function renderBlock(bk) {
+        var b = el('div', 'sg-les-block sg-reveal');
         if (bk.h) b.appendChild(el('div', 'sg-les-h', esc(bk.h)));
         if (bk.p) b.appendChild(el('p', 'sg-les-p', esc(bk.p)));
+        if (bk.diagram) { var d = el('div', 'sg-les-diagram'); d.innerHTML = bk.diagram; b.appendChild(d); }
         if (bk.example) { var ex = el('div', 'sg-les-example'); ex.innerHTML = '💡 <b>Example:</b> ' + esc(bk.example); b.appendChild(ex); }
         if (bk.tip) { var tp = el('div', 'sg-les-tip'); tp.innerHTML = '✅ <b>Tip:</b> ' + esc(bk.tip); b.appendChild(tp); }
-        card.appendChild(b);
-      });
-      var btns = el('div', 'sg-les-btns');
-      var skip = el('button', 'sg-btn sg-skip-btn', 'Skip lesson ▸');
-      var go = el('button', 'sg-btn sg-go-btn', 'Start ' + labelForNext(phases, pi) + ' ▸');
-      skip.addEventListener('click', function () { sound.play('click'); nextPhase(false); });
-      go.addEventListener('click', function () { sound.play('click'); nextPhase(false); });
-      btns.appendChild(skip); btns.appendChild(go);
-      card.appendChild(btns);
-      scene.innerHTML = ''; scene.appendChild(card); fbClear();
+        body.appendChild(b);
+        requestAnimationFrame(function () { b.classList.add('is-visible'); });
+        return b;
+      }
+
+      var shown = 0;
+      function renderCtrl() {
+        btns.innerHTML = '';
+        if (shown < blocks.length) {
+          var moreLabel = shown === 0 ? 'Start reading ▸' : 'Show next part ▸';
+          var more = el('button', 'sg-btn sg-go-btn', moreLabel);
+          more.addEventListener('click', function () {
+            sound.play('click');
+            var blk = renderBlock(blocks[shown]); shown++;
+            setTimeout(function () { blk.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 70);
+            renderCtrl();
+          });
+          btns.appendChild(more);
+        } else {
+          var skip = el('button', 'sg-btn sg-skip-btn', 'Skip ▸');
+          skip.addEventListener('click', function () { sound.play('click'); nextPhase(); });
+          var go = el('button', 'sg-btn sg-go-btn', 'Start ' + labelForNext(phases, pi) + ' ▸');
+          go.addEventListener('click', function () { sound.play('click'); nextPhase(); });
+          btns.appendChild(skip); btns.appendChild(go);
+        }
+      }
+
+      // reveal the first block right away so there is something to read
+      if (blocks.length) { renderBlock(blocks[0]); shown = 1; }
+      renderCtrl();
     }
 
     function renderDrill(ph) {
@@ -942,6 +979,8 @@
     // ---------- phase driver ----------
     function renderPhase() {
       var ph = phases[pi];
+      navRow.style.visibility = pi > 0 ? 'visible' : 'hidden';
+      if (pi > 0) backBtn.textContent = '‹ Back to ' + labelForPrev(phases, pi);
       if (ph.kind === 'lesson') renderLesson(ph);
       else if (ph.kind === 'drill') renderDrill(ph);
       else if (ph.kind === 'practice') renderPractice(ph);
@@ -951,6 +990,10 @@
       if (pi > 0) setPhaseState(pi - 1, 'done');
       if (pi >= phases.length - 1) return; // safety
       pi++; setPhaseState(pi, 'cur'); renderPhase();
+    }
+    function prevPhase() {
+      if (pi <= 0) return;
+      setPhaseState(pi, 'lock'); pi--; setPhaseState(pi, 'cur'); renderPhase();
     }
 
     setPhaseState(0, 'cur');
@@ -963,6 +1006,7 @@
     for (var j = pi + 1; j < phases.length; j++) { if (phases[j].kind === 'activity') return 'the activity'; return phases[j].title || phases[j].kind; }
     return 'next';
   }
+  function labelForPrev(phases, pi) { return pi > 0 ? (phases[pi - 1].title || phases[pi - 1].kind) : 'start'; }
 
   var RENDERERS = { scratch: renderScratch, wordSearch: renderWordSearch, match: renderMatch, dragSort: renderDragSort, flip: renderFlip, hangman: renderHangman, fillBlank: renderFillBlank, quizMC: renderQuiz, mission: renderMission };
 
@@ -1144,39 +1188,6 @@
   }
 
   /* ---------- INIT ---------- */
-  /* ---------- skip-lesson nav (TEST: jump to any day without completing prior) ---------- */
-  function wireSkipNav() {
-    if (document.getElementById('sg-skip-fab')) return;
-    var fab = el('button', 'sg-skip-fab'); fab.id = 'sg-skip-fab'; fab.type = 'button';
-    fab.innerHTML = '⏭<span class="sg-skip-label">Skip to…</span>'; fab.title = 'Test: jump to any lesson';
-    var panel = el('div', 'sg-skip-panel'); panel.id = 'sg-skip-panel';
-    var html = '<div class="sg-skip-hd">Jump to a lesson <button class="sg-skip-x" aria-label="Close">×</button></div><div class="sg-skip-grid">';
-    for (var w = 0; w < SG.SCHEDULE.length; w++) {
-      html += '<div class="sg-skip-wk"><div class="sg-skip-wkt">Week ' + (w + 1) + '</div>';
-      for (var d = 0; d < SG.SCHEDULE[w].length; d++) {
-        html += '<button class="sg-skip-day" data-skip="' + w + '-' + d + '">D' + (d + 1) + '</button>';
-      }
-      html += '</div>';
-    }
-    html += '</div>';
-    panel.innerHTML = html;
-    document.body.appendChild(fab); document.body.appendChild(panel);
-
-    fab.addEventListener('click', function (e) { e.stopPropagation(); panel.classList.toggle('open'); fab.classList.toggle('active'); });
-    panel.querySelector('.sg-skip-x').addEventListener('click', function () { panel.classList.remove('open'); fab.classList.remove('active'); });
-    document.addEventListener('click', function (e) { if (!panel.contains(e.target) && e.target !== fab) { panel.classList.remove('open'); fab.classList.remove('active'); } });
-    panel.querySelectorAll('.sg-skip-day').forEach(function (b) {
-      b.addEventListener('click', function () {
-        var key = b.dataset.skip, parts = key.split('-'), w = +parts[0], d = +parts[1];
-        var card = document.querySelector(".day-game-card[data-day='" + key + "']");
-        // make sure the week's week-btn is active (if week nav exists)
-        var wb = document.querySelector(".week-btn[data-week='" + w + "']"); if (wb) wb.click();
-        if (card) { card.scrollIntoView({ behavior: 'smooth', block: 'center' }); card.classList.add('sg-flash'); setTimeout(function () { card.classList.remove('sg-flash'); }, 900); }
-        panel.classList.remove('open'); fab.classList.remove('active'); sound.play('click');
-      });
-    });
-  }
-
   SG.init = function () {
     if (!document.getElementById('summer-weeks')) return;
     buildOverlays();
@@ -1185,7 +1196,6 @@
     wireReset();
     updateProgress();
     wireRipples();
-    wireSkipNav();
     // re-wire ripples for dynamically created buttons
     var obs = new MutationObserver(function () { document.querySelectorAll('.sg-btn:not([data-rip])').forEach(function (b) { b.dataset.rip = '1'; attachRipple(b); }); });
     var weeks = document.getElementById('summer-weeks'); if (weeks) obs.observe(weeks, { childList: true, subtree: true });

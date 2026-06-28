@@ -345,9 +345,40 @@ span.ripple { position: absolute; border-radius: 50%; transform: scale(0);
 .sg-les-block .sg-les-p { font-family: var(--sg-body); color: var(--sg-ink); line-height: 1.55; font-size: 0.93rem; margin: 0; }
 .sg-les-example { margin-top: 8px; background: #fff7e6; border: 1px solid #f3dca0; border-radius: 10px; padding: 9px 11px; font-family: var(--sg-body); font-size: 0.87rem; color: #8a5a1f; line-height: 1.5; }
 .sg-les-tip { margin-top: 8px; background: #ecfdf5; border: 1px solid #bfe6cd; border-radius: 10px; padding: 9px 11px; font-family: var(--sg-body); font-size: 0.87rem; color: #1b6e4a; line-height: 1.5; }
+.sg-les-body { display: flex; flex-direction: column; gap: 10px; }
 .sg-les-btns { display: flex; gap: 10px; margin-top: 14px; justify-content: flex-end; flex-wrap: wrap; }
 .sg-skip-btn { background: #f3ede2 !important; color: var(--sg-ink-soft) !important; border: 2px solid #d8ccb6 !important; box-shadow: none !important; }
 .sg-go-btn { background: var(--sg-go) !important; color: #fff !important; border: none !important; }
+
+/* ---- lesson diagrams ---- */
+.sg-les-diagram { margin-top: 10px; }
+.sg-energy-forms { display: flex; flex-wrap: wrap; gap: 8px; }
+.sg-energy-forms span { font-family: var(--sg-head); font-weight: 700; font-size: 0.92rem; color: var(--sg-ink);
+  background: #fffdf9; border: 2px solid var(--sg-line); border-radius: 999px; padding: 6px 12px; box-shadow: var(--sg-clay-soft); }
+.sg-flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: center;
+  background: #f0f9ff; border: 1px solid #cde9f5; border-radius: 12px; padding: 10px; margin-top: 8px; font-family: var(--sg-head); font-weight: 700; }
+.sg-flow-in { color: #2a6da3; background: #e3f1fb; border-radius: 999px; padding: 4px 10px; }
+.sg-flow-arrow { color: #5aa6e0; font-size: 1.1rem; }
+.sg-flow-box { color: #fff; background: var(--sg-ela); border-radius: 10px; padding: 5px 11px; }
+.sg-flow-out { color: #1b6e4a; background: #e6f7ee; border-radius: 999px; padding: 4px 10px; }
+
+/* place-value chart */
+.sg-pv { display: flex; align-items: stretch; gap: 4px; justify-content: center; margin-top: 10px; flex-wrap: wrap; }
+.sg-pv-group { background: #fffdf9; border: 2px solid var(--sg-line); border-radius: 14px; padding: 8px 10px; text-align: center; box-shadow: var(--sg-clay-soft); }
+.sg-pv-glabel { display: block; font-family: var(--sg-head); font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--sg-ela); margin-bottom: 6px; }
+.sg-pv-cells { display: flex; gap: 6px; justify-content: center; }
+.sg-pv-cells b { width: 38px; height: 44px; display: flex; align-items: center; justify-content: center;
+  font-family: var(--sg-head); font-size: 1.5rem; font-weight: 800; color: var(--sg-ink);
+  background: #fbf6ee; border: 1px solid #ead9b8; border-radius: 8px; }
+.sg-pv-cols { display: flex; gap: 6px; justify-content: center; margin-top: 6px; }
+.sg-pv-cols span { width: 38px; font-family: var(--sg-body); font-size: 0.58rem; color: #a99e90; line-height: 1.1; }
+.sg-pv-comma { display: flex; align-items: center; font-family: var(--sg-head); font-size: 1.6rem; font-weight: 800; color: var(--sg-math); }
+.sg-pv-cap { text-align: center; font-family: var(--sg-body); font-size: 0.84rem; color: var(--sg-ink-soft); margin-top: 8px; }
+
+/* ---- phase back-nav ---- */
+.sg-phase-nav { display: flex; justify-content: flex-start; min-height: 0; margin: -2px 0 2px; }
+.sg-back-btn { background: #f3ede2 !important; color: var(--sg-ink) !important; border: 2px solid #d8ccb6 !important;
+  padding: 6px 14px !important; font-size: 0.85rem !important; box-shadow: none !important; }
 
 /* ---- drill ---- */
 .sg-drill-bar { text-align: center; font-family: var(--sg-head); font-size: 0.82rem; font-weight: 700; color: var(--sg-ink-soft); background: #f3ede2; border-radius: 10px; padding: 7px; margin-bottom: 10px; }

@@ -90,9 +90,13 @@
       winText: '🎉 The city is lit! You powered through Day 1.',
       phases: [
         { kind: 'lesson', subject: 'Math', title: 'Place Value to 1,000,000', blocks: [
-          { h: 'What is place value?', p: 'Every digit in a number has a value based on its position. The farther left a digit sits, the bigger its value — each place is 10× the one to its right.', example: 'In 342,891: the 3 means 300,000; the 4 means 40,000; the 2 means 2,000; the 8 means 800; the 9 means 90; the 1 means 1.' },
-          { h: 'Read it in groups of three', p: 'Read big numbers in groups of three from the right: ones, thousands, millions. Each group has ones, tens, hundreds.', diagram: '<div class="sg-pv"><div class="sg-pv-group"><span class="sg-pv-glabel">Thousands</span><div class="sg-pv-cells"><b>7</b><b>4</b><b>2</b></div><div class="sg-pv-cols"><span>Hundred-thousands</span><span>Ten-thousands</span><span>Thousands</span></div></div><div class="sg-pv-comma">,</div><div class="sg-pv-group"><span class="sg-pv-glabel">Ones</span><div class="sg-pv-cells"><b>3</b><b>1</b><b>8</b></div><div class="sg-pv-cols"><span>Hundreds</span><span>Tens</span><span>Ones</span></div></div></div><div class="sg-pv-cap">742,318 → “seven hundred forty-two thousand, three hundred eighteen”</div>', example: '742,318 → “seven hundred forty-two thousand, three hundred eighteen.” The comma marks the thousands group.', tip: 'Say the group name (thousand / million) at each comma — never at the last group.' },
-          { h: 'Compare and round', p: 'Compare digit by digit from the left. To round: look at the digit to the right of your target place — 5 or more rounds up, less rounds down.', example: '845,210 vs 845,199 → same until the tens: 1 ten vs 9 tens, so 845,210 is bigger. Round 742,318 to the nearest thousand → 742,000 (the hundreds digit 3 is less than 5).' }
+          { h: 'What is place value?', p: 'Every digit in a number has a value based on its position — its place. The farther left a digit sits, the bigger its value. In Grade 4 we work with whole numbers up to 1,000,000 (one million).', example: 'In 342,891: the 3 means 300,000; the 4 means 40,000; the 2 means 2,000; the 8 means 800; the 9 means 90; the 1 means 1.' },
+          { h: 'Each place is 10× the one to its right', p: 'Moving one place to the left makes a digit worth 10 times more. Moving one place to the right makes it worth 10 times less. This is why our number system is called base-ten.', example: 'A 4 in the ten-thousands place (40,000) is worth 10× a 4 in the thousands place (4,000), and 1/10 of a 4 in the hundred-thousands place (400,000).' },
+          { h: 'Read it in groups of three', p: 'Read big numbers in groups of three from the right: ones, thousands, millions. Each group has ones, tens, hundreds. The comma marks the thousands group.', diagram: '<div class="sg-pv"><div class="sg-pv-group"><span class="sg-pv-glabel">Thousands</span><div class="sg-pv-cells"><b>7</b><b>4</b><b>2</b></div><div class="sg-pv-cols"><span>Hundred-thousands</span><span>Ten-thousands</span><span>Thousands</span></div></div><div class="sg-pv-comma">,</div><div class="sg-pv-group"><span class="sg-pv-glabel">Ones</span><div class="sg-pv-cells"><b>3</b><b>1</b><b>8</b></div><div class="sg-pv-cols"><span>Hundreds</span><span>Tens</span><span>Ones</span></div></div></div><div class="sg-pv-cap">742,318 → “seven hundred forty-two thousand, three hundred eighteen”</div>', example: '742,318 → “seven hundred forty-two thousand, three hundred eighteen.”', tip: 'Say the group name (thousand / million) at each comma — never at the last group.' },
+          { h: 'Expanded form', p: 'Expanded form breaks a number apart to show the value of each digit, written as a sum. It proves you understand what every digit is worth.', example: '742,318 = 700,000 + 40,000 + 2,000 + 300 + 10 + 8. You can also write 50,327 = 50,000 + 300 + 20 + 7.' },
+          { h: 'Compare digit by digit', p: 'To compare two numbers, line up their places and read from the left. The first place where the digits differ tells you which is bigger.', example: '845,210 vs 845,199 → same hundred-thousands, same ten-thousands, same thousands, same hundreds; the tens differ: 1 ten vs 9 tens, so 845,210 is greater. Use >, <, or =.' },
+          { h: 'Rounding', p: 'Rounding gives a close, friendly number. Pick the place to round to, then look at the digit just to its right: 5 or more rounds up, less than 5 rounds down. Everything to the right becomes zero.', example: 'Round 742,318 to the nearest thousand → 742,000 (the hundreds digit 3 is less than 5). Round 742,318 to the nearest hundred-thousand → 700,000 (the ten-thousands digit 4 is less than 5).' },
+          { h: 'Why it matters', p: 'Big numbers are everywhere — city populations, distances, money, test scores. Place value lets you read, compare, and round them quickly instead of being overwhelmed.', tip: 'On a test, underline the place you are rounding to before you look at the next digit — it stops careless errors.' }
         ] },
         { kind: 'drill', subject: 'Math', title: 'Place Value Drill', questions: [
           { prompt: 'What is the value of the digit 4 in 342,891?', options: ['4,000', '40,000', '400,000'], a: 1, okMsg: '40,000 — the ten-thousands place.' },
@@ -111,18 +115,19 @@
           { h: 'Energy transfers', p: 'Energy also moves from object to object. A rolling ball carries motion energy and passes it to whatever it hits. The total energy is conserved — it just travels.', example: 'A bowling ball transfers motion to the pins — the pins fly (motion) and you hear a crash (sound).' },
           { h: 'Why it matters', p: 'Understanding energy helps you read science texts, explain how machines work, and save energy at home. Watch for the IN→OUT pattern whenever a device is described.', tip: 'On a test, look for “changes into” or “turns into” — that signals an energy conversion.' }
         ] },
-        { kind: 'practice', subject: 'Science', title: 'Energy Recap', mode: 'flash', items: [
-          { front: '🔊 Sound', back: 'A form of energy we hear.' },
-          { front: '💡 Light', back: 'Energy we see; travels in straight lines.' },
-          { front: '🔥 Heat', back: 'Thermal energy; moves warm → cool.' },
-          { front: '⚡ Electrical', back: 'Energy from outlets and batteries.' },
-          { front: '🔄 Energy transfer', back: 'Energy changes from one form into another.' }
+        { kind: 'practice', subject: 'Science', title: 'Energy Recap — Match the Form', mode: 'match', pairs: [
+          ['Sound', 'Energy we hear'],
+          ['Light', 'Energy we see'],
+          ['Heat', 'Thermal energy (warmth)'],
+          ['Electrical', 'From outlets & batteries'],
+          ['Motion', 'Energy of movement'],
+          ['Stored', 'Waiting to be used (food, a battery)']
         ] },
         { kind: 'activity', title: 'Power Up the City', stages: [
           { type: 'quiz', subject: 'Math · Place value', story: 'The first meter reads 342,891. Find the value of the digit 4 to unlock Block 1.', prompt: 'What is the value of digit 4 in 342,891?', options: ['4,000', '40,000', '400,000'], a: 1, okMsg: '40,000 — ten-thousands. Block 1 online!' },
-          { type: 'seek', subject: 'Science · Energy forms', story: 'Block 2 needs energy sources. Spot every form of energy in the yard.', prompt: 'Tap every item that is a form of energy:', items: [ {label:'💡 Light'}, {label:'🔥 Heat'}, {label:'🔊 Sound'}, {label:'🪨 Rock'}, {label:'💧 Water'} ], correct: [0,1,2], okMsg: 'Light, heat, sound — all energy! Block 2 online!' },
+          { type: 'match', subject: 'Science · Energy sources', story: 'Block 2 needs power. Match each everyday source to the form of energy it gives off.', pairs: [ ['A glowing lamp','Light'], ['A campfire','Heat'], ['A barking dog','Sound'], ['A rolling skateboard','Motion'], ['A wall outlet','Electrical'] ] },
           { type: 'input', subject: 'Math · Rounding', story: 'Block 3’s meter shows 742,318. Round it to the nearest thousand to calibrate.', prompt: 'Round 742,318 to the nearest thousand (type the number):', accept: ['742000', '742,000'], okMsg: '742,000 — calibrated! Block 3 online!' },
-          { type: 'quiz', subject: 'Science · Energy transfer', story: 'Final block. A lamp is plugged in. What happens to the electrical energy?', prompt: 'A lamp changes electrical energy into ___?', options: ['Light and heat', 'Nothing — it vanishes', 'Food'], a: 0, okMsg: 'Electrical → light + heat. Whole city online!' }
+          { type: 'fillBlank', subject: 'Science · Energy conversion', story: 'Final block. A lamp is plugged in. Complete the energy conversion to light the city.', sentence: 'A lamp changes * energy into light and *.', blanks: ['electrical', 'heat'] }
         ] }
       ]
     } },
@@ -132,9 +137,13 @@
       winText: '🎉 Case cracked — you tracked the clue across NY!',
       phases: [
         { kind: 'lesson', subject: 'ELA', title: 'Close Reading & Text Evidence', blocks: [
-          { h: 'Read like a detective', p: 'Close reading means reading a text slowly and more than once to understand it deeply and notice details you’d miss the first time.', example: 'Read once for the gist, again for details, a third time to answer questions.' },
-          { h: 'Prove it with evidence', p: 'Good readers don’t guess — they prove answers using the text. Use direct quotes, “the text says…”, or reread to find the exact spot.', tip: 'Two kinds of details: explicit (stated right in the text) and inferred (you figure it out from clues).' },
-          { h: 'Explicit vs. inferred', p: 'Explicit = the words are right there. Inferred = the text gives clues but doesn’t say it directly, so you reason it out.', example: '“The dog barked” = explicit. “The dog was probably hungry” (because it stared at the food) = inferred.' }
+          { h: 'Read like a detective', p: 'Close reading means reading a text slowly and more than once to understand it deeply and notice details you would miss the first time. You read with a question in mind.', example: 'Read once for the gist, again for details, a third time to answer questions.' },
+          { h: 'Reread three times', p: 'Each reread has a job: first for what it is mostly about, second for the important details, third to answer a question or prove a claim. Slowing down is the whole point.', tip: 'Underline confusing words on the second read and jot a quick question in the margin.' },
+          { h: 'Explicit vs. inferred details', p: 'Explicit details are stated right in the text — the words are there. Inferred details are not said directly; you figure them out from clues plus what you already know.', example: '“The dog barked” = explicit. “The dog was probably hungry” (because it stared at the food) = inferred.' },
+          { h: 'Prove it with evidence', p: 'Good readers do not guess — they prove answers using the text. Use direct quotes, the phrase “the text says…”, or reread to find the exact spot that supports your answer.', tip: 'A strong answer = your idea + the exact words from the text that prove it.' },
+          { h: 'Direct quotes', p: 'A direct quote copies the exact words from the text, inside quotation marks. It is the strongest evidence because it is word-for-word.', example: 'The text says, “She had not spoken to anyone all week,” which proves she felt lonely.' },
+          { h: 'Paraphrasing vs. quoting', p: 'Paraphrasing retells the evidence in your own words; quoting copies it exactly. Use a quote when the exact words matter, and paraphrase when only the idea matters.', example: 'Quote: “the storm hit at dawn.” Paraphrase: the storm arrived early in the morning.' },
+          { h: 'Why it matters', p: 'Close reading is how you prove you understand a text — on tests, in discussions, and in writing. Claims without evidence are just opinions.', tip: 'On a test, always ask: “Where in the text did I get that?” If you can’t point to it, reread.' }
         ] },
         { kind: 'drill', subject: 'ELA', title: 'Text Evidence Drill', questions: [
           { prompt: 'Close reading means…', options: ['Reading once, fast', 'Reading carefully, more than once', 'Skipping hard parts'], a: 1, okMsg: 'Slow and repeated — that’s close reading.' },
@@ -145,21 +154,19 @@
           { prompt: 'A direct quote is…', options: ['Exact words copied from the text', 'Your own retelling', 'A short summary'], a: 0, okMsg: 'Exact words = a direct quote.' }
         ] },
         { kind: 'lesson', subject: 'Social Studies', title: 'NYS Geography Basics', blocks: [
-          { h: 'Where is New York?', p: 'New York is a state in the Northeast of the United States. It borders two Great Lakes — Erie (west) and Ontario (north) — plus Canada to the north/west.', example: 'Lake Erie sits beside Buffalo; Lake Ontario sits beside Rochester.' },
-          { h: 'Cities and capital', p: 'Major cities: New York City (southeast, biggest), Buffalo (west), Rochester, Syracuse, and Albany — the capital.', tip: 'Albany is the capital, but NYC is the biggest city. Don’t mix them up!' },
-          { h: 'Physical features', p: 'Rivers: the Hudson runs north–south down eastern NY; the Mohawk cuts west. Mountains: the Adirondacks (north) and Catskills (south).', example: 'The Hudson River flows past Albany all the way to New York City.' }
+          { h: 'Where is New York?', p: 'New York is a state in the Northeast of the United States. It sits along the Atlantic Ocean to the southeast and shares a northern and western border with Canada.', example: 'From Brooklyn, New York City is in the far southeast corner of the state.' },
+          { h: 'Two Great Lakes and a border', p: 'New York borders two Great Lakes — Erie on the west and Ontario on the north — plus Canada to the north and west. Lakes and rivers made NY a natural route for travel and trade.', example: 'Lake Erie sits beside Buffalo; Lake Ontario sits beside Rochester.' },
+          { h: 'Cities and the capital', p: 'Major cities include New York City (southeast, biggest), Buffalo (west), Rochester, Syracuse, and Albany. Albany is the capital — where the state government meets — even though NYC is bigger.', tip: 'Albany is the capital, but NYC is the biggest city. Don’t mix them up!' },
+          { h: 'Rivers: Hudson and Mohawk', p: 'The Hudson River runs north–south down eastern NY, past Albany all the way to New York City. The Mohawk River cuts west and was a natural path into the interior.', example: 'The Hudson flows past Albany and NYC, connecting the capital to the sea.' },
+          { h: 'Mountains: Adirondacks and Catskills', p: 'The Adirondacks are a mountain range in the north; the Catskills are in the south. High land, forests, and rivers shape where people settled.', diagram: '<div class="sg-energy-forms"><span>🏔️ Adirondacks</span><span>⛰️ Catskills</span><span>🌊 Hudson R.</span><span>💧 Lake Erie</span><span>💧 Lake Ontario</span><span>🏙️ Albany</span><span>🏙️ NYC</span></div>' },
+          { h: 'Local connection: Brooklyn', p: 'Brooklyn is one of the five boroughs of New York City and sits in Kings County. Linking map work to your own community makes geography real.', example: 'On a political map, Brooklyn sits on the western end of Long Island, across the river from Manhattan.' },
+          { h: 'Why it matters', p: 'Geography shapes how people live — where cities grow, how goods move, and which routes explorers and settlers used. Reading NY maps is the first step in understanding the state’s history.', tip: 'When you see a map, first check the key, then look for water and borders — they explain a lot.' }
         ] },
-        { kind: 'practice', subject: 'Social Studies', title: 'NYS Geography Recap', mode: 'flash', items: [
-          { front: 'Erie & Ontario', back: 'The two Great Lakes New York borders.' },
-          { front: 'Albany', back: 'The capital of New York State.' },
-          { front: 'Buffalo', back: 'A major city in western NY, by Lake Erie.' },
-          { front: 'Hudson River', back: 'Major river flowing north–south through eastern NY.' },
-          { front: 'Adirondacks', back: 'Mountain range in northern New York.' }
-        ] },
+        { kind: 'practice', subject: 'Social Studies', title: 'NYS Geography — Word Search', mode: 'wordSearch', words: ['HUDSON', 'ALBANY', 'ERIE', 'ONTARIO', 'BUFFALO', 'CATSKILLS'] },
         { kind: 'activity', title: 'Map the Evidence', stages: [
           { type: 'quiz', subject: 'SS · NYS geography', story: 'Start in NY. Which two Great Lakes touch New York State?', prompt: 'New York borders which Great Lakes?', options: ['Erie & Ontario', 'Superior & Huron', 'Michigan only'], a: 0, okMsg: 'Erie & Ontario — western & northern borders. Clue 1 found!' },
-          { type: 'seek', subject: 'ELA · Text evidence', story: 'Good readers prove answers from the text. Tap every move that uses real evidence.', prompt: 'Tap every way to use text evidence:', items: [ {label:'“The text says…”'}, {label:'Direct quote'}, {label:'I just guess'}, {label:'Reread the passage'}, {label:'My opinion'} ], correct: [0,1,3], okMsg: 'Quote, cite, reread — that’s evidence. Clue 2!' },
-          { type: 'quiz', subject: 'SS · NY cities', story: 'The trail leads to a big city. Which one is actually in New York?', prompt: 'Which is a major New York city?', options: ['Buffalo', 'Chicago', 'Miami'], a: 0, okMsg: 'Buffalo — western NY. Clue 3!' },
+          { type: 'dragSort', subject: 'ELA · Close reading', story: 'A detective reads in order. Put the close-reading steps in the right sequence.', items: [ {text:'Read once for the gist', order:0}, {text:'Reread for important details', order:1}, {text:'Reread a third time to answer', order:2}, {text:'Cite exact evidence from the text', order:3} ] },
+          { type: 'match', subject: 'SS · NY cities', story: 'The trail crosses the state. Match each city to where it sits.', pairs: [ ['Buffalo','Western NY (Lake Erie)'], ['Albany','Capital, eastern NY'], ['New York City','Southeast, biggest city'], ['Rochester','North of Buffalo'] ] },
           { type: 'input', subject: 'ELA · Explicit vs inferred', story: 'A detail stated right in the text has a name. Type it to crack the case.', prompt: 'A detail stated directly in the text is ___ (one word):', accept: ['explicit'], okMsg: 'Explicit — stated right there. Case closed!' }
         ] }
       ]
@@ -170,35 +177,36 @@
       winText: '🎉 Recipes scaled, fix summarized — kitchen saved!',
       phases: [
         { kind: 'lesson', subject: 'Math', title: 'Multiplicative Comparison', blocks: [
-          { h: '“Times as many”', p: 'Multiplicative comparison compares two amounts using multiplication. “A is 4 times as many as B” means A = 4 × B.', example: 'If one batch has 3 eggs and you need 4 times as many, that’s 4 × 3 = 12 eggs.' },
-          { h: 'Write it as an equation', p: 'Turn the words into an equation: bigger = (times) × smaller. The “times” number is the multiplier.', tip: 'Look for clue words: “times as many,” “twice as much,” “3 times as long.”' },
-          { h: 'Word problems', p: 'Read carefully — find the smaller amount and the multiplier, then multiply. Check by asking: does my answer make sense?', example: 'A dog has 4 legs. 4 dogs → 4 × 4 = 16 legs. 16 is 4 times as many as 4.' }
+          { h: '“Times as many”', p: 'Multiplicative comparison compares two amounts using multiplication. “A is 4 times as many as B” means A = 4 × B. The first amount is the bigger one and the second is the smaller one you multiply.', example: 'If one batch has 3 eggs and you need 4 times as many, that’s 4 × 3 = 12 eggs.' },
+          { h: 'Write it as an equation', p: 'Turn the words into an equation: bigger = (times) × smaller. The “times” number is the multiplier, and it tells you how many copies of the smaller amount you need.', tip: 'Equation template:  bigger  =  multiplier  ×  smaller' },
+          { h: 'Clue words', p: 'Word problems use clue words to signal multiplication: “times as many,” “twice as much,” “three times as long,” “double.” Spot the clue and you spot the multiplier.', example: '“A rope is 3 times as long as a 5-foot rope” → 3 × 5 = 15 feet.' },
+          { h: 'Multiplicative vs. additive', p: 'Multiplicative comparison uses “times” (multiplication). Additive comparison uses “more than” (addition). “4 times as many” (×) is very different from “4 more than” (+).', example: '4 times as many as 3 = 12.  4 more than 3 = 7. Different!' },
+          { h: 'Solving word problems', p: 'Steps: (1) read carefully, (2) find the smaller amount, (3) find the multiplier, (4) multiply. Circle the clue words and the numbers as you read.', example: 'A dog has 4 legs. 4 dogs → 4 × 4 = 16 legs. 16 is 4 times as many as 4.' },
+          { h: 'Check reasonableness', p: 'After multiplying, ask: does my answer make sense? 4 times as many should be bigger than the smaller number (unless the multiplier is 1). If it is smaller, re-check.', tip: '“Times as many” with a multiplier bigger than 1 always gives a bigger answer than the smaller amount.' },
+          { h: 'Why it matters', p: 'Multiplicative comparison is how we scale recipes, build arrays, and reason about groups. It is the foundation for ratios and multiplication word problems in Grade 4 and beyond.', tip: 'Whenever you hear “times as many,” think: multiply by the times number.' }
         ] },
-        { kind: 'drill', subject: 'Math', title: 'Multiplicative Comparison Drill', questions: [
-          { prompt: '12 is ___ as many as 3.', options: ['4 times', '3 times', '7 times'], a: 0, okMsg: '4 × 3 = 12 — 4 times.' },
-          { prompt: '20 is 4 times as many as…', options: ['5', '4', '16'], a: 0, okMsg: '4 × 5 = 20.' },
-          { prompt: 'A shelf has 6 books. 3 times as many is…', options: ['18', '9', '12'], a: 0, okMsg: '3 × 6 = 18.' },
-          { prompt: '“Twice as many as 7” = ?', options: ['14', '9', '21'], a: 0, okMsg: '2 × 7 = 14.' },
-          { prompt: 'Write the equation: 5 times as many as 8.', options: ['5 × 8 = 40', '5 + 8 = 13', '8 ÷ 5 = 1'], a: 0, okMsg: '5 × 8 = 40.' },
-          { prompt: '4 dogs × 4 legs each = ? legs', options: ['16', '8', '12'], a: 0, okMsg: '16 legs.' }
-        ] },
+        { kind: 'drill', subject: 'Math', title: 'Multiplicative Comparison — Fill the Blanks', engine: 'fillBlank', sentence: '12 is * times as many as 3.  4 × * = 20.  3 × 6 = *.  Twice as many as 7 = *.  5 × 8 = *.', blanks: ['4', '5', '18', '14', '40'] },
         { kind: 'lesson', subject: 'ELA', title: 'Summary vs. Central Idea', blocks: [
-          { h: 'What is a summary?', p: 'A summary is a short retelling of a text in your own words — the important points, not every detail. About 2–3 sentences.', example: '“A girl moves to a new city and learns to make friends by joining a soccer team.”' },
-          { h: 'What is the central idea?', p: 'The central idea is the big message or main point the text is mostly about — the lesson or the “so what?”', tip: 'Central idea = what it’s mostly about + the key message. A summary tells what happened; the central idea tells what it means.' },
-          { h: 'Support with details', p: 'Key details from the text prove the central idea. Pick the details that matter, not random facts.', example: 'Central idea: “Teamwork helps you belong.” Detail: “She scored her first goal after a teammate passed her the ball.”' }
+          { h: 'What is a summary?', p: 'A summary is a short retelling of a text in your own words — the important points, not every detail. It captures what happened without adding your opinion.', example: '“A girl moves to a new city and learns to make friends by joining a soccer team.”' },
+          { h: 'How long, and whose words?', p: 'A summary is about 2–3 sentences long and uses your own words, not copied sentences from the text. Short, clear, and faithful to what the text actually says.', tip: 'If you copy a sentence word-for-word, that is a quote — not a summary.' },
+          { h: 'What is the central idea?', p: 'The central idea is the big message or main point the text is mostly about — the lesson or the “so what?” It is one sentence that captures the heart of the text.', example: 'Central idea: “Trying new things helps you find where you belong.”' },
+          { h: 'How details support it', p: 'Key details from the text prove the central idea. Pick the details that matter — the ones that would not make sense without the central idea — not random facts.', example: 'Detail: “She scored her first goal after a teammate passed her the ball” supports “teamwork helps you belong.”' },
+          { h: 'Summary vs. central idea', p: 'A summary tells what happened (events). The central idea tells what it means (message). A text has one central idea but can be summarized many ways.', tip: 'Summary = retell the events. Central idea = state the message.' },
+          { h: 'Building both', p: 'To find the central idea, ask “what is this mostly about?” Then pick 2–3 details that prove it. To summarize, retell those details in order in your own words.', example: 'Central idea first, then summary: “Teamwork helps you belong. A girl joins a soccer team, struggles, then scores her first goal after a teammate’s pass.”' },
+          { h: 'Why it matters', p: 'Summarizing and finding the central idea are how you show you understood a text — on tests, in book reports, and in conversations. They separate the important from the unimportant.', tip: 'On a test, always answer: what is it mostly about (central idea) and what happened (summary).' }
         ] },
-        { kind: 'practice', subject: 'ELA', title: 'Summary & Central Idea Recap', mode: 'flash', items: [
-          { front: 'Summary', back: 'A short retelling in your own words (about 2-3 sentences).' },
-          { front: 'Central idea', back: 'The big message — what the text is mostly about.' },
-          { front: 'Key details', back: 'Important points that prove the central idea.' },
-          { front: '“Times as many”', back: 'A multiplicative comparison: bigger = multiplier × smaller.' },
-          { front: 'Multiplier', back: 'The “times” number in a comparison equation.' }
+        { kind: 'practice', subject: 'ELA', title: 'Build a Summary — Drag in Order', mode: 'dragSort', items: [
+          { text: 'Topic sentence: Mia joined a new soccer team.', order: 0 },
+          { text: 'At first she struggled to fit in.', order: 1 },
+          { text: 'A teammate passed her the ball at practice.', order: 2 },
+          { text: 'She scored her first goal and felt she belonged.', order: 3 },
+          { text: 'Closing: Teamwork helped Mia find her place.', order: 4 }
         ] },
         { kind: 'activity', title: 'Times the Trouble', stages: [
           { type: 'quiz', subject: 'Math · Multiplicative comparison', story: 'A recipe needs 4× as many eggs as one batch. One batch = 3 eggs.', prompt: '12 is ___ as many as 3.', options: ['4 times', '3 times', '7 times'], a: 0, okMsg: '4 times — because 4 × 3 = 12. Recipe 1 scaled!' },
-          { type: 'quiz', subject: 'ELA · Summary', story: 'The logbook is messy. How long should a good summary be?', prompt: 'A summary should be about how long?', options: ['2-3 sentences', '10 pages', 'One word'], a: 0, okMsg: '2-3 sentences — short and in your words.' },
+          { type: 'fillBlank', subject: 'ELA · Summary', story: 'The logbook needs a clean summary line. Fill the missing words.', sentence: 'A good summary retells a text in your * words in about * to three sentences.', blanks: ['own', 'two'] },
           { type: 'input', subject: 'Math · Comparison equation', story: '4 dogs each have 4 legs. How many legs total? (4 × 4)', prompt: 'Type the total number of legs (4 × 4):', accept: ['16'], okMsg: '16 legs — 4 times as many as 4!' },
-          { type: 'seek', subject: 'ELA · Central idea', story: 'Find the signals that point to the central idea.', prompt: 'Tap every phrase that means "central idea":', items: [ {label:'The main lesson'}, {label:'A tiny detail'}, {label:'The big message'}, {label:'A random fact'}, {label:'What it’s mostly about'} ], correct: [0,2,4], okMsg: 'Main lesson, big message, mostly-about — all central idea!' }
+          { type: 'match', subject: 'ELA · Terms', story: 'Match each term to what it means to close the case.', pairs: [ ['Summary','Short retelling in your own words'], ['Central idea','The big message of the text'], ['Multiplier','The “times” number'], ['Key detail','Proves the central idea'] ] }
         ] }
       ]
     } },
@@ -208,9 +216,13 @@
       winText: '🎉 Energy traced and maps mastered — journey done!',
       phases: [
         { kind: 'lesson', subject: 'Science', title: 'Energy Transfers', blocks: [
-          { h: 'Energy moves and changes', p: 'Energy never disappears — it transfers, meaning it changes from one form into another. The total amount stays the same.', example: 'A lamp takes electrical energy and turns it into light + heat. Nothing is lost — it just changes form.' },
-          { h: 'Everyday energy conversions', p: 'Devices convert energy for us: a toaster (electrical → heat), a fan (electrical → motion + sound), a TV (electrical → light + sound).', tip: 'Look for what goes IN (usually electrical) and what comes OUT (light, heat, sound, motion).' },
-          { h: 'Spot the transfer', p: 'Anytime something warms up, glows, moves, or makes noise, energy is transferring. The input form becomes the output form(s).', example: 'A rolling ball transfers motion to a pin it knocks over — motion in, motion out (plus a little sound).' }
+          { h: 'Energy moves and changes', p: 'Energy never disappears — it transfers, meaning it changes from one form into another. The total amount stays the same. This is called conservation of energy.', example: 'A lamp takes electrical energy and turns it into light + heat. Nothing is lost — it just changes form.' },
+          { h: 'Transfer vs. conversion', p: 'A transfer is energy moving from one object or place to another. A conversion is energy changing from one form into another. Most devices do both at once.', example: 'A hot cocoa warms your hands: heat transfers from cocoa to hands. A lamp converts electrical energy to light.' },
+          { h: 'Everyday conversions', p: 'Devices convert energy for us: a toaster (electrical → heat), a fan (electrical → motion + sound), a TV (electrical → light + sound), a lamp (electrical → light + heat).', tip: 'Look for what goes IN (usually electrical) and what comes OUT (light, heat, sound, motion).' },
+          { h: 'The IN → OUT pattern', p: 'Every energy story has an input form and output form(s). Trace it: IN → [device] → OUT. The output is what you see, hear, feel, or measure.', diagram: '<div class="sg-flow"><span class="sg-flow-in">⚡ Electrical</span><span class="sg-flow-arrow">→</span><span class="sg-flow-box">🔆 Lamp</span><span class="sg-flow-arrow">→</span><span class="sg-flow-out">💡 Light + 🔥 Heat</span></div>' },
+          { h: 'Transfer object → object', p: 'Energy also moves between objects without changing form. A rolling ball transfers motion to a pin it knocks over. A hot pan transfers heat to your hand.', example: 'Ball → pin: motion in, motion out (plus a little sound and heat from the collision).' },
+          { h: 'What carries energy', p: 'Sound, light, heat, and electric currents all carry energy from place to place. Anything that warms, glows, moves, or makes noise is moving energy.', tip: 'See motion → motion energy. See glow → light energy. Feel warmth → heat energy.' },
+          { h: 'Why it matters', p: 'Tracing energy helps you understand machines, nature, and your own body (food → motion + heat). Engineers design devices by controlling the IN → OUT path.', tip: 'Whenever a device runs, ask: what form goes in, and what form(s) come out?' }
         ] },
         { kind: 'drill', subject: 'Science', title: 'Energy Transfer Drill', questions: [
           { prompt: 'Energy can…', options: ['Change from one form to another', 'Turn into nothing', 'Only stay the same'], a: 0, okMsg: 'It transfers — one form into another.' },
@@ -224,20 +236,23 @@
           { h: 'Political map', p: 'A political map shows boundaries and names — borders of countries/states, cities, and capitals. Use it to find where places are and who governs them.', example: 'A political map of NY shows the border with Pennsylvania, and cities like Buffalo and Albany.' },
           { h: 'Physical map', p: 'A physical map shows natural landforms and water — mountains, plains, rivers, lakes. Colors often show elevation (how high the land is).', tip: 'See mountains, rivers, lakes → physical. See borders, cities, names → political.' },
           { h: 'Thematic map', p: 'A thematic map shows a pattern or one topic across an area — rainfall, population, elections, or crops. It answers “where does this happen?”', example: 'A map shaded by how much rain each region gets is a thematic map.' },
-          { h: 'Use the map key', p: 'Every map has a key (legend) that explains what its symbols and colors mean. Always check the key before you read a map.' }
+          { h: 'Use the map key', p: 'Every map has a key (legend) that explains what its symbols and colors mean. Always check the key before you read a map — it is the map’s dictionary.', diagram: '<div class="sg-energy-forms"><span>🗺️ Political</span><span>🏔️ Physical</span><span>📊 Thematic</span><span>🔑 Key/Legend</span><span>📏 Scale</span><span>🧭 Compass</span></div>' },
+          { h: 'Map scale', p: 'Scale tells you how map distance relates to real distance — for example, one inch on the map might equal 10 miles in real life. Scale lets you measure real distances.', example: 'A small scale bar on the map shows how far a mile is in real ground.' },
+          { h: 'Pick the right map', p: 'Match the map to your question. Borders and cities? Political. Landforms and water? Physical. One topic or pattern? Thematic. Using the wrong map gives the wrong answer.', tip: 'Ask: what do I need to find? Then choose the map type that shows it.' },
+          { h: 'Why it matters', p: 'Maps are tools for thinking geographically. Knowing the types lets you choose the right one for any question — from planning a trip to understanding weather or history.', tip: 'On a test, name the map type and say what it shows to prove you read it right.' }
         ] },
-        { kind: 'practice', subject: 'Social Studies', title: 'Map Types Recap', mode: 'flash', items: [
-          { front: 'Political map', back: 'Shows borders, cities, and names of places.' },
-          { front: 'Physical map', back: 'Shows natural landforms — mountains, rivers, lakes.' },
-          { front: 'Thematic map', back: 'Shows one topic/pattern — rainfall, population, elections.' },
-          { front: 'Map key (legend)', back: 'Explains what the map’s symbols and colors mean.' },
-          { front: 'Energy transfer', back: 'Energy changes from one form into another — never disappears.' }
+        { kind: 'practice', subject: 'Social Studies', title: 'Map Types — Flip the Cards', mode: 'flip', cards: [
+          { front: 'Political map', back: 'Shows borders, cities, and names.' },
+          { front: 'Physical map', back: 'Shows mountains, rivers, lakes, landforms.' },
+          { front: 'Thematic map', back: 'Shows one topic — rainfall, population, elections.' },
+          { front: 'Map key (legend)', back: 'Explains what symbols and colors mean.' },
+          { front: 'Scale', back: 'Relates map distance to real distance.' }
         ] },
         { kind: 'activity', title: 'Energy Journey', stages: [
           { type: 'quiz', subject: 'Science · Energy transfer', story: 'Energy never disappears — it changes. Pick the true statement.', prompt: 'Energy can ___?', options: ['Change from one form to another', 'Turn into nothing', 'Only ever stay the same'], a: 0, okMsg: 'It transfers — one form into another. Stop 1!' },
-          { type: 'quiz', subject: 'SS · Map types', story: 'You need a map that shows city borders and names.', prompt: 'Which map shows borders and cities?', options: ['Political map', 'Thematic map', 'Physical map'], a: 0, okMsg: 'Political map — borders, cities, states. Stop 2!' },
+          { type: 'match', subject: 'SS · Map types', story: 'Match each map type to the job it does best.', pairs: [ ['Political map','Find borders & cities'], ['Physical map','See mountains & rivers'], ['Thematic map','Show rainfall or population'], ['Map key','Explain symbols & colors'] ] },
           { type: 'input', subject: 'Science · Energy conversion', story: 'A toaster runs. It changes electrical energy into ___ (besides light).', prompt: 'A toaster turns electrical energy into ___ (one word):', accept: ['heat', 'thermal'], okMsg: 'Heat — your toast! Stop 3!' },
-          { type: 'seek', subject: 'SS · Map types', story: 'Last stretch: spot every real type of map.', prompt: 'Tap every real type of map:', items: [ {label:'Political'}, {label:'Physical'}, {label:'Thematic'}, {label:'Pizza map'}, {label:'Menu'} ], correct: [0,1,2], okMsg: 'Political, physical, thematic — all real maps. Home!' }
+          { type: 'dragSort', subject: 'SS · Reading a map', story: 'Last stretch: put the map-reading steps in order.', items: [ {text:'Read the title', order:0}, {text:'Check the map key', order:1}, {text:'Locate your place', order:2}, {text:'Use the scale if needed', order:3} ] }
         ] }
       ]
     } },
@@ -842,6 +857,15 @@
       });
     }
 
+    // ---------- generic engine dispatcher (reuse the 8 RENDERERS as gates/practice) ----------
+    function engineInto(host, kind, c, onWin) {
+      var sub = el('div', 'sg-engine-host');
+      host.appendChild(sub);
+      var r = RENDERERS[kind];
+      if (!r) { host.appendChild(el('div', 'sg-mis-fb no', '(engine "' + kind + '" missing)')); return; }
+      r(sub, c, { setRing: ctx.setRing, onWin: onWin });
+    }
+
     // ---------- phase renderers ----------
     function renderLesson(ph) {
       var blocks = ph.blocks || [];
@@ -891,25 +915,38 @@
     }
 
     function renderDrill(ph) {
-      var qs = ph.questions, qi = 0, score = 0;
-      var bar = el('div', 'sg-drill-bar', 'Question 1 of ' + qs.length + ' · Score 0');
-      var host = el('div', 'sg-drill-host');
-      scene.innerHTML = ''; scene.appendChild(el('div', 'sg-phase-label', esc(ph.subject) + ' · Drill — ' + esc(ph.title))); scene.appendChild(bar); scene.appendChild(host);
-      function renderQ() {
-        bar.textContent = 'Question ' + (qi + 1) + ' of ' + qs.length + ' · Score ' + score;
-        host.innerHTML = '';
-        quizInto(host, qs[qi], function (ok) { if (ok) score++; qi++; if (qi < qs.length) renderQ(); else drillDone(); });
-        ringOf(qi, qs.length);
+      scene.innerHTML = '';
+      scene.appendChild(el('div', 'sg-phase-label', esc(ph.subject) + ' · Drill — ' + esc(ph.title)));
+      var host = el('div', 'sg-drill-host'); scene.appendChild(host);
+      if (ph.questions) {
+        var qs = ph.questions, qi = 0, score = 0;
+        var bar = el('div', 'sg-drill-bar', 'Question 1 of ' + qs.length + ' · Score 0');
+        scene.appendChild(bar); scene.appendChild(host);
+        function renderQ() {
+          bar.textContent = 'Question ' + (qi + 1) + ' of ' + qs.length + ' · Score ' + score;
+          host.innerHTML = '';
+          quizInto(host, qs[qi], function (ok) { if (ok) score++; qi++; if (qi < qs.length) renderQ(); else drillDone(); });
+          ringOf(qi, qs.length);
+        }
+        function drillDone() {
+          ringOf(qi, qs.length);
+          host.innerHTML = '<div class="sg-drill-done">Drill done! You scored ' + score + ' / ' + qs.length + ' 🎉</div>';
+          var next = el('button', 'sg-btn sg-go-btn', 'On to ' + labelForNext(phases, pi) + ' ▸');
+          next.addEventListener('click', function () { sound.play('click'); nextPhase(false); });
+          host.appendChild(next);
+          if (score === qs.length) { SG.mascot.setMood('happy'); SG.confetti({ count: 60 }); }
+        }
+        renderQ();
+      } else {
+        // single-engine drill (fillBlank / quizMC / match / etc.)
+        engineInto(host, ph.engine || 'quizMC', ph, function () {
+          host.innerHTML = '<div class="sg-drill-done">Drill complete! 🎉</div>';
+          var next = el('button', 'sg-btn sg-go-btn', 'On to ' + labelForNext(phases, pi) + ' ▸');
+          next.addEventListener('click', function () { sound.play('click'); nextPhase(false); });
+          host.appendChild(next);
+          SG.mascot.setMood('happy'); SG.confetti({ count: 60 });
+        });
       }
-      function drillDone() {
-        ringOf(qi, qs.length);
-        host.innerHTML = '<div class="sg-drill-done">Drill done! You scored ' + score + ' / ' + qs.length + ' 🎉</div>';
-        var next = el('button', 'sg-btn sg-go-btn', 'On to ' + labelForNext(phases, pi) + ' ▸');
-        next.addEventListener('click', function () { sound.play('click'); nextPhase(false); });
-        host.appendChild(next);
-        if (score === qs.length) { SG.mascot.setMood('happy'); SG.confetti({ count: 60 }); }
-      }
-      renderQ();
     }
 
     function renderPractice(ph) {
@@ -934,7 +971,7 @@
           ringOf(ii, items.length);
         }
         showCard();
-      } else { // quiz recap
+      } else if (ph.mode === 'quiz') { // quiz recap
         var qi = 0, score = 0;
         function showQ() {
           host.innerHTML = '';
@@ -942,6 +979,8 @@
           ringOf(qi, items.length);
         }
         showQ();
+      } else { // any other engine mode: match / fillBlank / flip / wordSearch / dragSort / hangman / scratch / quizMC
+        engineInto(host, ph.mode, ph, practiceDone);
       }
       function practiceDone() { ringOf(1, 1); if (!host.querySelector('.sg-go-btn')) { var n = el('button', 'sg-btn sg-go-btn', 'On to ' + labelForNext(phases, pi) + ' ▸'); n.addEventListener('click', function () { sound.play('click'); nextPhase(false); }); host.appendChild(n); } }
     }
@@ -966,6 +1005,7 @@
         if (g.type === 'quiz') quizInto(host, g, gateDone);
         else if (g.type === 'input') inputInto(host, g, gateDone);
         else if (g.type === 'seek') seekInto(host, g, gateDone);
+        else engineInto(host, g.type, g, gateDone);
         ringOf(solved, gates.length);
       }
       function gateDone() {

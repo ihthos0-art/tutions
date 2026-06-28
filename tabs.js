@@ -5,6 +5,13 @@
   var tabs = document.querySelectorAll('.tab-btn');
   var contents = document.querySelectorAll('.tab-content');
 
+  function setBodyTab(target) {
+    Array.prototype.forEach.call(document.body.classList, function (c) {
+      if (c.indexOf('tab-') === 0) document.body.classList.remove(c);
+    });
+    document.body.classList.add('tab-' + target);
+  }
+
   tabs.forEach(function (tab) {
     tab.addEventListener('click', function (e) {
       e.preventDefault();
@@ -13,6 +20,7 @@
       contents.forEach(function (c) { c.classList.remove('active'); });
       this.classList.add('active');
       document.getElementById(target).classList.add('active');
+      setBodyTab(target);
       if (history.replaceState) history.replaceState(null, '', '#' + target);
     });
   });
@@ -22,6 +30,10 @@
   if (hash) {
     var t = document.querySelector('.tab-btn[data-tab="' + hash + '"]');
     if (t) t.click();
+  } else {
+    // mark the initially-active tab on the body (enables per-tab theming, e.g. summer pink panel)
+    var active = document.querySelector('.tab-btn.active');
+    if (active) setBodyTab(active.dataset.tab);
   }
 
   // ===== RESET BUTTONS =====

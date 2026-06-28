@@ -23,14 +23,16 @@
   --sg-clay-soft: 0 6px 16px rgba(176,140,100,0.12), inset 0 2px 3px rgba(255,255,255,0.9);
 }
 
-/* ---- soothing safe-space backdrop ---- */
+/* ---- soothing safe-space backdrop (warm pink, summer tab only) ---- */
 #summer {
   background:
-    radial-gradient(120% 80% at 50% -10%, #fff6ec 0%, rgba(255,246,236,0) 60%),
-    linear-gradient(180deg, #fdf5ec 0%, #fbf1ea 35%, #f3f9f2 100%);
+    radial-gradient(120% 80% at 50% -10%, #fff5f6 0%, rgba(255,245,246,0) 60%),
+    linear-gradient(180deg, #fff5f6 0%, #fde8ee 45%, #fbdfe6 100%);
   padding: 26px 16px 48px;
   border-radius: 22px;
 }
+/* warm-pink panel behind the summer content (the white worksheet layer) */
+body.tab-summer .worksheet { background: #fde2e8; }
 .summer-wrap { max-width: 860px; margin: 0 auto; }
 .summer-head { text-align: center; margin-bottom: 26px; }
 .summer-head h1 {
@@ -352,6 +354,7 @@ span.ripple { position: absolute; border-radius: 50%; transform: scale(0);
 
 /* ---- lesson diagrams ---- */
 .sg-les-diagram { margin-top: 10px; }
+.sg-engine-host { margin-top: 6px; }
 .sg-energy-forms { display: flex; flex-wrap: wrap; gap: 8px; }
 .sg-energy-forms span { font-family: var(--sg-head); font-weight: 700; font-size: 0.92rem; color: var(--sg-ink);
   background: #fffdf9; border: 2px solid var(--sg-line); border-radius: 999px; padding: 6px 12px; box-shadow: var(--sg-clay-soft); }

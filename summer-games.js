@@ -124,35 +124,117 @@
     } },
     '0-1': { type: 'mission', content: {
       title: 'Map the Evidence',
-      intro: 'A clue is hidden across New York. Use text evidence and map skills to follow the trail.',
+      intro: 'A clue is hidden across New York. Learn to read closely and read maps, then follow the trail.',
       winText: '🎉 Case cracked — you tracked the clue across NY!',
-      stages: [
-        { type: 'quiz', subject: 'SS · NYS geography', story: 'Start in NY. Which two Great Lakes touch New York State?', prompt: 'New York borders which Great Lakes?', options: ['Erie & Ontario', 'Superior & Huron', 'Michigan only'], a: 0, okMsg: 'Erie & Ontario — western & northern borders. Clue 1 found!' },
-        { type: 'seek', subject: 'ELA · Text evidence', story: 'Good readers prove answers from the text. Tap every move that uses real evidence.', prompt: 'Tap every way to use text evidence:', items: [ {label:'“The text says…”'}, {label:'Direct quote'}, {label:'I just guess'}, {label:'Reread the passage'}, {label:'My opinion'} ], correct: [0,1,3], okMsg: 'Quote, cite, reread — that\'s evidence. Clue 2!' },
-        { type: 'quiz', subject: 'SS · NY cities', story: 'The trail leads to a big city. Which one is actually in New York?', prompt: 'Which is a major New York city?', options: ['Buffalo', 'Chicago', 'Miami'], a: 0, okMsg: 'Buffalo — western NY. Clue 3!' },
-        { type: 'input', subject: 'ELA · Explicit vs inferred', story: 'A detail stated right in the text has a name. Type it to crack the case.', prompt: 'A detail stated directly in the text is ___ (one word):', accept: ['explicit'], okMsg: 'Explicit — stated right there. Case closed!' }
+      phases: [
+        { kind: 'lesson', subject: 'ELA', title: 'Close Reading & Text Evidence', blocks: [
+          { h: 'Read like a detective', p: 'Close reading means reading a text slowly and more than once to understand it deeply and notice details you’d miss the first time.', example: 'Read once for the gist, again for details, a third time to answer questions.' },
+          { h: 'Prove it with evidence', p: 'Good readers don’t guess — they prove answers using the text. Use direct quotes, “the text says…”, or reread to find the exact spot.', tip: 'Two kinds of details: explicit (stated right in the text) and inferred (you figure it out from clues).' },
+          { h: 'Explicit vs. inferred', p: 'Explicit = the words are right there. Inferred = the text gives clues but doesn’t say it directly, so you reason it out.', example: '“The dog barked” = explicit. “The dog was probably hungry” (because it stared at the food) = inferred.' }
+        ] },
+        { kind: 'drill', subject: 'ELA', title: 'Text Evidence Drill', questions: [
+          { prompt: 'Close reading means…', options: ['Reading once, fast', 'Reading carefully, more than once', 'Skipping hard parts'], a: 1, okMsg: 'Slow and repeated — that’s close reading.' },
+          { prompt: '“The text says…” is an example of…', options: ['Text evidence', 'A guess', 'An opinion'], a: 0, okMsg: 'Citing the text = evidence.' },
+          { prompt: 'A detail stated directly in the text is…', options: ['Explicit', 'Inferred', 'Made up'], a: 0, okMsg: 'Explicit — right there in the words.' },
+          { prompt: 'A detail you figure out from clues is…', options: ['Inferred', 'Explicit', 'Wrong'], a: 0, okMsg: 'Inferred — reasoned from clues.' },
+          { prompt: 'Best way to find evidence for an answer?', options: ['Reread the passage', 'Guess and move on', 'Ask a friend'], a: 0, okMsg: 'Reread — the proof is in the text.' },
+          { prompt: 'A direct quote is…', options: ['Exact words copied from the text', 'Your own retelling', 'A short summary'], a: 0, okMsg: 'Exact words = a direct quote.' }
+        ] },
+        { kind: 'lesson', subject: 'Social Studies', title: 'NYS Geography Basics', blocks: [
+          { h: 'Where is New York?', p: 'New York is a state in the Northeast of the United States. It borders two Great Lakes — Erie (west) and Ontario (north) — plus Canada to the north/west.', example: 'Lake Erie sits beside Buffalo; Lake Ontario sits beside Rochester.' },
+          { h: 'Cities and capital', p: 'Major cities: New York City (southeast, biggest), Buffalo (west), Rochester, Syracuse, and Albany — the capital.', tip: 'Albany is the capital, but NYC is the biggest city. Don’t mix them up!' },
+          { h: 'Physical features', p: 'Rivers: the Hudson runs north–south down eastern NY; the Mohawk cuts west. Mountains: the Adirondacks (north) and Catskills (south).', example: 'The Hudson River flows past Albany all the way to New York City.' }
+        ] },
+        { kind: 'practice', subject: 'Social Studies', title: 'NYS Geography Recap', mode: 'flash', items: [
+          { front: 'Erie & Ontario', back: 'The two Great Lakes New York borders.' },
+          { front: 'Albany', back: 'The capital of New York State.' },
+          { front: 'Buffalo', back: 'A major city in western NY, by Lake Erie.' },
+          { front: 'Hudson River', back: 'Major river flowing north–south through eastern NY.' },
+          { front: 'Adirondacks', back: 'Mountain range in northern New York.' }
+        ] },
+        { kind: 'activity', title: 'Map the Evidence', stages: [
+          { type: 'quiz', subject: 'SS · NYS geography', story: 'Start in NY. Which two Great Lakes touch New York State?', prompt: 'New York borders which Great Lakes?', options: ['Erie & Ontario', 'Superior & Huron', 'Michigan only'], a: 0, okMsg: 'Erie & Ontario — western & northern borders. Clue 1 found!' },
+          { type: 'seek', subject: 'ELA · Text evidence', story: 'Good readers prove answers from the text. Tap every move that uses real evidence.', prompt: 'Tap every way to use text evidence:', items: [ {label:'“The text says…”'}, {label:'Direct quote'}, {label:'I just guess'}, {label:'Reread the passage'}, {label:'My opinion'} ], correct: [0,1,3], okMsg: 'Quote, cite, reread — that’s evidence. Clue 2!' },
+          { type: 'quiz', subject: 'SS · NY cities', story: 'The trail leads to a big city. Which one is actually in New York?', prompt: 'Which is a major New York city?', options: ['Buffalo', 'Chicago', 'Miami'], a: 0, okMsg: 'Buffalo — western NY. Clue 3!' },
+          { type: 'input', subject: 'ELA · Explicit vs inferred', story: 'A detail stated right in the text has a name. Type it to crack the case.', prompt: 'A detail stated directly in the text is ___ (one word):', accept: ['explicit'], okMsg: 'Explicit — stated right there. Case closed!' }
+        ] }
       ]
     } },
     '0-2': { type: 'mission', content: {
       title: 'Times the Trouble',
-      intro: 'The baker\'s oven is acting up. Scale the recipes with "times as many" and summarize the fix.',
+      intro: 'The baker’s oven is acting up. Learn “times as many” and how to summarize, then fix the kitchen.',
       winText: '🎉 Recipes scaled, fix summarized — kitchen saved!',
-      stages: [
-        { type: 'quiz', subject: 'Math · Multiplicative comparison', story: 'A recipe needs 4× as many eggs as one batch. One batch = 3 eggs.', prompt: '12 is ___ as many as 3.', options: ['4 times', '3 times', '7 times'], a: 0, okMsg: '4 times — because 4 × 3 = 12. Recipe 1 scaled!' },
-        { type: 'quiz', subject: 'ELA · Summary', story: 'The logbook is messy. How long should a good summary be?', prompt: 'A summary should be about how long?', options: ['2-3 sentences', '10 pages', 'One word'], a: 0, okMsg: '2-3 sentences — short and in your words.' },
-        { type: 'input', subject: 'Math · Comparison equation', story: '4 dogs each have 4 legs. How many legs total? (4 × 4)', prompt: 'Type the total number of legs (4 × 4):', accept: ['16'], okMsg: '16 legs — 4 times as many as 4!' },
-        { type: 'seek', subject: 'ELA · Central idea', story: 'Find the signals that point to the central idea.', prompt: 'Tap every phrase that means "central idea":', items: [ {label:'The main lesson'}, {label:'A tiny detail'}, {label:'The big message'}, {label:'A random fact'}, {label:'What it\'s mostly about'} ], correct: [0,2,4], okMsg: 'Main lesson, big message, mostly-about — all central idea!' }
+      phases: [
+        { kind: 'lesson', subject: 'Math', title: 'Multiplicative Comparison', blocks: [
+          { h: '“Times as many”', p: 'Multiplicative comparison compares two amounts using multiplication. “A is 4 times as many as B” means A = 4 × B.', example: 'If one batch has 3 eggs and you need 4 times as many, that’s 4 × 3 = 12 eggs.' },
+          { h: 'Write it as an equation', p: 'Turn the words into an equation: bigger = (times) × smaller. The “times” number is the multiplier.', tip: 'Look for clue words: “times as many,” “twice as much,” “3 times as long.”' },
+          { h: 'Word problems', p: 'Read carefully — find the smaller amount and the multiplier, then multiply. Check by asking: does my answer make sense?', example: 'A dog has 4 legs. 4 dogs → 4 × 4 = 16 legs. 16 is 4 times as many as 4.' }
+        ] },
+        { kind: 'drill', subject: 'Math', title: 'Multiplicative Comparison Drill', questions: [
+          { prompt: '12 is ___ as many as 3.', options: ['4 times', '3 times', '7 times'], a: 0, okMsg: '4 × 3 = 12 — 4 times.' },
+          { prompt: '20 is 4 times as many as…', options: ['5', '4', '16'], a: 0, okMsg: '4 × 5 = 20.' },
+          { prompt: 'A shelf has 6 books. 3 times as many is…', options: ['18', '9', '12'], a: 0, okMsg: '3 × 6 = 18.' },
+          { prompt: '“Twice as many as 7” = ?', options: ['14', '9', '21'], a: 0, okMsg: '2 × 7 = 14.' },
+          { prompt: 'Write the equation: 5 times as many as 8.', options: ['5 × 8 = 40', '5 + 8 = 13', '8 ÷ 5 = 1'], a: 0, okMsg: '5 × 8 = 40.' },
+          { prompt: '4 dogs × 4 legs each = ? legs', options: ['16', '8', '12'], a: 0, okMsg: '16 legs.' }
+        ] },
+        { kind: 'lesson', subject: 'ELA', title: 'Summary vs. Central Idea', blocks: [
+          { h: 'What is a summary?', p: 'A summary is a short retelling of a text in your own words — the important points, not every detail. About 2–3 sentences.', example: '“A girl moves to a new city and learns to make friends by joining a soccer team.”' },
+          { h: 'What is the central idea?', p: 'The central idea is the big message or main point the text is mostly about — the lesson or the “so what?”', tip: 'Central idea = what it’s mostly about + the key message. A summary tells what happened; the central idea tells what it means.' },
+          { h: 'Support with details', p: 'Key details from the text prove the central idea. Pick the details that matter, not random facts.', example: 'Central idea: “Teamwork helps you belong.” Detail: “She scored her first goal after a teammate passed her the ball.”' }
+        ] },
+        { kind: 'practice', subject: 'ELA', title: 'Summary & Central Idea Recap', mode: 'flash', items: [
+          { front: 'Summary', back: 'A short retelling in your own words (about 2-3 sentences).' },
+          { front: 'Central idea', back: 'The big message — what the text is mostly about.' },
+          { front: 'Key details', back: 'Important points that prove the central idea.' },
+          { front: '“Times as many”', back: 'A multiplicative comparison: bigger = multiplier × smaller.' },
+          { front: 'Multiplier', back: 'The “times” number in a comparison equation.' }
+        ] },
+        { kind: 'activity', title: 'Times the Trouble', stages: [
+          { type: 'quiz', subject: 'Math · Multiplicative comparison', story: 'A recipe needs 4× as many eggs as one batch. One batch = 3 eggs.', prompt: '12 is ___ as many as 3.', options: ['4 times', '3 times', '7 times'], a: 0, okMsg: '4 times — because 4 × 3 = 12. Recipe 1 scaled!' },
+          { type: 'quiz', subject: 'ELA · Summary', story: 'The logbook is messy. How long should a good summary be?', prompt: 'A summary should be about how long?', options: ['2-3 sentences', '10 pages', 'One word'], a: 0, okMsg: '2-3 sentences — short and in your words.' },
+          { type: 'input', subject: 'Math · Comparison equation', story: '4 dogs each have 4 legs. How many legs total? (4 × 4)', prompt: 'Type the total number of legs (4 × 4):', accept: ['16'], okMsg: '16 legs — 4 times as many as 4!' },
+          { type: 'seek', subject: 'ELA · Central idea', story: 'Find the signals that point to the central idea.', prompt: 'Tap every phrase that means "central idea":', items: [ {label:'The main lesson'}, {label:'A tiny detail'}, {label:'The big message'}, {label:'A random fact'}, {label:'What it’s mostly about'} ], correct: [0,2,4], okMsg: 'Main lesson, big message, mostly-about — all central idea!' }
+        ] }
       ]
     } },
     '0-3': { type: 'mission', content: {
       title: 'Energy Journey',
       intro: 'Track energy moving through a home, then read the right map to find the way home.',
       winText: '🎉 Energy traced and maps mastered — journey done!',
-      stages: [
-        { type: 'quiz', subject: 'Science · Energy transfer', story: 'Energy never disappears — it changes. Pick the true statement.', prompt: 'Energy can ___?', options: ['Change from one form to another', 'Turn into nothing', 'Only ever stay the same'], a: 0, okMsg: 'It transfers — one form into another. Stop 1!' },
-        { type: 'quiz', subject: 'SS · Map types', story: 'You need a map that shows city borders and names.', prompt: 'Which map shows borders and cities?', options: ['Political map', 'Thematic map', 'Physical map'], a: 0, okMsg: 'Political map — borders, cities, states. Stop 2!' },
-        { type: 'input', subject: 'Science · Energy conversion', story: 'A toaster runs. It changes electrical energy into ___ (besides light).', prompt: 'A toaster turns electrical energy into ___ (one word):', accept: ['heat', 'thermal'], okMsg: 'Heat — your toast! Stop 3!' },
-        { type: 'seek', subject: 'SS · Map types', story: 'Last stretch: spot every real type of map.', prompt: 'Tap every real type of map:', items: [ {label:'Political'}, {label:'Physical'}, {label:'Thematic'}, {label:'Pizza map'}, {label:'Menu'} ], correct: [0,1,2], okMsg: 'Political, physical, thematic — all real maps. Home!' }
+      phases: [
+        { kind: 'lesson', subject: 'Science', title: 'Energy Transfers', blocks: [
+          { h: 'Energy moves and changes', p: 'Energy never disappears — it transfers, meaning it changes from one form into another. The total amount stays the same.', example: 'A lamp takes electrical energy and turns it into light + heat. Nothing is lost — it just changes form.' },
+          { h: 'Everyday energy conversions', p: 'Devices convert energy for us: a toaster (electrical → heat), a fan (electrical → motion + sound), a TV (electrical → light + sound).', tip: 'Look for what goes IN (usually electrical) and what comes OUT (light, heat, sound, motion).' },
+          { h: 'Spot the transfer', p: 'Anytime something warms up, glows, moves, or makes noise, energy is transferring. The input form becomes the output form(s).', example: 'A rolling ball transfers motion to a pin it knocks over — motion in, motion out (plus a little sound).' }
+        ] },
+        { kind: 'drill', subject: 'Science', title: 'Energy Transfer Drill', questions: [
+          { prompt: 'Energy can…', options: ['Change from one form to another', 'Turn into nothing', 'Only stay the same'], a: 0, okMsg: 'It transfers — one form into another.' },
+          { prompt: 'A toaster changes electrical energy into…', options: ['Heat', 'Light mainly', 'Motion'], a: 0, okMsg: 'Heat — that’s your toast.' },
+          { prompt: 'A lamp changes electrical energy into…', options: ['Light and heat', 'Food', 'Nothing'], a: 0, okMsg: 'Light + heat.' },
+          { prompt: 'True statement about energy:', options: ['It never disappears, only changes form', 'It can vanish', 'It is always created new'], a: 0, okMsg: 'Conservation — energy only changes form.' },
+          { prompt: 'A fan mainly changes electrical energy into…', options: ['Motion', 'Food', 'Light'], a: 0, okMsg: 'Motion — spinning blades.' },
+          { prompt: 'When a ball hits a pin, energy transfers as…', options: ['Motion', 'Heat only', 'Nothing'], a: 0, okMsg: 'Motion → motion (+ a little sound).' }
+        ] },
+        { kind: 'lesson', subject: 'Social Studies', title: 'Map Types: Physical, Political, Thematic', blocks: [
+          { h: 'Political map', p: 'A political map shows boundaries and names — borders of countries/states, cities, and capitals. Use it to find where places are and who governs them.', example: 'A political map of NY shows the border with Pennsylvania, and cities like Buffalo and Albany.' },
+          { h: 'Physical map', p: 'A physical map shows natural landforms and water — mountains, plains, rivers, lakes. Colors often show elevation (how high the land is).', tip: 'See mountains, rivers, lakes → physical. See borders, cities, names → political.' },
+          { h: 'Thematic map', p: 'A thematic map shows a pattern or one topic across an area — rainfall, population, elections, or crops. It answers “where does this happen?”', example: 'A map shaded by how much rain each region gets is a thematic map.' },
+          { h: 'Use the map key', p: 'Every map has a key (legend) that explains what its symbols and colors mean. Always check the key before you read a map.' }
+        ] },
+        { kind: 'practice', subject: 'Social Studies', title: 'Map Types Recap', mode: 'flash', items: [
+          { front: 'Political map', back: 'Shows borders, cities, and names of places.' },
+          { front: 'Physical map', back: 'Shows natural landforms — mountains, rivers, lakes.' },
+          { front: 'Thematic map', back: 'Shows one topic/pattern — rainfall, population, elections.' },
+          { front: 'Map key (legend)', back: 'Explains what the map’s symbols and colors mean.' },
+          { front: 'Energy transfer', back: 'Energy changes from one form into another — never disappears.' }
+        ] },
+        { kind: 'activity', title: 'Energy Journey', stages: [
+          { type: 'quiz', subject: 'Science · Energy transfer', story: 'Energy never disappears — it changes. Pick the true statement.', prompt: 'Energy can ___?', options: ['Change from one form to another', 'Turn into nothing', 'Only ever stay the same'], a: 0, okMsg: 'It transfers — one form into another. Stop 1!' },
+          { type: 'quiz', subject: 'SS · Map types', story: 'You need a map that shows city borders and names.', prompt: 'Which map shows borders and cities?', options: ['Political map', 'Thematic map', 'Physical map'], a: 0, okMsg: 'Political map — borders, cities, states. Stop 2!' },
+          { type: 'input', subject: 'Science · Energy conversion', story: 'A toaster runs. It changes electrical energy into ___ (besides light).', prompt: 'A toaster turns electrical energy into ___ (one word):', accept: ['heat', 'thermal'], okMsg: 'Heat — your toast! Stop 3!' },
+          { type: 'seek', subject: 'SS · Map types', story: 'Last stretch: spot every real type of map.', prompt: 'Tap every real type of map:', items: [ {label:'Political'}, {label:'Physical'}, {label:'Thematic'}, {label:'Pizza map'}, {label:'Menu'} ], correct: [0,1,2], okMsg: 'Political, physical, thematic — all real maps. Home!' }
+        ] }
       ]
     } },
 

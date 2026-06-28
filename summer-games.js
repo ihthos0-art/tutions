@@ -1134,16 +1134,7 @@
       praiseEl.innerHTML = '<div class="p-emoji">🎉</div><div class="p-text">Awesome!</div>';
       summer.appendChild(praiseEl);
     } else praiseEl = document.getElementById('sg-praise');
-    if (!document.getElementById('sg-mascot')) {
-      mascotEl = el('div'); mascotEl.id = 'sg-mascot'; mascotEl.className = 'mood-neutral';
-      mascotEl.innerHTML = '<div class="mascot-says">Hi! Ready to play?</div>' +
-        '<svg viewBox="0 0 120 120" width="120" height="120" aria-hidden="true">' +
-        '<circle cx="60" cy="62" r="48" fill="#7c3aed"/><circle class="eye" cx="44" cy="56" r="6" fill="#fff"/><circle class="eye" cx="76" cy="56" r="6" fill="#fff"/>' +
-        '<path class="mouth" d="M44 78 Q60 90 76 78" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/>' +
-        '<circle class="cheek" cx="36" cy="72" r="5" fill="#fb7185" opacity="0"/><circle class="cheek" cx="84" cy="72" r="5" fill="#fb7185" opacity="0"/></svg>';
-      summer.appendChild(mascotEl);
-      mascotSays = mascotEl.querySelector('.mascot-says');
-    } else { mascotEl = document.getElementById('sg-mascot'); mascotSays = mascotEl.querySelector('.mascot-says'); }
+    // mascot removed by request — SG.mascot.setMood stays a safe no-op (mascotEl undefined)
     ensureConfetti();
   }
 

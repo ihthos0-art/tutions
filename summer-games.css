@@ -570,3 +570,26 @@ span.ripple { position: absolute; border-radius: 50%; transform: scale(0);
 .sg-cw-inp:focus { border-color: var(--sg-ela); outline: none; }
 .sg-cw-inp.done { border-color: var(--sg-go); background: #eaf7ee; color: var(--sg-go); }
 .sg-cw-ok { color: var(--sg-go); font-weight: 700; }
+
+/* cloze */
+.sg-cloze { max-width: 560px; margin: 0 auto; }
+.sg-cloze-body { font-family: var(--sg-body); font-size: 1rem; line-height: 2; color: var(--sg-ink); }
+.sg-cloze-txt { }
+.sg-cloze-sel { font-family: var(--sg-head); font-weight: 600; font-size: 0.9rem; padding: 4px 8px; border: 2px solid var(--sg-ela); border-radius: 6px; background: #fff; color: var(--sg-ink); margin: 0 2px; }
+.sg-cloze-sel.done { border-color: var(--sg-go); background: #eaf7ee; color: var(--sg-go); }
+/* maze */
+.sg-maze { display: grid; gap: 4px; max-width: 320px; margin: 16px auto 0; }
+.sg-maze-wall { background: var(--sg-ink); border-radius: 3px; aspect-ratio: 1; }
+.sg-maze-cell { aspect-ratio: 1; border: 2px solid var(--sg-line); border-radius: 4px; background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-family: var(--sg-head); font-weight: 700; color: var(--sg-ink-soft); transition: background .12s; }
+.sg-maze-cell:hover { background: #f0f0ee; }
+.sg-maze-cell.path { background: #d4eccd; border-color: var(--sg-science); color: var(--sg-science); }
+.sg-maze-cell.start { background: var(--sg-math); border-color: var(--sg-math); color: #fff; }
+.sg-maze-cell.goal { background: var(--sg-amber); border-color: var(--sg-amber); color: #fff; }
+/* cryptoHack */
+.sg-crypt-strip { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin: 14px 0 18px; }
+.sg-crypt-box { width: 30px; height: 38px; display: flex; align-items: center; justify-content: center; border-bottom: 3px solid var(--sg-ink-soft); font-family: var(--sg-head); font-weight: 700; font-size: 1.1rem; color: var(--sg-ink-soft); }
+.sg-crypt-box.sp { border-bottom: none; width: 14px; }
+.sg-crypt-box.on { color: var(--sg-go); border-color: var(--sg-go); }
+.sg-crypt-list { display: flex; flex-direction: column; gap: 14px; max-width: 520px; margin: 0 auto; }
+.sg-crypt-q { font-family: var(--sg-head); font-weight: 600; font-size: 0.95rem; color: var(--sg-ink); margin-bottom: 6px; }
+.sg-crypt-opts { display: flex; flex-wrap: wrap; gap: 8px; }

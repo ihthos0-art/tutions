@@ -1040,10 +1040,159 @@
       ]
     } },
 
-    '6-0': { type: 'dragSort', content: { items: [ {text:'Place the protractor center on the vertex', order:0}, {text:'Line up one ray with 0°', order:1}, {text:'Read where the other ray points', order:2}, {text:'Record the degrees', order:3} ] } },
-    '6-1': { type: 'match', content: { pairs: [ ['Primary source','Firsthand account'], ['Secondary source','Report by others'], ['Diary','A primary source'], ['Stanton','Women’s rights leader'], ['Anthony','Fought for voting rights'] ] } },
-    '6-2': { type: 'wordSearch', content: { words: ['ANGLE', 'DEGREE', 'NOTES', 'SOURCE', 'VERTEX'] } },
-    '6-3': { type: 'quizMC', content: { questions: [ {q:'Dolphins communicate using...', options:['Light waves','Sound waves','Smell'], a:1}, {q:'A "push factor" to immigrate is...', options:['A reason to leave','A reason to come','A vacation'], a:0}, {q:'Ellis Island is in which state?', options:['New Jersey','New York','Connecticut'], a:1} ] } },
+    '6-0': { type: 'mission', content: {
+      title: 'Angles & Waves',
+      intro: 'Measure the angles and ride the waves. Learn angle measurement and sound waves, then tune the signal.',
+      winText: '🎉 Angles measured and wave tuned — signal clear!',
+      phases: [
+        { kind: 'lesson', subject: 'Math', title: 'Measuring Angles with a Protractor', blocks: [
+          { h: 'What is an angle?', p: 'An angle is formed where two rays meet at a point called the vertex. We measure angles in degrees (°).', example: 'A corner is a 90° angle (a right angle).' },
+          { h: 'Types of angles', p: 'Acute < 90°, right = 90°, obtuse > 90° and < 180°, straight = 180°. The size tells how wide the angle opens.', tip: 'Acute small, right square, obtuse wide.' },
+          { h: 'The protractor', p: 'A protractor is a tool that measures angles from 0° to 180°. It has a center point and two scales (inner/outer).', diagram: '<div class="sg-energy-forms"><span>📐 Protractor</span><span>📌 Vertex</span><span>0°–180°</span><span>🔺 Acute</span><span>🔵 Obtuse</span></div>' },
+          { h: 'How to measure', p: 'Place the protractor’s center on the vertex. Line up one ray with 0°. Read where the other ray crosses the scale.', example: 'Ray at 0°, other ray at 40° → 40° angle.' },
+          { h: 'Pick the right scale', p: 'Use the scale that starts at 0° on your first ray. Reading the wrong scale gives 180° minus the real angle.', tip: 'Start at 0° on your ray; follow that scale.' },
+          { h: 'Estimate first', p: 'Estimate before measuring: does it look acute (<90) or obtuse (>90)? This catches wrong-scale errors.', example: 'A wide angle can’t be 30° — check the scale.' },
+          { h: 'Why it matters', p: 'Measuring angles is used in building, art, sports, and navigation. Accuracy starts with the right steps.', tip: 'Center on vertex, ray to 0°, read other ray.' }
+        ] },
+        { kind: 'drill', subject: 'Math', title: 'Order the Protractor Steps (Drag)', engine: 'dragSort', items: [
+          { text: 'Place the protractor center on the vertex', order: 0 }, { text: 'Line up one ray with 0°', order: 1 },
+          { text: 'Read where the other ray points', order: 2 }, { text: 'Record the degrees', order: 3 }
+        ] },
+        { kind: 'lesson', subject: 'Science', title: 'Waves: Amplitude, Wavelength & Sound', blocks: [
+          { h: 'What is a wave?', p: 'A wave is a repeating disturbance that carries energy. Sound and light both travel as waves.', example: 'A ripple on water is a wave.' },
+          { h: 'Amplitude', p: 'Amplitude is the height of a wave from its rest position. In sound, bigger amplitude = louder; in light, brighter.', tip: 'Tall wave = more energy.' },
+          { h: 'Wavelength', p: 'Wavelength is the distance between one point on a wave and the same point on the next (e.g., crest to crest).', diagram: '<div class="sg-flow"><span class="sg-flow-in">Wave</span><span class="sg-flow-arrow">→</span><span class="sg-flow-box">Amplitude = height</span><span class="sg-flow-arrow">+</span><span class="sg-flow-out">Wavelength = length</span></div>' },
+          { h: 'Frequency & pitch', p: 'Frequency is how many waves pass per second. In sound, higher frequency = higher pitch; lower = lower pitch.', example: 'A whistle = high pitch (high frequency).' },
+          { h: 'Sound waves need a medium', p: 'Sound travels through solids, liquids, and gases by vibrating particles — but not through empty space (a vacuum).', tip: 'No air in space = no sound in space.' },
+          { h: 'Light vs sound', p: 'Light can travel through empty space (it doesn’t need a medium) and is much faster than sound. That’s why lightning precedes thunder.', example: 'See lightning before hearing thunder.' },
+          { h: 'Why it matters', p: 'Understanding waves explains sound, light, music, and communication technologies like phones.', tip: 'Amplitude = loud/bright; wavelength/frequency = pitch/color.' }
+        ] },
+        { kind: 'practice', subject: 'Science', title: 'Fill the Wave (Cloze)', mode: 'cloze', text: 'A wave carries * . Its height is the * , which makes sound louder. The distance crest-to-crest is the * . Sound cannot travel through a * .', blanks: [
+          { options: ['energy', 'water', 'color'], a: 0 }, { options: ['amplitude', 'wavelength', 'pitch'], a: 0 },
+          { options: ['amplitude', 'wavelength', 'frequency'], a: 1 }, { options: ['vacuum', 'solid', 'liquid'], a: 0 }
+        ] },
+        { kind: 'activity', title: 'Angles & Waves', stages: [
+          { type: 'quiz', subject: 'Math · Angle type', story: 'A 120° angle is…', prompt: 'A 120° angle is…', options: ['Obtuse', 'Acute', 'Right'], a: 0, okMsg: 'Obtuse (>90°)! Dial 1 tuned.' },
+          { type: 'match', subject: 'Science · Waves', story: 'Match each term to its meaning.', pairs: [ ['Amplitude','Wave height / loudness'], ['Wavelength','Crest-to-crest distance'], ['Frequency','Waves per second / pitch'], ['Vacuum','Sound cannot travel here'] ] },
+          { type: 'input', subject: 'Math · Measure', story: 'Right angle = ? degrees.', prompt: 'A right angle = ?°', accept: ['90', '90°', '90 degrees'], okMsg: '90° — right angle! Dial 3 tuned.' },
+          { type: 'fillBlank', subject: 'Science · Sound', story: 'Finish the wave facts to lock the signal.', sentence: 'Sound travels through solids, liquids, and * , but not through a * .', blanks: ['gases', 'vacuum'] }
+        ] }
+      ]
+    } },
+
+    '6-1': { type: 'mission', content: {
+      title: 'Sources & Suffrage',
+      intro: 'Tell the sources apart and stand for rights. Learn primary/secondary sources and women’s rights/Seneca Falls, then cast the vote.',
+      winText: '🎉 Sources sorted and votes cast — suffrage won!',
+      phases: [
+        { kind: 'lesson', subject: 'ELA', title: 'Primary vs Secondary Sources', blocks: [
+          { h: 'What is a source?', p: 'A source is where information comes from. Historians and researchers sort sources into primary and secondary.', example: 'A diary and a textbook are both sources.' },
+          { h: 'Primary sources', p: 'A primary source is a firsthand account from the time: diaries, letters, photos, speeches, interviews, original artifacts.', tip: 'Primary = was there, from the time.' },
+          { h: 'Secondary sources', p: 'A secondary source is built from primary sources by someone later: textbooks, biographies, articles, documentaries.', example: 'A biography uses letters (primary) to retell a life.' },
+          { h: 'Compare them', p: 'Primary gives direct evidence but may be biased or partial. Secondary interprets and summarizes but is once-removed.', diagram: '<div class="sg-energy-forms"><span>✉️ Primary</span><span>📷 Photo</span><span>📔 Diary</span><span>📖 Secondary</span><span>📰 Article</span></div>' },
+          { h: 'Why use both', p: 'Researchers use primary sources for evidence and secondary sources for context and others’ interpretations.', tip: 'Primary = evidence; secondary = interpretation.' },
+          { h: 'Evaluate reliability', p: 'Ask who made it, when, and why. A source close to the event by an eyewitness is usually strong primary evidence.', example: 'Check author, date, and purpose.' },
+          { h: 'Why it matters', p: 'Telling sources apart is core to research and history. It decides what counts as solid evidence.', tip: 'Primary = firsthand; secondary = later retelling.' }
+        ] },
+        { kind: 'drill', subject: 'ELA', title: 'Spot the Lie (Sources)', engine: 'twoTruths', statements: [
+          { t: 'A diary is a primary source', a: true }, { t: 'A textbook is a secondary source', a: true }, { t: 'A secondary source is a firsthand account', a: false }
+        ] },
+        { kind: 'lesson', subject: 'Social Studies', title: "Women's Rights & Seneca Falls", blocks: [
+          { h: 'Before the movement', p: 'In the 1800s, women in the US could not vote and faced limits on property, jobs, and education. Reformers organized to change this.', example: 'Married women often couldn’t own property.' },
+          { h: 'Seneca Falls Convention (1848)', p: 'In 1848, the Seneca Falls Convention in New York was the first women’s rights convention. It issued a Declaration of Sentiments demanding equality.', tip: 'Seneca Falls, NY, 1848 = first women’s rights convention.' },
+          { h: 'Key leaders', p: 'Elizabeth Cady Stanton and Lucretia Mott organized Seneca Falls. Sojourner Truth and others spoke for equality across race and gender.', diagram: '<div class="sg-energy-forms"><span>📜 Declaration</span><span>✊ Stanton</span><span>🗣️ Truth</span><span>🗽 Seneca Falls</span><span>🗳️ Suffrage</span></div>' },
+          { h: 'Declaration of Sentiments', p: 'Modeled on the Declaration of Independence, it declared men AND women are created equal and demanded the right to vote.', example: 'It listed grievances against women’s inequality.' },
+          { h: 'A long fight', p: 'Suffrage (the right to vote) took decades. Women finally won national voting rights in 1920 with the 19th Amendment.', tip: '1848 convention → 1920 victory (19th Amendment).' },
+          { h: 'NY’s role', p: 'New York was central: Seneca Falls, Rochester (Susan B. Anthony’s home), and many activists. NY later became a leader in reform.', example: 'Susan B. Anthony lived in Rochester, NY.' },
+          { h: 'Why it matters', p: 'The women’s rights movement expanded democracy. Seneca Falls is a landmark of organized protest for equality.', tip: 'Seneca Falls 1848 → 19th Amendment 1920.' }
+        ] },
+        { kind: 'practice', subject: 'Social Studies', title: 'Suffrage Timeline', mode: 'timeline', eras: ['1848', '1800s fight', '1920'], events: [
+          { text: 'Seneca Falls Convention held', era: 0 }, { text: 'Stanton, Anthony, Truth campaign for suffrage', era: 1 },
+          { text: 'Women win the vote', era: 1 }, { text: '19th Amendment passes', era: 2 }
+        ] },
+        { kind: 'activity', title: 'Sources & Suffrage', stages: [
+          { type: 'quiz', subject: 'ELA · Sources', story: 'A letter written during the event is a…', prompt: 'A letter written during the event is a…', options: ['Primary source', 'Secondary source', 'Not a source'], a: 0, okMsg: 'Primary — firsthand! Ballot 1 cast.' },
+          { type: 'match', subject: 'ELA + SS · Terms', story: 'Match each term to its meaning.', pairs: [ ['Primary source','Firsthand account'], ['Secondary source','Later retelling'], ['Seneca Falls','First women’s rights convention'], ['Suffrage','The right to vote'] ] },
+          { type: 'input', subject: 'SS · Year', story: 'Seneca Falls Convention year.', prompt: 'Seneca Falls was held in (year):', accept: ['1848'], okMsg: '1848! Ballot 3 cast.' },
+          { type: 'dragSort', subject: 'SS · Suffrage path', story: 'Order the path to women’s voting rights.', items: [ {text:'Seneca Falls Convention, 1848', order:0}, {text:'Decades of campaigning', order:1}, {text:'More states grant voting rights', order:2}, {text:'19th Amendment, 1920', order:3} ] }
+        ] }
+      ]
+    } },
+
+    '6-2': { type: 'mission', content: {
+      title: 'Add Angles & Take Notes',
+      intro: 'Add the angles and sort the facts. Learn additive/unknown angles and research note-taking, then file the report.',
+      winText: '🎉 Angles added and notes filed — report complete!',
+      phases: [
+        { kind: 'lesson', subject: 'Math', title: 'Additive & Unknown Angles', blocks: [
+          { h: 'Angles add', p: 'When angles share a vertex and fill a space, their measures add. Two angles that form a right angle sum to 90°.', example: '30° + 60° = 90° (a right angle).' },
+          { h: 'Additive angle', p: 'If a larger angle is split into parts, the whole equals the sum of the parts: whole = part1 + part2.', tip: 'Whole angle = sum of its parts.' },
+          { h: 'Find an unknown angle', p: 'To find a missing angle, subtract the known part from the whole. If 110° = 40° + x, then x = 110 − 40 = 70°.', diagram: '<div class="sg-flow"><span class="sg-flow-in">110° = 40° + x</span><span class="sg-flow-arrow">→</span><span class="sg-flow-box">x = 110 − 40</span><span class="sg-flow-arrow">→</span><span class="sg-flow-out">x = 70°</span></div>' },
+          { h: 'On a straight line', p: 'Angles on a straight line sum to 180°. If one is 70°, the other is 180 − 70 = 110°.', example: 'Straight line → parts add to 180°.' },
+          { h: 'Around a point', p: 'Angles around a single point sum to 360°. Use this to find missing angles around a vertex.', tip: 'Around a point → 360°.' },
+          { h: 'Check with addition', p: 'After solving, add the parts back to confirm they equal the whole. 40 + 70 = 110 ✓.', example: 'Always verify by re-adding.' },
+          { h: 'Why it matters', p: 'Unknown angles appear in design, navigation, and geometry. Addition and subtraction are the tools.', tip: 'Whole = parts; missing = whole − known.' }
+        ] },
+        { kind: 'drill', subject: 'Math', title: 'Fill the Unknown Angle', engine: 'fillBlank', sentence: 'Two angles form a straight line (180°). One is 70°, so the other is * °. A 90° angle split into 35° and * °: 90 − 35 = * .', blanks: ['110', '55', '55'] },
+        { kind: 'lesson', subject: 'ELA', title: 'Research Note-Taking & Categorizing Facts', blocks: [
+          { h: 'Why take notes?', p: 'Note-taking records key information so you can learn and write without rereading everything. Good notes are short and organized.', example: 'Notes capture facts, not full sentences.' },
+          { h: 'In your own words', p: 'Paraphrase — write facts in your own words to prove understanding and avoid copying. Quote only exact, important phrases.', tip: 'Paraphrase; quote rarely.' },
+          { h: 'Record the source', p: 'Always note where each fact came from (title, author, page, URL). This lets you cite and check it later.', diagram: '<div class="sg-energy-forms"><span>✍️ Paraphrase</span><span>🗂️ Categorize</span><span>🔗 Source</span><span>⭐ Key facts</span><span>🚫 No copying</span></div>' },
+          { h: 'Categorize facts', p: 'Group related facts under headings (e.g., “Early life,” “Achievements”). Categorizing organizes notes for writing.', tip: 'Sort facts into topic groups.' },
+          { h: 'Pick what matters', p: 'Choose facts that support your topic or question. Skip trivia that doesn’t fit. Relevant notes make strong writing.', example: 'Keep facts tied to your research question.' },
+          { h: 'Use a graphic organizer', p: 'A chart, web, or outline helps sort facts as you gather them. Organizers make the move to writing smoother.', tip: 'Organizer → easier writing.' },
+          { h: 'Why it matters', p: 'Good note-taking builds research skills used in every subject — science, history, and reports.', tip: 'Paraphrase, cite, categorize, keep relevant.' }
+        ] },
+        { kind: 'practice', subject: 'ELA', title: 'Sort the Facts (Categorize)', mode: 'categorize', bins: ['Source info', 'Key fact', 'Own-words note'], items: [
+          { text: '“Page 14, Smith 2021”', bin: 0 }, { text: '“Seneca Falls was in 1848”', bin: 1 }, { text: '“Convention demanded equality”', bin: 2 }, { text: '“URL: history.org/sf”', bin: 0 }, { text: '“Stanton led the convention”', bin: 2 }, { text: '“19th Amendment, 1920”', bin: 1 }
+        ] },
+        { kind: 'activity', title: 'Add Angles & Take Notes', stages: [
+          { type: 'twoTruths', subject: 'Math · Angles', story: 'One statement is FALSE. Tap the lie to open the file.', statements: [ {t:'Angles on a straight line sum to 180°', a:true}, {t:'A missing angle = whole − known part', a:true}, {t:'Angles around a point sum to 90°', a:false} ] },
+          { type: 'match', subject: 'Math + ELA · Terms', story: 'Match each term to its meaning.', pairs: [ ['Additive angles','Parts sum to the whole'], ['Unknown angle','Found by subtracting'], ['Paraphrase','Write in your own words'], ['Categorize','Group related facts'] ] },
+          { type: 'input', subject: 'Math · Unknown', story: '110° = 40° + x. x = ?°', prompt: '110° = 40° + x. x = ?°', accept: ['70', '70°'], okMsg: '70° — subtracted the part! File 3 saved.' },
+          { type: 'dragSort', subject: 'ELA · Note steps', story: 'Order the research note-taking steps.', items: [ {text:'Read the source', order:0}, {text:'Paraphrase the key facts', order:1}, {text:'Record the source info', order:2}, {text:'Categorize facts under headings', order:3} ] }
+        ] }
+      ]
+    } },
+
+    '6-3': { type: 'mission', content: {
+      title: 'Signals & Ellis Island',
+      intro: 'Trace the dolphin signal and decode the immigrant story. Learn dolphin/wave communication and immigration/Ellis Island, then crack the code.',
+      winText: '🎉 Signal traced and code cracked — welcome to America!',
+      phases: [
+        { kind: 'lesson', subject: 'Science', title: 'How Dolphins & Waves Communicate', blocks: [
+          { h: 'Animals communicate', p: 'Many animals communicate using signals. Dolphins use sound, bees dance, and birds call. Signals carry information.', example: 'A bee’s waggle dance tells where flowers are.' },
+          { h: 'Dolphins use sound', p: 'Dolphins communicate with clicks, whistles, and squeaks — sound waves. Each dolphin has a “signature whistle” like a name.', tip: 'Dolphins “talk” with sound waves.' },
+          { h: 'Echolocation', p: 'Dolphins and bats use echolocation: they send out sound waves that bounce off objects, revealing location and shape from the echo.', diagram: '<div class="sg-flow"><span class="sg-flow-in">🔊 Sound</span><span class="sg-flow-arrow">→</span><span class="sg-flow-box">🪞 Bounce</span><span class="sg-flow-arrow">→</span><span class="sg-flow-out">👂 Echo</span></div>' },
+          { h: 'Sound carries info', p: 'Sound waves carry information such as danger, food, or identity. Pitch and pattern change the message.', example: 'A high whistle can mean “here I am.”' },
+          { h: 'Waves in tech', p: 'People use waves to communicate too — radios, phones, and Wi-Fi use electromagnetic waves to carry signals.', tip: 'Humans mimic wave communication with devices.' },
+          { h: 'Why sound underwater', p: 'Sound travels faster and farther in water than air, making it ideal for dolphins. Light fades fast underwater.', example: 'Whales can hear each other across oceans.' },
+          { h: 'Why it matters', p: 'Studying animal signals inspires human tech and reveals how information travels through waves.', tip: 'Sound waves carry signals; dolphins echo-locate.' }
+        ] },
+        { kind: 'drill', subject: 'Science', title: 'Signal Maze', engine: 'maze', rows: 5, cols: 5, start: 20, goal: 4, walls: [1, 6, 13, 16, 18, 23], prompt: 'Tap a next cell to route the dolphin’s signal from ▶ to ★.' },
+        { kind: 'lesson', subject: 'Social Studies', title: 'Immigration Through Ellis Island', blocks: [
+          { h: 'What is immigration?', p: 'Immigration is moving to a new country to live. In the late 1800s–early 1900s, millions came to the US, many through New York.', example: 'People left Europe and Asia for new lives in America.' },
+          { h: 'Push and pull factors', p: 'Push factors drive people away (poverty, war, persecution). Pull factors draw them in (jobs, freedom, family).', tip: 'Push = leave; pull = come.' },
+          { h: 'Ellis Island', p: 'Ellis Island, in New York Harbor, was the main immigration station (1892–1954). Over 12 million people were processed there.', diagram: '<div class="sg-energy-forms"><span>🗽 Ellis Island</span><span>🚢 Arrival</span><span>📋 Processing</span><span>🆓 Freedom</span><span>🏠 New life</span></div>' },
+          { h: 'The processing', p: 'At Ellis Island, immigrants had medical and legal checks. Most were admitted quickly; some were detained or sent back.', example: 'A quick health exam decided entry.' },
+          { h: 'A new life in NY', p: 'Many immigrants settled in NYC neighborhoods, working in factories and building diverse communities. NY became a cultural mosaic.', tip: 'Immigrants shaped NYC’s culture.' },
+          { h: 'Challenges', p: 'Immigrants faced hard work, language barriers, and prejudice, but also opportunity and freedom for their families.', example: 'Crowded tenements; but chances for jobs.' },
+          { h: 'Why it matters', p: 'Immigration through Ellis Island shaped America’s population and culture. It’s a core story of NY and the US.', tip: 'Ellis Island = gateway for millions.' }
+        ] },
+        { kind: 'practice', subject: 'Social Studies', title: 'Crack the Code (Crypto Hack)', engine: 'cryptoHack', hidden: 'ELLIS ISLAND', clues: [
+          { prompt: 'Moving to a new country to live is called…', options: ['immigration', 'vacation', 'trade'], a: 0, show: [0, 1, 2, 3, 4] },
+          { prompt: 'The main NY immigration station was on ___ Island.', options: ['Ellis', 'Staten', 'Long'], a: 0, show: [6, 7, 8] },
+          { prompt: 'A reason to LEAVE your country is a ___ factor.', options: ['push', 'pull', 'luck'], a: 0, show: [9, 10, 11] },
+          { prompt: 'Ellis Island is in which state?', options: ['New York', 'Texas', 'Florida'], a: 0, show: [5] }
+        ] },
+        { kind: 'activity', title: 'Signals & Ellis Island', stages: [
+          { type: 'quiz', subject: 'Science · Dolphins', story: 'Dolphins communicate using…', prompt: 'Dolphins communicate using…', options: ['Sound waves', 'Light waves', 'Smell'], a: 0, okMsg: 'Sound waves — clicks & whistles! Code 1.' },
+          { type: 'venn', subject: 'SS · Factors', story: 'Sort each trait into Push, Pull, both, or neither.', left: 'Push factor', right: 'Pull factor', items: [ {text:'A reason to leave home', set:0}, {text:'A reason to come to the US', set:1}, {text:'Can involve jobs, war, or freedom', set:2}, {text:'A vacation trip', set:3} ] },
+          { type: 'input', subject: 'SS · Station', story: 'The main NY immigration station: ___ Island.', prompt: '___ Island (NY immigration station):', accept: ['ellis'], okMsg: 'Ellis Island! Code 3.' },
+          { type: 'numberLine', subject: 'Science · Underwater', story: 'Sound reaches 3/4 of the bay — tap 3/4.', prompt: 'Tap 3/4 (how far the signal reached):', marks: [ {l:'0'},{l:'1/4'},{l:'1/2'},{l:'3/4'},{l:'1'} ], a: 3 }
+        ] }
+      ]
+    } },
 
     '7-0': { type: 'quizMC', content: { questions: [ {q:'First step in a multi-step problem:', options:['Pick the answer','Plan the steps','Guess'], a:1}, {q:'A prototype is...', options:['The final product','A first test model','A drawing only'], a:1}, {q:'After testing, you should...', options:['Stop','Improve the design','Quit'], a:1} ] } },
     '7-1': { type: 'fillBlank', content: { sentence: 'The * Canal helped goods move across NY. An informative article uses * and definitions in organized *.', blanks: ['Erie', 'facts', 'paragraphs'] } },
@@ -1851,6 +2000,116 @@
     clues.appendChild(across); clues.appendChild(down); wrap.appendChild(clues); stage.appendChild(wrap);
   }
 
+  // 8l. CLOZE (passage with per-blank drop-down choices)
+  function renderCloze(stage, c, ctx) {
+    var parts = c.text.split('*'), blanks = c.blanks, done = 0;
+    var wrap = el('div', 'sg-cloze');
+    var body = el('div', 'sg-cloze-body');
+    parts.forEach(function (part, i) {
+      body.appendChild(el('span', 'sg-cloze-txt', esc(part)));
+      if (i < blanks.length) {
+        (function (bi) {
+          var sel = el('select', 'sg-cloze-sel');
+          sel.appendChild(el('option', '', '— choose —'));
+          blanks[bi].options.forEach(function (opt, oi) {
+            var o = el('option', '', esc(opt)); o.value = String(oi); sel.appendChild(o);
+          });
+          sel.addEventListener('change', function () {
+            if (sel.classList.contains('done')) return;
+            if (Number(sel.value) === blanks[bi].a) {
+              sel.classList.add('done'); sel.disabled = true; sound.play('correct'); SG.praise.show('correct');
+              done++; ctx.setRing(ringPctOf(done, blanks.length));
+              if (done === blanks.length) ctx.onWin();
+            } else { sound.play('wrong'); SG.praise.show('wrong'); SG.mascot.setMood('think'); }
+          });
+          body.appendChild(sel);
+        })(i);
+      }
+    });
+    wrap.appendChild(body); stage.appendChild(wrap);
+  }
+
+  // 8m. MAZE (tap adjacent open cells to route start -> goal)
+  function renderMaze(stage, c, ctx) {
+    var rows = c.rows, cols = c.cols, start = c.start, goal = c.goal;
+    var wall = {}; c.walls.forEach(function (i) { wall[i] = true; });
+    var path = [start], solved = false;
+    var wrap = el('div', 'sg-nl');
+    wrap.appendChild(el('div', 'sg-nl-prompt', esc(c.prompt || 'Tap a next cell to build a path to the goal.')));
+    var grid = el('div', 'sg-maze'); grid.style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)';
+    var cellEls = [];
+    function idx(r, cc) { return r * cols + cc; }
+    function adj(a, b) { var dr = Math.floor(a / cols) - Math.floor(b / cols), dc = (a % cols) - (b % cols); return (Math.abs(dr) + Math.abs(dc)) === 1; }
+    function paint() {
+      cellEls.forEach(function (e, i) {
+        if (!e) return;
+        e.className = 'sg-maze-cell';
+        if (i === start) e.classList.add('start');
+        if (i === goal) e.classList.add('goal');
+        if (path.indexOf(i) !== -1) e.classList.add('path');
+        e.textContent = i === start ? '▶' : (i === goal ? '★' : '');
+      });
+    }
+    for (var i = 0; i < rows * cols; i++) {
+      (function (i) {
+        if (wall[i]) { grid.appendChild(el('div', 'sg-maze-wall')); cellEls.push(null); return; }
+        var cell = el('button', 'sg-maze-cell');
+        cell.addEventListener('click', function () {
+          if (solved) return;
+          if (i === goal && adj(path[path.length - 1], goal)) { path.push(goal); solved = true; sound.play('correct'); SG.praise.show('correct'); paint(); ctx.setRing(100); ctx.onWin(); return; }
+          if (wall[i]) return;
+          var last = path[path.length - 1];
+          if (i === last) return;
+          // backtrack: tapping a cell already in path truncates to it
+          var pi = path.indexOf(i);
+          if (pi !== -1) { path = path.slice(0, pi + 1); sound.play('click'); paint(); return; }
+          if (adj(last, i)) { path.push(i); sound.play('click'); paint(); }
+        });
+        grid.appendChild(cell); cellEls.push(cell);
+      })(i);
+    }
+    wrap.appendChild(grid); stage.appendChild(wrap); paint();
+  }
+
+  // 8n. CRYPTO HACK (correct answers reveal characters of a hidden phrase)
+  function renderCryptoHack(stage, c, ctx) {
+    var hidden = c.hidden.toUpperCase(), clues = c.clues, revealed = new Array(hidden.length).fill(false), solved = 0;
+    var wrap = el('div', 'sg-nl');
+    wrap.appendChild(el('div', 'sg-nl-prompt', 'Crack the clues to reveal the hidden phrase!'));
+    var strip = el('div', 'sg-crypt-strip');
+    hidden.split('').forEach(function (ch, i) {
+      var box = el('span', 'sg-crypt-box' + (ch === ' ' ? ' sp' : ''));
+      box.textContent = ch === ' ' ? ' ' : '_'; box.dataset.i = i;
+      strip.appendChild(box);
+    });
+    wrap.appendChild(strip);
+    var list = el('div', 'sg-crypt-list');
+    clues.forEach(function (cl, ci) {
+      var row = el('div', 'sg-crypt-row');
+      row.appendChild(el('div', 'sg-crypt-q', esc(cl.prompt)));
+      var opts = el('div', 'sg-crypt-opts'); var answered = false;
+      cl.options.forEach(function (txt, oi) {
+        var b = el('button', 'sg-mis-opt'); b.innerHTML = '<span class="txt">' + esc(txt) + '</span><span class="ic"></span>';
+        b.addEventListener('click', function () {
+          if (answered) return; answered = true;
+          if (oi === cl.a) {
+            b.classList.add('correct'); b.querySelector('.ic').textContent = '✓'; sound.play('correct'); SG.praise.show('correct');
+            cl.show.forEach(function (pos) { revealed[pos] = true; strip.querySelector('[data-i="' + pos + '"]').textContent = hidden[pos]; strip.querySelector('[data-i="' + pos + '"]').classList.add('on'); });
+            Array.prototype.forEach.call(opts.children, function (x) { x.classList.add('disabled'); });
+            solved++; ctx.setRing(ringPctOf(solved, clues.length));
+            if (revealed.every(function (v) { return v; })) ctx.onWin();
+          } else {
+            b.classList.add('incorrect'); b.querySelector('.ic').textContent = '✗'; sound.play('wrong'); SG.praise.show('wrong'); SG.mascot.setMood('think');
+            setTimeout(function () { if (answered && oi !== cl.a) { b.classList.remove('incorrect'); b.querySelector('.ic').textContent = ''; answered = false; } }, 600);
+          }
+        });
+        opts.appendChild(b);
+      });
+      row.appendChild(opts); list.appendChild(row);
+    });
+    wrap.appendChild(list); stage.appendChild(wrap);
+  }
+
   // 8. QUIZ (multiple choice; covers T/F with 2 options)
   function renderQuiz(stage, c, ctx) {
     var qs = c.questions, i = 0, score = 0, answered = false;
@@ -2192,7 +2451,7 @@
   }
   function labelForPrev(phases, pi) { return pi > 0 ? (phases[pi - 1].title || phases[pi - 1].kind) : 'start'; }
 
-  var RENDERERS = { scratch: renderScratch, wordSearch: renderWordSearch, match: renderMatch, dragSort: renderDragSort, flip: renderFlip, hangman: renderHangman, fillBlank: renderFillBlank, quizMC: renderQuiz, trueFalse: renderTrueFalse, scramble: renderScramble, timeline: renderTimeline, categorize: renderCategorize, twoTruths: renderTwoTruths, labelDiagram: renderLabelDiagram, venn: renderVenn, numberLine: renderNumberLine, higherLower: renderHigherLower, fractionBar: renderFractionBar, crossword: renderCrossword, mission: renderMission };
+  var RENDERERS = { scratch: renderScratch, wordSearch: renderWordSearch, match: renderMatch, dragSort: renderDragSort, flip: renderFlip, hangman: renderHangman, fillBlank: renderFillBlank, quizMC: renderQuiz, trueFalse: renderTrueFalse, scramble: renderScramble, timeline: renderTimeline, categorize: renderCategorize, twoTruths: renderTwoTruths, labelDiagram: renderLabelDiagram, venn: renderVenn, numberLine: renderNumberLine, higherLower: renderHigherLower, fractionBar: renderFractionBar, crossword: renderCrossword, cloze: renderCloze, maze: renderMaze, cryptoHack: renderCryptoHack, mission: renderMission };
 
   /* ---------- ripple ---------- */
   function attachRipple(btn) {

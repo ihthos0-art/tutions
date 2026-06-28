@@ -728,10 +728,161 @@
       ]
     } },
 
-    '4-0': { type: 'fillBlank', content: { sentence: '2/5 + 1/5 = *. Fossils are evidence of * that lived long ago, found in * rock.', blanks: ['3/5', 'life', 'sedimentary'] } },
-    '4-1': { type: 'hangman', content: { word: 'metaphor', hint: 'A comparison without "like" or "as"' } },
-    '4-2': { type: 'match', content: { pairs: [ ['Mixed number','Whole + fraction'], ['Improper fraction','Top ≥ bottom'], ['Context clues','Hints around a word'], ['Multiple meaning','Two+ meanings'], ['Borrow','Used in subtraction'] ] } },
-    '4-3': { type: 'scratch', content: { fact: 'Weathering breaks rock, erosion moves it, deposition drops it. Brooklyn is in Kings County! 🏛️' } },
+    '4-0': { type: 'mission', content: {
+      title: 'Layers & Slices',
+      intro: 'Add the slices and dig the past. Learn adding/subtracting fractions and rock layers & fossils, then stack the strata.',
+      winText: '🎉 Fractions sliced and layers stacked — fossil found!',
+      phases: [
+        { kind: 'lesson', subject: 'Math', title: 'Add & Subtract Fractions (Like Denominators)', blocks: [
+          { h: 'Add the numerators', p: 'When fractions have the same denominator, add the numerators and keep the denominator. 1/4 + 2/4 = 3/4.', example: 'Same-size slices → just count the slices.' },
+          { h: 'Same denominator = same pieces', p: '“Like denominators” means the pieces are the same size, so you can combine them directly — only the count (numerator) changes.', tip: 'Denominator stays the same.' },
+          { h: 'Add example', p: '1/4 + 2/4: keep the 4, add 1 + 2 = 3, so 1/4 + 2/4 = 3/4. Three of the same-size pieces.', diagram: '<div class="sg-flow"><span class="sg-flow-in">1/4 + 2/4</span><span class="sg-flow-arrow">→</span><span class="sg-flow-box">(1+2)/4</span><span class="sg-flow-arrow">→</span><span class="sg-flow-out">= 3/4</span></div>' },
+          { h: 'Subtract example', p: '3/5 − 1/5: keep the 5, subtract 3 − 1 = 2, so 3/5 − 1/5 = 2/5. Taking away same-size pieces.', example: '3/5 − 1/5 = 2/5.' },
+          { h: 'Simplify if needed', p: 'If the answer can be simplified, do it. 2/4 = 1/2. Always check for a common factor of top and bottom.', tip: 'After adding, simplify when you can.' },
+          { h: 'Whole = denominator over itself', p: 'When numerator equals denominator, it’s one whole: 4/4 = 1, 5/5 = 1. So 1/4 + 3/4 = 4/4 = 1.', example: 'All the pieces together = 1 whole.' },
+          { h: 'Why it matters', p: 'Adding/subtracting like fractions is used in cooking, measuring, and sharing. It’s the base for unlike-denominator work.', tip: 'Like denom → add or subtract tops, keep bottom.' }
+        ] },
+        { kind: 'drill', subject: 'Math', title: 'Build the Answer (Fraction Bar)', engine: 'fractionBar', questions: [
+          { prompt: '1/4 + 2/4 = ?/4 — tap 3 parts', denom: 4, target: 3 },
+          { prompt: '3/5 − 1/5 = ?/5 — tap 2 parts', denom: 5, target: 2 },
+          { prompt: '2/6 + 1/6 = ?/6 — tap 3 parts', denom: 6, target: 3 },
+          { prompt: '4/5 − 2/5 = ?/5 — tap 2 parts', denom: 5, target: 2 },
+          { prompt: '1/3 + 1/3 = ?/3 — tap 2 parts', denom: 3, target: 2 }
+        ] },
+        { kind: 'lesson', subject: 'Science', title: 'Rock Layers & Fossils', blocks: [
+          { h: 'Rocks form in layers', p: 'Sediment piles up over time and hardens into rock in layers called strata. Each layer is a slice of time.', example: 'The Grand Canyon shows stacked rock layers.' },
+          { h: 'Older layers are deeper', p: 'In an undisturbed stack, the bottom layer formed first (oldest) and the top layer formed last (youngest). Deeper = older.', tip: 'Bottom = oldest; top = youngest.' },
+          { h: 'Fossils = evidence of past life', p: 'A fossil is the preserved remains or traces of a once-living thing — bones, shells, footprints, or imprints.', example: 'A dinosaur bone fossil shows it lived there.' },
+          { h: 'Fossils form in sedimentary rock', p: 'Most fossils form in sedimentary rock, where sediment buries remains before they decay. Igneous and metamorphic rock rarely hold fossils.', diagram: '<div class="sg-energy-forms"><span>🪨 Strata</span><span>🦴 Fossils</span><span>📏 Deeper = older</span><span>🌊 Sediment</span><span>⏳ Time</span></div>' },
+          { h: 'Relative dating', p: 'We can tell relative age by position: a layer below another is older. This is relative dating — ordering without exact dates.', tip: 'Lower layer → older than the one above.' },
+          { h: 'Environments change', p: 'Fossils show environments change over time — a desert may once have been a sea. Layers tell Earth’s story.', example: 'Shell fossils on a mountain mean it was once underwater.' },
+          { h: 'Why it matters', p: 'Rock layers and fossils are Earth’s history book. They reveal past life, climates, and events over millions of years.', tip: 'Layers + fossils = the story of life on Earth.' }
+        ] },
+        { kind: 'practice', subject: 'Science', title: 'Layer Timeline', mode: 'timeline', eras: ['Oldest (bottom)', 'Middle', 'Youngest (top)'], events: [
+          { text: 'Bottom sediment settles first', era: 0 }, { text: 'Fossils form in lower layers', era: 0 },
+          { text: 'More sediment piles on', era: 1 }, { text: 'Top layer is the youngest', era: 2 }
+        ] },
+        { kind: 'activity', title: 'Layers & Slices', stages: [
+          { type: 'quiz', subject: 'Math · Add', story: 'First, add: 1/4 + 2/4 = ?', prompt: '1/4 + 2/4 = ?', options: ['3/4', '3/8', '1/4'], a: 0, okMsg: '3/4 — kept the 4! Layer 1 set.' },
+          { type: 'match', subject: 'Science · Terms', story: 'Match each term to its meaning.', pairs: [ ['Fossil','Evidence of past life'], ['Strata','Rock layers'], ['Sedimentary rock','Where fossils form'], ['Older layer','Found deeper down'] ] },
+          { type: 'input', subject: 'Math · Subtract', story: '3/5 − 1/5 = ?/5  (type the numerator).', prompt: '3/5 − 1/5 = ?/5  (numerator):', accept: ['2'], okMsg: '2 — 3/5 − 1/5 = 2/5! Layer 3 set.' },
+          { type: 'fillBlank', subject: 'Math · Rule', story: 'Finish the rule to lock the layer.', sentence: 'To add fractions with the same denominator, add the * and keep the *.', blanks: ['numerators', 'denominator'] }
+        ] }
+      ]
+    } },
+
+    '4-1': { type: 'mission', content: {
+      title: 'Branches & Comparisons',
+      intro: 'Compare with figures and split the power. Learn similes/metaphors and the branches of government, then balance the tower.',
+      winText: '🎉 Comparisons sharp and branches balanced — tower stands!',
+      phases: [
+        { kind: 'lesson', subject: 'ELA', title: 'Similes & Metaphors', blocks: [
+          { h: 'Figures of speech compare', p: 'Similes and metaphors are figures of speech that compare two things to create a vivid picture in the reader’s mind.', example: '“Her smile was sunshine” paints a picture.' },
+          { h: 'Simile uses like or as', p: 'A simile compares using “like” or “as.” “Brave as a lion” and “runs like the wind” are similes.', tip: 'like / as → simile.' },
+          { h: 'Metaphor says one thing IS another', p: 'A metaphor compares by saying one thing IS another — no like/as. “The sun was a gold coin” is a metaphor.', example: '“The moon was a silver coin” = metaphor.' },
+          { h: 'Simile example', p: '“Her smile was like sunshine” uses like, so it’s a simile. It compares her smile to sunshine to show warmth.', diagram: '<div class="sg-flow"><span class="sg-flow-in">brave as a lion</span><span class="sg-flow-arrow">→</span><span class="sg-flow-box">like / as</span><span class="sg-flow-arrow">→</span><span class="sg-flow-out">SIMILE</span></div>' },
+          { h: 'Metaphor example', p: '“The sun was a gold coin” says the sun IS a coin — that’s a metaphor. It paints the sun’s shape and color.', example: 'No like/as + “is” → metaphor.' },
+          { h: 'Why writers use them', p: 'Writers use similes and metaphors to make descriptions vivid, memorable, and emotional — they help readers see and feel.', tip: 'They turn plain descriptions into pictures.' },
+          { h: 'Why it matters', p: 'Spotting similes and metaphors deepens reading and improves your own descriptive writing.', tip: 'like/as = simile; is/are/was = metaphor.' }
+        ] },
+        { kind: 'drill', subject: 'ELA', title: 'Rebuild the Simile', engine: 'scramble', words: ['Her', 'smile', 'was', 'like', 'sunshine'] },
+        { kind: 'lesson', subject: 'Social Studies', title: 'Branches of Government', blocks: [
+          { h: 'Why three branches', p: 'Power is split into three branches so no one person or group is too powerful. This is separation of powers.', example: 'No branch can do everything alone.' },
+          { h: 'Legislative — makes laws', p: 'The legislative branch makes the laws. At the federal level that’s Congress (House + Senate); in NY, the State Legislature.', tip: 'Legislative = lawmakers.' },
+          { h: 'Executive — carries out laws', p: 'The executive branch carries out the laws and leads the government. Federally that’s the President; in NY, the Governor.', example: 'President/Governor = executive.' },
+          { h: 'Judicial — judges laws', p: 'The judicial branch interprets (judges) the laws — the courts. It decides if laws and actions are constitutional.', diagram: '<div class="sg-energy-forms"><span>📜 Legislative</span><span>🏛️ Executive</span><span>⚖️ Judicial</span><span>🤝 Checks</span><span>⚖️ Balances</span></div>' },
+          { h: 'Checks & balances', p: 'Each branch can check the others — veto, override, rule a law unconstitutional. This keeps power balanced.', tip: 'Each branch limits the others.' },
+          { h: 'State vs federal', p: 'Each level (federal, state) has its own three branches. NY State has its legislature, governor, and courts.', example: 'Federal and state each have all three branches.' },
+          { h: 'Why it matters', p: 'Three branches protect freedom by preventing any one part from taking over. It’s how democracy stays balanced.', tip: 'Legislative, Executive, Judicial — make, do, judge.' }
+        ] },
+        { kind: 'practice', subject: 'Social Studies', title: 'Sort the Branches (Categorize)', mode: 'categorize', bins: ['Legislative', 'Executive', 'Judicial'], items: [
+          { text: 'Makes laws', bin: 0 }, { text: 'President', bin: 1 }, { text: 'Courts', bin: 2 }, { text: 'Congress', bin: 0 }, { text: 'Governor', bin: 1 }, { text: 'Judges laws', bin: 2 }
+        ] },
+        { kind: 'activity', title: 'Branches & Comparisons', stages: [
+          { type: 'quiz', subject: 'ELA · Simile', story: 'A simile uses ___ to compare.', prompt: 'A simile uses ___ to compare:', options: ['like or as', 'is / are', 'no words'], a: 0, okMsg: 'like or as — simile! Block 1 placed.' },
+          { type: 'match', subject: 'ELA + SS · Terms', story: 'Match each term to its meaning.', pairs: [ ['Simile','Compares with like/as'], ['Metaphor','Says X IS Y'], ['Legislative','Makes laws'], ['Judicial','Judges laws'] ] },
+          { type: 'input', subject: 'ELA · Metaphor', story: '“The moon was a silver coin” is a ___ .', prompt: '"The moon was a silver coin" is a ___ :', accept: ['metaphor'], okMsg: 'Metaphor — no like/as! Block 3 placed.' },
+          { type: 'dragSort', subject: 'SS · How a bill works', story: 'Order how a bill moves through the branches.', items: [ {text:'Idea is written as a bill', order:0}, {text:'Legislative branch votes on it', order:1}, {text:'Executive signs or vetoes', order:2}, {text:'Judicial checks if lawful', order:3} ] }
+        ] }
+      ]
+    } },
+
+    '4-2': { type: 'mission', content: {
+      title: 'Mixed & Meaning',
+      intro: 'Mix the numbers and decode the words. Learn mixed numbers and multiple-meaning words, then crack the code.',
+      winText: '🎉 Mixed numbers built and meanings decoded — code cracked!',
+      phases: [
+        { kind: 'lesson', subject: 'Math', title: 'Mixed Numbers & Whole × Fraction', blocks: [
+          { h: 'Mixed number = whole + fraction', p: 'A mixed number combines a whole number and a fraction, like 1 1/2 (one and a half). It is more than one whole.', example: '1 1/2 = one whole plus one half.' },
+          { h: 'Improper fraction', p: 'An improper fraction has a numerator greater than or equal to its denominator, like 3/2. It is also more than one whole.', tip: 'Top ≥ bottom → improper.' },
+          { h: 'Convert between them', p: '1 1/2 = 3/2: the whole (1 = 2/2) plus the fraction (1/2) = 3/2. Going back, 3/2 = 1 1/2 (3 ÷ 2 = 1 r 1).', diagram: '<div class="sg-flow"><span class="sg-flow-in">1 1/2</span><span class="sg-flow-arrow">=</span><span class="sg-flow-box">2/2 + 1/2</span><span class="sg-flow-arrow">=</span><span class="sg-flow-out">3/2</span></div>' },
+          { h: 'Whole × fraction', p: 'Multiply a whole number by a fraction: keep the denominator, multiply the numerator. 3 × 1/4 = 3/4.', example: '3 × 1/4 = (3×1)/4 = 3/4.' },
+          { h: 'Repeated addition view', p: '3 × 1/4 is the same as 1/4 + 1/4 + 1/4 = 3/4. Multiplying by a whole = adding the fraction that many times.', tip: 'Whole × fraction = repeated addition.' },
+          { h: 'Simplify answers', p: 'If your answer can be simplified, simplify it. 4/2 = 2; 6/4 = 1 1/2. Always reduce or write as a mixed number.', example: '4/2 = 2 wholes.' },
+          { h: 'Why it matters', p: 'Mixed numbers appear in recipes, measurements, and distances. Whole × fraction is scaling — used in doubling recipes.', tip: 'Mixed = whole + fraction; × whole = multiply tops, keep bottom.' }
+        ] },
+        { kind: 'drill', subject: 'Math', title: 'Mixed to Improper', engine: 'fillBlank', sentence: 'A mixed number = whole + * . 1 1/2 = * /2 as an improper fraction (since 1 = 2/2).', blanks: ['fraction', '3'] },
+        { kind: 'lesson', subject: 'ELA', title: 'Multiple-Meaning Words & Context Clues', blocks: [
+          { h: 'Words have multiple meanings', p: 'Many words have more than one meaning. “Bank” can mean a river bank or a money bank. The word alone doesn’t tell you which.', example: 'bat, light, bark, match — all multiple-meaning.' },
+          { h: 'Context = surrounding words', p: 'Context is the words and sentences around an unknown word. They hold clues to the correct meaning.', tip: 'Read the neighbors to find the meaning.' },
+          { h: 'Use context to pick', p: 'Use context clues to choose the meaning that fits. “She sat on the river bank” → bank = edge of a river.', example: '“Deposit money in the bank” → bank = money bank.' },
+          { h: 'Example: bank', p: '“The river bank was muddy” → edge of river. “I opened a bank account” → a money bank. Same word, different meaning by context.', diagram: '<div class="sg-energy-forms"><span>river bank = edge</span><span>money bank = savings</span><span>bat = mammal / club</span><span>light = lamp / weight</span></div>' },
+          { h: 'Definition order', p: 'Dictionaries list meanings in order, often most common first. Pick the definition that fits the context, not just #1.', tip: 'Match the definition to the sentence.' },
+          { h: 'Other clue types', p: 'Other context clues: synonyms (nearby similar words), antonyms (opposites), examples, and restatements. They all hint meaning.', example: '“The bark, the tree’s outer skin,…” defines bark by restatement.' },
+          { h: 'Why it matters', p: 'Context clues let you decode new and multiple-meaning words while reading — without stopping for a dictionary.', tip: 'Surrounding words = the meaning key.' }
+        ] },
+        { kind: 'practice', subject: 'ELA', title: 'Flip the Meanings', mode: 'flip', cards: [
+          { front: 'bank (river)', back: 'Edge of a river' }, { front: 'bank (money)', back: 'A place for money' },
+          { front: 'bat (animal)', back: 'A flying mammal' }, { front: 'bat (sports)', back: 'A wooden club' },
+          { front: 'light (lamp)', back: 'A source of light' }, { front: 'light (weight)', back: 'Not heavy' }
+        ] },
+        { kind: 'activity', title: 'Mixed & Meaning', stages: [
+          { type: 'twoTruths', subject: 'Math · Mixed numbers', story: 'One statement is FALSE. Tap the lie to crack the code.', statements: [ {t:'1 1/2 is a mixed number', a:true}, {t:'3 × 1/4 = 3/4', a:true}, {t:'A mixed number has no whole part', a:false} ] },
+          { type: 'match', subject: 'Math + ELA · Terms', story: 'Match each term to its meaning.', pairs: [ ['Mixed number','Whole + fraction'], ['Improper fraction','Numerator ≥ denom'], ['Whole × 1/4 (×3)','3/4'], ['Context','Surrounding words'] ] },
+          { type: 'input', subject: 'Math · Improper', story: '1 1/2 = ?/2  (type the numerator).', prompt: '1 1/2 = ?/2  (numerator):', accept: ['3'], okMsg: '3 — 1 1/2 = 3/2! Code 3 cracked.' },
+          { type: 'dragSort', subject: 'ELA · Context clues', story: 'Order the steps to use a context clue.', items: [ {text:'Find the unknown word', order:0}, {text:'Read the surrounding sentence', order:1}, {text:'Look for clue words', order:2}, {text:'Pick the meaning that fits', order:3} ] }
+        ] }
+      ]
+    } },
+
+    '4-3': { type: 'mission', content: {
+      title: 'Wear & Borough',
+      intro: 'Watch the land wear down and find your borough. Learn weathering/erosion/deposition and Brooklyn local government, then build the delta.',
+      winText: '🎉 Landforms built and boroughs labeled — delta formed!',
+      phases: [
+        { kind: 'lesson', subject: 'Science', title: 'Weathering, Erosion & Deposition', blocks: [
+          { h: 'Weathering breaks rock in place', p: 'Weathering is the breaking apart of rock where it is, without moving it. Water, ice, wind, and roots crack rock over time.', example: 'Water freezes in a crack and splits the rock.' },
+          { h: 'Erosion moves the pieces', p: 'Erosion is the moving of weathered rock and soil by water, wind, or ice. It carries the broken pieces away.', tip: 'Weathering breaks; erosion moves.' },
+          { h: 'Deposition drops them', p: 'Deposition is the dropping of eroded material in a new place. A river slows and drops sediment, building land.', example: 'A delta forms where a river deposits sediment.' },
+          { h: 'Water, wind, ice cause all three', p: 'The same forces — water, wind, and ice — weather, erode, and deposit. They shape Earth’s surface constantly.', diagram: '<div class="sg-energy-forms"><span>💧 Water</span><span>🌬️ Wind</span><span>🧊 Ice</span><span>🪨 Weather</span><span>🚚 Erode</span><span>⬇️ Deposit</span></div>' },
+          { h: 'The order', p: 'The process goes in order: weathering (break) → erosion (move) → deposition (drop). Each step follows the last.', tip: 'Break → move → drop.' },
+          { h: 'Shapes landforms', p: 'Together these processes carve canyons, wear mountains, and build deltas and beaches. They slowly reshape the land.', example: 'The Grand Canyon was carved by erosion.' },
+          { h: 'Why it matters', p: 'Understanding these processes explains landscapes and helps us predict erosion, plan building, and protect coasts.', tip: 'Weather → erode → deposit = Earth’s reshaping loop.' }
+        ] },
+        { kind: 'drill', subject: 'Science', title: 'Order the Process (Drag)', engine: 'dragSort', items: [
+          { text: 'Weathering breaks rock', order: 0 }, { text: 'Erosion moves the pieces', order: 1 },
+          { text: 'Deposition drops them', order: 2 }, { text: 'A new landform builds up', order: 3 }
+        ] },
+        { kind: 'lesson', subject: 'Social Studies', title: 'Brooklyn / Kings County Local Government', blocks: [
+          { h: 'Brooklyn is Kings County', p: 'Brooklyn is one of NYC’s five boroughs and is also Kings County. Boroughs are both neighborhoods and counties.', example: 'Brooklyn = Kings County.' },
+          { h: 'Borough president & community boards', p: 'Each borough has a Borough President and community boards that advise on local issues and budgets for the neighborhood.', tip: 'Borough President + community boards = local voice.' },
+          { h: 'City Council representative', p: 'Brooklyn is divided into City Council districts, each with an elected Council member who votes on city laws and budgets.', example: 'Your council member represents your district.' },
+          { h: 'City services', p: 'City government provides schools (DOE), sanitation, parks, police, and fire services that Brooklyn uses every day.', diagram: '<div class="sg-energy-forms"><span>🏫 Schools</span><span>🗑️ Sanitation</span><span>🌳 Parks</span><span>👮 Safety</span><span>🚒 Fire</span></div>' },
+          { h: 'State representatives', p: 'Brooklyn also elects State Assembly members and State Senators who make laws in Albany for all of New York State.', tip: 'City council = NYC; Assembly/Senate = NY State.' },
+          { h: 'You can participate', p: 'You can attend community board meetings, contact representatives, and vote in local elections. Local government affects your daily life.', example: 'Community boards meet monthly and are open to the public.' },
+          { h: 'Why it matters', p: 'Local government runs your streets, schools, and parks. Knowing it helps you improve your neighborhood.', tip: 'Borough president, council, community boards — your local leaders.' }
+        ] },
+        { kind: 'practice', subject: 'Social Studies', title: 'Label the Boroughs', mode: 'labelDiagram', slots: [
+          { hint: 'Where Brooklyn is (Kings Co.)' }, { hint: 'Manhattan (New York Co.)' }, { hint: 'Queens (Queens Co.)' }, { hint: 'The Bronx' }, { hint: 'Staten Island' }
+        ], labels: [ { label: 'Brooklyn', slot: 0 }, { label: 'Manhattan', slot: 1 }, { label: 'Queens', slot: 2 }, { label: 'Bronx', slot: 3 }, { label: 'Staten Island', slot: 4 } ] },
+        { kind: 'activity', title: 'Wear & Borough', stages: [
+          { type: 'quiz', subject: 'Science · Order', story: 'Which process comes FIRST?', prompt: 'Which comes first?', options: ['Weathering', 'Erosion', 'Deposition'], a: 0, okMsg: 'Weathering breaks first! Sediment 1 dropped.' },
+          { type: 'venn', subject: 'Science · Processes', story: 'Sort each trait into Weathering, Erosion, both, or neither.', left: 'Weathering', right: 'Erosion', items: [ {text:'Breaks rock in place', set:0}, {text:'Moves broken pieces', set:1}, {text:'Caused by water, wind, ice', set:2}, {text:'Drops sediment in a new spot', set:3} ] },
+          { type: 'input', subject: 'SS · County', story: 'Brooklyn is also called ___ County.', prompt: 'Brooklyn is also called ___ County:', accept: ['kings'], okMsg: 'Kings — Brooklyn = Kings County! Sediment 3 dropped.' },
+          { type: 'numberLine', subject: 'Science · Delta', story: 'Deposition filled 3/4 of the delta — tap 3/4.', prompt: 'Tap 3/4 (deposition filled the delta):', marks: [ {l:'0'},{l:'1/4'},{l:'1/2'},{l:'3/4'},{l:'1'} ], a: 3 }
+        ] }
+      ]
+    } },
 
     '5-0': { type: 'match', content: { pairs: [ ['Tenths','0.1 place'], ['Hundredths','0.01 place'], ['Elevation','Height above sea'], ['Landform','A shape of land'], ['Plain','Flat low land'] ] } },
     '5-1': { type: 'hangman', content: { word: 'proverb', hint: 'A short saying with a lesson' } },
@@ -1475,6 +1626,41 @@
     showPair();
   }
 
+  // 8j. FRACTION BAR (tap segments to build a target fraction; single or multi-question)
+  function renderFractionBar(stage, c, ctx) {
+    var qs = c.questions ? c.questions : [{ prompt: c.prompt, denom: c.denom, target: c.target }];
+    var qi = 0, wrap = el('div', 'sg-fb2');
+    function renderQ() {
+      wrap.innerHTML = '';
+      var q = qs[qi];
+      wrap.appendChild(el('div', 'sg-fb2-prompt', esc(q.prompt)));
+      var bar = el('div', 'sg-fb2-bar');
+      var segs = [];
+      for (var s = 0; s < q.denom; s++) {
+        (function (si) {
+          var seg = el('button', 'sg-fb2-seg');
+          seg.addEventListener('click', function () {
+            if (seg.classList.contains('locked')) return;
+            seg.classList.toggle('filled');
+            sound.play('click');
+            var filled = segs.filter(function (x) { return x.classList.contains('filled'); }).length;
+            if (filled === q.target) {
+              segs.forEach(function (x) { x.classList.add('locked'); });
+              Array.prototype.forEach.call(bar.querySelectorAll('.sg-fb2-seg'), function (x) { if (x.classList.contains('filled')) x.classList.add('correct'); });
+              sound.play('correct'); SG.praise.show('correct');
+              qi++; ctx.setRing(ringPctOf(qi, qs.length));
+              if (qi >= qs.length) { ctx.onWin(); }
+              else { setTimeout(function () { sound.play('click'); renderQ(); }, 650); }
+            }
+          });
+          bar.appendChild(seg); segs.push(seg);
+        })(s);
+      }
+      wrap.appendChild(bar); stage.appendChild(wrap);
+    }
+    renderQ();
+  }
+
   // 8. QUIZ (multiple choice; covers T/F with 2 options)
   function renderQuiz(stage, c, ctx) {
     var qs = c.questions, i = 0, score = 0, answered = false;
@@ -1816,7 +2002,7 @@
   }
   function labelForPrev(phases, pi) { return pi > 0 ? (phases[pi - 1].title || phases[pi - 1].kind) : 'start'; }
 
-  var RENDERERS = { scratch: renderScratch, wordSearch: renderWordSearch, match: renderMatch, dragSort: renderDragSort, flip: renderFlip, hangman: renderHangman, fillBlank: renderFillBlank, quizMC: renderQuiz, trueFalse: renderTrueFalse, scramble: renderScramble, timeline: renderTimeline, categorize: renderCategorize, twoTruths: renderTwoTruths, labelDiagram: renderLabelDiagram, venn: renderVenn, numberLine: renderNumberLine, higherLower: renderHigherLower, mission: renderMission };
+  var RENDERERS = { scratch: renderScratch, wordSearch: renderWordSearch, match: renderMatch, dragSort: renderDragSort, flip: renderFlip, hangman: renderHangman, fillBlank: renderFillBlank, quizMC: renderQuiz, trueFalse: renderTrueFalse, scramble: renderScramble, timeline: renderTimeline, categorize: renderCategorize, twoTruths: renderTwoTruths, labelDiagram: renderLabelDiagram, venn: renderVenn, numberLine: renderNumberLine, higherLower: renderHigherLower, fractionBar: renderFractionBar, mission: renderMission };
 
   /* ---------- ripple ---------- */
   function attachRipple(btn) {

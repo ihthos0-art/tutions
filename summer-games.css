@@ -543,3 +543,13 @@ span.ripple { position: absolute; border-radius: 50%; transform: scale(0);
 .sg-hl-btn.down { background: var(--sg-math); }
 .sg-hl-btn:hover:not(:disabled) { transform: translateY(-2px); }
 .sg-hl-btn:disabled { opacity: 0.45; cursor: default; }
+
+/* fraction bar */
+.sg-fb2 { text-align: center; }
+.sg-fb2-prompt { font-family: var(--sg-head); font-weight: 700; font-size: 1.05rem; color: var(--sg-ink); margin-bottom: 18px; }
+.sg-fb2-bar { display: flex; gap: 6px; justify-content: center; max-width: 520px; margin: 0 auto; padding: 8px; background: #fff; border: 2px solid var(--sg-line); border-radius: 12px; }
+.sg-fb2-seg { flex: 1; height: 64px; border-radius: 8px; border: 2px solid var(--sg-line); background: #f7f7f5; cursor: pointer; transition: background .15s, transform .08s, border-color .15s; }
+.sg-fb2-seg:hover:not(.locked) { transform: translateY(-2px); }
+.sg-fb2-seg.filled { background: var(--sg-amber); border-color: var(--sg-amber); }
+.sg-fb2-seg.filled.correct { background: var(--sg-go); border-color: var(--sg-go); }
+.sg-fb2-seg.locked { cursor: default; }

@@ -184,6 +184,7 @@
         <div class="btn-row">
           <button class="action-btn primary" id="generate-btn">Generate with AI</button>
           <button class="action-btn secondary" id="load-current-btn">Load Current Homework</button>
+          <button class="action-btn secondary" id="clear-hw-btn" style="border-color:#c0392b;color:#c0392b;" title="Wipes KV data so the page shows its built-in static content">Clear KV / Reset to Static</button>
           <span class="status-msg" id="gen-status"></span>
         </div>
       </div>
@@ -363,6 +364,29 @@
       card.style.display = 'block';
     })
     .catch(function() { setStatus('gen-status', 'Failed to load.', 'err'); });
+  });
+
+  document.getElementById('clear-hw-btn').addEventListener('click', function () {
+    var student = document.getElementById('sel-student').value;
+    if (!student) { alert('Please choose a student first.'); return; }
+    if (!confirm('Clear all KV homework data for ' + (STUDENT_NAMES[student] || student) + '? The page will fall back to its built-in static content.')) return;
+    setStatus('gen-status', 'Clearing…', 'working');
+    fetch('/api/homework/' + student, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({})
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(d) {
+      if (d.ok) {
+        currentContent = {};
+        setStatus('gen-status', 'Cleared! ' + (STUDENT_NAMES[student] || student) + ' now shows static HTML — tell them to refresh.', 'ok');
+        document.getElementById('current-card').style.display = 'none';
+      } else {
+        setStatus('gen-status', 'Clear failed: ' + (d.error || 'unknown'), 'err');
+      }
+    })
+    .catch(function(err) { setStatus('gen-status', 'Request failed: ' + err.message, 'err'); });
   });
 
   document.getElementById('generate-btn').addEventListener('click', function () {

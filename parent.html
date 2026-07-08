@@ -100,6 +100,21 @@
     .page-heading { font-family: 'Merriweather', serif; font-size: 22px; font-weight: 700; margin-bottom: 20px; }
     .answers-controls { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; flex-wrap: wrap; }
     .current-badge { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; background: #e8f5e9; color: #1b5e20; border: 1px solid #81c784; border-radius: 3px; padding: 3px 10px; }
+    /* ===== SUMMER ANSWER KEY ===== */
+    .summer-unit { background: #fff; border: 1px solid #d4d2cc; border-radius: 6px; margin-bottom: 20px; overflow: hidden; }
+    .summer-unit-header { background: #1a1a1a; color: #fff; padding: 12px 20px; font-size: 13px; font-weight: 700; letter-spacing: 0.05em; }
+    .summer-lesson { border-bottom: 1px solid #eee; }
+    .summer-lesson:last-child { border-bottom: none; }
+    .summer-lesson-header { background: #f7f6f3; padding: 10px 20px; font-size: 13px; font-weight: 700; color: #333; }
+    .summer-phase-title { padding: 8px 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #666; background: #fafafa; border-top: 1px solid #eee; }
+    .summer-qa-row { display: grid; grid-template-columns: 46px 1fr 200px; gap: 12px; padding: 10px 20px; border-top: 1px solid #eee; align-items: start; }
+    .summer-qa-row:nth-child(even) { background: #fdfdfc; }
+    .summer-q-num { font-weight: 700; color: #1a1a1a; }
+    .summer-q-text { font-family: 'Merriweather', serif; font-size: 13px; line-height: 1.6; color: #222; }
+    .summer-q-ans { font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; color: #27ae60; background: #f0fff4; border: 1px solid #b7eb8f; border-radius: 4px; padding: 6px 10px; }
+    .summer-qa-row.practice-row { grid-template-columns: 46px 1fr; }
+    .summer-practice-ans { font-family: 'Merriweather Sans', sans-serif; font-size: 12px; color: #555; margin-top: 4px; }
+    @media (max-width: 700px) { .summer-qa-row { grid-template-columns: 36px 1fr; } .summer-q-ans { margin-top: 6px; } }
     @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -140,6 +155,7 @@
     <div class="main-tab-bar">
       <button class="main-tab-btn active" data-tab="editor">Homework Editor</button>
       <button class="main-tab-btn" data-tab="answers">Student Answers</button>
+      <button class="main-tab-btn" data-tab="summer-answers">Summer Answer Key</button>
     </div>
 
     <!-- ===== HOMEWORK EDITOR TAB ===== -->
@@ -213,6 +229,28 @@
       </div>
     </div>
 
+    <!-- ===== SUMMER ANSWER KEY TAB ===== -->
+    <div class="main-tab-content" id="tab-summer-answers">
+      <h1 class="page-heading">Summer Answer Key</h1>
+      <div class="editor-card">
+        <div class="form-row" style="grid-template-columns: 1fr auto auto; align-items: end;">
+          <div class="form-group">
+            <label class="form-label" for="summer-site-sel">Summer Site</label>
+            <select class="form-select" id="summer-site-sel">
+              <option value="">— choose a summer site —</option>
+              <option value="salma-khadija-summer">Salma &amp; Khadija (Grade 7)</option>
+              <option value="taha-summer">Taha (Grade 5→6 Math)</option>
+              <option value="nahid-summer">Nahid (Grade 4 Math + English)</option>
+            </select>
+          </div>
+          <button class="action-btn primary" id="load-summer-answers-btn">Load Answers</button>
+          <button class="action-btn secondary" id="print-summer-answers-btn">Print</button>
+        </div>
+        <span class="status-msg" id="summer-answers-status"></span>
+      </div>
+      <div id="summer-answers-view"></div>
+    </div>
+
     <!-- ===== STUDENT ANSWERS TAB ===== -->
     <div class="main-tab-content" id="tab-answers">
       <h1 class="page-heading">Student Answers</h1>
@@ -256,6 +294,12 @@
     'manha': 'Manha',
     'mahiya': 'Mahiya',
     'taha': 'Taha'
+  };
+
+  var SUMMER_SITES = {
+    'salma-khadija-summer': 'Salma & Khadija — Summer Bridge to Grade 7',
+    'taha-summer': 'Taha — Summer Math Bridge Grade 5→6',
+    'nahid-summer': 'Nahid — Summer Bridge to Grade 4'
   };
 
   var KEY_LABELS = {
@@ -345,6 +389,7 @@
       var tab = document.getElementById('tab-' + btn.dataset.tab);
       if (tab) { tab.classList.add('active'); }
       if (btn.dataset.tab === 'answers') loadAnswersView();
+      if (btn.dataset.tab === 'summer-answers') document.getElementById('summer-site-sel').focus();
     });
   });
 
@@ -604,6 +649,118 @@
 
   document.getElementById('refresh-answers-btn').addEventListener('click', loadAnswersView);
   document.getElementById('answers-student-sel').addEventListener('change', loadAnswersView);
+
+  // ---- SUMMER ANSWER KEY ----
+  var loadedSummerSite = null;
+  function loadSummerContent(site, callback) {
+    if (window.LEARNKIT && loadedSummerSite === site) { callback(window.LEARNKIT); return; }
+    window.LEARNKIT = undefined;
+    var script = document.createElement('script');
+    script.src = 'https://zidni0.github.io/' + site + '/content.js?v=' + Date.now();
+    script.onload = function () {
+      var cfg = window.LEARNKIT;
+      window.LEARNKIT = undefined;
+      loadedSummerSite = site;
+      callback(cfg);
+    };
+    script.onerror = function () { callback(null); };
+    document.head.appendChild(script);
+  }
+
+  function renderSummerAnswers(cfg, site) {
+    var html = '';
+    if (!cfg || !cfg.units || !cfg.units.length) {
+      html = '<div class="empty-state"><p>No content found. Check the site name and try again.</p></div>';
+      document.getElementById('summer-answers-view').innerHTML = html;
+      return;
+    }
+    html += '<div class="editor-card" style="margin-bottom:12px"><strong>' + esc(SUMMER_SITES[site] || site) + '</strong> — ' + (cfg.units.length) + ' units · ' + cfg.units.reduce(function(t, u){ return t + (u.lessons || []).length; }, 0) + ' lessons</div>';
+    cfg.units.forEach(function (u, ui) {
+      html += '<div class="summer-unit">';
+      html += '<div class="summer-unit-header">Unit ' + (ui + 1) + ': ' + esc(u.title) + '</div>';
+      (u.lessons || []).forEach(function (l, li) {
+        html += '<div class="summer-lesson">';
+        html += '<div class="summer-lesson-header">Lesson ' + (li + 1) + ': ' + esc(l.title) + '</div>';
+        var qn = 1;
+        (l.phases || []).forEach(function (ph) {
+          if (ph.kind === 'drill' && ph.questions) {
+            html += '<div class="summer-phase-title">Drill — ' + esc(ph.title) + '</div>';
+            ph.questions.forEach(function (q) {
+              html += '<div class="summer-qa-row">';
+              html += '<span class="summer-q-num">Q' + qn + '</span>';
+              html += '<span class="summer-q-text">' + esc(q.q || q.prompt || '') + '</span>';
+              html += '<span class="summer-q-ans">' + esc(q.a) + '</span>';
+              html += '</div>';
+              qn++;
+            });
+          } else if (ph.kind === 'activity' && ph.stages) {
+            html += '<div class="summer-phase-title">Activity — ' + esc(ph.title) + '</div>';
+            ph.stages.forEach(function (s) {
+              html += '<div class="summer-qa-row">';
+              html += '<span class="summer-q-num">Q' + qn + '</span>';
+              html += '<span class="summer-q-text">' + esc(s.text || s.prompt || '') + '</span>';
+              html += '<span class="summer-q-ans">' + esc(s.answer) + '</span>';
+              html += '</div>';
+              qn++;
+            });
+          } else if (ph.kind === 'practice') {
+            var practiceHtml = '';
+            if (ph.mode === 'match' && ph.pairs) {
+              practiceHtml = ph.pairs.map(function (p) {
+                var left = Array.isArray(p) ? p[0] : p.left;
+                var right = Array.isArray(p) ? p[1] : p.right;
+                return esc(left) + ' → ' + esc(right);
+              }).join(' · ');
+            } else if (ph.mode === 'categorize' && ph.items) {
+              practiceHtml = ph.items.map(function (it) {
+                var binName = it.category;
+                if (binName == null && ph.bins) {
+                  var key = it.bin;
+                  if (typeof key === 'number') binName = ph.bins[key];
+                  else binName = ph.bins[key] || key;
+                }
+                if (binName == null) binName = '?';
+                return esc(it.text) + ' → ' + esc(binName);
+              }).join(' · ');
+            } else if (ph.mode === 'dragSort' && ph.items) {
+              practiceHtml = 'Order: ' + ph.items.slice().sort(function(a,b){ return a.order - b.order; }).map(function(it){ return esc(it.text); }).join(' → ');
+            }
+            if (practiceHtml) {
+              html += '<div class="summer-phase-title">Practice — ' + esc(ph.title) + ' (' + esc(ph.mode) + ')</div>';
+              html += '<div class="summer-qa-row practice-row">';
+              html += '<span class="summer-q-num">—</span>';
+              html += '<div><div class="summer-q-text" style="margin-bottom:4px">' + esc(ph.title) + '</div><div class="summer-practice-ans">' + practiceHtml + '</div></div>';
+              html += '</div>';
+            }
+          }
+        });
+        html += '</div>'; // end lesson
+      });
+      html += '</div>'; // end unit
+    });
+    document.getElementById('summer-answers-view').innerHTML = html;
+  }
+
+  document.getElementById('load-summer-answers-btn').addEventListener('click', function () {
+    var site = document.getElementById('summer-site-sel').value;
+    if (!site) { alert('Please choose a summer site.'); return; }
+    var btn = document.getElementById('load-summer-answers-btn');
+    btn.disabled = true;
+    setStatus('summer-answers-status', 'Loading…', 'working');
+    loadSummerContent(site, function (cfg) {
+      btn.disabled = false;
+      if (!cfg) {
+        setStatus('summer-answers-status', 'Failed to load content.js from ' + site, 'err');
+        return;
+      }
+      renderSummerAnswers(cfg, site);
+      setStatus('summer-answers-status', 'Loaded answer key for ' + (SUMMER_SITES[site] || site) + '.', 'ok');
+    });
+  });
+
+  document.getElementById('print-summer-answers-btn').addEventListener('click', function () {
+    window.print();
+  });
 
   // ---- INIT ----
   if (token) {

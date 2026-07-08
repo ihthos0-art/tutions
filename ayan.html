@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reading Worksheet — Ayan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Merriweather+Sans:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { background: #e8e8e6; font-family: 'Merriweather', Georgia, serif; color: #1a1a1a; min-height: 100%; }
+    body { max-width: 820px; margin: 0 auto; padding: 32px 20px 60px; }
+    .grade-nav { display: flex; gap: 10px; margin-bottom: 36px; }
+    .grade-btn { font-family: 'Merriweather Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; padding: 8px 20px; border-radius: 3px; border: 1.5px solid #1a1a1a; background: transparent; color: #1a1a1a; cursor: pointer; text-decoration: none; transition: background 0.2s, color 0.2s; }
+    .grade-btn:hover { background: #1a1a1a; color: #fff; }
+    .page-header { text-align: center; margin-bottom: 36px; }
+    .page-header .school-name { font-family: 'Merriweather Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: #555; margin-bottom: 8px; }
+    .page-header h1 { font-size: clamp(20px, 3.5vw, 30px); font-weight: 700; color: #1a1a1a; line-height: 1.2; }
+    .page-header .sub { margin-top: 6px; font-size: 13px; font-style: italic; color: #666; }
+    .worksheet { background: #ffffff; border: 1px solid #c8c8c8; border-radius: 4px; box-shadow: 0 2px 12px rgba(0,0,0,0.09); padding: 40px 44px 48px; }
+    .ws-topbar { display: flex; align-items: center; justify-content: space-between; padding-bottom: 18px; border-bottom: 2px solid #1a1a1a; margin-bottom: 32px; }
+    .ws-number { font-family: 'Merriweather Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: #555; }
+    .section-label { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #555; margin-bottom: 6px; }
+    .passage-wrap { margin-bottom: 32px; }
+    .passage-title { font-size: clamp(16px, 2.4vw, 22px); font-weight: 700; font-style: italic; color: #1a1a1a; margin-bottom: 16px; line-height: 1.3; }
+    .passage-box { background: #f7f6f3; border-left: 4px solid #555; padding: 20px 24px; }
+    .passage-box p { font-size: clamp(14px, 2vw, 16px); line-height: 2; color: #222; margin-bottom: 16px; }
+    .passage-box p:last-child { margin-bottom: 0; }
+    .ws-rule { height: 1px; background: #ddd; margin: 32px 0; }
+    .section-question { font-size: clamp(13px, 1.8vw, 15px); font-style: italic; color: #333; margin-bottom: 14px; line-height: 1.6; }
+    .answer-input { width: 100%; background: #fff; border: 1.5px solid #bbb; border-radius: 3px; color: #1a1a1a; font-family: 'Merriweather', Georgia, serif; font-size: 14px; padding: 12px 14px; outline: none; transition: border-color 0.2s; line-height: 1.7; resize: none; }
+    .answer-input.summary { min-height: 100px; }
+    .answer-input.central { min-height: 58px; }
+    .answer-input:focus { border-color: #333; }
+    .answer-input::placeholder { color: #bbb; font-style: italic; }
+    .passage-box, .passage-title, .section-question, .section-label, .ws-number {
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .page-break { margin: 48px 0; display: flex; align-items: center; gap: 16px; }
+    .page-break::before, .page-break::after { content: ''; flex: 1; height: 1px; background: #bbb; }
+    .page-break span { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #999; }
+    .print-bar { text-align: center; margin-top: 40px; display: flex; align-items: center; justify-content: center; gap: 16px; }
+    .print-btn { background: #1a1a1a; border: none; color: #fff; font-family: 'Merriweather Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; padding: 12px 32px; border-radius: 3px; cursor: pointer; transition: background 0.2s; }
+    .print-btn:hover { background: #333; }
+    .clear-btn { background: transparent; border: 1.5px solid #ccc; color: #999; font-family: 'Merriweather Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; padding: 11px 24px; border-radius: 3px; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
+    .clear-btn:hover { border-color: #c0392b; color: #c0392b; }
+    .save-notice { font-family: 'Merriweather Sans', sans-serif; font-size: 11px; color: #aaa; text-align: center; margin-top: 12px; font-style: italic; }
+    /* ===== TABS ===== */
+    .tab-bar { display: flex; gap: 4px; margin-bottom: 28px; max-width: 820px; margin-left: auto; margin-right: auto; }
+    .tab-btn, .tab-link { flex: 1; font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 12px 16px; border: 1.5px solid #c8c8c8; background: #f4f3f0; color: #666; cursor: pointer; border-radius: 4px; transition: all 0.2s; text-align: center; text-decoration: none; }
+    .tab-btn:hover, .tab-link:hover { border-color: #1a1a1a; color: #1a1a1a; }
+    .tab-btn.active { background: #1a1a1a; border-color: #1a1a1a; color: #fff; }
+    .tab-link { background: #fff9e6; color: #5c4b00; border-color: #f0c040; }
+    .tab-link:hover { background: #f0c040; color: #1a1a1a; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .reset-bar { text-align: center; margin-top: 32px; margin-bottom: 20px; }
+    .reset-btn { background: transparent; border: 1.5px solid #c0392b; color: #c0392b; font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 12px 28px; border-radius: 4px; cursor: pointer; transition: all 0.2s; }
+    .reset-btn:hover { background: #c0392b; color: #fff; }
+    /* ===== MATH PRACTICE ===== */
+    .math-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 32px; max-width: 600px; margin: 0 auto; }
+    .math-prob { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #fafaf8; border: 1px solid #e2e0db; border-radius: 4px; font-family: 'Merriweather Sans', sans-serif; font-size: 16px; }
+    .math-prob input { width: 72px; padding: 6px 8px; border: 1.5px solid #bbb; border-radius: 3px; font-family: 'Merriweather Sans', sans-serif; font-size: 15px; text-align: center; }
+    .math-prob input:focus { border-color: #1a1a1a; outline: none; }
+    .math-word { font-family: 'Merriweather', serif; font-size: 15px; line-height: 1.7; margin-bottom: 16px; padding: 16px; background: #fafaf8; border-radius: 4px; border: 1px solid #e2e0db; }
+    .math-word input { width: 80px; padding: 6px 8px; border: 1.5px solid #bbb; border-radius: 3px; font-family: 'Merriweather Sans', sans-serif; font-size: 14px; text-align: center; }
+    input.correct { border-color: #27ae60 !important; background: #f0fff4 !important; color: #1a6b2e !important; }
+    input.wrong { border-color: #c0392b !important; background: #fff5f5 !important; color: #c0392b !important; }
+    .check-wrap { text-align: center; margin: 24px 0 0; }
+    .check-btn { background: #1a1a1a; color: #fff; border: none; font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; padding: 12px 32px; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
+    .check-btn:hover { background: #333; }
+    .math-score { display: block; font-family: 'Merriweather Sans', sans-serif; font-size: 13px; font-weight: 600; color: #555; margin-top: 12px; }
+    @media print {
+      .tab-bar, .reset-bar { display: none; }
+      .tab-content { display: block !important; }
+      html { background: #fff; }
+      body { padding: 0; max-width: 100%; }
+      .grade-nav, .print-bar, .save-notice { display: none; }
+      .worksheet { border: 1px solid #ccc; box-shadow: none; padding: 28px 32px; }
+      .passage-box { background: #f5f5f5; }
+      .answer-input { border: 1px solid #bbb; }
+      .page-break { display: none; }
+      .worksheet + .worksheet { page-break-before: always; }
+      .passage-box, .passage-title, .section-question, .section-label, .ws-number { -webkit-user-select: text; user-select: text; }
+    }
+  </style>
+  <script>window.STUDENT_CONFIG = {"name": "Ayan", "grade": 6, "math": {"topic": "fractions-decimals-ratios", "count": 10, "wordProblems": 3, "max": 12, "min": 1}, "ela": {"type": "argumentative", "questions": 3}};</script>
+</head>
+<body>
+
+  <nav class="grade-nav">
+    <a class="grade-btn" href="index.html">&larr; Menu</a>
+  </nav>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" data-tab="assigned">Assigned</button>
+    <button class="tab-btn" data-tab="math">Math Practice</button>
+    <button class="tab-btn" data-tab="ela">ELA Practice</button>
+    <a class="tab-link" href="https://zidni0.github.io/ayan-summer/" target="_blank">🌞 Summer</a>
+  </div>
+
+  <!-- ASSIGNED TAB -->
+  <div class="tab-content active" id="assigned">
+
+  <header class="page-header">
+    <p class="school-name">NYC English Language Arts &mdash; Ayan</p>
+    <h1>Central Idea &amp; Argument</h1>
+    <p class="sub">Read closely, find the central idea, and trace the author's argument</p>
+  </header>
+
+  <section class="worksheet" aria-label="Worksheet 1">
+    <div class="ws-topbar"><span class="ws-number">Worksheet 01</span></div>
+    <div class="passage-wrap">
+      <p class="section-label">Read the article</p>
+      <h2 class="passage-title">Why Sleep Matters for Young Minds</h2>
+      <div class="passage-box">
+        <p>Sleep is not a luxury; it is a biological need. During deep sleep, the brain sorts through the information gathered during the day, moving important facts from short-term memory into long-term storage. This process, called consolidation, helps students remember what they studied in class, from math rules to vocabulary words. When a person sleeps fewer than eight hours, the hippocampus, a region deep in the brain, has less time to perform this transfer. As a result, learning becomes harder even if the student spends more hours awake trying to review.</p>
+        <p>Scientists have also found that sleep affects attention and decision-making. A tired brain struggles to ignore distractions, which means a sleepy student may hear every whisper in the hallway instead of focusing on the teacher's explanation. In addition, the prefrontal cortex, the part of the brain that controls judgment and impulse control, becomes less active after a poor night's sleep. That is why exhausted people often make riskier choices or react more emotionally than they would after resting well.</p>
+        <p>Despite this evidence, many middle schoolers treat sleep as something they can trade for screen time or homework. The problem is that the body does not simply "catch up" on sleep by sleeping late on weekends. Each missed hour creates a small debt that adds up, making Monday mornings especially difficult. The best approach is a consistent bedtime that allows for at least eight to ten hours of rest. Protecting sleep is one of the most effective ways a student can protect learning.</p>
+      </div>
+    </div>
+    <div class="ws-rule"></div>
+    <p class="section-label">Part 1 &mdash; Central Idea</p>
+    <p class="section-question">What is the central idea of this article? Write it in one complete sentence.</p>
+    <textarea class="answer-input central" data-save="ws1-central" rows="2" placeholder="The central idea of this article is…"></textarea>
+    <div class="ws-rule"></div>
+    <p class="section-label">Part 2 &mdash; Supporting Evidence</p>
+    <p class="section-question">The author says sleep helps memory. Find one piece of evidence from the article and copy it in your own words.</p>
+    <textarea class="answer-input summary" data-save="ws1-detail" rows="3" placeholder="One piece of evidence is…"></textarea>
+    <div class="ws-rule"></div>
+    <p class="section-label">Part 3 &mdash; Argument</p>
+    <p class="section-question">What does the author want the reader to do or believe? Use words from the article in your answer.</p>
+    <textarea class="answer-input central" data-save="ws1-arg" rows="3" placeholder="The author wants the reader to…"></textarea>
+  </section>
+
+  <div class="page-break"><span>Worksheet 02</span></div>
+
+  <section class="worksheet" aria-label="Worksheet 2">
+    <div class="ws-topbar"><span class="ws-number">Worksheet 02</span></div>
+    <div class="passage-wrap">
+      <p class="section-label">Read the article</p>
+      <h2 class="passage-title">The Hidden Cost of Fast Fashion</h2>
+      <div class="passage-box">
+        <p>Fast fashion is the business of producing inexpensive clothing very quickly so that stores can release new styles every few weeks. Shoppers benefit from low prices, but the industry creates serious problems for workers and the environment. Many garments are sewn in factories where laborers work long hours for extremely low pay. Safety rules are sometimes ignored, and accidents such as factory fires have killed hundreds of workers in different parts of the world.</p>
+        <p>The environmental damage is equally large. Making a single cotton T-shirt can require thousands of liters of water, and the dyes used to color fabrics often pollute rivers near factories. Because the clothes are cheap, people buy more than they need and throw items away after only a few wears. Most discarded clothing ends up in landfills, where synthetic fabrics can take decades to break down. Some countries that once accepted used clothing are now refusing shipments because the volume has become unmanageable.</p>
+        <p>Critics of fast fashion suggest several alternatives. Buying fewer but higher-quality items means clothes last longer and need to be replaced less often. Repairing small tears or replacing buttons can extend a garment's life. Second-hand stores and clothing swaps give used items a new home. These choices may cost more time or money at first, but they reduce harm to both people and the planet. The real question is whether shoppers are willing to change habits that fast fashion has made feel normal.</p>
+      </div>
+    </div>
+    <div class="ws-rule"></div>
+    <p class="section-label">Part 1 &mdash; Central Idea</p>
+    <p class="section-question">What is the central idea of this article? Write it in one complete sentence.</p>
+    <textarea class="answer-input central" data-save="ws2-central" rows="2" placeholder="The central idea of this article is…"></textarea>
+    <div class="ws-rule"></div>
+    <p class="section-label">Part 2 &mdash; Supporting Evidence</p>
+    <p class="section-question">Find one piece of evidence about the environmental cost of fast fashion. Explain it in your own words.</p>
+    <textarea class="answer-input summary" data-save="ws2-detail" rows="3" placeholder="One environmental cost is…"></textarea>
+    <div class="ws-rule"></div>
+    <p class="section-label">Part 3 &mdash; Argument</p>
+    <p class="section-question">What solution does the author recommend, and why?</p>
+    <textarea class="answer-input central" data-save="ws2-arg" rows="3" placeholder="The author recommends…"></textarea>
+  </section>
+
+  <div class="print-bar">
+    <button class="print-btn" onclick="window.print()">Print Worksheets</button>
+    <button class="clear-btn" onclick="clearAnswers()">Clear My Answers</button>
+  </div>
+  <p class="save-notice">Your answers are saved automatically in this browser.</p>
+
+  </div><!-- /assigned -->
+
+  <!-- MATH PRACTICE TAB -->
+  <div class="tab-content" id="math">
+    <header class="page-header">
+      <p class="school-name">Math Practice &mdash; Ayan</p>
+      <h1>Ratios, Fractions &amp; Decimals</h1>
+      <p class="sub">Solve each problem. Show your work on paper if needed.</p>
+    </header>
+    <section class="worksheet">
+      <div class="ws-topbar"><span class="ws-number">Math Drill 01</span></div>
+      <p class="section-label">Part 1 &mdash; Solve</p>
+      <div class="math-grid">
+        <div class="math-prob">1.  3/4 + 1/6 = <input type="text" data-save="m1-1" data-answer="11/12" placeholder="?" /></div>
+        <div class="math-prob">2.  5/8 − 1/4 = <input type="text" data-save="m1-2" data-answer="3/8" placeholder="?" /></div>
+        <div class="math-prob">3.  2/3 × 9/10 = <input type="text" data-save="m1-3" data-answer="3/5" placeholder="?" /></div>
+        <div class="math-prob">4.  4 ÷ 2/5 = <input type="text" data-save="m1-4" data-answer="10" placeholder="?" /></div>
+        <div class="math-prob">5.  0.45 + 0.78 = <input type="text" data-save="m1-5" data-answer="1.23" placeholder="?" /></div>
+        <div class="math-prob">6.  2.4 × 0.6 = <input type="text" data-save="m1-6" data-answer="1.44" placeholder="?" /></div>
+        <div class="math-prob">7.  35% of 80 = <input type="text" data-save="m1-7" data-answer="28" placeholder="?" /></div>
+        <div class="math-prob">8.  12 : 18 in lowest terms = <input type="text" data-save="m1-8" data-answer="2:3" placeholder="?" /></div>
+        <div class="math-prob">9.  7/20 as a decimal = <input type="text" data-save="m1-9" data-answer="0.35" placeholder="?" /></div>
+        <div class="math-prob">10. 3.6 ÷ 0.4 = <input type="text" data-save="m1-10" data-answer="9" placeholder="?" /></div>
+      </div>
+      <div class="ws-rule"></div>
+      <p class="section-label">Part 2 &mdash; Word Problems</p>
+      <div class="math-word">11. A recipe calls for 3/4 cup of sugar. If you make 2/3 of the recipe, how much sugar do you need? <input type="text" data-save="m1-11" data-answer="1/2" placeholder="?" /></div>
+      <div class="math-word">12. In a class of 30 students, 18 play soccer. What ratio of students play soccer? <input type="text" data-save="m1-12" data-answer="3:5" placeholder="?" /></div>
+      <div class="math-word">13. A shirt costs $24 and is on sale for 25% off. What is the sale price? <input type="text" data-save="m1-13" data-answer="18" placeholder="?" /></div>
+      <div class="check-wrap">
+        <button class="check-btn" onclick="checkMath()">Check Answers</button>
+        <span class="math-score" id="math-score"></span>
+      </div>
+    </section>
+    <div class="reset-bar">
+      <button type="button" class="reset-btn" data-reset="math">Reset Math Practice</button>
+    </div>
+    <p class="save-notice">Your answers are saved automatically in this browser.</p>
+  </div>
+
+  <!-- ELA PRACTICE TAB -->
+  <div class="tab-content" id="ela">
+    <header class="page-header">
+      <p class="school-name">ELA Practice &mdash; Ayan</p>
+      <h1>Argument in a Short Passage</h1>
+      <p class="sub">Read the passage, then answer the questions below</p>
+    </header>
+    <section class="worksheet">
+      <div class="ws-topbar"><span class="ws-number">Practice Passage</span></div>
+      <div class="passage-wrap">
+        <p class="section-label">Read the passage</p>
+        <h2 class="passage-title">Should Schools Start Later?</h2>
+        <div class="passage-box">
+          <p>Many doctors and scientists believe that middle schools and high schools should start later in the morning. The American Academy of Pediatrics recommends that adolescents begin classes no earlier than 8:30 a.m. This recommendation is based on research showing that teenagers experience a shift in their internal body clocks during puberty. As a result, they naturally feel sleepy later at night and need more sleep in the early morning than younger children or adults.</p>
+          <p>Opponents argue that later start times create practical problems. Bus schedules would need to be rearranged, after-school sports and jobs would end later, and some families would struggle with childcare in the afternoons. These concerns are real, but supporters respond that health and learning should come first. Schools that have tried later start times report fewer tardy students, better test scores, and even fewer car accidents involving teenage drivers.</p>
+          <p>The debate is not simply about schedules; it is about what society values. If schools are designed to help students learn, then start times should match the biology of the students they serve. Changing the clock on the wall may be difficult, but ignoring the evidence about sleep may be even more costly.</p>
+        </div>
+      </div>
+      <div class="ws-rule"></div>
+      <p class="section-label">Question 1 &mdash; Claim</p>
+      <p class="section-question">What is the author's main claim or argument? Write it in one sentence.</p>
+      <textarea class="answer-input central" data-save="ela1-claim" rows="2" placeholder="The author argues that…"></textarea>
+      <div class="ws-rule"></div>
+      <p class="section-label">Question 2 &mdash; Evidence</p>
+      <p class="section-question">Find one piece of evidence the author uses to support the claim. Explain it in your own words.</p>
+      <textarea class="answer-input summary" data-save="ela1-evidence" rows="3" placeholder="One piece of evidence is…"></textarea>
+      <div class="ws-rule"></div>
+      <p class="section-label">Question 3 &mdash; Counterargument</p>
+      <p class="section-question">What counterargument does the author mention? How does the author respond to it?</p>
+      <textarea class="answer-input central" data-save="ela1-counter" rows="3" placeholder="The counterargument is…"></textarea>
+    </section>
+    <div class="reset-bar">
+      <button type="button" class="reset-btn" data-reset="ela">Reset ELA Practice</button>
+    </div>
+    <p class="save-notice">Your answers are saved automatically in this browser.</p>
+  </div>
+
+  <script src="homework-loader.js?v=1"></script>
+  <script src="interactive.js?v=1"></script>
+  <script src="answers-sync.js?v=1"></script>
+  <script src="tabs.js?v=3"></script>
+  <script src="ai-generator.js?v=1"></script>
+  <script src="ai-tutor.js"></script>
+  <script src="quiz.js"></script>
+  <script src="flashcards.js"></script>
+</body>
+</html>

@@ -114,6 +114,8 @@
     .summer-q-ans { font-family: 'Merriweather Sans', sans-serif; font-size: 12px; font-weight: 700; color: #27ae60; background: #f0fff4; border: 1px solid #b7eb8f; border-radius: 4px; padding: 6px 10px; }
     .summer-qa-row.practice-row { grid-template-columns: 46px 1fr; }
     .summer-practice-ans { font-family: 'Merriweather Sans', sans-serif; font-size: 12px; color: #555; margin-top: 4px; }
+    .summer-q-code { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #fff; background: #7c3aed; border-radius: 4px; padding: 3px 7px; white-space: nowrap; }
+    .summer-qa-row.highlight { background: #fffbeb !important; outline: 2px solid #f59e0b; border-radius: 4px; }
     @media (max-width: 700px) { .summer-qa-row { grid-template-columns: 36px 1fr; } .summer-q-ans { margin-top: 6px; } }
     @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
   </style>
@@ -247,6 +249,13 @@
           </div>
           <button class="action-btn primary" id="load-summer-answers-btn">Load Answers</button>
           <button class="action-btn secondary" id="print-summer-answers-btn">Print</button>
+        </div>
+        <div class="form-row" style="grid-template-columns: 1fr auto; align-items: end; margin-top: 12px;">
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label" for="summer-code-search">Search by Question Code</label>
+            <input class="form-input" id="summer-code-search" type="text" placeholder="e.g. U01-L01-Q05" />
+          </div>
+          <button class="action-btn primary" id="find-summer-code-btn">Find</button>
         </div>
         <span class="status-msg" id="summer-answers-status"></span>
       </div>
@@ -691,18 +700,21 @@
           if (ph.kind === 'drill' && ph.questions) {
             html += '<div class="summer-phase-title">Drill — ' + esc(ph.title) + '</div>';
             ph.questions.forEach(function (q) {
-              html += '<div class="summer-qa-row">';
-              html += '<span class="summer-q-num">Q' + qn + '</span>';
+              var code = q.code || (codePrefix(ui, li) + '-Q' + pad(qn));
+              html += '<div class="summer-qa-row" data-code="' + esc(code) + '">';
+              html += '<span class="summer-q-num">Q' + qn + '<br><span class="summer-q-code">' + esc(code) + '</span></span>';
               html += '<span class="summer-q-text">' + esc(q.q || q.prompt || '') + '</span>';
               html += '<span class="summer-q-ans">' + esc(q.a) + '</span>';
               html += '</div>';
               qn++;
             });
-          } else if (ph.kind === 'activity' && ph.stages) {
+          } else if (ph.kind === 'activity') {
+            var actStages = ph.stages || ph.phases || [];
             html += '<div class="summer-phase-title">Activity — ' + esc(ph.title) + '</div>';
-            ph.stages.forEach(function (s) {
-              html += '<div class="summer-qa-row">';
-              html += '<span class="summer-q-num">Q' + qn + '</span>';
+            actStages.forEach(function (s) {
+              var code = s.code || (codePrefix(ui, li) + '-Q' + pad(qn));
+              html += '<div class="summer-qa-row" data-code="' + esc(code) + '">';
+              html += '<span class="summer-q-num">Q' + qn + '<br><span class="summer-q-code">' + esc(code) + '</span></span>';
               html += '<span class="summer-q-text">' + esc(s.text || s.prompt || '') + '</span>';
               html += '<span class="summer-q-ans">' + esc(s.answer) + '</span>';
               html += '</div>';
@@ -725,10 +737,11 @@
                   else binName = ph.bins[key] || key;
                 }
                 if (binName == null) binName = '?';
-                return esc(it.text) + ' → ' + esc(binName);
+                var pcode = it.code || '';
+                return (pcode ? '<span class="summer-q-code">' + esc(pcode) + '</span> ' : '') + esc(it.text) + ' → ' + esc(binName);
               }).join(' · ');
             } else if (ph.mode === 'dragSort' && ph.items) {
-              practiceHtml = 'Order: ' + ph.items.slice().sort(function(a,b){ return a.order - b.order; }).map(function(it){ return esc(it.text); }).join(' → ');
+              practiceHtml = 'Order: ' + ph.items.slice().sort(function(a,b){ return a.order - b.order; }).map(function(it){ var pcode = it.code || ''; return (pcode ? '<span class="summer-q-code">' + esc(pcode) + '</span> ' : '') + esc(it.text); }).join(' → ');
             }
             if (practiceHtml) {
               html += '<div class="summer-phase-title">Practice — ' + esc(ph.title) + ' (' + esc(ph.mode) + ')</div>';
@@ -765,6 +778,37 @@
 
   document.getElementById('print-summer-answers-btn').addEventListener('click', function () {
     window.print();
+  });
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function codePrefix(ui, li) { return 'U' + pad(ui + 1) + '-L' + pad(li + 1); }
+
+  function findSummerCode() {
+    var raw = document.getElementById('summer-code-search').value.trim().toUpperCase();
+    if (!raw) return;
+    var code = raw.replace(/\s+/g, '');
+    var view = document.getElementById('summer-answers-view');
+    var rows = view.querySelectorAll('.summer-qa-row[data-code]');
+    var matched = null;
+    rows.forEach(function (row) {
+      row.classList.remove('highlight');
+      var rc = (row.dataset.code || '').toUpperCase().replace(/\s+/g, '');
+      if (!matched && rc === code) {
+        matched = row;
+        row.classList.add('highlight');
+      }
+    });
+    if (matched) {
+      matched.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setStatus('summer-answers-status', 'Jumped to ' + matched.dataset.code + '.', 'ok');
+    } else {
+      setStatus('summer-answers-status', 'Code "' + raw + '" not found. Load the site first or check the code.', 'err');
+    }
+  }
+
+  document.getElementById('find-summer-code-btn').addEventListener('click', findSummerCode);
+  document.getElementById('summer-code-search').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') findSummerCode();
   });
 
   // ---- INIT ----

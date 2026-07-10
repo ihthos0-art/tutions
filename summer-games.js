@@ -19,14 +19,23 @@
   function rnd(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
   function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
   function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
+  function questionText(g) { return g && (g.prompt != null ? g.prompt : g.q); }
+  function codeBadge(g) { if (!g || !g.code) return null; return el('div', 'sg-q-code', esc(g.code)); }
+  function appendBadge(host, g) { var badge = codeBadge(g); if (badge) host.appendChild(badge); return badge; }
 
   /* ---------- storage keys ---------- */
   var STORAGE_KEY = 'manha:summer-progress';   // { "w-d-s": true } — kept for backward compat
   var DONE_KEY = 'manha:summer-game-done';      // { "w-d": true }
   var STREAK_KEY = 'manha:summer-streak';        // { count, lastDay }
   var XP_KEY = 'manha:summer-xp';               // { total, level }
+  var STATE_KEY = 'manha:summer-state';          // per-lesson phase + drill progress
   var completed = loadObj(STORAGE_KEY);
   var done = loadObj(DONE_KEY);
+  function loadState() { return loadObj(STATE_KEY); }
+  function saveState(s) { saveObj(STATE_KEY, s); }
+  function lessonState(lkey) { var s = loadState(); return (s && s[lkey]) || {}; }
+  function setLessonState(lkey, v) { var s = loadState(); s[lkey] = v; saveState(s); }
+  function clearLessonState(lkey) { var s = loadState(); delete s[lkey]; saveState(s); }
 
   /* ---------- SCHEDULE (32 days; Week 3 fixed to 4 days) ---------- */
   // Each day: [ [Subject, topic, [bullets]], [Subject, topic, [bullets]] ]
@@ -1601,16 +1610,23 @@
     if (txt) txt.textContent = doneDays + ' / ' + totalDays + ' days (' + pct + '%)';
   }
 
+  function addDoneBadge(card) {
+    if (card.querySelector('.done-badge')) return;
+    var b = el('div', 'done-badge', '✅ Done');
+    card.insertBefore(b, card.firstChild);
+  }
+
   /* ---------- onWin (per day) ---------- */
   function onWin(dayKey, ringSvg) {
     if (!done[dayKey]) {
       done[dayKey] = true; saveObj(DONE_KEY, done);
       completed[dayKey + '-0'] = true; completed[dayKey + '-1'] = true;
       saveObj(STORAGE_KEY, completed);
+      clearLessonState(dayKey);
       updateProgress();
       SG.streak.bump(dayKey); SG.xp.add(20);
       var card = document.querySelector(".day-game-card[data-day='" + dayKey + "']");
-      if (card) card.classList.add('done');
+      if (card) { card.classList.add('done'); addDoneBadge(card); }
       if (ringSvg) SG.ring.set(ringSvg, 100);
       // timed feedback: sound → praise+mascot → celebration
       sound.play('correct');
@@ -2380,7 +2396,7 @@
     var nextBtn = el('button', 'sg-btn', 'Next ›'); nextBtn.style.display = 'none'; nextWrap.appendChild(nextBtn);
     stage.appendChild(scoreEl); stage.appendChild(prog); stage.appendChild(qEl); stage.appendChild(opts); stage.appendChild(nextWrap);
     function render() {
-      answered = false; prog.textContent = 'Question ' + (i + 1) + ' of ' + qs.length; qEl.textContent = qs[i].q; opts.innerHTML = '';
+      answered = false; prog.textContent = 'Question ' + (i + 1) + ' of ' + qs.length; qEl.innerHTML = ''; appendBadge(qEl, qs[i]); qEl.appendChild(document.createTextNode(questionText(qs[i]) || '')); opts.innerHTML = '';
       qs[i].options.forEach(function (txt, idx) {
         var b = el('button', 'sg-quiz-opt'); b.innerHTML = '<span class="txt">' + esc(txt) + '</span><span class="ic"></span>';
         b.addEventListener('click', function () { select(idx, b); });
@@ -2418,7 +2434,14 @@
   function renderMission(stage, c, ctx) {
     // compat: old entries used { stages:[...] } — wrap as a single activity phase
     var phases = c.phases || (c.stages ? [{ kind: 'activity', title: c.title, stages: c.stages }] : []);
-    var pi = 0;
+    var saved = ctx.lkey ? lessonState(ctx.lkey) : {};
+    var state = { pi: 0, phases: [] };
+    if (saved && saved.phases && Array.isArray(saved.phases)) {
+      state.pi = Math.min(Math.max(saved.pi | 0, 0), phases.length - 1);
+      state.phases = saved.phases.slice(0, phases.length);
+    }
+    var pi = state.pi;
+    function persist() { if (ctx.lkey) { state.pi = pi; setLessonState(ctx.lkey, state); } }
     var wrap = el('div', 'sg-mission');
     var head = el('div', 'sg-mis-head');
     head.innerHTML = '<div class="sg-mis-title">🗺️ ' + esc(c.title) + '</div><div class="sg-mis-intro">' + esc(c.intro) + '</div>';
@@ -2432,6 +2455,8 @@
       track.appendChild(b);
     });
     wrap.appendChild(track);
+    for (var i = 0; i < pi; i++) setPhaseState(i, 'done');
+    setPhaseState(pi, 'cur');
 
     // back-nav row (review a previous phase if stuck)
     var navRow = el('div', 'sg-phase-nav');
@@ -2455,7 +2480,9 @@
 
     // ---------- reusable gate renderers (render into `host`, call onDone) ----------
     function quizInto(host, g, onDone) {
-      var q = el('div', 'sg-mis-q', esc(g.prompt));
+      var promptText = questionText(g) || '';
+      appendBadge(host, g);
+      var q = el('div', 'sg-mis-q', esc(promptText));
       var opts = el('div', 'sg-mis-opts');
       var answered = false;
       g.options.forEach(function (txt, idx) {
@@ -2475,7 +2502,7 @@
       });
       host.appendChild(q);
       var qs = el('button', 'sg-q-speak'); qs.type = 'button'; qs.innerHTML = '🔊'; qs.setAttribute('aria-label', 'Read question aloud');
-      qs.addEventListener('click', function (e) { e.preventDefault(); var t = g.prompt || ''; if (g.options) t += '. ' + g.options.join(', '); SG.speak.toggle(t, qs); });
+      qs.addEventListener('click', function (e) { e.preventDefault(); var t = promptText; if (g.options) t += '. ' + g.options.join(', '); SG.speak.toggle(t, qs); });
       host.appendChild(qs);
       host.appendChild(opts);
     }
@@ -2568,7 +2595,9 @@
         return b;
       }
 
-      var shown = 0;
+      var pstate = state.phases[pi] || {};
+      var shown = (pstate.lesson && pstate.lesson.shown) || 0;
+      function saveLesson() { state.phases[pi] = { lesson: { shown: shown } }; persist(); }
       function renderCtrl() {
         btns.innerHTML = '';
         if (shown < blocks.length) {
@@ -2577,6 +2606,7 @@
           more.addEventListener('click', function () {
             sound.play('click');
             var blk = renderBlock(blocks[shown]); shown++;
+            saveLesson();
             setTimeout(function () { blk.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 70);
             renderCtrl();
           });
@@ -2588,23 +2618,47 @@
         }
       }
 
-      // reveal the first block right away so there is something to read
-      if (blocks.length) { renderBlock(blocks[0]); shown = 1; }
+      // reveal saved progress (or the first block)
+      if (blocks.length) {
+        var revealUp = shown > 0 ? Math.min(shown, blocks.length) : 1;
+        for (var si = 0; si < revealUp; si++) renderBlock(blocks[si]);
+        shown = revealUp;
+      }
+      saveLesson();
       renderCtrl();
     }
 
     function renderDrill(ph) {
+      var strict = ph.strict === true;
       scene.innerHTML = '';
       scene.appendChild(el('div', 'sg-phase-label', esc(ph.subject) + ' · Drill — ' + esc(ph.title)));
       var host = el('div', 'sg-drill-host'); scene.appendChild(host);
       if (ph.questions) {
-        var qs = ph.questions, qi = 0, score = 0;
-        var bar = el('div', 'sg-drill-bar', 'Question 1 of ' + qs.length + ' · Score 0');
+        var qs = ph.questions;
+        var dstate = state.phases[pi] || {};
+        var qi = dstate.qi || 0, score = dstate.score || 0, answers = dstate.answers || [];
+        var locked = dstate.locked || false;
+        function saveDrill() { state.phases[pi] = { qi: qi, score: score, answers: answers, locked: locked }; persist(); }
+        var bar = el('div', 'sg-drill-bar', 'Question ' + (qi + 1) + ' of ' + qs.length + ' · Score ' + score);
         scene.appendChild(bar); scene.appendChild(host);
+        function renderLocked() {
+          host.innerHTML = '<div class="sg-drill-done strict-lock">You got a question wrong. In this drill you must answer every question correctly. Try the drill again!</div>';
+          var restart = el('button', 'sg-btn sg-go-btn', 'Try again ↺');
+          restart.addEventListener('click', function () { sound.play('click'); qi = 0; score = 0; answers = []; locked = false; saveDrill(); renderQ(); });
+          host.appendChild(restart);
+          SG.mascot.setMood('think');
+        }
         function renderQ() {
+          if (locked) { renderLocked(); return; }
+          if (qi >= qs.length) { drillDone(); return; }
           bar.textContent = 'Question ' + (qi + 1) + ' of ' + qs.length + ' · Score ' + score;
           host.innerHTML = ''; if (SG.speak) SG.speak.stop();
-          quizInto(host, qs[qi], function (ok) { if (ok) score++; qi++; if (qi < qs.length) renderQ(); else drillDone(); });
+          quizInto(host, qs[qi], function (ok) {
+            answers.push({ correct: ok });
+            if (ok) { score++; saveDrill(); qi++; if (qi < qs.length) renderQ(); else drillDone(); }
+            else if (strict) { locked = true; saveDrill(); renderLocked(); }
+            else { saveDrill(); qi++; if (qi < qs.length) renderQ(); else drillDone(); }
+          });
           ringOf(qi, qs.length);
         }
         function drillDone() {
@@ -2615,7 +2669,7 @@
           host.appendChild(next);
           if (score === qs.length) { SG.mascot.setMood('happy'); SG.confetti({ count: 60 }); }
         }
-        renderQ();
+        if (locked) renderLocked(); else renderQ();
       } else {
         // single-engine drill (fillBlank / quizMC / match / etc.)
         engineInto(host, ph.engine || 'quizMC', ph, function () {
@@ -2629,12 +2683,16 @@
     }
 
     function renderPractice(ph) {
-      var items = ph.items, ii = 0;
+      var items = ph.items;
+      var pstate = state.phases[pi] || {};
+      var ii = Math.min(pstate.ii || 0, (items || []).length - 1);
       scene.innerHTML = '';
       scene.appendChild(el('div', 'sg-phase-label', esc(ph.subject) + ' · Recap — ' + esc(ph.title)));
       var host = el('div', 'sg-practice-host'); scene.appendChild(host);
+      function savePracticeFlash() { state.phases[pi] = { ii: ii }; persist(); }
       if (ph.mode === 'flash') {
         function showCard() {
+          savePracticeFlash();
           var card = el('div', 'sg-flashcard');
           card.innerHTML = '<div class="sg-fc-face sg-fc-front">' + esc(items[ii].front) + '</div><div class="sg-fc-face sg-fc-back">' + esc(items[ii].back) + '</div>';
           card.addEventListener('click', function () { card.classList.toggle('flipped'); sound.play('click'); });
@@ -2651,13 +2709,15 @@
         }
         showCard();
       } else if (ph.mode === 'quiz') { // quiz recap
-        var qi = 0, score = 0;
+        var qi = pstate.qi || 0, score = pstate.score || 0;
+        function savePracticeQuiz() { state.phases[pi] = { qi: qi, score: score }; persist(); }
         function showQ() {
           host.innerHTML = ''; if (SG.speak) SG.speak.stop();
-          quizInto(host, items[qi], function (ok) { if (ok) score++; qi++; if (qi < items.length) showQ(); else { host.innerHTML = '<div class="sg-drill-done">Recap done! ' + score + ' / ' + items.length + ' 🎉</div>'; var n = el('button', 'sg-btn sg-go-btn', 'On to ' + labelForNext(phases, pi) + ' ▸'); n.addEventListener('click', function () { sound.play('click'); nextPhase(false); }); host.appendChild(n); practiceDone(); } });
+          quizInto(host, items[qi], function (ok) { if (ok) score++; qi++; savePracticeQuiz(); if (qi < items.length) showQ(); else { host.innerHTML = '<div class="sg-drill-done">Recap done! ' + score + ' / ' + items.length + ' 🎉</div>'; var n = el('button', 'sg-btn sg-go-btn', 'On to ' + labelForNext(phases, pi) + ' ▸'); n.addEventListener('click', function () { sound.play('click'); nextPhase(false); }); host.appendChild(n); practiceDone(); } });
           ringOf(qi, items.length);
         }
-        showQ();
+        if (qi >= items.length) { host.innerHTML = '<div class="sg-drill-done">Recap done! ' + score + ' / ' + items.length + ' 🎉</div>'; practiceDone(); }
+        else showQ();
       } else { // any other engine mode: match / fillBlank / flip / wordSearch / dragSort / hangman / scratch / quizMC
         engineInto(host, ph.mode, ph, practiceDone);
       }
@@ -2665,13 +2725,17 @@
     }
 
     function renderActivity(ph) {
-      var gates = ph.stages, gi = 0, solved = 0;
+      var gates = ph.stages;
+      var astate = state.phases[pi] || {};
+      var gi = astate.gi || 0, solved = astate.solved || 0;
+      function saveActivity() { state.phases[pi] = { gi: gi, solved: solved }; persist(); }
       var sub = el('div', 'sg-mis-story');
       var host = el('div', 'sg-act-host');
       var gtrack = el('div', 'sg-mis-track');
       gates.forEach(function (g, i) {
-        var b = el('div', 'sg-mis-block ' + (i === 0 ? 'cur' : 'lock'));
-        b.innerHTML = '<span class="blk-ic">' + (i === 0 ? '📍' : '🔒') + '</span><span class="blk-idx">' + (i + 1) + '</span>';
+        var cls = i < gi ? 'done' : (i === gi ? 'cur' : 'lock');
+        var b = el('div', 'sg-mis-block ' + cls);
+        b.innerHTML = '<span class="blk-ic">' + (cls === 'done' ? '⚡' : (cls === 'cur' ? '📍' : '🔒')) + '</span><span class="blk-idx">' + (i + 1) + '</span>';
         gtrack.appendChild(b);
       });
       scene.innerHTML = '';
@@ -2680,6 +2744,7 @@
       function setBlockState(i, state) { var b = gtrack.children[i]; b.className = 'sg-mis-block ' + state; b.querySelector('.blk-ic').textContent = state === 'done' ? '⚡' : (state === 'cur' ? '📍' : '🔒'); }
       function showStory() { var g = gates[gi]; sub.innerHTML = '<span class="sg-mis-subj">' + esc(g.subject) + '</span> ' + esc(g.story); }
       function renderGate() {
+        saveActivity();
         var g = gates[gi]; fbClear(); showStory(); host.innerHTML = ''; if (SG.speak) SG.speak.stop();
         if (g.type === 'quiz') quizInto(host, g, gateDone);
         else if (g.type === 'input') inputInto(host, g, gateDone);
@@ -2690,9 +2755,10 @@
       function gateDone() {
         setBlockState(gi, 'done'); solved++; gi++;
         if (gi >= gates.length) { host.innerHTML = '<div class="sg-mis-win">' + (c.winText || '🎉 Mission complete! Day done.') + '</div>'; sub.textContent = ''; ringOf(1, 1); ctx.onWin(); return; }
-        setBlockState(gi, 'cur'); setTimeout(function () { sound.play('click'); renderGate(); }, 420);
+        setBlockState(gi, 'cur'); saveActivity(); setTimeout(function () { sound.play('click'); renderGate(); }, 420);
       }
-      renderGate();
+      if (gi >= gates.length) { host.innerHTML = '<div class="sg-mis-win">' + (c.winText || '🎉 Mission complete! Day done.') + '</div>'; sub.textContent = ''; ringOf(1, 1); ctx.onWin(); }
+      else renderGate();
     }
 
     // ---------- phase driver ----------
@@ -2709,14 +2775,13 @@
     function nextPhase() {
       if (pi > 0) setPhaseState(pi - 1, 'done');
       if (pi >= phases.length - 1) return; // safety
-      pi++; setPhaseState(pi, 'cur'); renderPhase();
+      pi++; setPhaseState(pi, 'cur'); persist(); renderPhase();
     }
     function prevPhase() {
       if (pi <= 0) return;
-      setPhaseState(pi, 'lock'); pi--; setPhaseState(pi, 'cur'); renderPhase();
+      setPhaseState(pi, 'lock'); pi--; setPhaseState(pi, 'cur'); persist(); renderPhase();
     }
 
-    setPhaseState(0, 'cur');
     renderPhase();
     stage.appendChild(wrap);
   }
@@ -2781,6 +2846,7 @@
     var tags = el('div', 'subject-tags');
     day.forEach(function (s) { var t = el('span', 'gtag ' + subjectClass(s[0])); t.textContent = s[0]; tags.appendChild(t); });
     card.appendChild(tags);
+    if (isDone) addDoneBadge(card);
 
     var topics = el('div', 'game-topics');
     day.forEach(function (s) { topics.appendChild(el('div', 'gt', '<b>' + esc(s[0]) + '</b> ' + esc(s[1]))); });
@@ -2802,6 +2868,7 @@
     var stage = el('div', 'game-stage'); card.appendChild(stage);
     var ringSvg = header.querySelector('svg.day-ring');
     var ctx = {
+      lkey: dayKey,
       setRing: function (pct) { SG.ring.set(ringSvg, pct); },
       onWin: function () { onWin(dayKey, ringSvg); }
     };
@@ -2885,7 +2952,7 @@
     attachRipple(btn);
     btn.addEventListener('click', function () {
       if (!confirm('Reset all Grade 4 Summer games & progress?')) return;
-      completed = {}; done = {}; streak = {}; saveObj(STORAGE_KEY, completed); saveObj(DONE_KEY, done); saveObj(STREAK_KEY, streak);
+      completed = {}; done = {}; streak = {}; saveObj(STORAGE_KEY, completed); saveObj(DONE_KEY, done); saveObj(STREAK_KEY, streak); saveObj(STATE_KEY, {});
       updateProgress(); renderGameCards(); sound.play('click'); SG.mascot.setMood('neutral');
     });
   }

@@ -625,3 +625,60 @@ span.ripple { position: absolute; border-radius: 50%; transform: scale(0);
 .sg-q-speak:hover { background: #e7dcc6; }
 .sg-q-speak:active { transform: scale(.92); }
 .sg-q-speak.speaking { background: #d8edd6; border-color: var(--sg-go, #2fae6a); }
+
+/* === visible question/practice codes for students === */
+.sg-q-code,
+.sg-card-code {
+  display: inline-block;
+  font-family: var(--sg-head);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: #f3e8ff;
+  color: #6b21a8;
+  border: 1.5px solid #d8b4fe;
+  margin-bottom: 8px;
+}
+.sg-card-code {
+  display: block;
+  width: fit-content;
+  margin: 0 auto 6px;
+  font-size: 10px;
+}
+.sg-quiz-q .sg-q-code { display: block; margin: 0 auto 10px; width: fit-content; }
+.sg-nl-prompt + .sg-q-code { display: block; }
+
+/* ---- done badge on completed lesson cards ---- */
+.done-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  font-family: var(--sg-head);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #166534;
+  border: 1.5px solid #86efac;
+  box-shadow: 0 2px 6px rgba(22,101,52,0.12);
+  z-index: 2;
+}
+
+/* ---- strict drill lock screen ---- */
+.sg-drill-done.strict-lock {
+  background: #fff0f0;
+  color: #b91c1c;
+  border: 1.5px solid #fecaca;
+  border-radius: 14px;
+  padding: 16px;
+  margin: 10px 0;
+}

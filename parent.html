@@ -697,6 +697,12 @@
         html += '<div class="summer-lesson-header">Lesson ' + (li + 1) + ': ' + esc(l.title) + '</div>';
         var qn = 1;
         (l.phases || []).forEach(function (ph) {
+          function mcqAnswer(item) {
+            if (item.options && typeof item.a === 'number' && item.a >= 0 && item.a < item.options.length) {
+              return item.options[item.a];
+            }
+            return item.answer !== undefined ? item.answer : item.a;
+          }
           if (ph.kind === 'drill' && ph.questions) {
             html += '<div class="summer-phase-title">Drill — ' + esc(ph.title) + '</div>';
             ph.questions.forEach(function (q) {
@@ -704,7 +710,7 @@
               html += '<div class="summer-qa-row" data-code="' + esc(code) + '">';
               html += '<span class="summer-q-num">Q' + qn + '<br><span class="summer-q-code">' + esc(code) + '</span></span>';
               html += '<span class="summer-q-text">' + esc(q.q || q.prompt || '') + '</span>';
-              html += '<span class="summer-q-ans">' + esc(q.a) + '</span>';
+              html += '<span class="summer-q-ans">' + esc(mcqAnswer(q)) + '</span>';
               html += '</div>';
               qn++;
             });
@@ -716,7 +722,7 @@
               html += '<div class="summer-qa-row" data-code="' + esc(code) + '">';
               html += '<span class="summer-q-num">Q' + qn + '<br><span class="summer-q-code">' + esc(code) + '</span></span>';
               html += '<span class="summer-q-text">' + esc(s.text || s.prompt || '') + '</span>';
-              html += '<span class="summer-q-ans">' + esc(s.answer) + '</span>';
+              html += '<span class="summer-q-ans">' + esc(mcqAnswer(s)) + '</span>';
               html += '</div>';
               qn++;
             });

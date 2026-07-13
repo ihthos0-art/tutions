@@ -146,6 +146,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'Math',
             'title': 'Place Value Drill',
             'questions': [
@@ -445,6 +446,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'ELA',
             'title': 'Text Evidence Drill',
             'questions': [
@@ -716,6 +718,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'Math',
             'title': 'Multiplicative Comparison — Fill the Blanks',
             'questions': [
@@ -1001,6 +1004,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'Science',
             'title': 'Energy Transfer Drill',
             'questions': [
@@ -1269,6 +1273,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'Math',
             'title': 'Add & Subtract Drill',
             'questions': [
@@ -1574,6 +1579,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'ELA',
             'title': 'Rebuild the Sequence',
             'questions': [
@@ -1797,6 +1803,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'Math',
             'title': 'Area Model — Fill the Parts',
             'questions': [
@@ -2042,6 +2049,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'Science',
             'title': 'Design Process Drill',
             'questions': [
@@ -2352,6 +2360,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'Math',
             'title': 'Area Model — Fill the Parts',
             'questions': [
@@ -2610,6 +2619,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'ELA',
             'title': 'Rebuild the Claim',
             'questions': [
@@ -2833,6 +2843,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'Math',
             'title': 'Division Drill',
             'questions': [
@@ -3126,6 +3137,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'Science',
             'title': 'Spot the Lie (Reflection)',
             'questions': [
@@ -3363,6 +3375,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'Math',
             'title': 'Tap the Dot (Number Line)',
             'questions': [
@@ -3661,6 +3674,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'ELA',
             'title': 'Rebuild the Topic Sentence',
             'questions': [
@@ -3890,6 +3904,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'Math',
             'title': 'Higher or Lower? (Fraction Cards)',
             'questions': [
@@ -4144,6 +4159,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'Science',
             'title': 'Spot the Lie (Senses)',
             'questions': [
@@ -4385,6 +4401,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'Math',
             'title': 'Build the Answer (Fraction Bar)',
             'questions': [
@@ -4618,6 +4635,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'ELA',
             'title': 'Rebuild the Simile',
             'questions': [
@@ -4853,6 +4871,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'Math',
             'title': 'Mixed to Improper',
             'questions': [
@@ -5102,6 +5121,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'Science',
             'title': 'Order the Process (Drag)',
             'questions': [
@@ -5348,6 +5368,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'Math',
             'title': 'Tap the Decimal (Number Line)',
             'questions': [
@@ -5662,6 +5683,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'ELA',
             'title': 'Mini Crossword (Sayings)',
             'questions': [
@@ -5888,6 +5910,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'Math',
             'title': 'Fill the Conversion',
             'questions': [
@@ -6145,6 +6168,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'Science',
             'title': 'Sort the Hazards (Categorize)',
             'questions': [
@@ -6374,6 +6398,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'Math',
             'title': 'Order the Protractor Steps (Drag)',
             'questions': [
@@ -6619,6 +6644,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'ELA',
             'title': 'Spot the Lie (Sources)',
             'questions': [
@@ -6845,6 +6871,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'Math',
             'title': 'Fill the Unknown Angle',
             'questions': [
@@ -7112,6 +7139,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'Science',
             'title': 'Signal Maze',
             'questions': [
@@ -7378,6 +7406,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'Math',
             'title': 'Multi-Step Drill',
             'questions': [
@@ -7700,6 +7729,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'ELA',
             'title': 'Rebuild the Lead',
             'questions': [
@@ -7927,6 +7957,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'Math',
             'title': 'Higher or Lower? (Decimals)',
             'questions': [
@@ -8159,6 +8190,7 @@
           },
           {
             'kind': 'drill',
+              'strict': true,
             'subject': 'Science',
             'title': 'Vocab Crossword',
             'questions': [

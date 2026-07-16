@@ -2989,97 +2989,33 @@
             'code': 'U03-L03-P01'
           },
           {
-            'kind': 'activity',
-            'title': 'Split the Load',
-            'stages': [
+            'kind': 'quest',
+            'subject': 'Quest',
+            'title': 'Monkey Bridge',
+            'char': '🐵',
+            'scene': 'jungle',
+            'intro': 'A monkey wants to cross the river, but the bridge is missing planks. Solve each challenge to build a plank and help her across.',
+            'winText': '🎉 Bridge built — the monkey swings across!',
+            'nodes': [
               {
-                'type': 'twoTruths',
-                'subject': 'Math · Division',
-                'story': 'One statement is FALSE. Tap the lie to start the load.',
-                'statements': [
-                  {
-                    't': 'The remainder is what is left over',
-                    'a': true
-                  },
-                  {
-                    't': '45 ÷ 6 = 7 r 3',
-                    'a': true
-                  },
-                  {
-                    't': 'To check: quotient + divisor = dividend',
-                    'a': false
-                  }
-                ],
-                'code': 'U03-L03-Q07'
+                'beat': 'Dark river ahead! A plank hides the word for "what is left over." Guess it.',
+                'challenge': { 'kind': 'hangman', 'word': 'REMAINDER', 'hint': 'What is left when 17 is split into groups of 4' },
+                'advance': 'A plank appears labeled REMAINDER!'
               },
               {
-                'type': 'match',
-                'subject': 'Math · Terms',
-                'story': 'Match each division term to its meaning.',
-                'pairs': [
-                  [
-                    'Quotient',
-                    'The result of dividing'
-                  ],
-                  [
-                    'Remainder',
-                    'What is left over'
-                  ],
-                  [
-                    'Divisor',
-                    'Number you divide by'
-                  ],
-                  [
-                    'Dividend',
-                    'Number being divided'
-                  ]
-                ],
-                'code': 'U03-L03-Q08'
+                'beat': 'The monkey uses banana-words as planks. Fill the blanks so she can step across.',
+                'challenge': { 'kind': 'fillBlank', 'sentence': 'Share 17 bananas among 4 monkeys. Each gets * bananas, and the * is 1. Check: 4 × 4 + * = 17.', 'blanks': ['4', 'remainder', '1'] },
+                'advance': 'Bananas split fair — the monkey steps forward!'
               },
               {
-                'type': 'quiz',
-                'code': 'U03-L03-Q09',
-                'subject': 'Math · Remainder',
-                'story': 'What is the remainder of 45 ÷ 6?',
-                'prompt': '45 ÷ 6 = 7 r ?  (type the remainder):',
-                'options': [
-                  '3',
-                  '4',
-                  '2',
-                  '13'
-                ],
-                'a': 0,
-                'okMsg': '3 — left over! Load 3 split.'
+                'beat': 'A logbook plank needs a clean first sentence. Rebuild it.',
+                'challenge': { 'kind': 'scramble', 'words': ['First', 'we', 'packed', 'our', 'bags'] },
+                'advance': 'Logbook entry done — next plank!'
               },
               {
-                'type': 'quiz',
-                'code': 'U03-L03-Q10',
-                'subject': 'ELA · Linking words',
-                'story': 'Fill the linking words to finish the trip plan.',
-                'prompt': 'Complete: First we packed. ___ …',
-                'options': [
-                  'Next',
-                  'explicit',
-                  'inferred',
-                  'metaphor'
-                ],
-                'a': 0,
-                'okMsg': 'Correct!'
-              },
-              {
-                'type': 'quiz',
-                'code': 'U03-L03-Q11',
-                'subject': 'ELA · Linking words',
-                'story': 'Fill the linking words to finish the trip plan.',
-                'prompt': 'Complete: First we packed. Next we hiked. Then we camped. ___',
-                'options': [
-                  'Finally',
-                  'explicit',
-                  'inferred',
-                  'metaphor'
-                ],
-                'a': 0,
-                'okMsg': 'Correct!'
+                'beat': 'Final plank: match each linking word to its job.',
+                'challenge': { 'kind': 'match', 'pairs': [['First', 'shows order'], ['Because', 'shows cause'], ['However', 'shows contrast'], ['Also', 'adds more']] },
+                'advance': 'Bridge complete — the monkey crosses!'
               }
             ]
           }
@@ -9803,6 +9739,79 @@
       else renderGate();
     }
 
+    // ---------- quest engine (visible character walks a scene path; each node = one existing engine) ----------
+    function renderQuest(ph) {
+      var nodes = ph.nodes || [];
+      var qstate = state.phases[pi] || {};
+      var ni = Math.min(qstate.ni || 0, Math.max(0, nodes.length - 1));
+      function saveQuest() { state.phases[pi] = { ni: ni }; persist(); }
+      scene.innerHTML = '';
+      scene.appendChild(el('div', 'sg-phase-label', esc(ph.subject || 'Quest') + ' · Quest — ' + esc(ph.title)));
+      if (ph.intro) scene.appendChild(el('div', 'sg-mis-intro', esc(ph.intro)));
+
+      var stage = el('div', 'sg-quest-stage scene-' + (ph.scene || 'cave'));
+      var path = el('div', 'sg-quest-path');
+      nodes.forEach(function (n, i) {
+        var node = el('div', 'sg-quest-node' + (i < ni ? ' done' : (i === ni ? ' cur' : ' lock')));
+        node.innerHTML = '<span class="sg-qnode-ic">' + (i < ni ? '✓' : (i + 1)) + '</span>';
+        path.appendChild(node);
+      });
+      stage.appendChild(path);
+
+      var charEl = el('div', 'sg-quest-char', ph.char || '🦸');
+      function placeChar(at) { var pct = nodes.length ? ((at + 0.5) / nodes.length) * 100 : 50; charEl.style.left = pct + '%'; }
+      placeChar(ni);
+      stage.appendChild(charEl);
+
+      var bubble = el('div', 'sg-quest-bubble');
+      stage.appendChild(bubble);
+      scene.appendChild(stage);
+      var host = el('div', 'sg-quest-host'); scene.appendChild(host);
+
+      function showBeat(t) { bubble.innerHTML = '<span class="sg-quest-bub-txt">' + esc(t || '') + '</span>'; }
+      function refreshPath() {
+        Array.prototype.forEach.call(path.children, function (node, i) {
+          node.className = 'sg-quest-node' + (i < ni ? ' done' : (i === ni ? ' cur' : ' lock'));
+          node.querySelector('.sg-qnode-ic').textContent = i < ni ? '✓' : (i + 1);
+        });
+      }
+
+      function nodeWin() {
+        var n = nodes[ni];
+        if (n && n.advance) showBeat(n.advance);
+        ni++; saveQuest(); refreshPath(); placeChar(ni);
+        if (ni - 1 >= 0 && path.children[ni - 1]) { path.children[ni - 1].className = 'sg-quest-node done'; path.children[ni - 1].querySelector('.sg-qnode-ic').textContent = '✓'; }
+        sound.play('correct'); if (SG.mascot) SG.mascot.setMood('happy');
+        setTimeout(function () { if (ni >= nodes.length) questWin(); else renderNode(); }, 750);
+      }
+
+      function renderNode() {
+        if (ni >= nodes.length) { questWin(); return; }
+        refreshPath(); placeChar(ni);
+        var n = nodes[ni];
+        showBeat(n.beat || '');
+        host.innerHTML = ''; if (SG.speak) SG.speak.stop();
+        ringOf(ni, nodes.length);
+        var kind = n.challenge && n.challenge.kind;
+        var r = RENDERERS[kind];
+        if (!r) { console.warn('quest: unknown engine', kind); kind = 'quizMC'; r = RENDERERS.quizMC; n.challenge = { kind: 'quizMC', questions: [{ prompt: 'Continue?', options: ['OK'], a: 0 }] }; }
+        r(host, n.challenge, { setRing: function (p) { ringOf(ni + p / 100, nodes.length); }, onWin: nodeWin });
+      }
+
+      function questWin() {
+        ringOf(1, 1); refreshPath(); placeChar(nodes.length - 1);
+        Array.prototype.forEach.call(path.children, function (node) { node.className = 'sg-quest-node done'; node.querySelector('.sg-qnode-ic').textContent = '✓'; });
+        host.innerHTML = '<div class="sg-mis-win">' + esc(ph.winText || '🎉 Quest complete! Day done.') + '</div>';
+        bubble.textContent = '';
+        if (SG.mascot) SG.mascot.setMood('happy');
+        if (SG.confetti) SG.confetti({ count: 60 });
+        ctx.onWin();
+      }
+
+      if (ni >= nodes.length) { questWin(); return; }
+      renderNode();
+    }
+
     // ---------- phase driver ----------
     function renderPhase() {
       var ph = phases[pi];
@@ -9813,6 +9822,7 @@
       else if (ph.kind === 'drill') renderDrill(ph);
       else if (ph.kind === 'practice') renderPractice(ph);
       else if (ph.kind === 'activity') renderActivity(ph);
+      else if (ph.kind === 'quest') renderQuest(ph);
     }
     function nextPhase() {
       if (pi > 0) setPhaseState(pi - 1, 'done');
@@ -9828,7 +9838,7 @@
     stage.appendChild(wrap);
   }
 
-  function phaseIcon(kind) { return { lesson: '📖', drill: '✏️', practice: '🔄', activity: '🎯' }[kind] || '•'; }
+  function phaseIcon(kind) { return { lesson: '📖', drill: '✏️', practice: '🔄', activity: '🎯', quest: '🧭' }[kind] || '•'; }
   function labelForNext(phases, pi) {
     for (var j = pi + 1; j < phases.length; j++) { if (phases[j].kind === 'activity') return 'the activity'; return phases[j].title || phases[j].kind; }
     return 'next';

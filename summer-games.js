@@ -9761,7 +9761,7 @@
         if (qi >= items.length) { host.innerHTML = '<div class="sg-drill-done">Recap done! ' + score + ' / ' + items.length + ' 🎉</div>'; practiceDone(); }
         else showQ();
       } else { // any other engine mode: match / fillBlank / flip / wordSearch / dragSort / hangman / scratch / quizMC
-        engineInto(host, ph.mode, ph, practiceDone);
+        engineInto(host, ph.engine || ph.mode, ph, practiceDone);
       }
       function practiceDone() { ringOf(1, 1); if (!host.querySelector('.sg-go-btn')) { var n = el('button', 'sg-btn sg-go-btn', 'On to ' + labelForNext(phases, pi) + ' ▸'); n.addEventListener('click', function () { sound.play('click'); nextPhase(false); }); host.appendChild(n); } }
     }

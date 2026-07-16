@@ -3061,99 +3061,33 @@
             'code': 'U03-L04-P01'
           },
           {
-            'kind': 'activity',
-            'title': 'Colony Swap',
-            'stages': [
+            'kind': 'quest',
+            'subject': 'Quest',
+            'title': 'Mirror Signal',
+            'char': '🕵️',
+            'scene': 'village',
+            'intro': 'A spy must send a signal across the harbor and swap the colony flag. Solve each challenge to build the signal.',
+            'winText': '🎉 Reflection traced and colony renamed — flag swapped!',
+            'nodes': [
               {
-                'type': 'quiz',
-                'subject': 'SS · 1664',
-                'story': 'Who took over New Netherland in 1664 and renamed it New York?',
-                'prompt': 'Who took over in 1664?',
-                'options': [
-                  'The English',
-                  'The French',
-                  'The Spanish'
-                ],
-                'a': 0,
-                'okMsg': 'The English — New York is born! Flag 1 raised.',
-                'code': 'U03-L04-Q02'
+                'beat': 'To send a signal, the spy must know how light bounces.',
+                'challenge': { 'kind': 'quizMC', 'questions': [{ 'prompt': 'A light beam hits a mirror at 30°. At what angle does it bounce off?', 'options': ['30°', '60°', '0°', '90°'], 'a': 0 }] },
+                'advance': 'Angle matched — signal ready!'
               },
               {
-                'type': 'match',
-                'subject': 'SS + Sci · Terms',
-                'story': 'Match each term to its meaning.',
-                'pairs': [
-                  [
-                    'New Amsterdam',
-                    'Dutch capital (later NYC)'
-                  ],
-                  [
-                    '1664',
-                    'English took over'
-                  ],
-                  [
-                    'Reflection',
-                    'Light bouncing off a surface'
-                  ],
-                  [
-                    'Mirror',
-                    'Smooth, shiny reflector'
-                  ]
-                ],
-                'code': 'U03-L04-Q03'
+                'beat': 'Build a periscope: label the eye parts it copies.',
+                'challenge': { 'kind': 'labelDiagram', 'slots': [{ 'hint': 'front clear window' }, { 'hint': 'bends light to focus' }, { 'hint': 'back screen that senses light' }], 'labels': [{ 'label': 'Cornea', 'slot': 0 }, { 'label': 'Lens', 'slot': 1 }, { 'label': 'Retina', 'slot': 2 }] },
+                'advance': 'Periscope assembled — the spy can see over the wall!'
               },
               {
-                'type': 'quiz',
-                'code': 'U03-L04-Q04',
-                'subject': 'SS · Capital name',
-                'story': 'The Dutch capital was New ___ (one word).',
-                'prompt': 'The Dutch capital was New ___ (one word):',
-                'options': [
-                  'amsterdam',
-                  'add',
-                  'subtract',
-                  'multiply'
-                ],
-                'a': 0,
-                'okMsg': 'Amsterdam — New Amsterdam! Flag 3 raised.'
+                'beat': 'Place the colony story in time order.',
+                'challenge': { 'kind': 'timeline', 'eras': ['Dutch rule', 'English takeover', 'New York'], 'events': [{ 'text': 'Dutch found New Netherland', 'era': 0 }, { 'text': 'English take the colony', 'era': 1 }, { 'text': 'Colony renamed New York', 'era': 2 }] },
+                'advance': 'History set — the flag is ready to swap.'
               },
               {
-                'type': 'labelDiagram',
-                'subject': 'Science · Reflection path',
-                'story': 'Label the reflection path to swap the flag.',
-                'slots': [
-                  {
-                    'hint': 'Comes from the light source'
-                  },
-                  {
-                    'hint': 'Bounces off the surface'
-                  },
-                  {
-                    'hint': 'Smooth, shiny surface'
-                  },
-                  {
-                    'hint': 'Enters your eye so you see'
-                  }
-                ],
-                'labels': [
-                  {
-                    'label': 'Light ray',
-                    'slot': 0
-                  },
-                  {
-                    'label': 'Reflection',
-                    'slot': 1
-                  },
-                  {
-                    'label': 'Mirror',
-                    'slot': 2
-                  },
-                  {
-                    'label': 'Image',
-                    'slot': 3
-                  }
-                ],
-                'code': 'U03-L04-Q05'
+                'beat': 'Arrange the signal steps so the message flies across the water.',
+                'challenge': { 'kind': 'dragSort', 'items': [{ 'text': 'Pick a target across the harbor', 'order': 0 }, { 'text': 'Set mirror A to face the target', 'order': 1 }, { 'text': 'Tilt mirror B to catch moonlight', 'order': 2 }, { 'text': 'Light bounces A to B to target', 'order': 3 }] },
+                'advance': 'Signal sent — the colony is renamed!'
               }
             ]
           }

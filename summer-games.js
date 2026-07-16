@@ -2487,81 +2487,33 @@
             'code': 'U03-L01-P01'
           },
           {
-            'kind': 'activity',
-            'title': 'See the Light',
-            'stages': [
+            'kind': 'quest',
+            'subject': 'Quest',
+            'title': 'Light the Cave',
+            'char': '🦇',
+            'scene': 'cave',
+            'intro': 'A bat is lost in a dark cave. Solve each challenge to light the way and find the exit.',
+            'winText': '🎉 Cave lit and exit found — the bat flies free!',
+            'nodes': [
               {
-                'type': 'quiz',
-                'subject': 'Science · Light',
-                'story': 'First, how does light travel?',
-                'prompt': 'Light travels in…',
-                'options': [
-                  'Straight lines',
-                  'Curves',
-                  'Circles'
-                ],
-                'a': 0,
-                'okMsg': 'Straight lines — sharp shadows. Switch 1 on!',
-                'code': 'U03-L01-Q04'
+                'beat': 'So dark! A shiny surface on the wall could help. Guess what it is.',
+                'challenge': { 'kind': 'hangman', 'word': 'MIRROR', 'hint': 'It reflects light so you can see around a corner' },
+                'advance': 'A mirror! The bat grabs it and light bounces off.'
               },
               {
-                'type': 'match',
-                'subject': 'Science · Eye parts',
-                'story': 'Match each eye part to its job.',
-                'pairs': [
-                  [
-                    'Pupil',
-                    'Hole that lets light in'
-                  ],
-                  [
-                    'Iris',
-                    'Colored ring'
-                  ],
-                  [
-                    'Lens',
-                    'Focuses light'
-                  ],
-                  [
-                    'Retina',
-                    'Senses light'
-                  ]
-                ],
-                'code': 'U03-L01-Q05'
+                'beat': 'A crystal needs the right energy to glow. Fill the missing parts of the area model.',
+                'challenge': { 'kind': 'fillBlank', 'sentence': 'To multiply 24 × 13, split 24 into 20 + * and 13 into 10 + *. The four partial products add to 312.', 'blanks': ['4', '3'] },
+                'advance': 'Crystal glows! The cave lights up ahead.'
               },
               {
-                'type': 'quiz',
-                'code': 'U03-L01-Q06',
-                'subject': 'Math · Product',
-                'story': 'The lamp needs the product. 23 × 14 = ?',
-                'prompt': '23 × 14 = ?',
-                'options': [
-                  '322',
-                  '323',
-                  '321',
-                  '332'
-                ],
-                'a': 0,
-                'okMsg': '322 — area model confirmed! Bulb in.'
+                'beat': 'An old map is carved on the wall. It shows only if you label the eye parts that read it.',
+                'challenge': { 'kind': 'labelDiagram', 'slots': [{ 'hint': 'front clear window' }, { 'hint': 'bends light to focus' }, { 'hint': 'back screen that senses light' }], 'labels': [{ 'label': 'Cornea', 'slot': 0 }, { 'label': 'Lens', 'slot': 1 }, { 'label': 'Retina', 'slot': 2 }] },
+                'advance': 'Now the bat can read the map — the exit is marked!'
               },
               {
-                'type': 'twoTruths',
-                'subject': 'Science · Light & eye',
-                'story': 'One statement is FALSE. Tap the lie to close the circuit.',
-                'statements': [
-                  {
-                    't': 'Light travels in straight lines',
-                    'a': true
-                  },
-                  {
-                    't': 'We see objects because light bounces off them into our eyes',
-                    'a': true
-                  },
-                  {
-                    't': 'The retina focuses light onto the lens',
-                    'a': false
-                  }
-                ],
-                'code': 'U03-L01-Q07'
+                'beat': 'To reach the exit, put the light path in order from torch to brain.',
+                'challenge': { 'kind': 'dragSort', 'items': [{ 'text': 'Light leaves the source', 'order': 0 }, { 'text': 'Light hits the mirror', 'order': 1 }, { 'text': 'Light reflects to the eye', 'order': 2 }, { 'text': 'The brain sees the image', 'order': 3 }] },
+                'advance': 'Path clear! The bat follows the light out.'
               }
             ]
           }

@@ -2659,85 +2659,33 @@
             'code': 'U03-L02-P01'
           },
           {
-            'kind': 'activity',
-            'title': 'Chart the Coast',
-            'stages': [
+            'kind': 'quest',
+            'subject': 'Quest',
+            'title': "The Captain's Voyage",
+            'char': '🧭',
+            'scene': 'coast',
+            'intro': 'A captain must convince the crew and chart the coast. Solve each challenge to sail the ship forward.',
+            'winText': '🎉 Claim made and coast charted — anchor down!',
+            'nodes': [
               {
-                'type': 'quiz',
-                'subject': 'SS · Explorers',
-                'story': 'A sailor asks: who explored the river named for him in 1609?',
-                'prompt': 'Who explored the Hudson River in 1609?',
-                'options': [
-                  'Hudson',
-                  'Verrazano',
-                  'Champlain'
-                ],
-                'a': 0,
-                'okMsg': 'Hudson — the river bears his name. Marker 1!',
-                'code': 'U03-L02-Q02'
+                'beat': 'A stranger on the dock tells tales of who sailed here. One is a lie — spot it.',
+                'challenge': { 'kind': 'twoTruths', 'statements': [{ 't': 'Verrazano sailed for France', 'a': true }, { 't': 'Henry Hudson found a big river in NY', 'a': true }, { 't': 'Explorers came to NY for gold alone', 'a': false }] },
+                'advance': 'Crew believes you — the ship can sail.'
               },
               {
-                'type': 'match',
-                'subject': 'SS + ELA · Terms',
-                'story': 'Match each explorer and term to its detail.',
-                'pairs': [
-                  [
-                    'Verrazano',
-                    'Reached NY harbor, 1524'
-                  ],
-                  [
-                    'Hudson',
-                    'Sailed the Hudson R., 1609'
-                  ],
-                  [
-                    'Champlain',
-                    'Founded Quebec'
-                  ],
-                  [
-                    'Claim',
-                    'Your opinion statement'
-                  ]
-                ],
-                'code': 'U03-L02-Q03'
+                'beat': 'Two flags fly on the dock. Sort each goal by the country that held it.',
+                'challenge': { 'kind': 'categorize', 'bins': ['Dutch goals', 'French goals'], 'items': [{ 'text': 'Fur trading wealth', 'bin': 0 }, { 'text': 'Find Northwest Passage', 'bin': 1 }, { 'text': 'Build New Netherland colony', 'bin': 0 }, { 'text': 'Trade with Native peoples', 'bin': 1 }] },
+                'advance': 'Cargo loaded right — the voyage can begin.'
               },
               {
-                'type': 'quiz',
-                'code': 'U03-L02-Q04',
-                'subject': 'SS · Explorer name',
-                'story': 'The last name of the 1609 explorer (also a river name).',
-                'prompt': 'Henry ___ explored NY waters in 1609 (last name):',
-                'options': [
-                  'hudson',
-                  'add',
-                  'subtract',
-                  'multiply'
-                ],
-                'a': 0,
-                'okMsg': 'Hudson — charted! Marker 3!'
+                'beat': 'The crew will not sail without a strong reason. Build your claim.',
+                'challenge': { 'kind': 'fillBlank', 'sentence': 'A strong opinion needs a clear claim: * is the best explorer because *.', 'blanks': ['Hudson', 'he explored a river we still use'] },
+                'advance': 'The crew cheers your claim — anchor up!'
               },
               {
-                'type': 'dragSort',
-                'subject': 'ELA · Opinion order',
-                'story': 'Order the parts of an opinion paragraph.',
-                'items': [
-                  {
-                    'text': 'State your claim',
-                    'order': 0
-                  },
-                  {
-                    'text': 'Give a first reason',
-                    'order': 1
-                  },
-                  {
-                    'text': 'Add evidence',
-                    'order': 2
-                  },
-                  {
-                    'text': 'Restate the claim',
-                    'order': 3
-                  }
-                ],
-                'code': 'U03-L02-Q05'
+                'beat': 'Plot the voyage in order so the captain knows the plan.',
+                'challenge': { 'kind': 'dragSort', 'items': [{ 'text': 'Explorer gets a goal from a king', 'order': 0 }, { 'text': 'Ship crosses the ocean', 'order': 1 }, { 'text': 'Explorer meets Native peoples', 'order': 2 }, { 'text': 'Explorer maps the coast', 'order': 3 }] },
+                'advance': 'Course set — the coast is charted!'
               }
             ]
           }

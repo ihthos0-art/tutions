@@ -2496,21 +2496,25 @@
             'winText': '🎉 Cave lit and exit found — the bat flies free!',
             'nodes': [
               {
+                'code': 'U03-L01-N01',
                 'beat': 'So dark! A shiny surface on the wall could help. Guess what it is.',
                 'challenge': { 'kind': 'hangman', 'word': 'MIRROR', 'hint': 'It reflects light so you can see around a corner' },
                 'advance': 'A mirror! The bat grabs it and light bounces off.'
               },
               {
+                'code': 'U03-L01-N02',
                 'beat': 'A crystal needs the right energy to glow. Fill the missing parts of the area model.',
                 'challenge': { 'kind': 'fillBlank', 'sentence': 'To multiply 24 × 13, split 24 into 20 + * and 13 into 10 + *. The four partial products add to 312.', 'blanks': ['4', '3'] },
                 'advance': 'Crystal glows! The cave lights up ahead.'
               },
               {
+                'code': 'U03-L01-N03',
                 'beat': 'An old map is carved on the wall. It shows only if you label the eye parts that read it.',
                 'challenge': { 'kind': 'labelDiagram', 'slots': [{ 'hint': 'front clear window' }, { 'hint': 'bends light to focus' }, { 'hint': 'back screen that senses light' }], 'labels': [{ 'label': 'Cornea', 'slot': 0 }, { 'label': 'Lens', 'slot': 1 }, { 'label': 'Retina', 'slot': 2 }] },
                 'advance': 'Now the bat can read the map — the exit is marked!'
               },
               {
+                'code': 'U03-L01-N04',
                 'beat': 'To reach the exit, put the light path in order from torch to brain.',
                 'challenge': { 'kind': 'dragSort', 'items': [{ 'text': 'Light leaves the source', 'order': 0 }, { 'text': 'Light hits the mirror', 'order': 1 }, { 'text': 'Light reflects to the eye', 'order': 2 }, { 'text': 'The brain sees the image', 'order': 3 }] },
                 'advance': 'Path clear! The bat follows the light out.'
@@ -2668,21 +2672,25 @@
             'winText': '🎉 Claim made and coast charted — anchor down!',
             'nodes': [
               {
+                'code': 'U03-L02-N01',
                 'beat': 'A stranger on the dock tells tales of who sailed here. One is a lie — spot it.',
                 'challenge': { 'kind': 'twoTruths', 'statements': [{ 't': 'Verrazano sailed for France', 'a': true }, { 't': 'Henry Hudson found a big river in NY', 'a': true }, { 't': 'Explorers came to NY for gold alone', 'a': false }] },
                 'advance': 'Crew believes you — the ship can sail.'
               },
               {
+                'code': 'U03-L02-N02',
                 'beat': 'Two flags fly on the dock. Sort each goal by the country that held it.',
                 'challenge': { 'kind': 'categorize', 'bins': ['Dutch goals', 'French goals'], 'items': [{ 'text': 'Fur trading wealth', 'bin': 0 }, { 'text': 'Find Northwest Passage', 'bin': 1 }, { 'text': 'Build New Netherland colony', 'bin': 0 }, { 'text': 'Trade with Native peoples', 'bin': 1 }] },
                 'advance': 'Cargo loaded right — the voyage can begin.'
               },
               {
+                'code': 'U03-L02-N03',
                 'beat': 'The crew will not sail without a strong reason. Build your claim.',
                 'challenge': { 'kind': 'fillBlank', 'sentence': 'A strong opinion needs a clear claim: * is the best explorer because *.', 'blanks': ['Hudson', 'he explored a river we still use'] },
                 'advance': 'The crew cheers your claim — anchor up!'
               },
               {
+                'code': 'U03-L02-N04',
                 'beat': 'Plot the voyage in order so the captain knows the plan.',
                 'challenge': { 'kind': 'dragSort', 'items': [{ 'text': 'Explorer gets a goal from a king', 'order': 0 }, { 'text': 'Ship crosses the ocean', 'order': 1 }, { 'text': 'Explorer meets Native peoples', 'order': 2 }, { 'text': 'Explorer maps the coast', 'order': 3 }] },
                 'advance': 'Course set — the coast is charted!'
@@ -2898,21 +2906,25 @@
             'winText': '🎉 Bridge built — the monkey swings across!',
             'nodes': [
               {
+                'code': 'U03-L03-N01',
                 'beat': 'Dark river ahead! A plank hides the word for "what is left over." Guess it.',
                 'challenge': { 'kind': 'hangman', 'word': 'REMAINDER', 'hint': 'What is left when 17 is split into groups of 4' },
                 'advance': 'A plank appears labeled REMAINDER!'
               },
               {
+                'code': 'U03-L03-N02',
                 'beat': 'The monkey uses banana-words as planks. Fill the blanks so she can step across.',
                 'challenge': { 'kind': 'fillBlank', 'sentence': 'Share 17 bananas among 4 monkeys. Each gets * bananas, and the * is 1. Check: 4 × 4 + * = 17.', 'blanks': ['4', 'remainder', '1'] },
                 'advance': 'Bananas split fair — the monkey steps forward!'
               },
               {
+                'code': 'U03-L03-N03',
                 'beat': 'A logbook plank needs a clean first sentence. Rebuild it.',
                 'challenge': { 'kind': 'scramble', 'words': ['First', 'we', 'packed', 'our', 'bags'] },
                 'advance': 'Logbook entry done — next plank!'
               },
               {
+                'code': 'U03-L03-N04',
                 'beat': 'Final plank: match each linking word to its job.',
                 'challenge': { 'kind': 'match', 'pairs': [['First', 'shows order'], ['Because', 'shows cause'], ['However', 'shows contrast'], ['Also', 'adds more']] },
                 'advance': 'Bridge complete — the monkey crosses!'
@@ -3070,21 +3082,25 @@
             'winText': '🎉 Reflection traced and colony renamed — flag swapped!',
             'nodes': [
               {
+                'code': 'U03-L04-N01',
                 'beat': 'To send a signal, the spy must know how light bounces.',
                 'challenge': { 'kind': 'quizMC', 'questions': [{ 'prompt': 'A light beam hits a mirror at 30°. At what angle does it bounce off?', 'options': ['30°', '60°', '0°', '90°'], 'a': 0 }] },
                 'advance': 'Angle matched — signal ready!'
               },
               {
+                'code': 'U03-L04-N02',
                 'beat': 'Build a periscope: label the eye parts it copies.',
                 'challenge': { 'kind': 'labelDiagram', 'slots': [{ 'hint': 'front clear window' }, { 'hint': 'bends light to focus' }, { 'hint': 'back screen that senses light' }], 'labels': [{ 'label': 'Cornea', 'slot': 0 }, { 'label': 'Lens', 'slot': 1 }, { 'label': 'Retina', 'slot': 2 }] },
                 'advance': 'Periscope assembled — the spy can see over the wall!'
               },
               {
+                'code': 'U03-L04-N03',
                 'beat': 'Place the colony story in time order.',
                 'challenge': { 'kind': 'timeline', 'eras': ['Dutch rule', 'English takeover', 'New York'], 'events': [{ 'text': 'Dutch found New Netherland', 'era': 0 }, { 'text': 'English take the colony', 'era': 1 }, { 'text': 'Colony renamed New York', 'era': 2 }] },
                 'advance': 'History set — the flag is ready to swap.'
               },
               {
+                'code': 'U03-L04-N04',
                 'beat': 'Arrange the signal steps so the message flies across the water.',
                 'challenge': { 'kind': 'dragSort', 'items': [{ 'text': 'Pick a target across the harbor', 'order': 0 }, { 'text': 'Set mirror A to face the target', 'order': 1 }, { 'text': 'Tilt mirror B to catch moonlight', 'order': 2 }, { 'text': 'Light bounces A to B to target', 'order': 3 }] },
                 'advance': 'Signal sent — the colony is renamed!'

@@ -241,6 +241,7 @@
             <label class="form-label" for="summer-site-sel">Summer Site</label>
             <select class="form-select" id="summer-site-sel">
               <option value="">— choose a summer site —</option>
+              <option value="manha">Manha (Grade 3→4 · Math+ELA+Science+SS)</option>
               <option value="salma-khadija-summer">Salma &amp; Khadija (Grade 7)</option>
               <option value="taha-summer">Taha (Grade 5→6 Math)</option>
               <option value="nahid-summer">Nahid (Grade 4 Math + English)</option>
@@ -310,6 +311,7 @@
   };
 
   var SUMMER_SITES = {
+    'manha': 'Manha — Summer Bridge (Grade 3→4)',
     'salma-khadija-summer': 'Salma & Khadija — Summer Bridge to Grade 7',
     'taha-summer': 'Taha — Summer Math Bridge Grade 5→6',
     'nahid-summer': 'Nahid — Summer Bridge to Grade 4',
@@ -666,9 +668,45 @@
 
   // ---- SUMMER ANSWER KEY ----
   var loadedSummerSite = null;
+  function manhaCfgFromSG(SG) {
+    // Convert summer-games.js SG.GAMES ("w-d") into the LEARNKIT cfg shape
+    // {units:[{title, lessons:[{title, phases}]}]} — unit=week, lesson=day.
+    var games = (SG && SG.GAMES) || {};
+    var units = [];
+    Object.keys(games).forEach(function (key) {
+      var parts = key.split('-');
+      var wk = parseInt(parts[0], 10);
+      var dy = parseInt(parts[1], 10);
+      if (isNaN(wk) || isNaN(dy)) return;
+      var g = games[key] && games[key].content ? games[key] : null;
+      if (!g) return;
+      while (units.length <= wk) units.push({ title: 'Week ' + (units.length + 1), lessons: [] });
+      while (units[wk].lessons.length <= dy) units[wk].lessons.push({ title: 'Day ' + (units[wk].lessons.length + 1), phases: [] });
+      units[wk].lessons[dy] = { title: g.content.title || ('Day ' + (dy + 1)), phases: g.content.phases || [] };
+    });
+    return { units: units };
+  }
   function loadSummerContent(site, callback) {
     if (window.LEARNKIT && loadedSummerSite === site) { callback(window.LEARNKIT); return; }
     window.LEARNKIT = undefined;
+    if (site === 'manha') {
+      // Manha lives in this repo's summer-games.js (SG.GAMES), not a remote content.js.
+      if (window.SummerGames && window.SummerGames.GAMES) {
+        loadedSummerSite = site;
+        callback(manhaCfgFromSG(window.SummerGames));
+        return;
+      }
+      var sg = document.createElement('script');
+      sg.src = 'summer-games.js?v=' + Date.now();
+      sg.onload = function () {
+        var cfg = manhaCfgFromSG(window.SummerGames);
+        loadedSummerSite = site;
+        callback(cfg);
+      };
+      sg.onerror = function () { callback(null); };
+      document.head.appendChild(sg);
+      return;
+    }
     var script = document.createElement('script');
     script.src = 'https://zidni0.github.io/' + site + '/content.js?v=' + Date.now();
     script.onload = function () {
@@ -703,6 +741,24 @@
             }
             return item.answer !== undefined ? item.answer : item.a;
           }
+          function questAnswer(node) {
+            var c = node.challenge || {};
+            try {
+              switch (c.kind) {
+                case 'hangman': return c.word || '';
+                case 'fillBlank': return (c.blanks || []).join(', ');
+                case 'scramble': return (c.words || []).join(' ');
+                case 'match': return (c.pairs || []).map(function (p) { return p[0] + ' → ' + p[1]; }).join(' · ');
+                case 'dragSort': return 'Order: ' + (c.items || []).slice().sort(function (a, b) { return a.order - b.order; }).map(function (it) { return it.text; }).join(' → ');
+                case 'timeline': return (c.events || []).slice().sort(function (a, b) { return a.era - b.era; }).map(function (e) { return e.text; }).join(' → ');
+                case 'categorize': return (c.items || []).map(function (it) { var bin = c.bins && c.bins[it.bin] != null ? c.bins[it.bin] : it.bin; return it.text + ' → ' + bin; }).join(' · ');
+                case 'twoTruths': { var lie = (c.statements || []).filter(function (s) { return !s.a; })[0]; return 'Lie: ' + (lie ? lie.t : ''); }
+                case 'labelDiagram': return (c.labels || []).slice().sort(function (a, b) { return a.slot - b.slot; }).map(function (l) { var slot = c.slots && c.slots[l.slot]; return l.label + (slot && slot.hint ? ' (' + slot.hint + ')' : ''); }).join(' · ');
+                case 'quizMC': { var q = (c.questions || [])[0] || {}; return mcqAnswer(q); }
+                default: return '';
+              }
+            } catch (e) { return ''; }
+          }
           if (ph.kind === 'drill' && ph.questions) {
             html += '<div class="summer-phase-title">Drill — ' + esc(ph.title) + '</div>';
             ph.questions.forEach(function (q) {
@@ -723,6 +779,18 @@
               html += '<span class="summer-q-num">Q' + qn + '<br><span class="summer-q-code">' + esc(code) + '</span></span>';
               html += '<span class="summer-q-text">' + esc(s.text || s.prompt || '') + '</span>';
               html += '<span class="summer-q-ans">' + esc(mcqAnswer(s)) + '</span>';
+              html += '</div>';
+              qn++;
+            });
+          } else if (ph.kind === 'quest') {
+            var questNodes = ph.nodes || [];
+            html += '<div class="summer-phase-title">Quest — ' + esc(ph.title) + '</div>';
+            questNodes.forEach(function (n) {
+              var code = n.code || (codePrefix(ui, li) + '-N' + pad(qn));
+              html += '<div class="summer-qa-row" data-code="' + esc(code) + '">';
+              html += '<span class="summer-q-num">N' + qn + '<br><span class="summer-q-code">' + esc(code) + '</span></span>';
+              html += '<span class="summer-q-text">' + esc((n.challenge && n.challenge.kind ? '[' + n.challenge.kind + '] ' : '') + (n.beat || '')) + '</span>';
+              html += '<span class="summer-q-ans">' + esc(questAnswer(n)) + '</span>';
               html += '</div>';
               qn++;
             });

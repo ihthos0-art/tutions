@@ -34,6 +34,10 @@
     .detail-input { min-height: 80px; }
     .ci-input:focus, .detail-input:focus { border-color: #333; }
     .ci-input::placeholder, .detail-input::placeholder { color: #bbb; font-style: italic; }
+    .essay-template { font-size: clamp(13px, 1.8vw, 15px); line-height: 2.4; color: #222; padding: 4px 2px; }
+    .blank-input { font-family: 'Merriweather', Georgia, serif; font-size: 14px; padding: 3px 8px; border: 1.5px solid #bbb; border-radius: 3px; background: #fff; color: #1a1a1a; min-width: 110px; margin: 0 2px; }
+    .blank-input:focus { border-color: #1a1a1a; outline: none; }
+    .blank-input::placeholder { color: #bbb; font-style: italic; font-size: 12px; }
     .passage-box, .passage-title, .section-question, .section-label, .ws-number {
       -webkit-user-select: none;
       user-select: none;
@@ -202,32 +206,38 @@
   <div class="tab-content" id="ela">
     <header class="page-header">
       <p class="school-name">ELA Practice &mdash; Salma &amp; Khadija</p>
-      <h1>Cause and Effect Practice</h1>
-      <p class="sub">Read the story &mdash; then identify the central idea, cause and effect, and write a response paragraph</p>
+      <h1>The Borrowed Book &mdash; Essay Practice</h1>
+      <p class="sub">Read the story &mdash; study the central idea &mdash; then fill every blank in the compact essay template</p>
     </header>
     <section class="worksheet">
       <div class="ws-topbar"><span class="ws-number">Practice Passage</span></div>
       <div class="passage-wrap">
         <p class="section-label">Read the passage</p>
-        <h2 class="passage-title">The River Road Cleanup</h2>
+        <h2 class="passage-title">The Borrowed Book</h2>
         <div class="passage-box">
-          <p>For years, the creek running through Riverside Park had been full of life. Children caught fireflies near its banks in summer, and small fish could be seen just below the surface. But when a factory opened nearby, waste began seeping into the water. Within months, the fish disappeared, the water turned brown, and a sharp smell kept families away from the park entirely.</p>
-          <p>A group of fifth graders noticed the change during a class field trip. Their science teacher, Mr. Osei, helped them understand that the factory&rsquo;s runoff was the cause. Determined to act, the students met after school to form a plan. They collected water samples, wrote letters to the town council, and organized a weekend cleanup of trash along the creek banks. Their evidence was difficult to ignore.</p>
-          <p>Because of the students&rsquo; effort, the town council fined the factory and required it to install a water filtration system. Over the following months, the water slowly cleared. By the next fall, small fish reappeared near the shallow bend. Families returned to the park. The students learned an important lesson: when you identify a cause and are willing to act on it, you have the power to change the outcome.</p>
+          <p>Leo worked at a library that no one visited. One rainy afternoon, a soaked teenager named Jade wandered in, asking for a book on architecture. Leo didn&rsquo;t have one. But he had a sketchbook of buildings he&rsquo;d drawn over twenty years. He lent it to her.</p>
+          <p>She returned weekly with her own sketches. Six months later, Jade won a scholarship.</p>
+          <p>At the ceremony, she thanked &ldquo;the librarian who had no book to give, but gave me his only one.&rdquo; Leo realized the library had never been empty &mdash; he just hadn&rsquo;t looked up.</p>
         </div>
       </div>
       <div class="ws-rule"></div>
-      <p class="section-label">Question 1 &mdash; Central Idea</p>
-      <p class="section-question">What is the most important idea of this story? Write it in one sentence using your own words.</p>
-      <textarea class="ci-input" data-save="ela1-ci" rows="2" placeholder="The central idea of this story is…"></textarea>
+      <p class="section-label">Central Idea</p>
+      <p class="section-question" style="font-style:normal;">Generosity creates value where scarcity seems to exist.</p>
       <div class="ws-rule"></div>
-      <p class="section-label">Question 2 &mdash; Cause and Effect</p>
-      <p class="section-question">Choose one cause from the story and explain what effect it had. Use details from the passage in your answer.</p>
-      <textarea class="detail-input" data-save="ela1-detail" rows="3" placeholder="One cause in the story is… This caused… because…"></textarea>
+      <p class="section-label">Compact Essay Template</p>
+      <p class="section-question" style="font-style:normal;">Fill every blank with your own words. Target: 250&ndash;350 words. Use details from the story to support each blank. Your answers are saved automatically in this browser.</p>
       <div class="ws-rule"></div>
-      <p class="section-label">Question 3 &mdash; Written Response</p>
-      <p class="section-question">Write a paragraph that explains the central idea of the story and describes one cause-and-effect relationship. Use details from the passage to support your ideas.</p>
-      <textarea class="detail-input" data-save="ela1-conn" rows="5" placeholder="In the story 'The River Road Cleanup,' the central idea is… One example of cause and effect is…"></textarea>
+      <p class="section-label">Paragraph 1 &mdash; Introduction</p>
+      <div class="essay-template">In <input class="blank-input" type="text" data-save="ela-book-p1-b1" placeholder="story title" />, the main character <input class="blank-input" type="text" data-save="ela-book-p1-b2" placeholder="name" /> faces <input class="blank-input" type="text" data-save="ela-book-p1-b3" placeholder="problem" />. Through <input class="blank-input" type="text" data-save="ela-book-p1-b4" placeholder="action" />, the story reveals <input class="blank-input" type="text" data-save="ela-book-p1-b5" placeholder="theme" />. This theme is shown through <input class="blank-input" type="text" data-save="ela-book-p1-b6" placeholder="detail 1" /> and <input class="blank-input" type="text" data-save="ela-book-p1-b7" placeholder="detail 2" />.</div>
+      <div class="ws-rule"></div>
+      <p class="section-label">Paragraph 2 &mdash; Body Paragraph 1</p>
+      <div class="essay-template">The character shows the theme when <input class="blank-input" type="text" data-save="ela-book-p2-b1" placeholder="moment" />. At first, <input class="blank-input" type="text" data-save="ela-book-p2-b2" placeholder="situation" />. Instead of <input class="blank-input" type="text" data-save="ela-book-p2-b3" placeholder="expected action" />, they <input class="blank-input" type="text" data-save="ela-book-p2-b4" placeholder="actual action" />. The author includes: &ldquo;<input class="blank-input" type="text" data-save="ela-book-p2-b5" placeholder="quote" />.&rdquo; This proves <input class="blank-input" type="text" data-save="ela-book-p2-b6" placeholder="meaning" />.</div>
+      <div class="ws-rule"></div>
+      <p class="section-label">Paragraph 3 &mdash; Body Paragraph 2</p>
+      <div class="essay-template">By the end, <input class="blank-input" type="text" data-save="ela-book-p3-b1" placeholder="outcome" />. When <input class="blank-input" type="text" data-save="ela-book-p3-b2" placeholder="event" />, it shows <input class="blank-input" type="text" data-save="ela-book-p3-b3" placeholder="idea" />. The author includes: &ldquo;<input class="blank-input" type="text" data-save="ela-book-p3-b4" placeholder="quote" />.&rdquo; This reinforces <input class="blank-input" type="text" data-save="ela-book-p3-b5" placeholder="theme" />.</div>
+      <div class="ws-rule"></div>
+      <p class="section-label">Paragraph 4 &mdash; Conclusion</p>
+      <div class="essay-template">This story teaches that <input class="blank-input" type="text" data-save="ela-book-p4-b1" placeholder="lesson" />. The character moves from <input class="blank-input" type="text" data-save="ela-book-p4-b2" placeholder="start" /> to <input class="blank-input" type="text" data-save="ela-book-p4-b3" placeholder="end" />, proving <input class="blank-input" type="text" data-save="ela-book-p4-b4" placeholder="point" />. Through <input class="blank-input" type="text" data-save="ela-book-p4-b5" placeholder="detail 1" /> and <input class="blank-input" type="text" data-save="ela-book-p4-b6" placeholder="detail 2" />, we learn <input class="blank-input" type="text" data-save="ela-book-p4-b7" placeholder="insight" />.</div>
     </section>
     <div class="reset-bar">
       <button type="button" class="reset-btn" data-reset="ela">Reset ELA Practice</button>

@@ -74,7 +74,7 @@ function json(obj, status = 200, extra = {}) {
 
 const STUDENT_IDS = [
   'nabila-naviha', 'salma-khadija', 'adnan', 'nafis', 'nahid',
-  'sameer', 'manha', 'mahiya', 'taha'
+  'sameer', 'manha', 'mahiya', 'taha', 'salma', 'khadija'
 ];
 function validStudent(id) { return STUDENT_IDS.includes(id); }
 

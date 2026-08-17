@@ -1,8 +1,22 @@
 (function () {
   'use strict';
-  var STUDENT = document.documentElement.dataset.studentId ||
-    location.pathname.split('/').pop().replace('.html', '') || 'index';
+  var individualStudent = new URLSearchParams(location.search).get('student');
+  var STUDENT = (individualStudent === 'salma' || individualStudent === 'khadija')
+    ? individualStudent
+    : (document.documentElement.dataset.studentId ||
+      location.pathname.split('/').pop().replace('.html', '') || 'index');
   window.HW = { content: null, student: STUDENT };
+
+  function applyIndividualStudentLabel() {
+    if (STUDENT !== 'salma' && STUDENT !== 'khadija') return;
+    var name = STUDENT.charAt(0).toUpperCase() + STUDENT.slice(1);
+    document.title = document.title.replace('Salma & Khadija', name);
+    document.querySelectorAll('.school-name').forEach(function (element) {
+      element.textContent = element.textContent.replace('Salma & Khadija', name);
+    });
+  }
+
+  applyIndividualStudentLabel();
 
   function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 

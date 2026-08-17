@@ -1,7 +1,10 @@
 (function () {
   'use strict';
-  var STUDENT = document.documentElement.dataset.studentId ||
-    location.pathname.split('/').pop().replace('.html', '') || 'index';
+  var individualStudent = new URLSearchParams(location.search).get('student');
+  var STUDENT = (individualStudent === 'salma' || individualStudent === 'khadija')
+    ? individualStudent
+    : (document.documentElement.dataset.studentId ||
+      location.pathname.split('/').pop().replace('.html', '') || 'index');
   var timer = null;
 
   function collect() {

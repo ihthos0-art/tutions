@@ -1,11 +1,12 @@
 (function () {
   'use strict';
-  var STUDENT = location.pathname.split('/').pop().replace('.html', '') || 'index';
+  var STUDENT = document.documentElement.dataset.studentId ||
+    location.pathname.split('/').pop().replace('.html', '') || 'index';
   var timer = null;
 
   function collect() {
     var out = {};
-    document.querySelectorAll('textarea[data-save]').forEach(function (t) {
+    document.querySelectorAll('textarea[data-save], input[data-save]').forEach(function (t) {
       if (t.value && t.value.trim()) out[t.dataset.save] = t.value;
     });
     return out;
@@ -23,6 +24,6 @@
   }
 
   document.addEventListener('input', function (e) {
-    if (e.target.matches && e.target.matches('textarea[data-save]')) push();
+    if (e.target.matches && e.target.matches('textarea[data-save], input[data-save]')) push();
   });
 })();

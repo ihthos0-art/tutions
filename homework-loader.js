@@ -172,13 +172,16 @@
   function apply(content) {
     content = content || {};
     window.HW.content = content;
+    // Salma & Khadija's assigned tab is the static Microbiome worksheet — never inject
+    // the August math assignment over it (salma-khadija.html?student=salma|khadija).
+    var isSalmaKhadija = (STUDENT === 'salma' || STUDENT === 'khadija');
     if (content.assigned) {
-      if (content.assigned.fillBlank) renderFillBlank(content.assigned.fillBlank);
-      if (content.assigned.math) renderMath('#assigned .problems-grid', content.assigned.math);
-      if (content.assigned.stories) renderStories(content.assigned.stories);
-      if (content.assigned.august) renderAugustAssignment(content.assigned.august);
+      if (content.assigned.fillBlank && !isSalmaKhadija) renderFillBlank(content.assigned.fillBlank);
+      if (content.assigned.math && !isSalmaKhadija) renderMath('#assigned .problems-grid', content.assigned.math);
+      if (content.assigned.stories && !isSalmaKhadija) renderStories(content.assigned.stories);
+      if (content.assigned.august && !isSalmaKhadija) renderAugustAssignment(content.assigned.august);
     }
-    if (window.AugustAssignments && window.AugustAssignments[STUDENT]) {
+    if (!isSalmaKhadija && window.AugustAssignments && window.AugustAssignments[STUDENT]) {
       renderAugustAssignment((content.assigned && content.assigned.august) || window.AugustAssignments[STUDENT]);
     }
     if (content.math) renderMath('#math .math-grid', content.math);

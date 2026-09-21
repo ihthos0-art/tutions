@@ -123,6 +123,9 @@
       body { background: #fff; padding: 0; }
       .tab-bar, .reset-bar { display: none; }
       .tab-content { display: block !important; }
+      /* The Assigned tab is the printable worksheet. The lesson pack is
+         interactive and its game shells would print as empty boxes. */
+      #math, #ela, #social-studies, #science, #review { display: none !important; }
       .top-nav, .save-notice, .check-row { display: none; }
       .ws-card { box-shadow: none; border: none; padding: 20px 0; }
       .ans-input { border: none; border-bottom: 2px solid #000; border-radius: 0; background: transparent !important; }
@@ -132,6 +135,7 @@
     }
   </style>
   <script>window.STUDENT_CONFIG = {"name": "Nabila & Naviha", "grade": 2, "math": {"topic": "addition-subtraction", "count": 12, "wordProblems": 2, "max": 50, "min": 1}, "ela": {"type": "narrative", "questions": 3}};</script>
+  <link rel="stylesheet" href="lesson-pack.css?v=1" />
 </head>
 <body>
 
@@ -145,6 +149,7 @@
     <button class="tab-btn" data-tab="ela">ELA Practice</button>
     <button class="tab-btn" data-tab="social-studies">Social Studies</button>
     <button class="tab-btn" data-tab="science">Science</button>
+    <button class="tab-btn" data-tab="review">Review</button>
   </div>
 
   <!-- ASSIGNED TAB -->
@@ -318,62 +323,29 @@
 
   </div><!-- /assigned -->
 
-  <!-- MATH PRACTICE TAB -->
+  <!-- MATH TAB: Grade 2 lesson pack, rendered by lesson-pack.js -->
   <div class="tab-content" id="math">
-    <div class="ws-card">
-      <div class="ws-header">
-        <p class="eyebrow">Math Practice &nbsp;&middot;&nbsp; Grade 2</p>
-        <h1 class="ws-title">Simple Addition</h1>
-        <p class="ws-meta">Nabila &amp; Naviha &nbsp;&middot;&nbsp; Solve each problem and write your answer</p>
-      </div>
-      <p class="ws-label">12 Problems &nbsp;&mdash;&nbsp; Two-Digit Numbers</p>
-      <div class="math-grid">
-        <div class="math-prob"><span class="problem-eq">21 + 35 =</span><input type="text" data-save="m1-1" data-answer="56" placeholder="?" /></div>
-        <div class="math-prob"><span class="problem-eq">42 + 16 =</span><input type="text" data-save="m1-2" data-answer="58" placeholder="?" /></div>
-        <div class="math-prob"><span class="problem-eq">30 + 54 =</span><input type="text" data-save="m1-3" data-answer="84" placeholder="?" /></div>
-        <div class="math-prob"><span class="problem-eq">63 + 12 =</span><input type="text" data-save="m1-4" data-answer="75" placeholder="?" /></div>
-        <div class="math-prob"><span class="problem-eq">15 + 43 =</span><input type="text" data-save="m1-5" data-answer="58" placeholder="?" /></div>
-        <div class="math-prob"><span class="problem-eq">71 + 18 =</span><input type="text" data-save="m1-6" data-answer="89" placeholder="?" /></div>
-        <div class="math-prob"><span class="problem-eq">26 + 42 =</span><input type="text" data-save="m1-7" data-answer="68" placeholder="?" /></div>
-        <div class="math-prob"><span class="problem-eq">53 + 34 =</span><input type="text" data-save="m1-8" data-answer="87" placeholder="?" /></div>
-        <div class="math-prob"><span class="problem-eq">40 + 29 =</span><input type="text" data-save="m1-9" data-answer="69" placeholder="?" /></div>
-        <div class="math-prob"><span class="problem-eq">64 + 15 =</span><input type="text" data-save="m1-10" data-answer="79" placeholder="?" /></div>
-        <div class="math-prob"><span class="problem-eq">12 + 75 =</span><input type="text" data-save="m1-11" data-answer="87" placeholder="?" /></div>
-        <div class="math-prob"><span class="problem-eq">81 + 14 =</span><input type="text" data-save="m1-12" data-answer="95" placeholder="?" /></div>
-      </div>
-      <div class="check-row" style="margin-top:24px;">
-        <button class="check-btn" onclick="checkMathPractice()">Check Answers</button>
-        <span class="score-display" id="math-practice-score"></span>
-      </div>
-    </div>
-    <div class="reset-bar">
-      <button type="button" class="reset-btn" data-reset="math">Reset Math Practice</button>
-    </div>
-    <p class="save-notice">Your answers are saved automatically in this browser.</p>
+    <div class="lp-shell" data-lp-shell data-pack="math"></div>
   </div>
 
-  <!-- ELA PRACTICE TAB -->
+  <!-- ELA TAB: Grade 2 lesson pack -->
   <div class="tab-content" id="ela">
-    <div class="ws-card">
-      <div class="ws-header">
-        <p class="eyebrow">ELA Practice &nbsp;&middot;&nbsp; Grade 2</p>
-        <h1 class="ws-title">The Big Puddle</h1>
-        <p class="ws-meta">Nabila &amp; Naviha &nbsp;&middot;&nbsp; Read the story, then tell your teacher about it</p>
-      </div>
-      <p class="section-label">Read the story</p>
-      <div class="passage-box">
-        <p>It rained hard all night. In the morning there was a huge puddle in front of the school gate. All the kids walked around it to stay dry. But one boy ran right up to the puddle and jumped in with both feet. Water flew up everywhere.</p>
-        <p>His shoes were soaked. His socks were wet. His pants were dripping. His friend looked at him and shook her head. The boy looked down at his wet shoes. Then he started to laugh. &ldquo;It was worth it!&rdquo; he said. His friend started to laugh too. They both walked into school with big smiles on their faces.</p>
-      </div>
-      <div class="ws-rule"></div>
-      <p class="section-label">Tell Your Teacher</p>
-      <p class="section-question">Tell your teacher about this story. What did the boy do? What happened after? Write 2&ndash;3 sentences.</p>
-      <textarea class="summary-input" data-save="ela-story" rows="4" placeholder="In this story, a boy…"></textarea>
-    </div>
-    <div class="reset-bar">
-      <button type="button" class="reset-btn" data-reset="ela">Reset ELA Practice</button>
-    </div>
-    <p class="save-notice">Your answers are saved automatically in this browser.</p>
+    <div class="lp-shell" data-lp-shell data-pack="ela"></div>
+  </div>
+
+  <!-- SOCIAL STUDIES TAB -->
+  <div class="tab-content" id="social-studies">
+    <div class="lp-shell" data-lp-shell data-pack="social-studies"></div>
+  </div>
+
+  <!-- SCIENCE TAB -->
+  <div class="tab-content" id="science">
+    <div class="lp-shell" data-lp-shell data-pack="science"></div>
+  </div>
+
+  <!-- MASTER REVIEW TAB -->
+  <div class="tab-content" id="review">
+    <div class="lp-shell" data-lp-shell data-pack="review"></div>
   </div>
 
   <!-- SOCIAL STUDIES TAB -->
@@ -412,5 +384,13 @@
   <script src="ai-tutor.js"></script>
   <script src="quiz.js"></script>
   <script src="flashcards.js"></script>
+  <!-- Grade 2 lesson pack. Content modules first: the data aggregator reads
+       their globals, and the engine returns early without it. -->
+  <script src="lesson-pack-content-ela.js?v=1"></script>
+  <script src="lesson-pack-content-math.js?v=1"></script>
+  <script src="lesson-pack-content-science.js?v=1"></script>
+  <script src="lesson-pack-content-social.js?v=1"></script>
+  <script src="lesson-pack.data.js?v=1"></script>
+  <script src="lesson-pack.js?v=1"></script>
 </body>
 </html>

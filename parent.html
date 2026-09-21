@@ -325,7 +325,6 @@
     'ws4-summary': 'Story 4 — Tell Your Teacher',
     'ws5-summary': 'Story 5 — Tell Your Teacher',
     'ws6-summary': 'Story 6 — Tell Your Teacher',
-    'ela-story':   'ELA Practice — Tell Your Teacher',
     'ws1-arg':     'Worksheet 1 — Main Argument',
     'ws1-detail':  'Worksheet 1 — Supporting Detail',
     'ws2-arg':     'Worksheet 2 — Main Argument',
@@ -333,6 +332,19 @@
     'ela1-ci':     'ELA — Central Idea / Claim',
     'ela1-detail': 'ELA — Evidence / Detail',
     'ela1-conn':   'ELA — Written Response'
+  };
+
+  // Keys retired when a student's page moved on. The KV record still holds
+  // them, because answers-sync.js only drops a key once its input has been
+  // missing for a save cycle, and the dashboard should stop showing them
+  // before that happens. Nabila & Naviha's Grade 1 math drill (m1-*) and the
+  // "Big Puddle" story response (ela-story) were replaced by the Grade 2
+  // lesson pack, so they are hidden here rather than deleted from KV -- the
+  // record stays intact if this needs revisiting.
+  var RETIRED_KEYS = {
+    'nabila-naviha': ['ela-story'].concat(
+      Array.from({ length: 12 }, function (_, i) { return 'm1-' + (i + 1); })
+    )
   };
 
   function esc(s) {
@@ -637,6 +649,7 @@
         if (!record || !record.answers || !Object.keys(record.answers).length) return;
         var answers = record.answers;
         var keys = Object.keys(answers).filter(function(k) {
+          if (RETIRED_KEYS[res.sid] && RETIRED_KEYS[res.sid].indexOf(k) !== -1) return false;
           return answers[k] && answers[k].length >= 5;
         });
         if (!keys.length) return;

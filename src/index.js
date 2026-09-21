@@ -1,5 +1,7 @@
 // Provider chain — tries each in order until one succeeds
 // All use OpenAI-compatible /chat/completions format
+import { mergeProgress, sanitizeProgress } from './progress.js';
+
 const PROVIDERS = [
   {
     name: 'groq',
@@ -168,6 +170,46 @@ export default {
         if (!env.HOMEWORK) return json({ answers: null });
         const raw = await env.HOMEWORK.get('answers:' + m[1]);
         return json({ record: raw ? JSON.parse(raw) : null });
+      }
+    }
+
+    // ---- LESSON PACK PROGRESS: student submits (public) / admin reads ----
+    //
+    // Its own key and its own routes, deliberately not folded into
+    // /api/answers. answers-sync.js POSTs the complete collected answer set on
+    // every keystroke and the handler above replaces the record wholesale, so
+    // progress living inside that record would be destroyed by the next
+    // keystroke anywhere on the page. Two writers on different cadences cannot
+    // share one wholesale-replaced key.
+    {
+      const m = url.pathname.match(/^\/api\/progress\/([a-z0-9-]+)$/);
+      if (m && request.method === 'POST') {
+        if (!validStudent(m[1])) return json({ error: 'unknown student' }, 404);
+        if (!env.HOMEWORK) return json({ ok: true, progress: null });
+        const body = await request.json().catch(() => ({}));
+        const key = 'progress:' + m[1];
+        const raw = await env.HOMEWORK.get(key);
+        let stored = null;
+        try { stored = raw ? JSON.parse(raw) : null; } catch { stored = null; }
+
+        // Public write, so the merge is what makes it safe: max-wins and
+        // idempotent, never last-write-wins. See src/progress.js.
+        const merged = mergeProgress(stored, body);
+        merged.updatedAt = new Date().toISOString();
+        merged.student = m[1];
+        await env.HOMEWORK.put(key, JSON.stringify(merged));
+
+        // The merged record comes back, so one round trip both writes and
+        // reads and the student page never needs the bearer token.
+        return json({ ok: true, progress: merged });
+      }
+      if (m && request.method === 'GET') {
+        if (!await verifyToken(env, bearer(request))) return json({ error: 'unauthorized' }, 401);
+        if (!env.HOMEWORK) return json({ progress: null });
+        const raw = await env.HOMEWORK.get('progress:' + m[1]);
+        let stored = null;
+        try { stored = raw ? JSON.parse(raw) : null; } catch { stored = null; }
+        return json({ progress: stored ? sanitizeProgress(stored) : null });
       }
     }
 

@@ -170,7 +170,7 @@
             <label class="form-label" for="sel-student">Student</label>
             <select class="form-select" id="sel-student">
               <option value="">— choose a student —</option>
-              <option value="nabila-naviha">Nabila &amp; Naviha (Grade 1)</option>
+              <option value="nabila-naviha">Nabila &amp; Naviha (Grade 2)</option>
               <option value="salma-khadija">Salma &amp; Khadija (Grade 5)</option>
               <option value="adnan">Adnan (Grade 4)</option>
               <option value="nafis">Nafis (Grade 4)</option>
@@ -460,7 +460,7 @@
     // Map section selector value to API section + grade from student config
     var apiSection = section === 'math-assigned' ? 'math' : section;
     var gradeMap = {
-      'nabila-naviha': 1, 'mahiya': 1, 'taha': 2, 'manha': 3,
+      'nabila-naviha': 2, 'mahiya': 1, 'taha': 2, 'manha': 3,
       'adnan': 4, 'nafis': 4, 'nahid': 5, 'salma-khadija': 5, 'sameer': 9
     };
     var grade = gradeMap[student] || '?';

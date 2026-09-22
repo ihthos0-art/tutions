@@ -95,6 +95,19 @@
     .response-val { font-family: 'Merriweather', serif; font-size: 14px; line-height: 1.7; color: #1a1a1a; white-space: pre-wrap; }
     .response-ts { font-size: 10px; color: #bbb; margin-top: 4px; font-style: italic; }
     .no-data { padding: 24px 22px; text-align: center; font-size: 13px; color: #aaa; font-style: italic; }
+
+    /* ===== LESSON PACK PROGRESS ===== */
+    .prog-block { padding: 16px 22px; border-bottom: 1px solid #eee; background: #fbfbf9; }
+    .prog-head { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #888; margin-bottom: 10px; }
+    .prog-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .prog-badge { font-size: 11px; font-weight: 700; background: #e8f5e9; color: #1b5e20; border: 1px solid #81c784; border-radius: 3px; padding: 4px 10px; }
+    .prog-badge.none { background: #f4f4f4; color: #999; border-color: #ddd; font-weight: 400; }
+    .prog-lessons { display: flex; flex-wrap: wrap; gap: 6px; }
+    .prog-lesson { font-size: 11px; border: 1px solid #ddd; border-radius: 3px; padding: 4px 9px; background: #fff; color: #555; display: flex; align-items: center; gap: 6px; }
+    .prog-lesson.todo { color: #bbb; background: #fafafa; }
+    .prog-stars { letter-spacing: 1px; color: #f0a500; font-size: 12px; }
+    .prog-lesson.todo .prog-stars { color: #ddd; }
+    .prog-pct { color: #999; font-size: 10px; }
     .empty-state { text-align: center; padding: 60px 20px; }
     .empty-state p { font-size: 15px; color: #aaa; font-style: italic; }
     .page-heading { font-family: 'Merriweather', serif; font-size: 22px; font-weight: 700; margin-bottom: 20px; }
@@ -344,8 +357,93 @@
   var RETIRED_KEYS = {
     'nabila-naviha': ['ela-story'].concat(
       Array.from({ length: 12 }, function (_, i) { return 'm1-' + (i + 1); })
+    ),
+    // Nafis's Grade 4 page: the 13-problem math drill and the "The New Kid"
+    // ELA response were replaced by the Grade 4 lesson pack.
+    'nafis': ['ela1-ci', 'ela1-detail', 'ela1-conn'].concat(
+      Array.from({ length: 13 }, function (_, i) { return 'm1-' + (i + 1); })
     )
   };
+
+  /* ---- lesson-pack progress labels ----
+     The dashboard renders progress from ids alone, on purpose. Lesson titles
+     live in lesson-pack.data.js, which is per-page and only knows one grade;
+     duplicating the titles here would be a second copy to keep in sync with
+     the teacher's content. The subject and the lesson number are properties of
+     the id itself, so they cannot drift. */
+  var PROG_SUBJECTS = { en: 'English', ma: 'Math', sc: 'Science', ss: 'Social Studies' };
+
+  var PROG_BADGES = {
+    'story-detective':    '🕵 Story Detective',
+    'number-builder':     '🔢 Number Builder',
+    'young-scientist':    '🌱 Young Scientist',
+    'community-explorer': '🏙 Community Explorer'
+  };
+
+  function progBadgeLabel(id) {
+    var g = /^grade(\d+)-explorer$/.exec(id);
+    if (g) return '⭐ Grade ' + g[1] + ' Explorer';
+    return PROG_BADGES[id] || id;
+  }
+
+  function progLessonLabel(id) {
+    var m = /^(en|ma|sc|ss)-l(\d+)$/.exec(id);
+    if (!m) return id;
+    return (PROG_SUBJECTS[m[1]] || m[1]) + ' L' + m[2];
+  }
+
+  function progStars(n) {
+    var filled = Math.max(0, Math.min(3, Number(n) || 0));
+    return '★★★'.slice(0, filled) + '☆☆☆'.slice(0, 3 - filled);
+  }
+
+  // Rendered from whatever the record holds. A lesson the student has not
+  // opened is simply absent from KV, so there is no "not started" row to show —
+  // which is the honest thing: the dashboard shows what was done, not a
+  // checklist it cannot actually read.
+  function renderProgressBlock(progress) {
+    if (!progress) return '';
+    var lessons = progress.lessons || {};
+    var ids = Object.keys(lessons);
+    var badges = progress.badges || [];
+    if (!ids.length && !badges.length) return '';
+
+    var html = '<div class="prog-block">';
+    html += '<div class="prog-head">Lesson Pack</div>';
+
+    html += '<div class="prog-badges">';
+    if (badges.length) {
+      badges.forEach(function (b) {
+        html += '<span class="prog-badge">' + esc(progBadgeLabel(b)) + '</span>';
+      });
+    } else {
+      html += '<span class="prog-badge none">No badges yet</span>';
+    }
+    html += '</div>';
+
+    if (ids.length) {
+      ids.sort();
+      var done = 0;
+      html += '<div class="prog-lessons">';
+      ids.forEach(function (id) {
+        var r = lessons[id] || {};
+        var isDone = r.done === true;
+        if (isDone) done++;
+        html += '<span class="prog-lesson' + (isDone ? '' : ' todo') + '">';
+        html += esc(progLessonLabel(id));
+        html += '<span class="prog-stars" title="' + progStars(r.stars) + '">' + progStars(r.stars) + '</span>';
+        if (r.total) {
+          html += '<span class="prog-pct">' + (r.firstTryCorrect || 0) + '/' + r.total + '</span>';
+        }
+        html += '</span>';
+      });
+      html += '</div>';
+      html += '<div class="response-ts">' + done + ' of ' + ids.length + ' started lessons finished</div>';
+    }
+
+    html += '</div>';
+    return html;
+  }
 
   function esc(s) {
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -631,13 +729,27 @@
     view.innerHTML = '';
     setStatus('answers-status', 'Loading…', 'working');
 
+    // Answers and lesson-pack progress are two records with two writers on two
+    // cadences — they are stored under separate keys for exactly that reason —
+    // so they are fetched separately and either can be present alone. A student
+    // who only played the lesson pack must still appear here.
+    function getJSON(path) {
+      return fetch(path, { headers: { 'Authorization': 'Bearer ' + token } })
+        .then(function(r){ return r.json(); })
+        .catch(function(){ return null; });
+    }
+
     var fetches = students.map(function(sid) {
-      return fetch('/api/answers/' + sid, {
-        headers: { 'Authorization': 'Bearer ' + token }
-      })
-      .then(function(r){ return r.json(); })
-      .then(function(d){ return { sid: sid, record: d.record }; })
-      .catch(function(){ return { sid: sid, record: null }; });
+      return Promise.all([
+        getJSON('/api/answers/' + sid),
+        getJSON('/api/progress/' + sid)
+      ]).then(function(res) {
+        return {
+          sid: sid,
+          record: res[0] && res[0].record,
+          progress: res[1] && res[1].progress
+        };
+      });
     });
 
     Promise.all(fetches).then(function(results) {
@@ -646,20 +758,23 @@
       var html = '';
       results.forEach(function(res) {
         var record = res.record;
-        if (!record || !record.answers || !Object.keys(record.answers).length) return;
-        var answers = record.answers;
+        var answers = (record && record.answers) || {};
         var keys = Object.keys(answers).filter(function(k) {
           if (RETIRED_KEYS[res.sid] && RETIRED_KEYS[res.sid].indexOf(k) !== -1) return false;
           return answers[k] && answers[k].length >= 5;
         });
-        if (!keys.length) return;
+
+        var progHtml = renderProgressBlock(res.progress);
+        if (!keys.length && !progHtml) return;
         anyData = true;
-        var ts = record.updatedAt ? new Date(record.updatedAt).toLocaleString() : '';
+
+        var ts = record && record.updatedAt ? new Date(record.updatedAt).toLocaleString() : '';
         html += '<div class="student-card">';
         html += '<div class="student-card-header">';
         html += '<span class="student-name">' + esc(STUDENT_NAMES[res.sid] || res.sid) + '</span>';
         html += '<span class="student-count">' + keys.length + ' response' + (keys.length !== 1 ? 's' : '') + '</span>';
         html += '</div>';
+        html += progHtml;
         keys.forEach(function(k) {
           html += '<div class="response-item">';
           html += '<div class="response-key">' + esc(formatKey(k)) + '</div>';
@@ -670,7 +785,7 @@
         html += '</div>';
       });
       if (!anyData) {
-        html = '<div class="empty-state"><p>No student answers on the server yet. Students need to type in their pages — answers sync automatically.</p></div>';
+        html = '<div class="empty-state"><p>No student work on the server yet. Students need to type in their pages — answers and lesson progress sync automatically.</p></div>';
       }
       view.innerHTML = html;
     });

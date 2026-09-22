@@ -1,6 +1,6 @@
 // Provider chain — tries each in order until one succeeds
 // All use OpenAI-compatible /chat/completions format
-import { mergeProgress, sanitizeProgress } from './progress.js';
+import { gradeFor, mergeProgress, sanitizeProgress } from './progress.js';
 
 const PROVIDERS = [
   {
@@ -193,8 +193,10 @@ export default {
         try { stored = raw ? JSON.parse(raw) : null; } catch { stored = null; }
 
         // Public write, so the merge is what makes it safe: max-wins and
-        // idempotent, never last-write-wins. See src/progress.js.
-        const merged = mergeProgress(stored, body);
+        // idempotent, never last-write-wins. See src/progress.js. The grade
+        // comes from the server's own table, not from the body, because it
+        // decides which lessons are stored and which badges can be earned.
+        const merged = mergeProgress(stored, body, gradeFor(m[1]));
         merged.updatedAt = new Date().toISOString();
         merged.student = m[1];
         await env.HOMEWORK.put(key, JSON.stringify(merged));
@@ -209,7 +211,7 @@ export default {
         const raw = await env.HOMEWORK.get('progress:' + m[1]);
         let stored = null;
         try { stored = raw ? JSON.parse(raw) : null; } catch { stored = null; }
-        return json({ progress: stored ? sanitizeProgress(stored) : null });
+        return json({ progress: stored ? sanitizeProgress(stored, gradeFor(m[1])) : null });
       }
     }
 

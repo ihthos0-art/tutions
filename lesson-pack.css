@@ -210,6 +210,40 @@
 .lp-input.is-retry { border-color: var(--lp-retry); background: var(--lp-retry-bg); }
 /* Open-answer challenges type a sentence, not a number. */
 .lp-input--wide { width: 100%; max-width: 460px; text-align: left; }
+/* A ratio part and the value of x are one or two digits, so the box is narrow
+   and the two of them sit on one line. */
+.lp-input--num { width: 5ch; }
+
+/* ------------------------------------------------- ratio, balance, frames */
+/* The three engines the Grade 7 pack names. Each is a small control a child
+   works with a thumb, so every target keeps the 48px tap size. */
+.lp-ratio { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-bottom: 20px; }
+.lp-ratio-part { display: flex; align-items: center; gap: 10px; }
+.lp-ratio-label { font-size: var(--lp-fs-sm); font-weight: 700; color: var(--lp-ink-soft); }
+.lp-ratio-sep { font-size: var(--lp-fs); font-weight: 700; color: var(--lp-ink-soft); }
+
+/* The sentence being built, and the tiles that build it. The line is a dashed
+   slot while it is empty so "nothing here yet" reads as a place to fill. */
+.lp-build {
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+  min-height: var(--lp-tap); padding: 14px 16px; margin-bottom: 18px;
+  background: var(--lp-shade); border: 2px dashed var(--lp-line);
+  border-radius: var(--lp-radius);
+  font-family: 'Merriweather', Georgia, serif; font-size: var(--lp-fs-sm);
+}
+.lp-build.is-good  { border-color: var(--lp-good);  background: var(--lp-good-bg); }
+.lp-build.is-retry { border-color: var(--lp-retry); background: var(--lp-retry-bg); }
+.lp-build .lp-placed { border-style: solid; }
+
+/* The equation, and the box for x. */
+.lp-balance-eq {
+  font-family: 'Merriweather', Georgia, serif; font-size: var(--lp-fs);
+  font-weight: 700; margin-bottom: 14px;
+}
+.lp-solve { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.lp-solve-x {
+  font-family: 'Merriweather', Georgia, serif; font-size: var(--lp-fs); font-weight: 700;
+}
 
 /* Compare tables (Social Studies). Content, so it gets real table styling. */
 .lp-table {

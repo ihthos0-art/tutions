@@ -9,9 +9,9 @@
 
    A page declares its pack in `window.LessonPackConfig`:
 
-     { student: 'nafis', grade: 4, storageKey: 'g4pack:nafis',
-       content: ['G4PackEla', 'G4PackMath', 'G4PackScience', 'G4PackSocial'],
-       lessonOrder: ['en-l1', ...], review: 'G4PackReview' }
+     { student: 'nafis', grade: 7, storageKey: 'g7pack:nafis',
+       content: ['G7PackEla', 'G7PackMath', 'G7PackScience', 'G7PackSocial'],
+       lessonOrder: ['en-l1', ...], review: 'G7PackReview', badges: [...] }
 
    Every key is optional and defaults to the Grade 2 pack, so a page that
    declares nothing gets exactly the behaviour it had before this file was
@@ -262,10 +262,16 @@
 
   // Engines this pack actually uses. MEMORY is listed in the teacher's menu but
   // no lesson uses it, so it is deliberately absent — see the plan.
+  // READ_ALOUD is the pack's Learn step rather than a game, and VOCAB_PICTURE
+  // is its vocabulary section — both are rendered from `read` and `keyWords`
+  // and so have no entry in the engine registry. Listing them here would
+  // promise a renderer that does not exist.
   var ENGINE_IDS = [
     'READ_ALOUD', 'MULTIPLE_CHOICE', 'FILL_BLANK', 'DRAG_DROP', 'MATCH_PAIRS',
     'SEQUENCE', 'TAP_IMAGE', 'SORT', 'NUMBER_BUILDER', 'NUMBER_LINE',
-    'AUDIO_CHOICE', 'TRUE_FALSE'
+    'AUDIO_CHOICE', 'TRUE_FALSE',
+    // Named by the Grade 7 pack and implemented in lesson-pack.js.
+    'RATIO_BUILDER', 'EQUATION_BALANCE', 'SENTENCE_FRAME'
   ];
 
   // Not pack engines: the two shapes the pack implies but never names. A guided
@@ -465,6 +471,41 @@
     // renderer defaults them from the lesson's own scope ("within 100").
     if (item.engine === 'NUMBER_LINE' && typeof item.target !== 'number') {
       bad('NUMBER_LINE needs a numeric target');
+    }
+
+    /* ---- the three engines the Grade 7 pack names ---------------------- */
+
+    if (item.engine === 'RATIO_BUILDER') {
+      if (!/^\d+\s*:\s*\d+$/.test(String(item.answer == null ? '' : item.answer))) {
+        bad('RATIO_BUILDER answer must look like "3:5"');
+      }
+    }
+
+    if (item.engine === 'EQUATION_BALANCE') {
+      if (item.answer == null || String(item.answer).length === 0) {
+        bad('EQUATION_BALANCE needs the value of the unknown');
+      }
+    }
+
+    // The word tiles must be able to build the sentence, or the item is
+    // unanswerable: every word of the answer has to be available, counting
+    // repeats, and the tiles may not introduce a word the answer lacks.
+    if (item.engine === 'SENTENCE_FRAME') {
+      if (typeof item.answer !== 'string' || !item.answer.trim()) {
+        bad('SENTENCE_FRAME needs an answer sentence');
+      } else if (Array.isArray(item.words) && item.words.length) {
+        var need = {};
+        item.answer.split(/\s+/).filter(Boolean).forEach(function (w) {
+          need[w] = (need[w] || 0) + 1;
+        });
+        item.words.forEach(function (w) {
+          if (need[w]) need[w]--;
+          else bad('word tile ' + JSON.stringify(w) + ' is not in the answer sentence');
+        });
+        Object.keys(need).forEach(function (w) {
+          if (need[w] > 0) bad('the tiles cannot build ' + JSON.stringify(w));
+        });
+      }
     }
 
     return errs;

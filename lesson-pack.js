@@ -5,7 +5,7 @@
    Requires lesson-pack.data.js (content + pure logic) to be loaded first, and
    reads the page's own identity from `window.LessonPackConfig`:
 
-     { student: 'nafis', grade: 4, storageKey: 'g4pack:nafis' }
+     { student: 'nafis', grade: 7, storageKey: 'g7pack:nafis' }
 
    Every key is optional and defaults to the Grade 2 page, so a page that
    declares nothing behaves exactly as it did before this module was shared.
@@ -65,8 +65,74 @@
     return out;
   }
 
+  // Answers are compared after a light normalisation, never before it. The
+  // earlier exact comparison meant a child who typed the teacher's own answer
+  // with a full stop, a curly quote, or a comma the pack itself supplies was
+  // told they were wrong. Quotes and sentence punctuation are therefore
+  // ignored; digits are not touched, so "3.5" is still not "35".
+  function normaliseAnswer(v) {
+    return String(v == null ? '' : v)
+      .toLowerCase()
+      .replace(/[“”‘’"']/g, '')
+      .replace(/[.,!?;:]+(?=\s|$)/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
   function sameText(a, b) {
-    return String(a).trim().toLowerCase() === String(b).trim().toLowerCase();
+    return normaliseAnswer(a) === normaliseAnswer(b);
+  }
+
+  // The teacher's pack requires a way out of a question a child cannot answer:
+  // "Wrong answer 3: show the answer, then ask one easier question about it."
+  // Without it the item simply never resolves and the lesson cannot be
+  // finished, which is why this is a rule about the flow rather than a nicety.
+  // What "the answer" is for an item, as one line a child can read.
+  //
+  // The pack's third-strike rule only works if there is something to show, so
+  // every engine has to be able to state its own key. A question with an answer
+  // states it; a placement game has no single answer — it has a placement — so
+  // the key is rendered as the teacher wrote it: each target with the cards that
+  // belong in it. Without this, a child who has misplaced cards three times is
+  // told "Try again" a fourth time with no way forward, and the lesson stalls
+  // for them while looking perfectly healthy to everyone else.
+  function revealText(item) {
+    if (!item) return '';
+    if (item.engine === 'TRUE_FALSE' && typeof item.answer === 'boolean') {
+      return item.answer ? 'Yes, that is true.' : 'No, that is not true.';
+    }
+    if (item.engine === 'DRAG_DROP' || item.engine === 'SORT') {
+      var field = item.engine === 'DRAG_DROP' ? 'box' : 'bin';
+      var slots = item[item.engine === 'DRAG_DROP' ? 'boxes' : 'bins'] || [];
+      var out = [];
+      slots.forEach(function (s) {
+        var cards = (item.cards || [])
+          .filter(function (c) { return c[field] === s; })
+          .map(function (c) { return c.text; });
+        if (cards.length) out.push(s + ': ' + cards.join(', '));
+      });
+      if (out.length) return out.join('  ·  ');
+    }
+    if (item.engine === 'MATCH_PAIRS') {
+      var pairs = (item.pairs || []).map(function (p) { return p[0] + ' → ' + p[1]; });
+      if (pairs.length) return pairs.join('  ·  ');
+    }
+    if (item.engine === 'SEQUENCE' && (item.items || []).length) {
+      return item.items.join(' → ');
+    }
+    if (item.engine === 'NUMBER_BUILDER' || item.engine === 'NUMBER_LINE') {
+      if (item.target != null) return String(item.target);
+    }
+    if (item.engine === 'TAP_IMAGE') {
+      var right = (item.choices || [])
+        .filter(function (c) { return c.correct; })
+        .map(function (c) { return c.label; });
+      if (right.length) return right.join(', ');
+    }
+    if (Array.isArray(item.answer)) return item.answer.join(', ');
+    if (item.answer != null && String(item.answer).length) return String(item.answer);
+    var accept = item.accept || [];
+    return accept.length ? String(accept[0]) : '';
   }
 
   /* ================================================================= sound */
@@ -306,13 +372,33 @@
           sound.play('retry');
           this.live('Try again. Look at the hint.');
           if (wrongCount === 1) this.hint();
+          // Three tries is the pack's own limit. The answer is shown and the
+          // lesson becomes finishable; the miss still counts, because
+          // computeStars reads the first attempt only.
+          if (wrongCount >= 3) this.reveal();
         }
         if (state.onAttempt) state.onAttempt(ok, meta);
       },
 
       isAnswered: function () { return answered; },
       wrongCount: function () { return wrongCount; },
-      speakBtn: speakButton
+      speakBtn: speakButton,
+
+      // Show the teacher's answer and let the child move on. Called by submit
+      // on the third wrong attempt, and callable by an engine that has run out
+      // of ways to be wrong (a drag game places a finite set of cards).
+      reveal: function () {
+        var text = revealText(item);
+        if (!text) return;
+        var host = state.hintHost;
+        if (host) {
+          host.textContent = '💡 The answer is: ' + text;
+          host.className = 'lp-hint';
+          host.hidden = false;
+        }
+        this.live('The answer is: ' + text);
+        if (typeof state.onStuck === 'function') state.onStuck(item);
+      }
     };
   }
 
@@ -936,8 +1022,19 @@
       }
 
       var pairs = item.pairs || [];
-      var left = pairs.map(function (p, i) { return { text: p[0], i: i }; });
-      var right = shuffle(pairs.map(function (p, i) { return { text: p[1], i: i }; }));
+      var left = pairs.map(function (p) { return { text: p[0], with: p[1] }; });
+
+      // Right-hand values are de-duplicated, and a match is checked by value
+      // rather than by position. Real content groups: the teacher's own sets
+      // have three colonies in the Middle region and three animals that live in
+      // the ocean, which as one card per pair would put three identical "ocean"
+      // cards in front of a child and ask them to guess which one is the right
+      // one — the same right answer marked wrong two times in three. One card
+      // per value stays usable until every left card that belongs to it has
+      // been matched.
+      var values = [];
+      pairs.forEach(function (p) { if (values.indexOf(p[1]) === -1) values.push(p[1]); });
+      var right = shuffle(values.slice()).map(function (text) { return { text: text }; });
 
       var wrap = el('div', 'lp-slots');
       wrap.style.gridTemplateColumns = '1fr 1fr';
@@ -976,21 +1073,22 @@
       right.forEach(function (r) {
         var b = btn('lp-tile', esc(r.text), r.text + ', match with the chosen card');
         b.addEventListener('click', function () {
-          if (ui.isAnswered() || b.disabled) return;
+          if (ui.isAnswered()) return;
           if (!selectedLeft) { ui.live('Choose a card on the left first.'); return; }
           var li = leftBtns.indexOf(selectedLeft);
-          if (li === r.i) {
-            selectedLeft.disabled = true; b.disabled = true;
-            selectedLeft.classList.add('lp-placed'); b.classList.add('lp-placed');
+          if (left[li].with === r.text) {
+            selectedLeft.disabled = true;
+            selectedLeft.classList.add('lp-placed');
             selectedLeft = null; refresh();
             done++;
-            ui.live('Matched.');
-            if (done === pairs.length) { ui.submit(true); }
-            else { sound.play('correct'); }
+            sound.play('correct');
+            ui.live('Matched ' + left[li].text + '.');
+            // The card stays live: it may still be the answer for another left
+            // card, and disabling it would make the game unfinishable.
+            if (done === left.length) { ui.submit(true); }
           } else {
             b.classList.add('is-retry');
             ui.submit(false);
-            b.disabled = false;
             setTimeout(function () { b.classList.remove('is-retry'); }, 1200);
           }
         });
@@ -1177,6 +1275,190 @@
     }
   };
 
+  /* ---- ratio builder ----------------------------------------------------- */
+  /* "3 green circles and 5 yellow circles" is a ratio, and a ratio typed into
+     one free-text box is a spelling test as much as a maths one. Two number
+     pickers joined by a colon ask the maths question and nothing else. */
+
+  ENGINES.RATIO_BUILDER = {
+    id: 'RATIO_BUILDER',
+    render: function (stage, item, ui) {
+      if (item.prompt) {
+        stage.appendChild(el('p', 'lp-prompt', esc(item.prompt)));
+        stage.appendChild(speakButton(item.prompt, null, 'Read the question aloud'));
+      }
+      if (item.instruction) stage.appendChild(el('p', 'lp-caption', esc(item.instruction)));
+
+      var labels = item.labels || [];
+      var inputs = [];
+      var row = el('div', 'lp-ratio');
+      [0, 1].forEach(function (i) {
+        var box = el('div', 'lp-ratio-part');
+        if (labels[i]) box.appendChild(el('span', 'lp-ratio-label', esc(labels[i])));
+        var input = el('input', 'lp-input lp-input--num');
+        input.type = 'number';
+        input.min = '0';
+        input.setAttribute('inputmode', 'numeric');
+        input.setAttribute('aria-label', (labels[i] || ('amount ' + (i + 1))) + ': number ' + (i + 1));
+        box.appendChild(input);
+        inputs.push(input);
+        row.appendChild(box);
+        if (i === 0) row.appendChild(el('span', 'lp-ratio-sep', ':'));
+      });
+      stage.appendChild(row);
+
+      var check = btn('lp-btn lp-btn--primary', 'Check');
+      check.addEventListener('click', function () {
+        if (ui.isAnswered()) return;
+        if (!String(inputs[0].value).trim() || !String(inputs[1].value).trim()) {
+          ui.live('Write both numbers first.');
+          return;
+        }
+        var got = String(inputs[0].value).trim() + ':' + String(inputs[1].value).trim();
+        var ok = sameText(got, item.answer);
+        inputs.forEach(function (x) {
+          x.classList.toggle('is-good', ok);
+          x.classList.toggle('is-retry', !ok);
+        });
+        if (ok) {
+          inputs.forEach(function (x) { x.disabled = true; });
+          check.disabled = true;
+          ui.submit(true);
+        } else {
+          ui.submit(false);
+        }
+      });
+      stage.appendChild(check);
+    }
+  };
+
+  /* ---- equation balance -------------------------------------------------- */
+
+  ENGINES.EQUATION_BALANCE = {
+    id: 'EQUATION_BALANCE',
+    render: function (stage, item, ui) {
+      var equation = item.prompt || '';
+      if (equation) {
+        stage.appendChild(el('p', 'lp-balance-eq', esc(equation)));
+        stage.appendChild(speakButton(equation, null, 'Read the equation aloud'));
+      }
+
+      var row = el('div', 'lp-solve');
+      row.appendChild(el('span', 'lp-solve-x', 'x ='));
+      var input = el('input', 'lp-input lp-input--num');
+      input.type = 'number';
+      input.setAttribute('inputmode', 'numeric');
+      input.setAttribute('aria-label', 'The value of x');
+      row.appendChild(input);
+      stage.appendChild(row);
+
+      var check = btn('lp-btn lp-btn--primary', 'Check');
+      check.addEventListener('click', function () {
+        if (ui.isAnswered()) return;
+        if (!String(input.value).trim()) { ui.live('Write a number first.'); return; }
+        var ok = sameText(input.value, item.answer);
+        input.classList.toggle('is-good', ok);
+        input.classList.toggle('is-retry', !ok);
+        if (ok) {
+          input.disabled = true;
+          check.disabled = true;
+          ui.submit(true);
+        } else {
+          ui.submit(false);
+        }
+      });
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { e.preventDefault(); check.click(); }
+      });
+      stage.appendChild(check);
+    }
+  };
+
+  /* ---- sentence frame ---------------------------------------------------- */
+  /* The pack's "build the sentence" level: every word is supplied, and the
+     child taps them in order. Nothing is typed, so a beginner writes a
+     complete academic sentence without needing to spell any of it. */
+
+  ENGINES.SENTENCE_FRAME = {
+    id: 'SENTENCE_FRAME',
+    render: function (stage, item, ui) {
+      if (item.instruction) {
+        stage.appendChild(el('p', 'lp-prompt', esc(item.instruction)));
+        stage.appendChild(speakButton(item.instruction, null, 'Read the instruction aloud'));
+      }
+
+      var target = String(item.answer || '');
+      var words = (Array.isArray(item.words) && item.words.length)
+        ? item.words.slice()
+        : target.split(/\s+/).filter(Boolean);
+
+      var chosen = [];
+      var line = el('div', 'lp-build');
+      line.setAttribute('role', 'group');
+      line.setAttribute('aria-label', 'Your sentence so far');
+
+      var bank = el('div', 'lp-tray');
+      bank.setAttribute('role', 'group');
+      bank.setAttribute('aria-label', 'Words you can use');
+
+      function paintLine() {
+        line.innerHTML = '';
+        if (!chosen.length) {
+          line.appendChild(el('span', 'lp-caption', 'Tap the words in order.'));
+          return;
+        }
+        chosen.forEach(function (c, i) {
+          var chip = btn('lp-tile lp-placed', esc(c.word) + ' <span class="lp-mark">×</span>',
+            c.word + ', word ' + (i + 1) + '. Tap to take it back.');
+          chip.addEventListener('click', function () {
+            if (ui.isAnswered()) return;
+            chosen.splice(i, 1);
+            c.tile.hidden = false;
+            paintLine();
+            ui.live(c.word + ' is back in the word list.');
+          });
+          line.appendChild(chip);
+        });
+      }
+
+      var tiles = [];
+      shuffle(words.map(function (w, i) { return { word: w, i: i }; })).forEach(function (p) {
+        var t = btn('lp-tile', esc(p.word), p.word + ', tap to add it to your sentence');
+        t.addEventListener('click', function () {
+          if (ui.isAnswered() || t.hidden) return;
+          t.hidden = true;
+          chosen.push({ word: p.word, tile: t });
+          paintLine();
+          ui.live(p.word + ' added. ' + chosen.length + ' words so far.');
+        });
+        tiles.push(t);
+        bank.appendChild(t);
+      });
+
+      paintLine();
+      stage.appendChild(line);
+      stage.appendChild(bank);
+
+      var check = btn('lp-btn lp-btn--primary', 'Check my sentence');
+      check.addEventListener('click', function () {
+        if (ui.isAnswered()) return;
+        if (!chosen.length) { ui.live('Tap some words first.'); return; }
+        var ok = sameText(chosen.map(function (c) { return c.word; }).join(' '), target);
+        line.classList.toggle('is-good', ok);
+        line.classList.toggle('is-retry', !ok);
+        if (ok) {
+          tiles.concat(Array.prototype.slice.call(line.querySelectorAll('button')))
+            .forEach(function (b) { b.disabled = true; });
+          check.disabled = true;
+          ui.submit(true);
+        } else {
+          ui.submit(false);
+        }
+      });
+      stage.appendChild(check);
+    }
+  };
+
   /* ---- memory (unused by this pack, kept for completeness of the menu) --- */
 
   ENGINES.MEMORY = {
@@ -1299,7 +1581,14 @@
       hintHost: null,
       record: function (item, firstTry) {
         var id = item.id || (lesson.lesson_id + '-anon-' + this.asked.length);
+        // Only the first attempt at a question counts, so a retry inside it can
+        // never upgrade the score. A game's rounds share one id, though, and
+        // the game is the unit of scoring — so a later round that is missed
+        // downgrades the whole game. Without that, a four-round fill-the-blank
+        // would be decided entirely by its first blank and the other three
+        // rounds would count for nothing on the score screen.
         if (this.results[id] === undefined) this.results[id] = !!firstTry;
+        else if (!firstTry) this.results[id] = false;
         this.attempts++;
       }
     };
@@ -1339,6 +1628,24 @@
 
     var actionHost = el('div', 'lp-actions');
     card.appendChild(actionHost);
+
+    // The way forward once the answer has been shown. The pack's third-strike
+    // rule is only a rule if the child can then continue: an item that can
+    // never resolve would stall the lesson, and with it the score, the badge
+    // and the retry step. The miss is recorded as a miss.
+    function stuckButton(item, advanceNext) {
+      return function () {
+        if (actionHost.querySelector('.lp-stuck')) return;
+        var b = btn('lp-btn lp-btn--primary lp-stuck', 'Go on →',
+          'You have seen the answer. Go on to the next question.');
+        b.addEventListener('click', function () {
+          state.results[item.id || (lesson.lesson_id + '-anon-' + state.asked.length)] = false;
+          advanceNext();
+        });
+        actionHost.appendChild(b);
+        b.focus();
+      };
+    }
 
     shell.appendChild(card);
 
@@ -1431,6 +1738,7 @@
         state.asked.push(item.id || item.prompt);
 
         var ui = makeUi(state, item, state.liveEl);
+        state.onStuck = stuckButton(item, function () { i++; ask(); });
         ui.submit = (function (orig) {
           return function (ok, meta) {
             var wasAnswered = ui.isAnswered();
@@ -1527,13 +1835,37 @@
       actionHost.appendChild(next);
     }
 
+    // Everything the pack supplies for "Look at the Picture": the diagram, and
+    // the short scaffolds that go with it — sentence frames, quick help, easy
+    // rules. A lesson with a scaffold but no diagram must still show it, so the
+    // step advances only when there is neither.
     function renderLook() {
-      var v = lesson.visual;
-      if (!v || !v.svg) { advance(); return; }
-      stageHost.appendChild(el('p', 'lp-phase-name', 'Look'));
-      var fig = el('div', 'lp-visual', v.svg);
-      stageHost.appendChild(fig);
-      if (v.alt) stageHost.appendChild(el('p', 'lp-caption', esc(v.alt)));
+      var v = lesson.visual || {};
+      var notes = lesson.notes || [];
+      if ((!v.svg) && !notes.length) { advance(); return; }
+
+      if (v.svg) {
+        stageHost.appendChild(el('p', 'lp-phase-name', 'Look'));
+        var fig = el('div', 'lp-visual', v.svg);
+        stageHost.appendChild(fig);
+        if (v.alt) stageHost.appendChild(el('p', 'lp-caption', esc(v.alt)));
+      }
+
+      notes.forEach(function (n) {
+        stageHost.appendChild(el('p', 'lp-phase-name', esc(n.label || 'Remember')));
+        var ul = el('ul', 'lp-words');
+        (n.lines || []).forEach(function (line) {
+          var li = el('li');
+          li.appendChild(el('span', null, esc(line)));
+          ul.appendChild(li);
+        });
+        stageHost.appendChild(ul);
+        if (n.readAloud !== false) {
+          stageHost.appendChild(speakButton((n.lines || []).join(' '), null,
+            'Read the ' + (n.label || 'notes') + ' aloud'));
+        }
+      });
+
       var next = btn('lp-btn lp-btn--primary', 'Continue →');
       next.addEventListener('click', advance);
       actionHost.appendChild(next);
@@ -1575,6 +1907,10 @@
 
         var item = game;
         var ui = makeUi(state, item, state.liveEl);
+        state.onStuck = stuckButton(item, function () {
+          if (q + 1 < group.items.length) { q++; } else { g++; q = 0; }
+          play();
+        });
         ui.submit = (function (orig) {
           return function (ok, meta) {
             var was = ui.isAnswered();
@@ -1666,7 +2002,11 @@
           hintHost.hidden = false;
         }
         var ui = makeUi(state, item, state.liveEl);
-        // Retries do not change the score; they only clear mistakes.
+        state.onStuck = stuckButton(item, function () { i++; again(); });
+        // Retries do not change the score; they only clear mistakes. The same
+        // third-strike rule applies here, or a child who cannot answer the
+        // question that already defeated them once would be stuck for good.
+        var wrongHere = 0;
         ui.submit = function (ok) {
           if (ok) {
             sound.play('correct');
@@ -1677,9 +2017,11 @@
             actionHost.appendChild(next);
             next.focus();
           } else {
+            wrongHere++;
             sound.play('retry');
             feedback.textContent = 'Try again. Look at the hint.';
             feedback.className = 'lp-feedback is-retry';
+            if (wrongHere >= 3) ui.reveal();
           }
         };
         var engine = ENGINES[item.engine];

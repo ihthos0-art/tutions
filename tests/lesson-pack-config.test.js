@@ -4,7 +4,7 @@
    The lesson pack is shared by more than one student page.
 
    Two pages now mount it — nabila-naviha.html (Grade 2) and nafis.html
-   (Grade 4) — and they run the *same* engine and the *same* data module. The
+   (Grade 7) — and they run the *same* engine and the *same* data module. The
    page supplies its own identity through `window.LessonPackConfig`, and every
    key of that config is optional.
 
@@ -26,7 +26,7 @@ const ROOT = path.join(__dirname, '..');
 const ENGINE_SRC = fs.readFileSync(path.join(ROOT, 'lesson-pack.js'), 'utf8');
 const DATA_SRC = fs.readFileSync(path.join(ROOT, 'lesson-pack.data.js'), 'utf8');
 const GRADE2_PAGE = fs.readFileSync(path.join(ROOT, 'nabila-naviha.html'), 'utf8');
-const GRADE4_PAGE = fs.readFileSync(path.join(ROOT, 'nafis.html'), 'utf8');
+const GRADE7_PAGE = fs.readFileSync(path.join(ROOT, 'nafis.html'), 'utf8');
 
 // The source scans must look at code, not prose — the header comments quote the
 // config keys and the storage prefixes they are explaining.
@@ -83,24 +83,28 @@ test('the five Grade 2 badges are exactly the pack\'s five, over its own lessons
 /* ---------------------------------------------------- the config takes effect */
 
 test('a pack of another grade reports its own grade, not the default', () => {
-  const g4 = emptyPack({ grade: 4, student: 'nafis', storageKey: 'g4pack:nafis' });
-  assert.equal(g4.GRADE, 4);
-  assert.equal(g4.BADGES[4].id, 'grade4-explorer');
-  assert.equal(g4.BADGES[4].label, 'Grade 4 Explorer');
+  const g7 = emptyPack({ grade: 7, student: 'nafis', storageKey: 'g7pack:nafis' });
+  assert.equal(g7.GRADE, 7);
+  // The last badge in the list is always the all-lessons one, and the data
+  // module's default list is five long — only the page supplies seven named
+  // badges. Indexing from the end is what this test actually means.
+  const explorer = g7.BADGES[g7.BADGES.length - 1];
+  assert.equal(explorer.id, 'grade7-explorer');
+  assert.equal(explorer.label, 'Grade 7 Explorer');
 });
 
 test('lesson validation expects the configured grade, not grade 2', () => {
-  const g4 = emptyPack({ grade: 4 });
+  const g7 = emptyPack({ grade: 7 });
   const lesson = {
     lesson_id: 'en-l1', grade: 3, title: 'x', objective: 'y',
     read: { paragraphs: ['p'] }, visual: { svg: 's', alt: 'a' },
     games: [], guided: [], challenge: { engine: 'SHORT_ANSWER', prompt: 'q', accept: ['a'] }
   };
-  assert.ok(g4.validateLesson(lesson).includes('en-l1: grade must be 4'),
-    'a grade 3 lesson was accepted by a grade 4 pack');
+  assert.ok(g7.validateLesson(lesson).includes('en-l1: grade must be 7'),
+    'a grade 3 lesson was accepted by a grade 7 pack');
 
-  assert.deepEqual(g4.validateLesson({ ...lesson, grade: 4 }), [],
-    'a valid grade 4 lesson should raise nothing');
+  assert.deepEqual(g7.validateLesson({ ...lesson, grade: 7 }), [],
+    'a valid grade 7 lesson should raise nothing');
 });
 
 // The lesson_id prefix is not decoration: lessonsFor() routes a lesson to its
@@ -110,18 +114,18 @@ test('lesson validation expects the configured grade, not grade 2', () => {
 // says the lesson is missing.
 test('a lesson reaches a tab only if its id follows the subject convention', () => {
   const make = (id) => ({
-    subject: 'English', lesson_id: id, grade: 4, title: 't', objective: 'o',
+    subject: 'English', lesson_id: id, grade: 7, title: 't', objective: 'o',
     read: { paragraphs: ['p'] }, visual: { svg: 's', alt: 'a' },
     games: [], guided: [], challenge: { engine: 'SHORT_ANSWER', prompt: 'q', accept: ['a'] }
   });
 
-  const good = D.build([make('en-l1')], [], [], [], { grade: 4, lessonOrder: ['en-l1'] });
+  const good = D.build([make('en-l1')], [], [], [], { grade: 7, lessonOrder: ['en-l1'] });
   assert.deepEqual(good.BADGES[0].lessons, ['en-l1']);
-  assert.deepEqual(good.BADGES[4].lessons, ['en-l1']);
+  assert.deepEqual(good.BADGES[good.BADGES.length - 1].lessons, ['en-l1']);
 
   // 'xx-l1' loads and validates, but matches no subject prefix — it would
   // render nowhere and earn nothing.
-  const stray = D.build([make('xx-l1')], [], [], [], { grade: 4, lessonOrder: ['xx-l1'] });
+  const stray = D.build([make('xx-l1')], [], [], [], { grade: 7, lessonOrder: ['xx-l1'] });
   assert.deepEqual(stray.BADGES[0].lessons, [],
     'an off-convention id silently joins no subject');
   ['en-', 'ma-', 'sc-', 'ss-'].forEach(prefix => {
@@ -132,8 +136,8 @@ test('a lesson reaches a tab only if its id follows the subject convention', () 
 
 
 test('the lesson count a pack is checked against comes from its own order', () => {
-  const g4 = emptyPack({ grade: 4, lessonOrder: ['en-l1', 'ma-l1'] });
-  const errs = g4.validateAll();
+  const g7 = emptyPack({ grade: 7, lessonOrder: ['en-l1', 'ma-l1'] });
+  const errs = g7.validateAll();
   assert.ok(errs.includes('expected 2 lessons, found 0'), errs.join('; '));
   assert.equal(errs.some(e => e.startsWith('missing lesson sc-')), false,
     'a two-lesson pack must not be checked against the Grade 2 eight');
@@ -144,36 +148,36 @@ test('the lesson count a pack is checked against comes from its own order', () =
 
 test('a page whose content has not landed earns no badges', () => {
   // The trap this guards: every() over an empty array is true, so a badge that
-  // names no lessons is vacuously earned and a student is handed all five
+  // names no lessons is vacuously earned and a student is handed every badge
   // before a single lesson exists.
-  const g4 = emptyPack({ grade: 4 });
-  assert.deepEqual(g4.earnedBadges({ lessons: {} }), []);
-  assert.deepEqual(g4.earnedBadges(g4.emptyProgress()), []);
+  const g7 = emptyPack({ grade: 7 });
+  assert.deepEqual(g7.earnedBadges({ lessons: {} }), []);
+  assert.deepEqual(g7.earnedBadges(g7.emptyProgress()), []);
 });
 
 test('an empty pack is still a valid object the engine can mount', () => {
-  const g4 = emptyPack({ grade: 4 });
-  assert.equal(g4.LESSONS.length, 0);
-  assert.deepEqual(g4.ordered(), []);
-  assert.equal(g4.byId('en-l1'), null);
-  assert.deepEqual(g4.summarise(g4.emptyProgress()).rows, []);
-  assert.deepEqual(g4.loadProgress({ getItem: () => null }, 'k'), g4.emptyProgress());
+  const g7 = emptyPack({ grade: 7 });
+  assert.equal(g7.LESSONS.length, 0);
+  assert.deepEqual(g7.ordered(), []);
+  assert.equal(g7.byId('en-l1'), null);
+  assert.deepEqual(g7.summarise(g7.emptyProgress()).rows, []);
+  assert.deepEqual(g7.loadProgress({ getItem: () => null }, 'k'), g7.emptyProgress());
 });
 
 test('an empty pack still reports its grade, so the tab is not unbranded', () => {
-  assert.equal(emptyPack({ grade: 4 }).GRADE, 4);
   assert.equal(emptyPack({ grade: 7 }).GRADE, 7);
+  assert.equal(emptyPack({ grade: 3 }).GRADE, 3);
 });
 
 /* -------------------------------------------------------------- the pages */
 
-test('the Grade 4 page declares a student, grade, storage key and its content', () => {
-  assert.match(GRADE4_PAGE, /window\.LessonPackConfig = \{/);
-  assert.match(GRADE4_PAGE, /student: 'nafis'/);
-  assert.match(GRADE4_PAGE, /grade: 4/);
-  assert.match(GRADE4_PAGE, /storageKey: 'g4pack:nafis'/);
-  ['G4PackEla', 'G4PackMath', 'G4PackScience', 'G4PackSocial', 'G4PackReview'].forEach(g => {
-    assert.match(GRADE4_PAGE, new RegExp("'" + g + "'"), g + ' is not named as a content global');
+test('the Grade 7 page declares a student, grade, storage key and its content', () => {
+  assert.match(GRADE7_PAGE, /window\.LessonPackConfig = \{/);
+  assert.match(GRADE7_PAGE, /student: 'nafis'/);
+  assert.match(GRADE7_PAGE, /grade: 7/);
+  assert.match(GRADE7_PAGE, /storageKey: 'g7pack:nafis'/);
+  ['G7PackEla', 'G7PackMath', 'G7PackScience', 'G7PackSocial', 'G7PackReview'].forEach(g => {
+    assert.match(GRADE7_PAGE, new RegExp("'" + g + "'"), g + ' is not named as a content global');
   });
 });
 
@@ -182,14 +186,14 @@ test('the storage prefix is not one the host page\'s reset button wipes', () => 
   // every `<page>:*` key. On nafis.html that is `nafis:`, so the pack must not
   // store anything there — a student pressing the reset button they are meant
   // to press would silently erase every star.
-  assert.match(DATA_CODE + ENGINE_CODE, /g4pack:nafis|g2pack:nabila-naviha/);
-  assert.equal(/storageKey: 'nafis:/.test(GRADE4_PAGE), false,
+  assert.match(DATA_CODE + ENGINE_CODE, /g7pack:nafis|g2pack:nabila-naviha/);
+  assert.equal(/storageKey: 'nafis:/.test(GRADE7_PAGE), false,
     'the pack is storing under the prefix nafis.html\'s reset button deletes');
-  assert.equal(/'g4pack:nafis:/.test(GRADE4_PAGE), false);
+  assert.equal(/'g7pack:nafis:/.test(GRADE7_PAGE), false);
 });
 
 test('both pages load the shared engine and data modules', () => {
-  [GRADE2_PAGE, GRADE4_PAGE].forEach((page, i) => {
+  [GRADE2_PAGE, GRADE7_PAGE].forEach((page, i) => {
     const name = i === 0 ? 'nabila-naviha.html' : 'nafis.html';
     assert.match(page, /<script src="lesson-pack\.data\.js/, name + ' does not load the data module');
     assert.match(page, /<script src="lesson-pack\.js/, name + ' does not load the engine');
@@ -209,7 +213,7 @@ test('both pages request the shared modules at the same version', () => {
   };
   ['lesson-pack.data.js', 'lesson-pack.js'].forEach(file => {
     const a = versionOf(GRADE2_PAGE, file);
-    const b = versionOf(GRADE4_PAGE, file);
+    const b = versionOf(GRADE7_PAGE, file);
     assert.equal(a, b, file + ' is v' + a + ' on nabila-naviha.html and v' + b +
       ' on nafis.html — bump both in the same commit, or one page serves a cached old engine');
   });

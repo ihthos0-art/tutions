@@ -15,7 +15,7 @@
    stored.
 
    Two student pages share this now — nabila-naviha.html (Grade 2) and
-   nafis.html (Grade 4) — so "which lessons exist" and "which badges can be
+   nafis.html (Grade 7) — so "which lessons exist" and "which badges can be
    earned" are per-grade questions. Both answers live in the tables below, on
    the server, and NOT in the POST body: a client that could name its own grade
    could name its own badges. The pages declare their grade too, in
@@ -29,7 +29,7 @@ const DEFAULT_GRADE = 2;
 // the Grade 2 pack, which is what every page did before the packs were shared.
 export const STUDENT_GRADES = {
   'nabila-naviha': 2,
-  'nafis': 4
+  'nafis': 7
 };
 
 export function gradeFor(student) {
@@ -43,17 +43,16 @@ export function gradeFor(student) {
 // This list does two jobs. It is the set a stored record is filtered against —
 // an unknown id is dropped rather than stored, so this public route cannot be
 // used as free-form storage — and it is the set a badge is measured against: a
-// subject badge means *every* lesson of that subject in this grade's pack is
-// done, so the list has to match the pack exactly.
+// subject badge means *every* lesson it names in this grade's pack is done, so
+// the list has to match the pack exactly.
 //
-// Grade 4's row is the pack's default order today, because the Grade 4 content
-// has not been written yet and lesson-pack.data.js falls back to exactly these
-// ids. When that content lands with different ids, this row must be updated —
-// and tests/progress-grades.test.mjs reads the content files and fails with the
-// ids to add, so it cannot be missed silently.
+// Both grades happen to use the same eight ids, because the id convention is
+// the site's (en- | ma- | sc- | ss-) rather than either pack's. They are still
+// written out per grade: the ids are what a pack declares, and a future pack
+// whose lessons differ in number or order must be able to say so.
 export const LESSONS_BY_GRADE = {
   2: ['en-l1', 'en-l2', 'ma-l1', 'ma-l2', 'sc-l1', 'sc-l2', 'ss-l1', 'ss-l2'],
-  4: ['en-l1', 'en-l2', 'ma-l1', 'ma-l2', 'sc-l1', 'sc-l2', 'ss-l1', 'ss-l2']
+  7: ['en-l1', 'en-l2', 'ma-l1', 'ma-l2', 'sc-l1', 'sc-l2', 'ss-l1', 'ss-l2']
 };
 
 export function lessonIdsFor(grade) {
@@ -66,24 +65,43 @@ export const LESSON_IDS = LESSONS_BY_GRADE[DEFAULT_GRADE];
 const MAX_ATTEMPTS = 999;
 const MAX_STARS = 3;
 
-// The four subject badges. Their ids are deliberately NOT grade-stamped: the
-// pack hands out "Story Detective" at Grade 2 *and* at Grade 4. Only the
-// all-lessons badge carries the grade, and that one is built below.
-export const SUBJECT_BADGES = [
-  { id: 'story-detective',    prefix: 'en' },
-  { id: 'number-builder',     prefix: 'ma' },
-  { id: 'young-scientist',    prefix: 'sc' },
-  { id: 'community-explorer', prefix: 'ss' }
-];
+// The badges each grade hands out.
+//
+// Grade 2's four subject badges each cover a subject's two lessons, so they can
+// be described by prefix. The teacher's Grade 7 pack does not work that way: it
+// names one badge per lesson for Math and Science — "Ratio Ranger" for Math 1,
+// "Equation Solver" for Math 2, "Plant Scientist" for Science 1, "Ecosystem
+// Explorer" for Science 2 — so a prefix rule cannot express it and the lesson
+// lists are written out. Only the all-lessons badge carries the grade, and that
+// one is built in badgesFor.
+const BADGE_SPECS = {
+  2: [
+    { id: 'story-detective', prefix: 'en' },
+    { id: 'number-builder', prefix: 'ma' },
+    { id: 'young-scientist', prefix: 'sc' },
+    { id: 'community-explorer', prefix: 'ss' }
+  ],
+  7: [
+    { id: 'text-detective', lessons: ['en-l1', 'en-l2'] },
+    { id: 'ratio-ranger', lessons: ['ma-l1'] },
+    { id: 'equation-solver', lessons: ['ma-l2'] },
+    { id: 'plant-scientist', lessons: ['sc-l1'] },
+    { id: 'ecosystem-explorer', lessons: ['sc-l2'] },
+    { id: 'history-explorer', lessons: ['ss-l1', 'ss-l2'] }
+  ]
+};
 
 export function badgesFor(grade) {
   // Resolve through lessonIdsFor so the explorer badge id and the lesson list
   // can never describe two different grades.
   const g = LESSONS_BY_GRADE[grade] ? grade : DEFAULT_GRADE;
   const ids = lessonIdsFor(g);
-  return SUBJECT_BADGES.map(b => ({
-    id: b.id,
-    lessons: ids.filter(id => id.slice(0, 2) === b.prefix)
+  const specs = BADGE_SPECS[g] || BADGE_SPECS[DEFAULT_GRADE];
+  return specs.map(s => ({
+    id: s.id,
+    lessons: s.prefix
+      ? ids.filter(id => id.slice(0, 2) === s.prefix)
+      : s.lessons.slice()
   })).concat([{ id: 'grade' + g + '-explorer', lessons: ids }]);
 }
 

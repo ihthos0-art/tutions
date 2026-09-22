@@ -186,7 +186,7 @@
               <option value="nabila-naviha">Nabila &amp; Naviha (Grade 2)</option>
               <option value="salma-khadija">Salma &amp; Khadija (Grade 5)</option>
               <option value="adnan">Adnan (Grade 4)</option>
-              <option value="nafis">Nafis (Grade 4)</option>
+              <option value="nafis">Nafis (Grade 7)</option>
               <option value="nahid">Nahid (Grade 5)</option>
               <option value="sameer">Sameer (Grade 9)</option>
               <option value="manha">Manha (Grade 3)</option>
@@ -358,8 +358,8 @@
     'nabila-naviha': ['ela-story'].concat(
       Array.from({ length: 12 }, function (_, i) { return 'm1-' + (i + 1); })
     ),
-    // Nafis's Grade 4 page: the 13-problem math drill and the "The New Kid"
-    // ELA response were replaced by the Grade 4 lesson pack.
+    // Nafis's page: the 13-problem math drill and the "The New Kid"
+    // ELA response were replaced by the Grade 7 lesson pack.
     'nafis': ['ela1-ci', 'ela1-detail', 'ela1-conn'].concat(
       Array.from({ length: 13 }, function (_, i) { return 'm1-' + (i + 1); })
     )
@@ -373,11 +373,19 @@
      the id itself, so they cannot drift. */
   var PROG_SUBJECTS = { en: 'English', ma: 'Math', sc: 'Science', ss: 'Social Studies' };
 
+  // Every badge either grade's pack can award. The explorer badge is built
+  // from the id by progBadgeLabel, so it is not listed.
   var PROG_BADGES = {
     'story-detective':    '🕵 Story Detective',
     'number-builder':     '🔢 Number Builder',
     'young-scientist':    '🌱 Young Scientist',
-    'community-explorer': '🏙 Community Explorer'
+    'community-explorer': '🏙 Community Explorer',
+    'text-detective':     '🕵 Text Detective',
+    'ratio-ranger':       '🔢 Ratio Ranger',
+    'equation-solver':    '➗ Equation Solver',
+    'plant-scientist':    '🌱 Plant Scientist',
+    'ecosystem-explorer': '🌍 Ecosystem Explorer',
+    'history-explorer':   '🏛 History Explorer'
   };
 
   function progBadgeLabel(id) {
@@ -571,7 +579,7 @@
     var apiSection = section === 'math-assigned' ? 'math' : section;
     var gradeMap = {
       'nabila-naviha': 2, 'mahiya': 1, 'taha': 2, 'manha': 3,
-      'adnan': 4, 'nafis': 4, 'nahid': 5, 'salma-khadija': 5, 'sameer': 9
+      'adnan': 4, 'nafis': 7, 'nahid': 5, 'salma-khadija': 5, 'sameer': 9
     };
     var grade = gradeMap[student] || '?';
 

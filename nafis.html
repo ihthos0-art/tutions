@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Grade 4 Lesson Pack — Nafis</title>
+  <title>Grade 7 Lesson Pack — Nafis</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Merriweather+Sans:wght@400;600&display=swap" rel="stylesheet" />
@@ -84,7 +84,7 @@
       #math, #ela, #social-studies, #science, #review { display: none !important; }
     }
   </style>
-  <script>window.STUDENT_CONFIG = {"name": "Nafis", "grade": 4, "math": {"topic": "addition-subtraction", "count": 10, "wordProblems": 3, "max": 99, "min": 1}, "ela": {"type": "narrative", "questions": 3}};</script>
+  <script>window.STUDENT_CONFIG = {"name": "Nafis", "grade": 7, "math": {"topic": "addition-subtraction", "count": 10, "wordProblems": 3, "max": 99, "min": 1}, "ela": {"type": "narrative", "questions": 3}};</script>
   <script>
     // The page's own identity for the shared lesson-pack engine. The storage
     // prefix is deliberately not `nafis:` — interactive.js deletes every
@@ -92,10 +92,24 @@
     // would silently erase all lesson progress.
     window.LessonPackConfig = {
       student: 'nafis',
-      grade: 4,
-      storageKey: 'g4pack:nafis',
-      content: ['G4PackEla', 'G4PackMath', 'G4PackScience', 'G4PackSocial'],
-      review: 'G4PackReview'
+      grade: 7,
+      storageKey: 'g7pack:nafis',
+      content: ['G7PackEla', 'G7PackMath', 'G7PackScience', 'G7PackSocial'],
+      review: 'G7PackReview',
+      // The Grade 7 pack names its own badges, one per lesson for Math and
+      // Science, so they cannot be derived from the subject prefixes the way
+      // the Grade 2 pack's can. Written as JSON so tests/progress-grades.test.mjs
+      // can read this list back out of the page and hold it against the
+      // Worker's table in src/progress.js.
+      badges: [
+        { "id": "text-detective",     "label": "Text Detective",     "icon": "\ud83d\udd75", "lessons": ["en-l1", "en-l2"] },
+        { "id": "ratio-ranger",       "label": "Ratio Ranger",       "icon": "\ud83d\udd22", "lessons": ["ma-l1"] },
+        { "id": "equation-solver",    "label": "Equation Solver",    "icon": "\u2797", "lessons": ["ma-l2"] },
+        { "id": "plant-scientist",    "label": "Plant Scientist",    "icon": "\ud83c\udf31", "lessons": ["sc-l1"] },
+        { "id": "ecosystem-explorer", "label": "Ecosystem Explorer", "icon": "\ud83c\udf0d", "lessons": ["sc-l2"] },
+        { "id": "history-explorer",   "label": "History Explorer",   "icon": "\ud83c\udfdb", "lessons": ["ss-l1", "ss-l2"] },
+        { "id": "grade7-explorer",    "label": "Grade 7 ESL Explorer", "icon": "\u2b50", "lessons": ["en-l1", "en-l2", "ma-l1", "ma-l2", "sc-l1", "sc-l2", "ss-l1", "ss-l2"] }
+      ]
     };
   </script>
   <link rel="stylesheet" href="lesson-pack.css?v=1" />
@@ -219,8 +233,8 @@
   </div><!-- /assigned -->
 
   <!-- The five lesson-pack sections. Each is an empty shell: lesson-pack.js
-       mounts the pack into it, and a subject whose content has not landed yet
-       renders its own "being prepared" card rather than a blank tab. -->
+       mounts the Grade 7 pack into it. All four subjects and the Master Review
+       have content, so every tab renders lessons rather than a placeholder. -->
 
   <!-- MATH TAB -->
   <div class="tab-content" id="math">
@@ -255,14 +269,14 @@
   <script src="ai-tutor.js"></script>
   <script src="quiz.js"></script>
   <script src="flashcards.js"></script>
-  <!-- Grade 4 lesson pack. Content modules first: the data aggregator reads
+  <!-- Grade 7 lesson pack. Content modules first: the data aggregator reads
        their globals, and the engine returns early without it. -->
-  <script src="lesson-pack-g4-content-ela.js?v=1"></script>
-  <script src="lesson-pack-g4-content-math.js?v=1"></script>
-  <script src="lesson-pack-g4-content-science.js?v=1"></script>
-  <script src="lesson-pack-g4-content-social.js?v=1"></script>
-  <script src="lesson-pack-g4-content-review.js?v=1"></script>
-  <script src="lesson-pack.data.js?v=2"></script>
-  <script src="lesson-pack.js?v=2"></script>
+  <script src="lesson-pack-g7-content-ela.js?v=1"></script>
+  <script src="lesson-pack-g7-content-math.js?v=1"></script>
+  <script src="lesson-pack-g7-content-science.js?v=1"></script>
+  <script src="lesson-pack-g7-content-social.js?v=1"></script>
+  <script src="lesson-pack-g7-content-review.js?v=1"></script>
+  <script src="lesson-pack.data.js?v=3"></script>
+  <script src="lesson-pack.js?v=3"></script>
 </body>
 </html>

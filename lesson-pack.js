@@ -1,28 +1,38 @@
 /* ============================================================================
-   Grade 2 Interactive Lesson Pack — engine and lesson-flow driver.
+   Interactive Lesson Pack — engine and lesson-flow driver. Shared by every
+   student page that mounts a pack.
 
-   Requires lesson-pack.data.js (content + pure logic) to be loaded first.
+   Requires lesson-pack.data.js (content + pure logic) to be loaded first, and
+   reads the page's own identity from `window.LessonPackConfig`:
+
+     { student: 'nafis', grade: 4, storageKey: 'g4pack:nafis' }
+
+   Every key is optional and defaults to the Grade 2 page, so a page that
+   declares nothing behaves exactly as it did before this module was shared.
 
    Namespacing is deliberate throughout: `lp-` classes, `lp:result` events,
-   `data-lp-*` attributes, and a `g2pack:` storage prefix. The host page has
-   several scripts that bind globally by class and by storage prefix, and
-   colliding with any of them fails silently rather than loudly:
+   `data-lp-*` attributes, and a storage prefix outside the host page's own. The
+   host page has several scripts that bind globally by class and by storage
+   prefix, and colliding with any of them fails silently rather than loudly:
      - ai-tutor.js listens on `checkResult` and owns its own star economy, so
        this module dispatches `lp:result` instead
      - ai-tutor.js / quiz.js attach to every `.passage-box`, so readings here
        use `.lp-read`
-     - interactive.js deletes every `nabila-naviha:*` localStorage key when the
-       Assigned tab's reset is pressed, hence the `g2pack:` prefix
+     - interactive.js deletes every `<page-name>:*` localStorage key when the
+       Assigned tab's reset is pressed, hence a prefix of its own
    ========================================================================== */
 (function () {
   'use strict';
   if (window.LessonPack) return;
 
+  var CFG = window.LessonPackConfig || {};
+
   var D = window.LessonPackData;
   if (!D) return;
 
-  var STORAGE_KEY = 'g2pack:nabila-naviha';
-  var STUDENT = 'nabila-naviha';
+  var STUDENT = CFG.student || 'nabila-naviha';
+  var STORAGE_KEY = CFG.storageKey || 'g2pack:nabila-naviha';
+  var GRADE = CFG.grade || D.GRADE || 2;
 
   /* =========================================================== tiny helpers */
 
@@ -1756,7 +1766,7 @@
 
     shell.innerHTML = '';
     var card = el('div', 'lp-card');
-    card.appendChild(el('p', 'lp-eyebrow', esc(subject) + ' · Grade 2'));
+    card.appendChild(el('p', 'lp-eyebrow', esc(subject) + ' · Grade ' + GRADE));
     card.appendChild(el('h2', 'lp-title', esc(lessons[0].subject) + ' Lessons'));
     card.appendChild(el('p', 'lp-objective', 'Choose a lesson. You can do them in any order.'));
 
@@ -1795,6 +1805,9 @@
      the badge summary carries the reward instead. */
 
   function reviewRounds() {
+    // A pack of another grade supplies its own rounds through the page config;
+    // the Grade 2 pack's are built in here.
+    if (D.REVIEW && D.REVIEW.length) return D.REVIEW;
     return [
       { name: 'Round 1: English', items: [
         { id: 'rv-e1', engine: 'MULTIPLE_CHOICE', prompt: 'What is a character?',
@@ -1833,7 +1846,18 @@
   function mountReview(shell) {
     shell.innerHTML = '';
     var card = el('div', 'lp-card');
-    card.appendChild(el('p', 'lp-eyebrow', 'Review · Grade 2'));
+
+    // Nothing to review yet: the summary below would read "0 of 0 lessons done"
+    // over an empty table, which looks broken rather than unfinished.
+    if (!D.LESSONS.length) {
+      card.appendChild(el('p', 'lp-eyebrow', 'Review · Grade ' + GRADE));
+      card.appendChild(el('h2', 'lp-title', 'Master Review'));
+      card.appendChild(el('p', 'lp-caption', 'The review is being prepared. Check back soon!'));
+      shell.appendChild(card);
+      return;
+    }
+
+    card.appendChild(el('p', 'lp-eyebrow', 'Review · Grade ' + GRADE));
     card.appendChild(el('h2', 'lp-title', 'Master Review'));
     card.appendChild(el('p', 'lp-objective', 'A mix of everything you learned.'));
 
@@ -1880,7 +1904,7 @@
       var ids = Object.keys(results);
       var correct = ids.filter(function (k) { return results[k]; }).length;
       card.innerHTML = '';
-      card.appendChild(el('p', 'lp-eyebrow', 'Review · Grade 2'));
+      card.appendChild(el('p', 'lp-eyebrow', 'Review · Grade ' + GRADE));
       card.appendChild(el('h2', 'lp-title', 'Review complete'));
       card.appendChild(el('p', 'lp-score-line', 'You got ' + correct + ' of ' + ids.length + ' right.'));
       var back = btn('lp-btn lp-btn--primary', '← Back to review');
@@ -1896,7 +1920,7 @@
       var item = round.items[qi];
 
       card.innerHTML = '';
-      card.appendChild(el('p', 'lp-eyebrow', 'Review · Grade 2'));
+      card.appendChild(el('p', 'lp-eyebrow', 'Review · Grade ' + GRADE));
       card.appendChild(el('h2', 'lp-title', round.name));
       card.appendChild(el('div', 'lp-count', 'Question ' + (qi + 1) + ' of ' + round.items.length));
 
@@ -1973,7 +1997,11 @@
   }
 
   function init() {
-    if (!D || !D.LESSONS.length) return;
+    if (!D) return;
+    // Deliberately not guarded on LESSONS.length: a page whose content has not
+    // landed yet still mounts, and each tab renders its own "being prepared"
+    // card. Returning early here would leave visibly empty tabs instead — the
+    // difference between a page that looks unfinished and one that looks broken.
     eachShell(function (shell) {
       if (shell.getAttribute('data-lp-mounted')) return;
       shell.setAttribute('data-lp-mounted', '1');

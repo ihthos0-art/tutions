@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Central Idea — Worksheet</title>
+  <title>Grade 4 Lesson Pack — Nafis</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Merriweather+Sans:wght@400;600&display=swap" rel="stylesheet" />
@@ -79,9 +79,26 @@
       .page-break { display: none; }
       .worksheet + .worksheet { page-break-before: always; }
       .passage-box, .passage-title, .section-question, .section-label, .ws-number { -webkit-user-select: text; user-select: text; }
+      /* The Assigned tab is the printable worksheet. The lesson pack is
+         interactive and its game shells would print as empty boxes. */
+      #math, #ela, #social-studies, #science, #review { display: none !important; }
     }
   </style>
   <script>window.STUDENT_CONFIG = {"name": "Nafis", "grade": 4, "math": {"topic": "addition-subtraction", "count": 10, "wordProblems": 3, "max": 99, "min": 1}, "ela": {"type": "narrative", "questions": 3}};</script>
+  <script>
+    // The page's own identity for the shared lesson-pack engine. The storage
+    // prefix is deliberately not `nafis:` — interactive.js deletes every
+    // `nafis:*` key when the Assigned tab's reset button is pressed, which
+    // would silently erase all lesson progress.
+    window.LessonPackConfig = {
+      student: 'nafis',
+      grade: 4,
+      storageKey: 'g4pack:nafis',
+      content: ['G4PackEla', 'G4PackMath', 'G4PackScience', 'G4PackSocial'],
+      review: 'G4PackReview'
+    };
+  </script>
+  <link rel="stylesheet" href="lesson-pack.css?v=1" />
 </head>
 <body>
 
@@ -93,6 +110,9 @@
     <button class="tab-btn active" data-tab="assigned">Assigned</button>
     <button class="tab-btn" data-tab="math">Math Practice</button>
     <button class="tab-btn" data-tab="ela">ELA Practice</button>
+    <button class="tab-btn" data-tab="social-studies">Social Studies</button>
+    <button class="tab-btn" data-tab="science">Science</button>
+    <button class="tab-btn" data-tab="review">Review</button>
   </div>
 
   <!-- ASSIGNED TAB -->
@@ -198,79 +218,33 @@
 
   </div><!-- /assigned -->
 
-  <!-- MATH PRACTICE TAB -->
+  <!-- The five lesson-pack sections. Each is an empty shell: lesson-pack.js
+       mounts the pack into it, and a subject whose content has not landed yet
+       renders its own "being prepared" card rather than a blank tab. -->
+
+  <!-- MATH TAB -->
   <div class="tab-content" id="math">
-    <header class="page-header">
-      <p class="school-name">Math Practice &mdash; Nafis</p>
-      <h1>Addition &amp; Subtraction Drill</h1>
-      <p class="sub">Solve each problem. Show your work on paper if needed.</p>
-    </header>
-    <section class="worksheet">
-      <div class="ws-topbar"><span class="ws-number">Math Drill 01</span></div>
-      <p class="section-label">Part 1 &mdash; Solve</p>
-      <div class="math-grid">
-        <div class="math-prob">1.  24 + 17 = <input type="text" data-save="m1-1" data-answer="41" placeholder="?" /></div>
-        <div class="math-prob">2.  56 &minus; 29 = <input type="text" data-save="m1-2" data-answer="27" placeholder="?" /></div>
-        <div class="math-prob">3.  38 + 45 = <input type="text" data-save="m1-3" data-answer="83" placeholder="?" /></div>
-        <div class="math-prob">4.  72 &minus; 38 = <input type="text" data-save="m1-4" data-answer="34" placeholder="?" /></div>
-        <div class="math-prob">5.  19 + 56 = <input type="text" data-save="m1-5" data-answer="75" placeholder="?" /></div>
-        <div class="math-prob">6.  81 &minus; 47 = <input type="text" data-save="m1-6" data-answer="34" placeholder="?" /></div>
-        <div class="math-prob">7.  63 + 28 = <input type="text" data-save="m1-7" data-answer="91" placeholder="?" /></div>
-        <div class="math-prob">8.  90 &minus; 53 = <input type="text" data-save="m1-8" data-answer="37" placeholder="?" /></div>
-        <div class="math-prob">9.  47 + 35 = <input type="text" data-save="m1-9" data-answer="82" placeholder="?" /></div>
-        <div class="math-prob">10. 64 &minus; 19 = <input type="text" data-save="m1-10" data-answer="45" placeholder="?" /></div>
-      </div>
-      <div class="ws-rule"></div>
-      <p class="section-label">Part 2 &mdash; Word Problems</p>
-      <div class="math-word">11. Maria has 35 stickers. Her friend gives her 28 more. How many stickers does Maria have now? <input type="text" data-save="m1-11" data-answer="63" placeholder="?" /></div>
-      <div class="math-word">12. A bus has 72 seats. 38 seats are filled. How many seats are empty? <input type="text" data-save="m1-12" data-answer="34" placeholder="?" /></div>
-      <div class="math-word">13. Jamal buys a snack for $1.25. He pays with $2.00. How much change does he get? <input type="text" data-save="m1-13" data-answer="0.75" placeholder="?" /></div>
-      <div class="check-wrap">
-        <button class="check-btn" onclick="checkMath()">Check Answers</button>
-        <span class="math-score" id="math-score"></span>
-      </div>
-    </section>
-    <div class="reset-bar">
-      <button type="button" class="reset-btn" data-reset="math">Reset Math Practice</button>
-    </div>
-    <p class="save-notice">Your answers are saved automatically in this browser.</p>
+    <div class="lp-shell" data-lp-shell data-pack="math"></div>
   </div>
 
-  <!-- ELA PRACTICE TAB -->
+  <!-- ELA TAB -->
   <div class="tab-content" id="ela">
-    <header class="page-header">
-      <p class="school-name">ELA Practice &mdash; Nafis</p>
-      <h1>Reading Comprehension Practice</h1>
-      <p class="sub">Read the passage, then answer the questions below</p>
-    </header>
-    <section class="worksheet">
-      <div class="ws-topbar"><span class="ws-number">Practice Passage</span></div>
-      <div class="passage-wrap">
-        <p class="section-label">Read the passage</p>
-        <h2 class="passage-title">The New Kid</h2>
-        <div class="passage-box">
-          <p>Every year, a new student joined Ms. Carter&rsquo;s fourth-grade class. Most of them stayed quiet for the first week, trying to figure out where to sit at lunch and which kids played the games they liked. But this year, the new student was different.</p>
-          <p>His name was Diego, and he had just moved from Mexico. On his first day, he walked straight to the lunch table where a group of kids were arguing about whose turn it was to choose the game. Without saying a word, he pulled a small soccer ball out of his backpack and started juggling it. Every head turned. By the end of recess, Diego had taught three kids how to do a basic juggling pattern, and the argument about turns was completely forgotten.</p>
-          <p>Ms. Carter watched from the window and smiled. She did not need to ask how Diego was fitting in. He was not waiting to be included. He was including everyone else.</p>
-        </div>
-      </div>
-      <div class="ws-rule"></div>
-      <p class="section-label">Question 1 &mdash; Central Idea</p>
-      <p class="section-question">What is the most important idea in this story? Write it in one sentence.</p>
-      <textarea class="ci-input" data-save="ela1-ci" rows="2" placeholder="The central idea of this story is…"></textarea>
-      <div class="ws-rule"></div>
-      <p class="section-label">Question 2 &mdash; Supporting Detail</p>
-      <p class="section-question">Find one detail from the story that shows Diego is friendly. Use words from the passage.</p>
-      <textarea class="detail-input" data-save="ela1-detail" rows="3" placeholder="A detail from the passage…"></textarea>
-      <div class="ws-rule"></div>
-      <p class="section-label">Question 3 &mdash; Make a Connection</p>
-      <p class="section-question">Have you ever been the new person somewhere, or have you met someone new? Write one sentence about it.</p>
-      <textarea class="detail-input" data-save="ela1-conn" rows="3" placeholder="One time, I…"></textarea>
-    </section>
-    <div class="reset-bar">
-      <button type="button" class="reset-btn" data-reset="ela">Reset ELA Practice</button>
-    </div>
-    <p class="save-notice">Your answers are saved automatically in this browser.</p>
+    <div class="lp-shell" data-lp-shell data-pack="ela"></div>
+  </div>
+
+  <!-- SOCIAL STUDIES TAB -->
+  <div class="tab-content" id="social-studies">
+    <div class="lp-shell" data-lp-shell data-pack="social-studies"></div>
+  </div>
+
+  <!-- SCIENCE TAB -->
+  <div class="tab-content" id="science">
+    <div class="lp-shell" data-lp-shell data-pack="science"></div>
+  </div>
+
+  <!-- MASTER REVIEW TAB -->
+  <div class="tab-content" id="review">
+    <div class="lp-shell" data-lp-shell data-pack="review"></div>
   </div>
 
   <script src="homework-loader.js?v=1"></script>
@@ -281,5 +255,14 @@
   <script src="ai-tutor.js"></script>
   <script src="quiz.js"></script>
   <script src="flashcards.js"></script>
+  <!-- Grade 4 lesson pack. Content modules first: the data aggregator reads
+       their globals, and the engine returns early without it. -->
+  <script src="lesson-pack-g4-content-ela.js?v=1"></script>
+  <script src="lesson-pack-g4-content-math.js?v=1"></script>
+  <script src="lesson-pack-g4-content-science.js?v=1"></script>
+  <script src="lesson-pack-g4-content-social.js?v=1"></script>
+  <script src="lesson-pack-g4-content-review.js?v=1"></script>
+  <script src="lesson-pack.data.js?v=1"></script>
+  <script src="lesson-pack.js?v=1"></script>
 </body>
 </html>

@@ -1,13 +1,21 @@
 /* ============================================================================
-   Grade 2 Interactive Lesson Pack — data aggregator and pure logic.
+   Interactive Lesson Pack — data aggregator and pure logic. Shared by every
+   student page that mounts a pack; the page supplies the content.
 
-   Content itself lives in lesson-pack-content-{ela,math,science,social}.js,
-   transcribed verbatim from the teacher's pack. This file holds only the
-   parts that are logic rather than content, so node --test can exercise them
-   without a DOM. Nothing here touches window/document.
+   Content itself lives in a pack's own content files, transcribed verbatim
+   from the teacher's material. This file holds only the parts that are logic
+   rather than content, so node --test can exercise them without a DOM.
+   Nothing here touches window/document.
 
-   Pack basis: New York State Grade 2 expectations. Reference URLs are in the
-   header comment of each content file.
+   A page declares its pack in `window.LessonPackConfig`:
+
+     { student: 'nafis', grade: 4, storageKey: 'g4pack:nafis',
+       content: ['G4PackEla', 'G4PackMath', 'G4PackScience', 'G4PackSocial'],
+       lessonOrder: ['en-l1', ...], review: 'G4PackReview' }
+
+   Every key is optional and defaults to the Grade 2 pack, so a page that
+   declares nothing gets exactly the behaviour it had before this file was
+   shared. `build()` is exported for tests that assemble a pack directly.
    ========================================================================== */
 (function (root, factory) {
   'use strict';
@@ -18,14 +26,24 @@
       require('./lesson-pack-content-science.js'),
       require('./lesson-pack-content-social.js')
     );
+    // Lets a test assemble a pack of another grade without a DOM.
+    module.exports.build = factory;
   } else {
+    // The page names its own content globals, so a second student page reuses
+    // this logic instead of forking it.
+    var cfg = root.LessonPackConfig || {};
+    var names = cfg.content || ['G2PackEla', 'G2PackMath', 'G2PackScience', 'G2PackSocial'];
     root.LessonPackData = factory(
-      root.G2PackEla || [], root.G2PackMath || [],
-      root.G2PackScience || [], root.G2PackSocial || []
+      root[names[0]] || [], root[names[1]] || [],
+      root[names[2]] || [], root[names[3]] || [],
+      cfg, root[cfg.review] || null
     );
   }
-})(typeof window !== 'undefined' ? window : this, function (ela, math, science, social) {
+})(typeof window !== 'undefined' ? window : this, function (ela, math, science, social, cfg, review) {
   'use strict';
+
+  cfg = cfg || {};
+  var GRADE = cfg.grade || 2;
 
   /* ---------------------------------------------------------------- lessons */
 
@@ -110,8 +128,11 @@
   var LESSONS = [].concat(ela || [], math || [], science || [], social || [])
     .map(normaliseLesson);
 
-  // Canonical order: all four subjects, two lessons each.
-  var LESSON_ORDER = ['en-l1', 'en-l2', 'ma-l1', 'ma-l2', 'sc-l1', 'sc-l2', 'ss-l1', 'ss-l2'];
+  // Canonical order: all four subjects, two lessons each. A pack of another
+  // shape declares its own order in the config; the default is the Grade 2
+  // pack's. Order matters only for display — nothing here assumes eight.
+  var DEFAULT_ORDER = ['en-l1', 'en-l2', 'ma-l1', 'ma-l2', 'sc-l1', 'sc-l2', 'ss-l1', 'ss-l2'];
+  var LESSON_ORDER = (cfg.lessonOrder && cfg.lessonOrder.length) ? cfg.lessonOrder : DEFAULT_ORDER;
 
   function byId(id) {
     for (var i = 0; i < LESSONS.length; i++) {
@@ -137,12 +158,29 @@
   /* ----------------------------------------------------------------- badges */
 
   // Exactly the five badges the pack defines. Do not add more.
-  var BADGES = [
-    { id: 'story-detective',    label: 'Story Detective',    icon: '🕵',  lessons: ['en-l1', 'en-l2'] },
-    { id: 'number-builder',     label: 'Number Builder',     icon: '🔢',  lessons: ['ma-l1', 'ma-l2'] },
-    { id: 'young-scientist',    label: 'Young Scientist',    icon: '🌱',  lessons: ['sc-l1', 'sc-l2'] },
-    { id: 'community-explorer', label: 'Community Explorer', icon: '🏙',  lessons: ['ss-l1', 'ss-l2'] },
-    { id: 'grade2-explorer',    label: 'Grade 2 Explorer',   icon: '⭐',        lessons: LESSON_ORDER }
+  //
+  // Each subject badge names the lessons actually loaded for that subject
+  // rather than literal ids, so a pack of any shape still has earnable badges
+  // — a badge naming a lesson that does not exist could never be earned, and
+  // would render as permanently locked with no explanation. For the Grade 2
+  // default this is exactly the pack's own four pairs.
+  function subjectLessons(prefix) {
+    return LESSONS.filter(function (l) {
+      return l.lesson_id.indexOf(prefix + '-') === 0;
+    }).map(function (l) { return l.lesson_id; });
+  }
+
+  var ALL_LESSON_IDS = LESSONS.length
+    ? LESSONS.map(function (l) { return l.lesson_id; })
+    : LESSON_ORDER;
+
+  var BADGES = cfg.badges || [
+    { id: 'story-detective',    label: 'Story Detective',    icon: '🕵',  lessons: subjectLessons('en') },
+    { id: 'number-builder',     label: 'Number Builder',     icon: '🔢',  lessons: subjectLessons('ma') },
+    { id: 'young-scientist',    label: 'Young Scientist',    icon: '🌱',  lessons: subjectLessons('sc') },
+    { id: 'community-explorer', label: 'Community Explorer', icon: '🏙',  lessons: subjectLessons('ss') },
+    { id: 'grade' + GRADE + '-explorer', label: 'Grade ' + GRADE + ' Explorer',
+      icon: '⭐', lessons: ALL_LESSON_IDS }
   ];
 
   // A badge is earned when every lesson it names is done. `progress.lessons`
@@ -150,7 +188,11 @@
   function earnedBadges(progress) {
     var done = (progress && progress.lessons) || {};
     return BADGES.filter(function (b) {
-      return b.lessons.every(function (id) { return done[id] && done[id].done; });
+      // A badge naming no lessons is vacuously "all done", which would hand a
+      // student every badge on a page whose content has not landed yet.
+      return b.lessons.length && b.lessons.every(function (id) {
+        return done[id] && done[id].done;
+      });
     }).map(function (b) { return b.id; });
   }
 
@@ -297,7 +339,7 @@
 
     if (!lesson) { return ['(null lesson)']; }
     if (!lesson.lesson_id) bad('missing lesson_id');
-    if (lesson.grade !== 2) bad('grade must be 2');
+    if (lesson.grade !== GRADE) bad('grade must be ' + GRADE);
     if (!lesson.title) bad('missing title');
     if (!lesson.objective) bad('missing objective');
     if (!lesson.read || !Array.isArray(lesson.read.paragraphs) || !lesson.read.paragraphs.length) {
@@ -469,8 +511,8 @@
 
   function validateAll() {
     var errs = [];
-    if (LESSONS.length !== 8) {
-      errs.push('expected 8 lessons, found ' + LESSONS.length);
+    if (LESSONS.length !== LESSON_ORDER.length) {
+      errs.push('expected ' + LESSON_ORDER.length + ' lessons, found ' + LESSONS.length);
     }
     var seen = {};
     LESSONS.forEach(function (l) {
@@ -488,6 +530,10 @@
     LESSONS: LESSONS,
     LESSON_ORDER: LESSON_ORDER,
     BADGES: BADGES,
+    // The Master Review's four rounds. Content like everything else, so a pack
+    // of another grade supplies its own; null means "this pack declares none".
+    REVIEW: review || null,
+    GRADE: GRADE,
     STEPS: STEPS,
     STEP_LABELS: STEP_LABELS,
     ENGINE_IDS: ENGINE_IDS,

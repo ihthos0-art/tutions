@@ -196,6 +196,25 @@ test('both pages load the shared engine and data modules', () => {
   });
 });
 
+// Both pages load the same two files by URL, and static hosting caches by URL.
+// If the engine changes and the version is bumped on one page but not the
+// other, that page keeps serving the old engine from cache — and an old engine
+// alongside new content renders blank tabs rather than failing loudly. The two
+// pages must therefore always name the same version.
+test('both pages request the shared modules at the same version', () => {
+  const versionOf = (page, file) => {
+    const m = new RegExp('src="' + file.replace(/\./g, '\\.') + '\\?v=([0-9]+)"').exec(page);
+    assert.ok(m, 'no version found for ' + file);
+    return m[1];
+  };
+  ['lesson-pack.data.js', 'lesson-pack.js'].forEach(file => {
+    const a = versionOf(GRADE2_PAGE, file);
+    const b = versionOf(GRADE4_PAGE, file);
+    assert.equal(a, b, file + ' is v' + a + ' on nabila-naviha.html and v' + b +
+      ' on nafis.html — bump both in the same commit, or one page serves a cached old engine');
+  });
+});
+
 test('the engine reads its grade from the page, not from a hardcoded label', () => {
   assert.equal(/Grade 2'/.test(ENGINE_CODE), false,
     'a hardcoded Grade 2 label would show on every other student\'s page');

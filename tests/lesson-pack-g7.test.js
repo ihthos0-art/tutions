@@ -49,9 +49,16 @@ const PACK = D.build(
 );
 
 // Every scored item, tagged with the lesson it came from.
+//
+// `warmup` belongs here as much as the games do. The warm-up questions are
+// scored, they carry ids that the retry step looks up, and they are answers a
+// child can be marked wrong on — so every integrity rule below has to see them.
+// Leaving them out of this helper is how a bad warm-up answer key would reach a
+// student with the suite still green.
 function allItems(pack) {
   const out = [];
   pack.ordered().forEach(l => {
+    (l.warmup || []).forEach(it => out.push({ lesson: l, item: it }));
     (l.games || []).forEach(it => out.push({ lesson: l, item: it }));
     (l.guided || []).forEach(it => out.push({ lesson: l, item: it }));
     if (l.challenge) out.push({ lesson: l, item: l.challenge });
@@ -108,7 +115,62 @@ test('the pack\'s own scaffolds survived transcription', () => {
   });
 });
 
-/* --------------------------------------------------------------- engines */
+// The pack's flow names a two-question warm-up and a "Try Together" step with
+// guided examples, and the engine renders the step only when the lesson has the
+// content for it. The teacher authorised writing the missing ones in; what must
+// hold now is that no lesson is left with an empty step, because an empty step
+// is one the driver skips without telling anyone.
+test('every lesson fills the warm-up and the guided-example step', () => {
+  PACK.ordered().forEach(l => {
+    assert.equal(l.warmup.length, 2,
+      l.lesson_id + ' has ' + l.warmup.length + ' warm-up questions; the flow asks for two');
+    assert.equal(l.guided.length, 2,
+      l.lesson_id + ' has ' + l.guided.length + ' guided examples; the flow asks for two');
+  });
+});
+
+// The warm-up is the first thing a child sees and the pack's rule for it is
+// "very easy". It is also the step with the least transcribed content behind
+// it, so it is the one most likely to be got wrong by a later edit. These are
+// the properties that make a warm-up usable, checked together.
+test('every warm-up question is answerable and comes before the teaching', () => {
+  PACK.ordered().forEach(l => {
+    l.warmup.forEach((it, i) => {
+      const where = l.lesson_id + ' warm-up ' + (i + 1);
+      assert.ok(it.prompt, where + ' has no question');
+      assert.ok(it.hint, where + ' has no hint; a warm-up a child cannot finish is a wall');
+      assert.ok(it.engine === 'MULTIPLE_CHOICE' || it.engine === 'TRUE_FALSE',
+        where + ' uses ' + it.engine + '; a warm-up should be one tap');
+      if (it.engine === 'MULTIPLE_CHOICE') {
+        assert.ok(it.choices.indexOf(it.answer) !== -1, where + ': answer is not among its choices');
+      }
+      if (it.engine === 'TRUE_FALSE') assert.equal(typeof it.answer, 'boolean', where + ': answer is not a boolean');
+    });
+    // The warm-up opening the topic is what makes it a warm-up rather than a
+    // quiz; it must be the step the driver renders first.
+    assert.equal(D.STEPS[0], 'warmup', 'the warm-up is no longer the first step');
+  });
+});
+
+// The teacher's material is the pack, and it must stay the majority of it. Each
+// authored item says so in the data file, so the ones to review are findable by
+// name rather than by guessing which questions were in the original.
+test('every authored item is tagged, and no lesson is entirely authored', () => {
+  PACK.ordered().forEach(l => {
+    const all = l.warmup.concat(l.games, l.guided, l.challenge ? [l.challenge] : []);
+    const mine = all.filter(it => it.authored);
+    assert.ok(mine.length < all.length,
+      l.lesson_id + ' is entirely authored — none of the teacher\'s content survives in it');
+    // An item the teacher did not write but that is not flagged is the failure
+    // this catches: it would read as the pack's own words to whoever reviews it.
+    l.warmup.forEach((it, i) => {
+      assert.equal(it.authored, true,
+        l.lesson_id + ' warm-up ' + (i + 1) + ' is not marked authored');
+    });
+  });
+});
+
+
 
 test('every engine the content names is one the module implements', () => {
   const impl = ENGINE_CODE.match(/ENGINES\.([A-Z_]+)\s*=/g)

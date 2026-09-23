@@ -68,7 +68,45 @@
             'agriculture on large plantations']
         ]
       },
-      guided: [],
+      // Authored, not the teacher's. The pack names a Warm-Up and a Try With
+      // Help but writes neither for this lesson. Both use only this lesson's
+      // own material. Marked `authored: true`.
+      warmup: [
+        {
+          id: 'ss-l1-w1',
+          authored: true,
+          prompt: 'What is the name of the country you live in?',
+          choices: ['The United States', 'Britain', 'France'],
+          answer: 'The United States',
+          hint: 'Think about the country you are in right now.'
+        },
+        {
+          id: 'ss-l1-w2',
+          authored: true,
+          engine: 'TRUE_FALSE',
+          prompt: 'Long ago, Britain ruled lands far away from Britain.',
+          answer: true,
+          hint: 'Think about ships crossing the ocean a very long time ago.'
+        }
+      ],
+      guided: [
+        {
+          id: 'ss-l1-t1',
+          authored: true,
+          prompt: 'Which region had a warmer climate and a long growing season?',
+          choices: ['The Southern Colonies', 'The New England Colonies', 'The Middle Colonies'],
+          answer: 'The Southern Colonies',
+          hint: 'Look at the third box in the picture and find the word "climate".'
+        },
+        {
+          id: 'ss-l1-t2',
+          authored: true,
+          prompt: 'New England had rocky soil and a short growing season. What work did people there do most?',
+          choices: ['Fishing, shipbuilding, and trade', 'Large plantations', 'Growing cotton'],
+          answer: 'Fishing, shipbuilding, and trade',
+          hint: 'When land is hard to farm, people turn to the sea and to ships.'
+        }
+      ],
       games: [
         {
           name: 'Sort the Region',
@@ -187,7 +225,47 @@
         svg: '<svg viewBox="0 0 980 330" width="100%" role="img" aria-label="Timeline showing Boston Tea Party in 1773, Lexington and Concord in 1775, Declaration of Independence in 1776, and Treaty of Paris in 1783">\n<rect width="980" height="330" fill="white"/>\n<line x1="100" y1="165" x2="880" y2="165" stroke="#555" stroke-width="6"/>\n<circle cx="160" cy="165" r="14" fill="#6887a5"/>\n<circle cx="370" cy="165" r="14" fill="#6887a5"/>\n<circle cx="570" cy="165" r="14" fill="#6887a5"/>\n<circle cx="820" cy="165" r="14" fill="#6887a5"/>\n<text x="120" y="110" font-size="25">1773</text>\n<text x="80" y="78" font-size="20">Boston Tea Party</text>\n<text x="330" y="225" font-size="25">1775</text>\n<text x="285" y="260" font-size="20">Fighting begins</text>\n<text x="530" y="110" font-size="25">1776</text>\n<text x="480" y="78" font-size="20">Declaration</text>\n<text x="780" y="225" font-size="25">1783</text>\n<text x="720" y="260" font-size="20">Treaty of Paris</text>\n</svg>',
         alt: 'Timeline showing Boston Tea Party in 1773, Lexington and Concord in 1775, Declaration of Independence in 1776, and Treaty of Paris in 1783'
       },
-      guided: [],
+      // Authored, not the teacher's — see the note on ss-l1.
+      warmup: [
+        {
+          id: 'ss-l2-w1',
+          authored: true,
+          prompt: 'Who makes the laws and collects taxes where you live?',
+          choices: ['The government', 'Your school', 'Your friends'],
+          answer: 'The government',
+          hint: 'Think about who pays for roads, parks, and schools.'
+        },
+        {
+          id: 'ss-l2-w2',
+          authored: true,
+          engine: 'TRUE_FALSE',
+          prompt: 'People sometimes disagree with a rule their government makes.',
+          answer: true,
+          hint: 'Think about a rule you once thought was unfair.'
+        }
+      ],
+      guided: [
+        {
+          id: 'ss-l2-t1',
+          authored: true,
+          prompt: 'What did "No taxation without representation" mean?',
+          choices: [
+            'Britain should not tax the colonies unless colonists had someone to speak for them in Parliament.',
+            'The colonies should stop trading with Britain.',
+            'Britain should raise the taxes even higher.'
+          ],
+          answer: 'Britain should not tax the colonies unless colonists had someone to speak for them in Parliament.',
+          hint: 'Representation means having someone to speak and vote for you.'
+        },
+        {
+          id: 'ss-l2-t2',
+          authored: true,
+          prompt: 'Britain placed new taxes and rules on the colonies. What happened next?',
+          choices: ['Many colonists protested.', 'The colonies joined France.', 'Nothing changed at all.'],
+          answer: 'Many colonists protested.',
+          hint: 'The reading gives this as a cause and its effect.'
+        }
+      ],
       games: [
         {
           name: 'Put in Order',

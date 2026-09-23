@@ -96,6 +96,18 @@
       storageKey: 'g7pack:nafis',
       content: ['G7PackEla', 'G7PackMath', 'G7PackScience', 'G7PackSocial'],
       review: 'G7PackReview',
+      // The Grade 7 pack names its steps too — "Words First", not "Key Words",
+      // and "Try With Help", "Practice Games", "Reward". Those names come from
+      // the teacher's flow list, so the page declares them the same way it
+      // declares the badges. Anything left out keeps the default label.
+      stepLabels: {
+        warmup:    'Warm-Up',
+        words:     'Words First',
+        look:      'Look at the Picture',
+        together:  'Try With Help',
+        practice:  'Practice Games',
+        finish:    'Reward'
+      },
       // The Grade 7 pack names its own badges, one per lesson for Math and
       // Science, so they cannot be derived from the subject prefixes the way
       // the Grade 2 pack's can. Written as JSON so tests/progress-grades.test.mjs
@@ -271,12 +283,12 @@
   <script src="flashcards.js"></script>
   <!-- Grade 7 lesson pack. Content modules first: the data aggregator reads
        their globals, and the engine returns early without it. -->
-  <script src="lesson-pack-g7-content-ela.js?v=1"></script>
-  <script src="lesson-pack-g7-content-math.js?v=1"></script>
-  <script src="lesson-pack-g7-content-science.js?v=1"></script>
-  <script src="lesson-pack-g7-content-social.js?v=1"></script>
-  <script src="lesson-pack-g7-content-review.js?v=1"></script>
-  <script src="lesson-pack.data.js?v=3"></script>
-  <script src="lesson-pack.js?v=3"></script>
+  <script src="lesson-pack-g7-content-ela.js?v=2"></script>
+  <script src="lesson-pack-g7-content-math.js?v=2"></script>
+  <script src="lesson-pack-g7-content-science.js?v=2"></script>
+  <script src="lesson-pack-g7-content-social.js?v=2"></script>
+  <script src="lesson-pack-g7-content-review.js?v=2"></script>
+  <script src="lesson-pack.data.js?v=4"></script>
+  <script src="lesson-pack.js?v=4"></script>
 </body>
 </html>

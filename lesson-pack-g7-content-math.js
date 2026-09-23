@@ -57,7 +57,44 @@
         svg: '<svg viewBox="0 0 850 280" width="100%" role="img" aria-label="Two red circles and three blue circles showing a ratio of 2 to 3">\n<rect width="850" height="280" fill="white"/>\n<text x="100" y="50" font-size="28">Red</text>\n<circle cx="120" cy="120" r="38" fill="#dc655d"/>\n<circle cx="220" cy="120" r="38" fill="#dc655d"/>\n<text x="470" y="50" font-size="28">Blue</text>\n<circle cx="440" cy="120" r="38" fill="#5d8fdc"/>\n<circle cx="540" cy="120" r="38" fill="#5d8fdc"/>\n<circle cx="640" cy="120" r="38" fill="#5d8fdc"/>\n<text x="315" y="245" font-size="34">red : blue = 2 : 3</text>\n</svg>',
         alt: 'Two red circles and three blue circles showing a ratio of 2 to 3'
       },
-      guided: [],
+      // Authored, not the teacher's. The pack names a Warm-Up and a Try With
+      // Help but writes neither for this lesson. Both use only this lesson's
+      // own numbers and word list. Marked `authored: true`.
+      warmup: [
+        {
+          id: 'ma-l1-w1',
+          authored: true,
+          prompt: 'You have 2 apples and 3 oranges. Which do you have more of?',
+          choices: ['Oranges', 'Apples', 'The same amount'],
+          answer: 'Oranges',
+          hint: 'Count each group, then compare the two numbers.'
+        },
+        {
+          id: 'ma-l1-w2',
+          authored: true,
+          prompt: 'A recipe uses 2 cups of flour for 1 cake. How many cups for 2 cakes?',
+          choices: ['4 cups', '2 cups', '6 cups'],
+          answer: '4 cups',
+          hint: 'Two cakes need two times as much flour.'
+        }
+      ],
+      guided: [
+        {
+          id: 'ma-l1-t1',
+          authored: true,
+          prompt: 'There are 4 green marbles and 6 yellow marbles. What is green to yellow?',
+          choices: ['4 : 6', '6 : 4', '4 : 10'],
+          answer: '4 : 6',
+          hint: 'A ratio compares two amounts in the order they are named.'
+        },
+        {
+          id: 'ma-l1-t2',
+          authored: true,
+          engine: 'WORKED_EXAMPLE',
+          prompt: 'Equal ratios\nStart with 2 : 3\nMultiply both numbers by 3\n2 × 3 = 6\n3 × 3 = 9\nSo 2 : 3 and 6 : 9 are equal.',
+          answer: '2 : 3 = 6 : 9'
+        }
+      ],
       games: [
         {
           name: 'Build the Ratio',
@@ -168,7 +205,46 @@
         svg: '<svg viewBox="0 0 880 320" width="100%" role="img" aria-label="Balance scale showing x plus five equals twelve">\n<rect width="880" height="320" fill="white"/>\n<line x1="440" y1="65" x2="440" y2="260" stroke="#555" stroke-width="10"/>\n<line x1="220" y1="115" x2="660" y2="115" stroke="#555" stroke-width="8"/>\n<line x1="220" y1="115" x2="175" y2="220" stroke="#777" stroke-width="4"/>\n<line x1="220" y1="115" x2="265" y2="220" stroke="#777" stroke-width="4"/>\n<line x1="660" y1="115" x2="615" y2="220" stroke="#777" stroke-width="4"/>\n<line x1="660" y1="115" x2="705" y2="220" stroke="#777" stroke-width="4"/>\n<rect x="145" y="220" width="150" height="25" rx="8" fill="#8ca8c3"/>\n<rect x="585" y="220" width="150" height="25" rx="8" fill="#8ca8c3"/>\n<text x="165" y="200" font-size="35">x + 5</text>\n<text x="635" y="200" font-size="35">12</text>\n<text x="285" y="305" font-size="30">Do the same thing to both sides.</text>\n</svg>',
         alt: 'Balance scale showing x plus five equals twelve'
       },
-      guided: [],
+      // Authored, not the teacher's — see the note on ma-l1.
+      warmup: [
+        {
+          id: 'ma-l2-w1',
+          authored: true,
+          prompt: 'In math, a letter like x usually stands for what?',
+          choices: ['A number', 'A colour', 'A shape'],
+          answer: 'A number',
+          hint: 'It holds the place of a number you do not know yet.'
+        },
+        {
+          id: 'ma-l2-w2',
+          authored: true,
+          prompt: 'What does the equals sign tell you?',
+          choices: [
+            'The two sides are the same amount',
+            'Add everything on the page',
+            'Take the smaller number away'
+          ],
+          answer: 'The two sides are the same amount',
+          hint: 'Picture a balance scale that is level.'
+        }
+      ],
+      guided: [
+        {
+          id: 'ma-l2-t1',
+          authored: true,
+          prompt: 'Which one is an equation?',
+          choices: ['3x + 2 = 14', '3x + 2', '3 and 2'],
+          answer: '3x + 2 = 14',
+          hint: 'An equation has an equals sign. An expression does not.'
+        },
+        {
+          id: 'ma-l2-t2',
+          authored: true,
+          engine: 'WORKED_EXAMPLE',
+          prompt: 'Solve x + 6 = 10\nSubtract 6 from both sides.\nx + 6 − 6 = 10 − 6\nx = 4',
+          answer: 'x = 4'
+        }
+      ],
       games: [
         {
           name: 'Expression or Equation?',

@@ -1655,25 +1655,15 @@
     state.liveEl = live;
     state.actionHost = actionHost;
 
-    // Derived warm-up: two "which word means ..." questions built from the
-    // lesson's own key-word table. The pack asks for two very easy warm-up
-    // questions but supplies none, and this uses only the teacher's own words.
+    // The two warm-up questions are the lesson's own, from `lesson.warmup`.
+    // This used to synthesise "Which word means ...?" questions out of the
+    // key-word table to fill a step the packs leave empty. That is not what
+    // the packs ask for: they want two very easy questions that open the
+    // topic, and a vocabulary quiz is neither easy nor an opening — it came
+    // before the words had been taught. A lesson with no warm-up now simply
+    // has no warm-up step, which the driver already skips.
     function warmupItems() {
-      var words = lesson.keyWords || [];
-      if (words.length < 2) return [];
-      var picks = words.slice(0, 2);
-      return picks.map(function (w, i) {
-        var others = words.filter(function (x) { return x.word !== w.word; });
-        var distractors = shuffle(others).slice(0, 2).map(function (x) { return x.word; });
-        return {
-          id: lesson.lesson_id + '-w' + (i + 1),
-          engine: 'MULTIPLE_CHOICE',
-          prompt: 'Which word means "' + w.meaning + '"?',
-          choices: shuffle([w.word].concat(distractors)),
-          answer: w.word,
-          hint: 'The word starts with "' + w.word.charAt(0).toUpperCase() + '".'
-        };
-      });
+      return (lesson.warmup || []).slice();
     }
 
     function stepItems(step) {
@@ -1714,6 +1704,7 @@
       if (step === 'warmup' || step === 'together' || step === 'challenge') {
         return renderItemStep(step);
       }
+      if (step === 'words') return renderWords();
       if (step === 'learn') return renderLearn();
       if (step === 'look') return renderLook();
       if (step === 'practice') return renderPractice();
@@ -1768,6 +1759,61 @@
       ask();
     }
 
+    // Step 2: the words, before the reading that uses them. Both packs put a
+    // word/meaning table in front of the passage — the Grade 7 pack as the
+    // named step "Words First", the Grade 2 pack as "Key Words". The English
+    // lessons also carry sentence frames here, which are a vocabulary
+    // scaffold rather than a note about the picture.
+    function renderWords() {
+      var words = lesson.keyWords || [];
+      var scaf = (lesson.notes || []).filter(function (n) { return n.where === 'words'; });
+      if (!words.length && !scaf.length) { advance(); return; }
+
+      var head = el('h2', 'lp-title', esc(lesson.wordsTitle || (D.STEP_LABELS.words || 'Key Words')));
+      stageHost.appendChild(head);
+
+      if (words.length) {
+        var table = el('table', 'lp-table');
+        var thead = el('thead');
+        var hr = el('tr');
+        hr.appendChild(el('th', null, 'Word'));
+        hr.appendChild(el('th', null, 'Easy meaning'));
+        thead.appendChild(hr);
+        table.appendChild(thead);
+        var tbody = el('tbody');
+        words.forEach(function (w) {
+          var tr = el('tr');
+          var td1 = el('td');
+          td1.appendChild(el('b', null, esc(w.word)));
+          var td2 = el('td', null, esc(w.meaning));
+          tr.appendChild(td1);
+          tr.appendChild(td2);
+          tbody.appendChild(tr);
+        });
+        table.appendChild(tbody);
+        stageHost.appendChild(table);
+        stageHost.appendChild(speakButton(words.map(function (w) {
+          return w.word + '. ' + w.meaning + '.';
+        }).join(' '), null, 'Read the words aloud'));
+      }
+
+      scaf.forEach(function (n) {
+        stageHost.appendChild(el('p', 'lp-phase-name', esc(n.label || 'Sentence frames')));
+        var ul = el('ul', 'lp-words');
+        (n.lines || []).forEach(function (line) {
+          var li = el('li');
+          li.appendChild(el('span', null, esc(line)));
+          ul.appendChild(li);
+        });
+        stageHost.appendChild(ul);
+      });
+
+      var next = btn('lp-btn lp-btn--primary', 'Continue →');
+      next.addEventListener('click', advance);
+      actionHost.appendChild(next);
+      next.focus();
+    }
+
     function renderLearn() {
       var read = lesson.read || {};
       stageHost.appendChild(el('h2', 'lp-title', esc(read.title || lesson.title)));
@@ -1794,22 +1840,10 @@
         stageHost.appendChild(el('p', 'lp-caption', 'Talk about these with your teacher.'));
       }
 
-      // Key words carry the lesson's vocabulary, and two lessons carry a
-      // compare table the pack defines but names nowhere else. Both are
-      // content, so both are shown rather than left in the data module.
-      var words = lesson.keyWords || [];
-      if (words.length) {
-        stageHost.appendChild(el('p', 'lp-phase-name', 'Key words'));
-        var wl = el('ul', 'lp-words');
-        words.forEach(function (w) {
-          var li = el('li');
-          li.appendChild(el('b', null, esc(w.word)));
-          li.appendChild(el('span', null, esc(w.meaning)));
-          wl.appendChild(li);
-        });
-        stageHost.appendChild(wl);
-      }
-
+      // The compare table is content the pack defines but names nowhere else,
+      // so it is shown rather than left in the data module. The key words used
+      // to be rendered here too; they now have their own step, ahead of the
+      // reading, because that is where both packs put them.
       if (lesson.compare) {
         stageHost.appendChild(el('p', 'lp-phase-name', esc(lesson.compare.title || 'Compare')));
         var table = el('table', 'lp-table');
@@ -1841,7 +1875,9 @@
     // step advances only when there is neither.
     function renderLook() {
       var v = lesson.visual || {};
-      var notes = lesson.notes || [];
+      // Notes marked `where: 'words'` are the vocabulary scaffolds and belong
+      // to the Words First step; the rest are notes about the picture.
+      var notes = (lesson.notes || []).filter(function (n) { return n.where !== 'words'; });
       if ((!v.svg) && !notes.length) { advance(); return; }
 
       if (v.svg) {

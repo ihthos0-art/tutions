@@ -88,6 +88,25 @@
         svg: PLACE_VALUE_SVG,
         alt: 'Place value picture showing two hundreds, four tens, and three ones'
       },
+      // Authored, not the teacher's — see the note on the English file.
+      warmup: [
+        {
+          id: 'ma-l1-w1',
+          authored: true,
+          prompt: 'How many fingers are on one hand?',
+          choices: ['5', '3', '10'],
+          answer: '5',
+          hint: 'Count them one by one.'
+        },
+        {
+          id: 'ma-l1-w2',
+          authored: true,
+          prompt: 'Which number is bigger?',
+          choices: ['40', '4', 'They are the same'],
+          answer: '40',
+          hint: '40 is four groups of ten. 4 is four ones.'
+        }
+      ],
       guided: [
         {
           id: 'ma-l1-gu1',
@@ -237,7 +256,42 @@
         svg: NUMBER_LINE_SVG,
         alt: 'Number line showing a jump from 34 to 54 by adding 20, then to 59 by adding 5'
       },
-      guided: [],
+      // Authored, not the teacher's — see the note on the English file.
+      warmup: [
+        {
+          id: 'ma-l2-w1',
+          authored: true,
+          prompt: 'You have 3 apples and you get 2 more. How many apples now?',
+          choices: ['5', '1', '32'],
+          answer: '5',
+          hint: 'Count on from 3: 4, 5.'
+        },
+        {
+          id: 'ma-l2-w2',
+          authored: true,
+          prompt: 'Which sign means "take away"?',
+          choices: ['−', '+', '='],
+          answer: '−',
+          hint: 'It is the minus sign.'
+        }
+      ],
+      guided: [
+        {
+          id: 'ma-l2-g1',
+          authored: true,
+          prompt: 'Add by breaking apart: 42 + 36',
+          choices: ['78', '68', '712'],
+          answer: '78',
+          hint: 'Add the tens (40 + 30 = 70), then the ones (2 + 6 = 8).'
+        },
+        {
+          id: 'ma-l2-g2',
+          authored: true,
+          engine: 'WORKED_EXAMPLE',
+          prompt: 'Subtract by breaking apart\n58 − 26\n58 − 20 = 38\n38 − 6 = 32\nSo 58 − 26 = 32',
+          answer: '58 − 26 = 32'
+        }
+      ],
       games: [
         {
           name: 'Number Line Jump',

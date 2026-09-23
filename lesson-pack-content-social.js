@@ -40,7 +40,43 @@
           ['Rural', 'farms, fields, forests, open land']
         ]
       },
-      guided: [],
+      // Authored, not the teacher's — see the note on the English file.
+      warmup: [
+        {
+          id: 'ss-l1-w1',
+          authored: true,
+          prompt: 'Which place has many tall buildings and lots of people?',
+          choices: ['A city', 'A farm', 'A forest'],
+          answer: 'A city',
+          hint: 'Think about the busiest place you have ever seen.'
+        },
+        {
+          id: 'ss-l1-w2',
+          authored: true,
+          engine: 'TRUE_FALSE',
+          prompt: 'People live in different kinds of places.',
+          answer: true,
+          hint: 'Some people live in cities, and some live in the countryside.'
+        }
+      ],
+      guided: [
+        {
+          id: 'ss-l1-g1',
+          authored: true,
+          prompt: 'Brooklyn is part of New York City. What kind of community is Brooklyn?',
+          choices: ['Urban', 'Suburban', 'Rural'],
+          answer: 'Urban',
+          hint: 'A city area is urban.'
+        },
+        {
+          id: 'ss-l1-g2',
+          authored: true,
+          prompt: 'Which community has fewer people and more open land?',
+          choices: ['Rural', 'Urban', 'Suburban'],
+          answer: 'Rural',
+          hint: 'Think about farms, fields, and long roads.'
+        }
+      ],
       games: [
         {
           name: 'Sort the Community',
@@ -229,7 +265,47 @@
           ['nurse', 'caring for people who are sick or hurt']
         ]
       },
-      guided: [],
+      // Authored, not the teacher's — see the note on the English file.
+      warmup: [
+        {
+          id: 'ss-l2-w1',
+          authored: true,
+          prompt: 'Who helps put out fires?',
+          choices: ['Firefighters', 'Teachers', 'Doctors'],
+          answer: 'Firefighters',
+          hint: 'They drive a big red truck.'
+        },
+        {
+          id: 'ss-l2-w2',
+          authored: true,
+          engine: 'TRUE_FALSE',
+          prompt: 'Rules help keep people safe.',
+          answer: true,
+          hint: 'Think about why we look both ways before crossing a street.'
+        }
+      ],
+      guided: [
+        {
+          id: 'ss-l2-g1',
+          authored: true,
+          prompt: 'Who helps children learn?',
+          choices: ['Teachers', 'Sanitation workers', 'Police officers'],
+          answer: 'Teachers',
+          hint: 'You see them at school every day.'
+        },
+        {
+          id: 'ss-l2-g2',
+          authored: true,
+          prompt: 'Which one is a responsibility of people in a community?',
+          choices: [
+            'Keeping shared places clean',
+            'Throwing trash on the sidewalk',
+            'Ignoring the rules'
+          ],
+          answer: 'Keeping shared places clean',
+          hint: 'A responsibility is something you are expected to do.'
+        }
+      ],
       games: [
         {
           name: 'Match the Helper',

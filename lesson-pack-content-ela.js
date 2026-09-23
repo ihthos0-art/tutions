@@ -40,6 +40,27 @@
         svg: '<svg viewBox="0 0 800 330" width="100%" role="img" aria-label="A park scene showing Maya and Leo, a red ball, a green bench, a tree, and a slide">\n  <rect width="800" height="330" fill="#eef8ff"/>\n  <circle cx="700" cy="55" r="34" fill="#ffd95a"/>\n  <rect y="245" width="800" height="85" fill="#bfe3a0"/>\n  <rect x="520" y="150" width="160" height="18" rx="6" fill="#6d8f48"/>\n  <rect x="535" y="168" width="12" height="55" fill="#6d8f48"/>\n  <rect x="650" y="168" width="12" height="55" fill="#6d8f48"/>\n  <circle cx="600" cy="230" r="16" fill="#e74c3c"/>\n  <rect x="95" y="95" width="28" height="150" fill="#8b5a2b"/>\n  <circle cx="108" cy="76" r="70" fill="#69b85b"/>\n  <path d="M330 235 L415 125 L445 235 Z" fill="#6cb8e8"/>\n  <circle cx="250" cy="185" r="25" fill="#f2b59c"/>\n  <rect x="230" y="210" width="40" height="65" rx="10" fill="#7cb9e8"/>\n  <circle cx="310" cy="195" r="22" fill="#f2b59c"/>\n  <rect x="292" y="216" width="36" height="58" rx="10" fill="#f2c85b"/>\n  <text x="210" y="305" font-size="22">Maya</text>\n  <text x="290" y="305" font-size="22">Leo</text>\n  <text x="555" y="135" font-size="22">bench</text>\n</svg>',
         alt: 'A park scene showing Maya and Leo, a red ball, a green bench, a tree, and a slide'
       },
+      // Authored, not the teacher's. The Grade 2 pack names a Warm-up as step 1
+      // and asks for two "very easy questions" but writes none for any lesson.
+      // These use only this lesson's own material. Marked `authored: true`.
+      warmup: [
+        {
+          id: 'en-l1-w1',
+          authored: true,
+          prompt: 'Where do children like to play?',
+          choices: ['In a park', 'In a refrigerator', 'Under a car'],
+          answer: 'In a park',
+          hint: 'Think about a place with grass and trees.'
+        },
+        {
+          id: 'en-l1-w2',
+          authored: true,
+          engine: 'TRUE_FALSE',
+          prompt: 'A story happens in a place, like a park or a house.',
+          answer: true,
+          hint: 'Every story has a place where it happens.'
+        }
+      ],
       guided: [
         {
           id: 'en-l1-g1',
@@ -171,6 +192,25 @@
         svg: '<svg viewBox="0 0 800 330" width="100%" role="img" aria-label="A bee flying between flowers carrying pollen">\n  <rect width="800" height="330" fill="#f7fbff"/>\n  <rect y="255" width="800" height="75" fill="#bfe6a8"/>\n  <g transform="translate(150,175)">\n    <circle cx="0" cy="0" r="36" fill="#ffd84d"/>\n    <circle cx="-22" cy="0" r="16" fill="#5b3a29"/>\n    <circle cx="22" cy="0" r="16" fill="#5b3a29"/>\n    <ellipse cx="-10" cy="-37" rx="30" ry="18" fill="#d8f1ff"/>\n    <ellipse cx="23" cy="-37" rx="30" ry="18" fill="#d8f1ff"/>\n  </g>\n  <g transform="translate(470,205)">\n    <circle r="35" fill="#f7c44f"/>\n    <circle cx="0" cy="-42" r="26" fill="#e76886"/>\n    <circle cx="40" cy="-10" r="26" fill="#e76886"/>\n    <circle cx="25" cy="35" r="26" fill="#e76886"/>\n    <circle cx="-25" cy="35" r="26" fill="#e76886"/>\n    <circle cx="-40" cy="-10" r="26" fill="#e76886"/>\n    <rect x="-6" y="38" width="12" height="65" fill="#57934d"/>\n  </g>\n  <circle cx="205" cy="194" r="6" fill="#f2a93b"/>\n  <circle cx="225" cy="205" r="6" fill="#f2a93b"/>\n  <circle cx="248" cy="213" r="6" fill="#f2a93b"/>\n  <path d="M230 185 Q340 110 430 180" fill="none" stroke="#666" stroke-width="3" stroke-dasharray="8 8"/>\n  <text x="75" y="80" font-size="28">Bee</text>\n  <text x="450" y="80" font-size="28">Flower</text>\n</svg>',
         alt: 'A bee flying between flowers carrying pollen'
       },
+      // Authored, not the teacher's — see the note on en-l1.
+      warmup: [
+        {
+          id: 'en-l2-w1',
+          authored: true,
+          prompt: 'What do bees make?',
+          choices: ['Honey', 'Milk', 'Bread'],
+          answer: 'Honey',
+          hint: 'Think of something sweet and sticky.'
+        },
+        {
+          id: 'en-l2-w2',
+          authored: true,
+          engine: 'TRUE_FALSE',
+          prompt: 'Bees visit flowers.',
+          answer: true,
+          hint: 'Think about where you see bees in the summer.'
+        }
+      ],
       guided: [
         {
           id: 'en-l2-g1',

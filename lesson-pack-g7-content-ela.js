@@ -11,10 +11,21 @@
 
    Two fields beyond the shape the Grade 2 content uses:
      notes          — the pack's own short scaffolds (Sentence Frames, Quick
-                      Help, Easy Rule). Rendered by lesson-pack.js in the Look
-                      step, so the teacher's scaffolding reaches the child
-                      rather than sitting unread in this file.
+                      Help, Easy Rule). A note marked `where: 'words'` is a
+                      vocabulary scaffold and is rendered by lesson-pack.js in
+                      the Words First step, ahead of the reading; the rest are
+                      notes about the picture and render in the Look step.
      sentenceFrames — carried inside notes, because that is all they are.
+
+   Two fields are NOT the teacher's, and every item in them is marked
+   `authored: true`:
+     warmup         — two very easy questions opening the topic. The pack names
+                      a Warm-Up as step 1 and writes none for any lesson.
+     guided (part)  — the pack writes one Try With Help for this pack (en-l1);
+                      the second question here is mine. The other seven lessons
+                      had none at all, so all of theirs are mine.
+   They use only the lesson's own reading and word list, and they exist so the
+   pack's own flow is complete rather than silently short.
 
    Game engines are named exactly as the pack names them, so a mapping is never
    guessed at here.
@@ -39,6 +50,7 @@
       notes: [
         {
           label: 'Sentence frames',
+          where: 'words',
           lines: [
             'The main idea is _____.',
             'One important detail is _____.',
@@ -74,6 +86,28 @@
         svg: '<svg viewBox="0 0 900 400" width="100%" role="img" aria-label="A city tree giving shade, taking in rainwater, and giving a bird a home">\n<rect width="900" height="400" fill="#eef8ff"/>\n<rect y="300" width="900" height="100" fill="#d8d8d8"/>\n<rect x="70" y="175" width="150" height="125" fill="#8897a8"/>\n<rect x="690" y="145" width="140" height="155" fill="#7b8da3"/>\n<rect x="435" y="170" width="30" height="150" fill="#80583b"/>\n<circle cx="450" cy="130" r="105" fill="#5faa59"/>\n<circle cx="380" cy="125" r="65" fill="#67b85f"/>\n<circle cx="520" cy="125" r="65" fill="#67b85f"/>\n<ellipse cx="520" cy="125" rx="22" ry="13" fill="#395a7a"/>\n<circle cx="532" cy="121" r="3" fill="white"/>\n<path d="M330 320 Q450 350 570 320" fill="#72b8e8"/>\n<text x="320" y="55" font-size="27">shade</text>\n<text x="560" y="95" font-size="27">bird home</text>\n<text x="315" y="385" font-size="25">roots take in water</text>\n</svg>',
         alt: 'A city tree giving shade, taking in rainwater, and giving a bird a home'
       },
+      // Authored, not the teacher's. The pack names a Warm-Up as step 1 and a
+      // Try With Help as step 5 but writes neither for this lesson beyond the
+      // one guided question below. These use only this lesson's own reading
+      // and word list. Every item I wrote is marked `authored: true`.
+      warmup: [
+        {
+          id: 'en-l1-w1',
+          authored: true,
+          prompt: 'Where do you usually see trees?',
+          choices: ['In a park or on a street', 'Inside a refrigerator', 'Under the ocean'],
+          answer: 'In a park or on a street',
+          hint: 'Think about places near your home or your school.'
+        },
+        {
+          id: 'en-l1-w2',
+          authored: true,
+          engine: 'TRUE_FALSE',
+          prompt: 'On a hot day, the ground under a tree feels cooler than the ground in the sun.',
+          answer: true,
+          hint: 'Think about standing under a tree on a sunny day.'
+        }
+      ],
       guided: [
         {
           id: 'en-l1-t1',
@@ -81,6 +115,18 @@
           choices: ['Trees are green.', 'Trees help cities in many ways.', 'Birds can fly.'],
           answer: 'Trees help cities in many ways.',
           hint: 'Pick the answer that talks about most of the reading.'
+        },
+        {
+          id: 'en-l1-t2',
+          authored: true,
+          prompt: 'Which sentence is a detail, not the main idea?',
+          choices: [
+            'Trees give shade on hot days.',
+            'City trees do many jobs.',
+            'Trees help people, animals, and the environment.'
+          ],
+          answer: 'Trees give shade on hot days.',
+          hint: 'A detail is one small fact. The main idea covers the whole reading.'
         }
       ],
       games: [
@@ -174,6 +220,7 @@
         },
         {
           label: 'Sentence frames',
+          where: 'words',
           lines: [
             'The text says, “_____.”',
             'This is evidence that _____.',
@@ -201,7 +248,50 @@
         svg: '<svg viewBox="0 0 900 380" width="100%" role="img" aria-label="Jamal alone at a bus stop checking a phone that says Saturday">\n<rect width="900" height="380" fill="#eef6fb"/>\n<rect y="290" width="900" height="90" fill="#bbb"/>\n<rect x="560" y="90" width="18" height="200" fill="#555"/>\n<rect x="515" y="75" width="110" height="55" rx="7" fill="#5e8ca8"/>\n<text x="528" y="109" font-size="19" fill="white">BUS STOP</text>\n<circle cx="330" cy="155" r="38" fill="#c88e6b"/>\n<rect x="295" y="195" width="70" height="95" rx="10" fill="#657ca8"/>\n<rect x="390" y="205" width="60" height="90" rx="8" fill="#222"/>\n<rect x="397" y="214" width="46" height="66" fill="#fff"/>\n<text x="401" y="242" font-size="14">SAT</text>\n<text x="400" y="265" font-size="14">7:15</text>\n<text x="90" y="70" font-size="28">No other people</text>\n</svg>',
         alt: 'Jamal alone at a bus stop checking a phone that says Saturday'
       },
-      guided: [],
+      warmup: [
+        {
+          id: 'en-l2-w1',
+          authored: true,
+          prompt: 'It is Saturday and there is no school. Which of these will you probably NOT do today?',
+          choices: ['Take the school bus', 'Eat breakfast', 'Play outside'],
+          answer: 'Take the school bus',
+          hint: 'Think about what is different about that day.'
+        },
+        {
+          id: 'en-l2-w2',
+          authored: true,
+          engine: 'TRUE_FALSE',
+          prompt: 'If you are told only part of a story, you can sometimes guess the rest.',
+          answer: true,
+          hint: 'Think about guessing the end of a story you have heard before.'
+        }
+      ],
+      guided: [
+        {
+          id: 'en-l2-t1',
+          authored: true,
+          prompt: 'What is the evidence that it was Saturday?',
+          choices: [
+            'Jamal looked at his phone and the date was Saturday.',
+            'Jamal walked to the bus stop at 7:15 in the morning.',
+            'Usually, five or six people waited there.'
+          ],
+          answer: 'Jamal looked at his phone and the date was Saturday.',
+          hint: 'Evidence is what the text actually says. Find the words that tell you the day.'
+        },
+        {
+          id: 'en-l2-t2',
+          authored: true,
+          prompt: 'What can you infer about why Jamal smiled?',
+          choices: [
+            'He realised he did not need the bus that morning.',
+            'He was late for the bus.',
+            'He forgot where he lived.'
+          ],
+          answer: 'He realised he did not need the bus that morning.',
+          hint: 'An inference uses clues. The clue is the date on his phone.'
+        }
+      ],
       games: [
         {
           name: 'Evidence or Inference?',

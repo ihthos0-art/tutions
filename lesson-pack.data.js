@@ -120,6 +120,7 @@
     var out = {};
     for (var k in lesson) out[k] = lesson[k];
     out.games = flattenGames(lesson.games).map(normaliseItem);
+    out.warmup = (lesson.warmup || []).map(normaliseItem);
     out.guided = (lesson.guided || []).map(normaliseItem);
     out.challenge = lesson.challenge ? normaliseItem(lesson.challenge) : null;
     return out;
@@ -246,10 +247,16 @@
 
   // The pack's fixed flow, in order. The driver walks this array, so the
   // structure is enforced by construction rather than by convention.
-  var STEPS = ['warmup', 'learn', 'look', 'together', 'practice', 'challenge', 'score', 'retry', 'finish'];
+  // `words` sits second because both packs put the vocabulary in front of the
+  // reading: the Grade 7 pack names the step "Words First", and the Grade 2
+  // pack heads the same block "Key Words" above its "Read:" section. Rendering
+  // it inside Learn instead put the words *after* the passage a child has to
+  // use them on, which is the wrong way round in both packs.
+  var STEPS = ['warmup', 'words', 'learn', 'look', 'together', 'practice', 'challenge', 'score', 'retry', 'finish'];
 
   var STEP_LABELS = {
     warmup:    'Warm-up',
+    words:     'Key Words',
     learn:     'Learn',
     look:      'Look',
     together:  'Try Together',
@@ -259,6 +266,16 @@
     retry:     'Retry Mistakes',
     finish:    'All Done'
   };
+
+  // Each pack names its own steps — the Grade 7 pack calls these "Words First",
+  // "Look at the Picture", "Try With Help", "Practice Games" and "Reward". The
+  // names are the teacher's, so they are the page's to declare, exactly like
+  // the badges. Anything not overridden keeps the default above.
+  if (cfg.stepLabels) {
+    for (var stepKey in cfg.stepLabels) {
+      if (STEP_LABELS[stepKey] !== undefined) STEP_LABELS[stepKey] = cfg.stepLabels[stepKey];
+    }
+  }
 
   // Engines this pack actually uses. MEMORY is listed in the teacher's menu but
   // no lesson uses it, so it is deliberately absent — see the plan.
@@ -357,6 +374,10 @@
     (lesson.games || []).forEach(function (g, i) {
       if (!g.name) bad('game ' + (i + 1) + ' has no name');
       errs = errs.concat(validateItem(g, where + ' game ' + (i + 1) + ' (' + (g.name || '?') + ')'));
+    });
+
+    (lesson.warmup || []).forEach(function (g, i) {
+      errs = errs.concat(validateItem(g, where + ' warmup ' + (i + 1)));
     });
 
     (lesson.guided || []).forEach(function (g, i) {
@@ -511,12 +532,22 @@
     return errs;
   }
 
-  // The pack's own teaching rules, reported rather than enforced. Every entry
-  // here is a place the transcribed material does not do what the pack's
-  // "Content Rules" ask, and each is expected — inventing a guided example or
-  // a third engine to clear them would be substituting my content for the
-  // teacher's. The test asserts this list exactly, so a new deviation cannot
-  // appear unnoticed.
+  // The pack's own teaching rules, reported rather than enforced — plus a
+  // separate account of the items that are not the teacher's at all.
+  //
+  // Every entry of the first kind is a place the transcribed material does not
+  // do what the pack's "Content Rules" ask, and each is expected: the source
+  // genuinely supplies no hint for those items, and inventing one would be
+  // substituting my content for the teacher's.
+  //
+  // The second kind exists because that rule has one authorised exception.
+  // Both packs name a Warm-Up and a Try With Help in their flow and then write
+  // no warm-up for any lesson and no guided example for most of them, which
+  // left steps of the teacher's own flow silently empty. The teacher asked for
+  // them to be written, so they are — and every item I wrote carries
+  // `authored: true` in the content file, and is counted here by name. A test
+  // asserts this list exactly, so neither kind of deviation can appear
+  // unnoticed.
   function conformanceReport() {
     var notes = [];
     function note(id, msg) { notes.push(id + ': ' + msg); }
@@ -545,6 +576,14 @@
         note(l.lesson_id, noHint + ' of ' + items.length +
           ' items have no hint; the source supplies none, so no hint is shown ' +
           'after a wrong first try');
+      }
+
+      var all = (l.warmup || []).concat(items);
+      var authored = all.filter(function (it) { return it.authored; }).length;
+      if (authored) {
+        note(l.lesson_id, authored + ' of ' + all.length +
+          ' items are authored, not the teacher\'s — the pack names the step ' +
+          'and supplies no question for it');
       }
     });
     return notes.sort();

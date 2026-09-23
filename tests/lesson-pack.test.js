@@ -23,6 +23,7 @@ const D = require('../lesson-pack.data.js');
 const ROOT = path.join(__dirname, '..');
 const ENGINE_SRC = fs.readFileSync(path.join(ROOT, 'lesson-pack.js'), 'utf8');
 const CSS_SRC = fs.readFileSync(path.join(ROOT, 'lesson-pack.css'), 'utf8');
+const PAGE = fs.readFileSync(path.join(ROOT, 'nafis.html'), 'utf8');
 
 // The source scans below must look at code, not prose. Both files document the
 // host page's reserved names in comments — that documentation is the reason
@@ -185,25 +186,66 @@ test('sequence games survived normalisation with their items intact', () => {
 /* ------------------------------------------------------------- the gaps */
 
 // The pack's own teaching rules, reported not enforced: the transcribed
-// lessons genuinely do not all have a guided example or a hint, and inventing
-// content to satisfy a test would substitute my material for the teacher's.
-// Asserting the exact list means a *new* deviation cannot slip in unnoticed.
+// lessons genuinely do not all have a hint, and inventing content to satisfy a
+// test would substitute my material for the teacher's.
+//
+// There is one recorded exception and it is deliberate. Both packs name a
+// two-question warm-up and a two-example "Try Together" step, but neither
+// supplies the questions for every lesson; several lessons also leave `guided`
+// empty. The teacher authorised writing those in ("Write them, marked as
+// mine"), so every such item is tagged `authored: true` and reported here by
+// name and count. That tag is the thing to look for: an item with no
+// `authored` flag is the teacher's, and must never be edited to make a test
+// pass.
+//
+// Asserting the exact list still matters, because a *new* deviation — a reading
+// that lost its hint count, or content that quietly stopped being the
+// teacher's — would change a line here and fail loudly.
 test('conformance gaps are unchanged from the recorded baseline', () => {
   assert.deepEqual(D.conformanceReport(), [
+    "en-l1: 2 of 12 items are authored, not the teacher's — the pack names the step and supplies no question for it",
     'en-l1: 9 of 10 items have no hint; the source supplies none, so no hint is shown after a wrong first try',
     'en-l2: 14 of 14 items have no hint; the source supplies none, so no hint is shown after a wrong first try',
+    "en-l2: 2 of 16 items are authored, not the teacher's — the pack names the step and supplies no question for it",
     'ma-l1: 16 of 18 items have no hint; the source supplies none, so no hint is shown after a wrong first try',
-    'ma-l2: 17 of 18 items have no hint; the source supplies none, so no hint is shown after a wrong first try',
-    'ma-l2: has no guided example; the source supplies none',
-    'sc-l1: 8 of 8 items have no hint; the source supplies none, so no hint is shown after a wrong first try',
-    'sc-l1: has no guided example; the source supplies none',
-    'sc-l2: 8 of 8 items have no hint; the source supplies none, so no hint is shown after a wrong first try',
-    'sc-l2: has no guided example; the source supplies none',
-    'ss-l1: 14 of 14 items have no hint; the source supplies none, so no hint is shown after a wrong first try',
-    'ss-l1: has no guided example; the source supplies none',
-    'ss-l2: 10 of 10 items have no hint; the source supplies none, so no hint is shown after a wrong first try',
-    'ss-l2: has no guided example; the source supplies none'
+    "ma-l1: 2 of 20 items are authored, not the teacher's — the pack names the step and supplies no question for it",
+    'ma-l2: 17 of 20 items have no hint; the source supplies none, so no hint is shown after a wrong first try',
+    "ma-l2: 4 of 22 items are authored, not the teacher's — the pack names the step and supplies no question for it",
+    "sc-l1: 4 of 12 items are authored, not the teacher's — the pack names the step and supplies no question for it",
+    'sc-l1: 8 of 10 items have no hint; the source supplies none, so no hint is shown after a wrong first try',
+    "sc-l2: 4 of 12 items are authored, not the teacher's — the pack names the step and supplies no question for it",
+    'sc-l2: 8 of 10 items have no hint; the source supplies none, so no hint is shown after a wrong first try',
+    'ss-l1: 14 of 16 items have no hint; the source supplies none, so no hint is shown after a wrong first try',
+    "ss-l1: 4 of 18 items are authored, not the teacher's — the pack names the step and supplies no question for it",
+    'ss-l2: 10 of 12 items have no hint; the source supplies none, so no hint is shown after a wrong first try',
+    "ss-l2: 4 of 14 items are authored, not the teacher's — the pack names the step and supplies no question for it"
   ]);
+});
+
+// The authorised exception must stay visibly an exception. If this ever equals
+// the total item count, the packs' own content has been crowded out.
+test('most of every lesson is still the teacher\'s, not mine', () => {
+  D.ordered().forEach(l => {
+    const all = l.warmup.concat(l.games, l.guided, l.challenge ? [l.challenge] : []);
+    const mine = all.filter(it => it.authored).length;
+    assert.ok(mine < all.length,
+      `${l.lesson_id} is entirely authored — the pack supplies nothing for it`);
+  });
+});
+
+test('every authored item is tagged, so the teacher can find it', () => {
+  // Any item that is not the teacher's must say so. The reverse is not
+  // asserted: a transcribed item may carry the flag too if the pack's wording
+  // was reused, and that is not a defect.
+  const untagged = [];
+  D.ordered().forEach(l => {
+    l.warmup.concat(l.games, l.guided).forEach(it => {
+      if (it.authored === undefined && !it.id) {
+        untagged.push(`${l.lesson_id}: item with no id and no authored flag`);
+      }
+    });
+  });
+  assert.deepEqual(untagged, [], untagged.join('\n'));
 });
 
 test('a lesson with no hint still renders a question', () => {
@@ -344,12 +386,52 @@ test('state is never signalled by colour alone', () => {
 
 /* ------------------------------------------------------------- lesson flow */
 
-test('the nine steps are the pack\'s nine steps, in order', () => {
-  assert.deepEqual(D.STEPS, ['warmup', 'learn', 'look', 'together', 'practice',
-    'challenge', 'score', 'retry', 'finish']);
+test('the ten steps are the packs\' steps, in order', () => {
+  // Nine of these are the packs' own named steps. `words` is the tenth: the
+  // Grade 7 pack names "Words First" second, and the Grade 2 pack heads the
+  // same block "Key Words" directly above its "Read:" section. It used to be
+  // rendered inside Learn, which put the vocabulary *after* the passage a
+  // child was meant to use it on.
+  assert.deepEqual(D.STEPS, ['warmup', 'words', 'learn', 'look', 'together',
+    'practice', 'challenge', 'score', 'retry', 'finish']);
   Object.keys(D.STEP_LABELS).forEach(k => {
     assert.ok(D.STEPS.indexOf(k) !== -1, `label for unknown step ${k}`);
   });
+});
+
+test('the vocabulary step sits between the warm-up and the reading', () => {
+  const words = D.STEPS.indexOf('words');
+  assert.ok(words > D.STEPS.indexOf('warmup'), 'Words First must come after the warm-up');
+  assert.ok(words < D.STEPS.indexOf('learn'), 'Words First must come before the reading');
+  assert.ok(words < D.STEPS.indexOf('practice'), 'Words First must come before the drills');
+});
+
+test('a page can rename the steps its own pack names differently', () => {
+  // The Grade 7 page declares "Words First", "Look at the Picture", "Try With
+  // Help", "Practice Games" and "Reward". The default stays the Grade 2 pack's
+  // wording, because that page declares nothing.
+  assert.equal(D.STEP_LABELS.words, 'Key Words');
+
+  const block = PAGE.match(/stepLabels:\s*\{([\s\S]*?)\n\s*\}/);
+  assert.ok(block, 'the Grade 7 page declares no step labels');
+  const declared = [...block[1].matchAll(/(\w+)\s*:\s*'([^']+)'/g)]
+    .map(m => ({ step: m[1], label: m[2] }));
+
+  assert.ok(declared.length, 'no step labels found in the Grade 7 page');
+  // A label for a step that does not exist would silently do nothing, which is
+  // the same silent failure the rest of this file exists to catch.
+  declared.forEach(d => {
+    assert.ok(D.STEPS.indexOf(d.step) !== -1, `unknown step label ${d.step}`);
+    assert.ok(d.label.trim().length, `${d.step} has an empty label`);
+  });
+
+  // The five names the pack actually uses must be the five the page declares.
+  ['words', 'look', 'together', 'practice', 'finish'].forEach(k => {
+    assert.ok(declared.some(d => d.step === k), `nafis.html does not label "${k}"`);
+  });
+  assert.equal(declared.find(d => d.step === 'words').label, 'Words First');
+  assert.equal(declared.find(d => d.step === 'together').label, 'Try With Help');
+  assert.equal(declared.find(d => d.step === 'finish').label, 'Reward');
 });
 
 test('the review is always reachable, overriding the pack\'s unlock gate', () => {

@@ -5,19 +5,50 @@
   var NS = (window.HW && window.HW.student) ||
     location.pathname.split('/').pop().replace('.html', '') || 'index';
 
+  // ---- Answer comparison for the math worksheets ----
+  // A child types the answer, so the same number arrives written several ways: a
+  // unicode minus pasted from a phone or a word processor instead of the ASCII
+  // hyphen the answer key uses, a currency sign, thousands separators, a unit
+  // typed after the number, an explicit plus. Every rewrite below is to a form
+  // the answer key itself could have been written in, so this can only make a
+  // right answer match — it can never turn a wrong answer into a right one.
+  // The unicode minus is the reason it exists: seven of the ten problems on
+  // salma-khadija.html have a negative answer, and a child typing "−3" against
+  // a key of "-3" was marked wrong no matter how well she had worked it out.
+  function normMathAnswer(value) {
+    return String(value == null ? '' : value)
+      .trim()
+      .toLowerCase()
+      .replace(/[−‐-―⁃﹣－]/g, '-')  // any dash or minus → hyphen
+      .replace(/^\$/, '')
+      .replace(/,/g, '')
+      .replace(/^[+=]/, '')
+      .replace(/\s+/g, '');
+  }
+
+  // When both sides are numbers they are compared as numbers, so "6" and "6.0"
+  // agree, and a unit left on the end ("-2 meters") still finds its key. A
+  // non-numeric answer falls back to comparing the text, exactly as before.
+  function mathAnswerMatches(userRaw, answerRaw) {
+    var user = normMathAnswer(userRaw);
+    var ans = normMathAnswer(answerRaw);
+    if (!user) return false;
+    var un = parseFloat(user), an = parseFloat(ans);
+    if (!isNaN(un) && !isNaN(an)) return un === an;
+    return user === ans;
+  }
+
   // ---- GLOBAL: Math check (called from onclick="checkMath()" in HTML) ----
   window.checkMath = function () {
     var inputs = document.querySelectorAll('#math input[data-answer]');
     var correct = 0;
     inputs.forEach(function (inp) {
-      var user = inp.value.trim().replace(/^\$/, '').replace(/,/g, '').toLowerCase();
-      var ans = (inp.dataset.answer || '').trim().replace(/^\$/, '').replace(/,/g, '').toLowerCase();
       inp.classList.remove('correct', 'wrong');
       // Also handle parent-level toggling (mahiya/manha pattern)
       var parent = inp.closest('.math-prob, .math-word, .problem');
       if (parent) { parent.classList.remove('correct', 'wrong'); }
-      if (!user) return;
-      if (user === ans) {
+      if (!inp.value || !inp.value.trim()) return;
+      if (mathAnswerMatches(inp.value, inp.dataset.answer)) {
         inp.classList.add('correct');
         if (parent) parent.classList.add('correct');
         correct++;

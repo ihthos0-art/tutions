@@ -539,28 +539,44 @@ details.key div { padding: 20px 26px; font-size: 13.5px; line-height: 1.9; }
   <div class="tab-content" id="math">
     <header class="page-header">
       <p class="school-name">Math Practice &mdash; Salma &amp; Khadija</p>
-      <h1>Two-Step Word Problems</h1>
-      <p class="sub">Read carefully. Each problem needs two steps to solve. Show your work on paper.</p>
+      <h1>Positive and Negative Numbers</h1>
+      <p class="sub">Add and subtract positive and negative numbers. Write a negative answer with a minus sign, like &minus;3. Show your work on paper.</p>
     </header>
     <section class="worksheet">
       <div class="ws-topbar"><span class="ws-number">Math Practice 01</span></div>
-      <p class="section-label" style="margin-bottom:18px;">Solve each two-step problem</p>
+      <p class="section-label" style="margin-bottom:18px;">Solve each problem</p>
 
-      <div class="math-word">1. A school buys 7 boxes of markers. Each box has 24 markers. Students use 60 markers during art class. How many markers are left?<div style="margin-top:10px;font-family:'Merriweather Sans',sans-serif;font-size:13px;font-weight:600;color:#555;">Answer: <input type="text" data-save="m1-1" data-answer="108" placeholder="?" /></div></div>
+      <!--
+        The keys are m2-1..m2-10, not the m1-1..m1-8 this worksheet used before.
+        Two separate places restore a #math input from localStorage — tabs.js:92
+        under "<page>:<key>", and interactive.js's initMathSave under
+        "<student>:mp-<key>" — so reusing the old keys would bring each girl's
+        previous answer back into a different problem, where it would be marked
+        wrong however she worked it. New keys mean the sheet opens blank.
 
-      <div class="math-word">2. Lena earns $12 per hour at the bakery. She works 3 hours on Thursday and 5 hours on Friday. How much does she earn in all?<div style="margin-top:10px;font-family:'Merriweather Sans',sans-serif;font-size:13px;font-weight:600;color:#555;">Answer: <input type="text" data-save="m1-2" data-answer="$96" placeholder="?" /></div></div>
+        The answers are the values, never a letter, and every one of the seven
+        negative answers is stored with an ASCII hyphen. checkMath normalises
+        any dash or unicode minus a child types onto that same hyphen.
+      -->
+      <div class="math-word">1. <strong>Elevator</strong> &mdash; Alyssa is on the 2nd floor. She takes the elevator down 6 floors, then goes up 3 floors. What floor is Alyssa on now?<div style="margin-top:10px;font-family:'Merriweather Sans',sans-serif;font-size:13px;font-weight:600;color:#555;">Answer: <input type="text" data-save="m2-1" data-answer="-1" placeholder="?" /> <span>(floor number)</span></div></div>
 
-      <div class="math-word">3. A bookstore has 6 shelves. Each shelf holds 45 books. Over the weekend, 78 books are sold. How many books remain?<div style="margin-top:10px;font-family:'Merriweather Sans',sans-serif;font-size:13px;font-weight:600;color:#555;">Answer: <input type="text" data-save="m1-3" data-answer="192" placeholder="?" /></div></div>
+      <div class="math-word">2. <strong>Temperature</strong> &mdash; At 8 AM, the temperature is 3&deg;C. During the morning, it drops 7&deg;C. Later, it rises 4&deg;C. What is the new temperature?<div style="margin-top:10px;font-family:'Merriweather Sans',sans-serif;font-size:13px;font-weight:600;color:#555;">Answer: <input type="text" data-save="m2-2" data-answer="0" placeholder="?" /> &deg;C</div></div>
 
-      <div class="math-word">4. A cook makes 5 batches of muffins. Each batch has 24 muffins. She packs them into boxes of 8. How many full boxes does she fill?<div style="margin-top:10px;font-family:'Merriweather Sans',sans-serif;font-size:13px;font-weight:600;color:#555;">Answer: <input type="text" data-save="m1-4" data-answer="15" placeholder="?" /></div></div>
+      <div class="math-word">3. <strong>Parking Garage</strong> &mdash; Omar parks on level &minus;2 of an underground garage. He drives down 3 more levels, then goes up 4 levels. What parking level is he on now?<div style="margin-top:10px;font-family:'Merriweather Sans',sans-serif;font-size:13px;font-weight:600;color:#555;">Answer: <input type="text" data-save="m2-3" data-answer="-1" placeholder="?" /> <span>(level)</span></div></div>
 
-      <div class="math-word">5. Yusuf saves coins in 4 jars. Each jar holds 65 coins. He spends 90 coins at a fair. How many coins does he have left?<div style="margin-top:10px;font-family:'Merriweather Sans',sans-serif;font-size:13px;font-weight:600;color:#555;">Answer: <input type="text" data-save="m1-5" data-answer="170" placeholder="?" /></div></div>
+      <div class="math-word">4. <strong>Video Game</strong> &mdash; Maya starts a game with 0 points. She loses 6 points in the first round and gains 9 points in the second round. What is her score now?<div style="margin-top:10px;font-family:'Merriweather Sans',sans-serif;font-size:13px;font-weight:600;color:#555;">Answer: <input type="text" data-save="m2-4" data-answer="3" placeholder="?" /> <span>points</span></div></div>
 
-      <div class="math-word">6. A school garden has 9 rows of plants. Each row has 12 plants. After a storm, 27 plants must be replanted. How many healthy plants remain?<div style="margin-top:10px;font-family:'Merriweather Sans',sans-serif;font-size:13px;font-weight:600;color:#555;">Answer: <input type="text" data-save="m1-6" data-answer="81" placeholder="?" /></div></div>
+      <div class="math-word">5. <strong>Bank Account</strong> &mdash; Noah&rsquo;s account balance is &minus;$4, meaning he owes $4. He deposits $10. What is his new balance?<div style="margin-top:10px;font-family:'Merriweather Sans',sans-serif;font-size:13px;font-weight:600;color:#555;">Answer: $<input type="text" data-save="m2-5" data-answer="6" placeholder="?" /></div></div>
 
-      <div class="math-word">7. A runner trains 6 days each week, running 4 miles each day. Her goal is 30 miles. How many more miles does she still need to run?<div style="margin-top:10px;font-family:'Merriweather Sans',sans-serif;font-size:13px;font-weight:600;color:#555;">Answer: <input type="text" data-save="m1-7" data-answer="6" placeholder="?" /></div></div>
+      <div class="math-word">6. <strong>Mountain Hike</strong> &mdash; A hiker is 5 meters above sea level. She walks down 9 meters, then climbs up 2 meters. What is her final position compared with sea level?<div style="margin-top:10px;font-family:'Merriweather Sans',sans-serif;font-size:13px;font-weight:600;color:#555;">Answer: <input type="text" data-save="m2-6" data-answer="-2" placeholder="?" /> <span>meters</span></div></div>
 
-      <div class="math-word">8. A farmer picks 168 apples and packs them into baskets of 14. She sells 9 baskets at the market. How many full baskets does she have left?<div style="margin-top:10px;font-family:'Merriweather Sans',sans-serif;font-size:13px;font-weight:600;color:#555;">Answer: <input type="text" data-save="m1-8" data-answer="3" placeholder="?" /></div></div>
+      <div class="math-word">7. <strong>Submarine</strong> &mdash; A submarine is at &minus;8 meters, which means 8 meters below sea level. It rises 5 meters, then dives 4 meters. What depth is the submarine at now?<div style="margin-top:10px;font-family:'Merriweather Sans',sans-serif;font-size:13px;font-weight:600;color:#555;">Answer: <input type="text" data-save="m2-7" data-answer="-7" placeholder="?" /> <span>meters</span></div></div>
+
+      <div class="math-word">8. <strong>Football Game</strong> &mdash; A team has the ball at the 0-yard position. They move forward 7 yards, then lose 12 yards on the next play. What number represents their new position?<div style="margin-top:10px;font-family:'Merriweather Sans',sans-serif;font-size:13px;font-weight:600;color:#555;">Answer: <input type="text" data-save="m2-8" data-answer="-5" placeholder="?" /> <span>yards</span></div></div>
+
+      <div class="math-word">9. <strong>Winter Temperature</strong> &mdash; The temperature is &minus;6&deg;C in the morning. By noon, it becomes 8&deg;C warmer. During the evening, it drops 5&deg;C. What is the evening temperature?<div style="margin-top:10px;font-family:'Merriweather Sans',sans-serif;font-size:13px;font-weight:600;color:#555;">Answer: <input type="text" data-save="m2-9" data-answer="-3" placeholder="?" /> &deg;C</div></div>
+
+      <div class="math-word">10. <strong>Treasure Hunt</strong> &mdash; Leo begins at 0 on a number line. His first clue tells him to move 4 spaces left. His next clue tells him to move 7 spaces right. Then he moves 2 spaces left. What number does Leo finish on?<div style="margin-top:10px;font-family:'Merriweather Sans',sans-serif;font-size:13px;font-weight:600;color:#555;">Answer: <input type="text" data-save="m2-10" data-answer="1" placeholder="?" /></div></div>
 
       <div class="check-wrap">
         <button class="check-btn" onclick="checkMath()">Check Answers</button>
@@ -568,7 +584,7 @@ details.key div { padding: 20px 26px; font-size: 13.5px; line-height: 1.9; }
       </div>
     </section>
     <div class="reset-bar">
-      <button type="button" class="reset-btn" data-reset="math">Reset Math Practice</button>
+      <button type="button" class="reset-btn" data-reset="math-clear">Clear My Answers</button>
     </div>
     <p class="save-notice">Your answers are saved automatically in this browser.</p>
   </div>
@@ -621,8 +637,8 @@ details.key div { padding: 20px 26px; font-size: 13.5px; line-height: 1.9; }
 
   <script src="math-renderer.js?v=1"></script>
   <script src="august-assignments.js?v=1"></script>
-  <script src="homework-loader.js?v=2"></script>
-  <script src="interactive.js?v=1"></script>
+  <script src="homework-loader.js?v=3"></script>
+  <script src="interactive.js?v=2"></script>
   <script src="answers-sync.js?v=1"></script>
   <script src="tabs.js?v=3"></script>
   <script src="ai-generator.js?v=1"></script>
@@ -714,6 +730,52 @@ details.key div { padding: 20px 26px; font-size: 13.5px; line-height: 1.9; }
       else if (t === 'tf') gradeTF('tf-score');
       else if (map[t]) gradeInputs(map[t][0], map[t][1]);
     });
+  });
+
+  // ---- "Clear My Answers" on the math tab ----
+  //
+  // This button deliberately does NOT carry data-reset="math". tabs.js:48 hands
+  // that value to AIGenerator.resetTab, which invents a fresh set of problems
+  // and appends them as a .math-grid beside the ten written ones. checkMath
+  // selects every '#math input[data-answer]', so it would then count both sets
+  // and the score could never reach full marks. The worksheet is the teacher's
+  // content now; clearing the answers is all this needs to do.
+  //
+  // It clears three keys per input, not one. The same #math input is saved by
+  // three separate scripts under three different names — tabs.js:92 writes
+  // "<page>:<key>", interactive.js's initMathSave writes "<student>:mp-<key>",
+  // and this page's own auto-save below writes "microbiome:<key>" — so clearing
+  // any one of them leaves the other two to restore the answer on the next load,
+  // and the button would look like it had not worked.
+  var clearMathBtn = document.querySelector('.reset-btn[data-reset="math-clear"]');
+  if (clearMathBtn) clearMathBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+    var tab = document.getElementById('math');
+    if (!tab) return;
+    if (!confirm('Clear your answers in Math Practice?')) return;
+
+    var page = location.pathname.split('/').pop().replace('.html', '') || 'index';
+    var student = (window.HW && window.HW.student) || page;
+
+    tab.querySelectorAll('input[data-answer]').forEach(function (inp) {
+      inp.value = '';
+      inp.classList.remove('correct', 'wrong');
+      var host = inp.closest('.math-prob, .math-word, .problem');
+      if (host) host.classList.remove('correct', 'wrong');
+      if (!inp.dataset.save) return;
+      try {
+        localStorage.removeItem(page + ':' + inp.dataset.save);
+        localStorage.removeItem(student + ':mp-' + inp.dataset.save);
+        localStorage.removeItem(NS + ':' + inp.dataset.save);
+      } catch (err) { /* private mode, or storage blocked — nothing to clear */ }
+    });
+
+    var score = document.getElementById('math-score');
+    if (score) { score.textContent = ''; score.className = 'math-score'; }
+
+    tab.style.transition = 'opacity 0.2s';
+    tab.style.opacity = '0.5';
+    setTimeout(function () { tab.style.opacity = '1'; }, 200);
   });
 })();
 

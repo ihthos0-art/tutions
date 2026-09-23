@@ -166,30 +166,50 @@
       <p class="wb-label">Word Bank</p>
       <p class="wb-hint">Drag a word onto a blank &mdash; or tap a word, then tap a blank</p>
       <div class="wb-words">
-        <span class="wb-chip" data-word="play">play</span>
-        <span class="wb-chip" data-word="blue">blue</span>
-        <span class="wb-chip" data-word="sleep">sleep</span>
-        <span class="wb-chip" data-word="ride">ride</span>
-        <span class="wb-chip" data-word="grow">grow</span>
-        <span class="wb-chip" data-word="shine">shine</span>
-        <span class="wb-chip" data-word="dance">dance</span>
-        <span class="wb-chip" data-word="help">help</span>
-        <span class="wb-chip" data-word="laugh">laugh</span>
-        <span class="wb-chip" data-word="sing">sing</span>
+        <span class="wb-chip" data-word="whisper">whisper</span>
+        <span class="wb-chip" data-word="sturdy">sturdy</span>
+        <span class="wb-chip" data-word="curious">curious</span>
+        <span class="wb-chip" data-word="gentle">gentle</span>
+        <span class="wb-chip" data-word="harvest">harvest</span>
+        <span class="wb-chip" data-word="journey">journey</span>
+        <span class="wb-chip" data-word="promise">promise</span>
+        <span class="wb-chip" data-word="flutter">flutter</span>
+        <span class="wb-chip" data-word="polite">polite</span>
+        <span class="wb-chip" data-word="brave">brave</span>
       </div>
     </div>
 
+    <!--
+      This is the Grade 2 worksheet that replaced the Grade 1 one (play, blue,
+      sleep, ride, grow, shine, dance, help, laugh, sing).
+
+      The keys are g2w1..g2w10, NOT the h1..h10 the old words used. That is
+      deliberate and it is the whole point of the change. interactive.js:171
+      restores a blank from localStorage by its data-save key, and :107 writes
+      it on every placement, so reusing the old keys would drop each girl's
+      previous answer ("play") into a new sentence ("The butterfly will ___"),
+      where it is not even in the word bank and no chip can be marked used.
+      The worksheet would look broken and could not be finished. New keys mean
+      every child starts from an empty, answerable sheet.
+
+      The girls' old h1..h10 entries stay in localStorage unreferenced. They are
+      ten short strings and nothing reads them again; the Assigned tab's
+      "Reset ALL saved answers" button clears them along with everything else.
+      These answers never reach the parent dashboard either — answers-sync.js
+      collects only input[data-save] and textarea[data-save], and a blank here
+      is a span — so the keys are local-only and free to change.
+    -->
     <div class="fitb-list">
-      <div class="fitb-item"><span class="fitb-num">1.</span><p class="fitb-text">Children like to <span class="fitb-drop" data-save="h1" data-answer="play"></span> on the playground.</p></div>
-      <div class="fitb-item"><span class="fitb-num">2.</span><p class="fitb-text">The sky is <span class="fitb-drop" data-save="h2" data-answer="blue"></span> on a clear day.</p></div>
-      <div class="fitb-item"><span class="fitb-num">3.</span><p class="fitb-text">The baby will <span class="fitb-drop" data-save="h3" data-answer="sleep"></span> after lunch.</p></div>
-      <div class="fitb-item"><span class="fitb-num">4.</span><p class="fitb-text">I like to <span class="fitb-drop" data-save="h4" data-answer="ride"></span> my bike to school.</p></div>
-      <div class="fitb-item"><span class="fitb-num">5.</span><p class="fitb-text">Flowers <span class="fitb-drop" data-save="h5" data-answer="grow"></span> when they get water and sun.</p></div>
-      <div class="fitb-item"><span class="fitb-num">6.</span><p class="fitb-text">The sun will <span class="fitb-drop" data-save="h6" data-answer="shine"></span> bright in the morning.</p></div>
-      <div class="fitb-item"><span class="fitb-num">7.</span><p class="fitb-text">We can <span class="fitb-drop" data-save="h7" data-answer="dance"></span> to music at the party.</p></div>
-      <div class="fitb-item"><span class="fitb-num">8.</span><p class="fitb-text">My friend will <span class="fitb-drop" data-save="h8" data-answer="help"></span> me carry my books.</p></div>
-      <div class="fitb-item"><span class="fitb-num">9.</span><p class="fitb-text">We <span class="fitb-drop" data-save="h9" data-answer="laugh"></span> when we hear a funny joke.</p></div>
-      <div class="fitb-item"><span class="fitb-num">10.</span><p class="fitb-text">The birds <span class="fitb-drop" data-save="h10" data-answer="sing"></span> a pretty song in the trees.</p></div>
+      <div class="fitb-item"><span class="fitb-num">1.</span><p class="fitb-text">The butterfly will <span class="fitb-drop" data-save="g2w1" data-answer="flutter"></span> past the flowers.</p></div>
+      <div class="fitb-item"><span class="fitb-num">2.</span><p class="fitb-text">She made a <span class="fitb-drop" data-save="g2w2" data-answer="promise"></span> to help her friend every day.</p></div>
+      <div class="fitb-item"><span class="fitb-num">3.</span><p class="fitb-text">We had a long <span class="fitb-drop" data-save="g2w3" data-answer="journey"></span> to the beach.</p></div>
+      <div class="fitb-item"><span class="fitb-num">4.</span><p class="fitb-text">The farmer will <span class="fitb-drop" data-save="g2w4" data-answer="harvest"></span> the corn in the fall.</p></div>
+      <div class="fitb-item"><span class="fitb-num">5.</span><p class="fitb-text">Please be <span class="fitb-drop" data-save="g2w5" data-answer="gentle"></span> when you hold the sleepy kitten.</p></div>
+      <div class="fitb-item"><span class="fitb-num">6.</span><p class="fitb-text">My new backpack is <span class="fitb-drop" data-save="g2w6" data-answer="sturdy"></span>, so it will not break.</p></div>
+      <div class="fitb-item"><span class="fitb-num">7.</span><p class="fitb-text">She was <span class="fitb-drop" data-save="g2w7" data-answer="curious"></span> about the new planet, so she read three books about it.</p></div>
+      <div class="fitb-item"><span class="fitb-num">8.</span><p class="fitb-text">The firefighter was <span class="fitb-drop" data-save="g2w8" data-answer="brave"></span> and ran into the building.</p></div>
+      <div class="fitb-item"><span class="fitb-num">9.</span><p class="fitb-text">You must <span class="fitb-drop" data-save="g2w9" data-answer="whisper"></span> in the library, so speak very softly.</p></div>
+      <div class="fitb-item"><span class="fitb-num">10.</span><p class="fitb-text">Always be <span class="fitb-drop" data-save="g2w10" data-answer="polite"></span> and say please and thank you.</p></div>
     </div>
 
     <div class="check-row">

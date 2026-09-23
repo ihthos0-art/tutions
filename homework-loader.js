@@ -173,8 +173,12 @@
     content = content || {};
     window.HW.content = content;
     // Salma & Khadija's assigned tab is the static Microbiome worksheet — never inject
-    // the August math assignment over it (salma-khadija.html?student=salma|khadija).
-    var isSalmaKhadija = (STUDENT === 'salma' || STUDENT === 'khadija');
+    // the August math assignment over it. All three ways in must be covered: the
+    // combined menu entry (salma-khadija.html) and the per-girl links
+    // (?student=salma|khadija). 'salma-khadija' is whitelisted in the worker's
+    // STUDENT_IDS, so leaving it out lets a KV record for that id replace the
+    // static word bank, sentences and ELA passage.
+    var isSalmaKhadija = (STUDENT === 'salma' || STUDENT === 'khadija' || STUDENT === 'salma-khadija');
     if (content.assigned) {
       if (content.assigned.fillBlank && !isSalmaKhadija) renderFillBlank(content.assigned.fillBlank);
       if (content.assigned.math && !isSalmaKhadija) renderMath('#assigned .problems-grid', content.assigned.math);

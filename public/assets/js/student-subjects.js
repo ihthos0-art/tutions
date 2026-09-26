@@ -603,8 +603,8 @@
         return data;
       })).then((data) => {
         status.textContent = data.total
-          ? data.correct + ' of ' + data.total + ' correct.' + (data.needsReview ? ' Compare ' + data.needsReview + ' written response(s) with the sample.' : '')
-          : (data.needsReview ? 'Compare your written response(s) with the sample answer(s).' : 'Submit at least one answer to check your work.');
+          ? data.correct + ' of ' + data.total + ' correct.' + (data.needsReview ? ' ' + data.needsReview + ' written response(s) need review.' : '')
+          : (data.needsReview ? 'Written response needs review.' : 'Submit at least one answer to check your work.');
         status.classList.toggle('worksheet-perfect', data.total > 0 && data.correct === data.total);
         const results = new Map((data.results || []).map((item) => [item.id, item]));
         form.querySelectorAll('.topic-feedback').forEach((node) => node.remove());
@@ -612,15 +612,8 @@
           const result = results.get(field.dataset.questionId);
           if (!result || result.status === 'unanswered') return;
           const feedback = createElement('div', 'topic-feedback');
-          const resultLabel = result.status === 'correct' ? 'Correct.' : result.status === 'review' ? 'Self-check.' : 'Try again next time.';
+          const resultLabel = result.status === 'correct' ? 'Correct.' : result.status === 'review' ? 'Needs review.' : 'Incorrect.';
           feedback.append(createElement('strong', '', resultLabel));
-          if (result.feedback) feedback.append(createElement('p', '', result.feedback));
-          if (result.modelAnswer) {
-            const sample = createElement('div', 'topic-model-answer');
-            sample.append(createElement('h4', '', result.status === 'review' ? 'Checked responses' : 'Sample answer'));
-            renderMarkdown(sample, result.modelAnswer, topic);
-            feedback.append(sample);
-          }
           field.closest('.topic-question').append(feedback);
         });
         if (topicMap && topicMap.subjects && Array.isArray(topicMap.subjects[topic.subject])) {

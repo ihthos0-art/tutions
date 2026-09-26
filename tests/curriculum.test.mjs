@@ -101,7 +101,9 @@ test('Salma and Khadija receive the same Grade 6 topics without peer names or an
   const checked = await call(`/api/curriculum/salma/topic/${topicId}/check`, 'POST', { answers: { 'self-check': 'Ready to compare my work.' } }, salmaToken);
   assert.equal(checked.status, 200);
   assert.equal(checked.body.results[0].status, 'review');
-  assert.equal(checked.body.results[0].modelAnswer, grade6.topics.English[0].answerKeyMarkdown);
+  assert.equal('modelAnswer' in checked.body.results[0], false);
+  assert.equal('feedback' in checked.body.results[0], false);
+  assert.equal(JSON.stringify(checked.body).includes(grade6.topics.English[0].answerKeyMarkdown), false);
 
   const khadijaToken = await signIn('Khadija', '9753');
   const khadijaMap = await call('/api/curriculum/khadija/map', 'GET', undefined, khadijaToken);
@@ -230,7 +232,13 @@ test('authenticated student study routes share grade topics but keep answer keys
     const checked = await call('/api/curriculum/adnan/topic/curriculum-route-fixture/check', 'POST', { answers: { q1: '42' } }, adnanToken);
     assert.equal(checked.status, 200);
     assert.deepEqual([checked.body.correct, checked.body.total], [1, 1]);
-    assert.equal(checked.body.results[0].modelAnswer, '42');
+    assert.deepEqual(checked.body.results, [{ id: 'q1', status: 'correct' }]);
+    assert.equal(JSON.stringify(checked.body).includes('42'), false);
+
+    const incorrect = await call('/api/curriculum/adnan/topic/curriculum-route-fixture/check', 'POST', { answers: { q1: '41' } }, adnanToken);
+    assert.equal(incorrect.status, 200);
+    assert.deepEqual(incorrect.body.results, [{ id: 'q1', status: 'try-again' }]);
+    assert.equal(JSON.stringify(incorrect.body).includes('42'), false);
 
     const manhaToken = await signIn('Manha', '1357');
     const manhaMap = await call('/api/curriculum/manha/map', 'GET', undefined, manhaToken);

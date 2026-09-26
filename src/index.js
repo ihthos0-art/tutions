@@ -524,7 +524,14 @@ export default {
           updatedAt: new Date().toISOString()
         };
         await env.HOMEWORK.put(progressKey, JSON.stringify(progress));
-        return json({ ok: true, ...check });
+        return json({
+          ok: true,
+          total: check.total,
+          correct: check.correct,
+          needsReview: check.needsReview,
+          scorePercent: check.scorePercent,
+          results: check.results.map(({ id, status }) => ({ id, status }))
+        });
       }
 
       const topicMatch = url.pathname.match(/^\/api\/curriculum\/([a-z0-9-]+)\/topic\/([a-z0-9-]+)$/);

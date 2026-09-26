@@ -23,7 +23,7 @@ const D = require('../lesson-pack.data.js');
 const ROOT = path.join(__dirname, '..');
 const ENGINE_SRC = fs.readFileSync(path.join(ROOT, 'lesson-pack.js'), 'utf8');
 const CSS_SRC = fs.readFileSync(path.join(ROOT, 'lesson-pack.css'), 'utf8');
-const PAGE = fs.readFileSync(path.join(ROOT, 'nafis.html'), 'utf8');
+const PAGE = fs.readFileSync(path.join(ROOT, 'archive/legacy-pages/nafis-worksheet.html'), 'utf8');
 
 // The source scans below must look at code, not prose. Both files document the
 // host page's reserved names in comments — that documentation is the reason

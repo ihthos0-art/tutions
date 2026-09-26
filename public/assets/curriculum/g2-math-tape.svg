@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 250" role="img" aria-labelledby="title desc">
+  <title id="title">Tape diagram for forty-five minus twenty</title>
+  <desc id="desc">A bar of forty-five pages is split into twenty pages and twenty-five pages. The second bar is twenty-five pages.</desc>
+  <rect width="720" height="250" rx="18" fill="#f7f4ed"/>
+  <text x="38" y="48" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="#27333b">Compare the page totals</text>
+  <text x="40" y="97" font-family="Arial,sans-serif" font-size="18" fill="#27333b">Andre</text>
+  <rect x="145" y="70" width="500" height="48" rx="8" fill="#d8e4eb" stroke="#34566b" stroke-width="2"/>
+  <text x="395" y="101" text-anchor="middle" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#203e50">45 pages</text>
+  <text x="40" y="174" font-family="Arial,sans-serif" font-size="18" fill="#27333b">Priya</text>
+  <rect x="145" y="147" width="222" height="48" rx="8" fill="#f2c879" stroke="#8a5c13" stroke-width="2"/>
+  <rect x="367" y="147" width="278" height="48" rx="8" fill="#a8c7a2" stroke="#3d6841" stroke-width="2"/>
+  <text x="256" y="178" text-anchor="middle" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="#563d10">20 fewer</text>
+  <text x="506" y="178" text-anchor="middle" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="#294a2b">25 pages</text>
+  <path d="M365 125v17" stroke="#344b55" stroke-width="3" marker-end="url(#arrow)"/>
+  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 6 3 0 6" fill="none" stroke="#344b55" stroke-width="1.5"/></marker></defs>
+</svg>

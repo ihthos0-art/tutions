@@ -1,20 +1,13 @@
-name = "tutions"
+name = "learnflow"
 compatibility_date = "2026-06-06"
-main = "src/index.js"
-account_id = "effe1cb197be20d44ef9d5ee2aea2bf9"
-
-[assets]
-directory = "."
-binding = "ASSETS"
-run_worker_first = ["/api/*"]
+pages_build_output_dir = "public"
 
 # KV namespace for homework content + student answers
 # Run: npx wrangler kv namespace create HOMEWORK
 # Then paste the returned id and preview_id below:
 [[kv_namespaces]]
 binding = "HOMEWORK"
-id = "9f04fe58a6c44a59be5c12eb7e420fda"
-preview_id = "b8aef6700c334f0988ddb2add1d596a5"
+id = "47b8b95b2de547019abeb3f42ce55457"
 
 # Secrets pushed via wrangler (never in this file):
 # GROQ_API_KEY, CEREBRAS_API_KEY, MISTRAL_API_KEY, OPENROUTER_API_KEY, COHERE_API_KEY

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 340" role="img" aria-labelledby="title desc">
+  <title id="title">Graph of the linear function y equals two x plus one</title>
+  <desc id="desc">A straight line crosses the vertical axis at one and rises two units for each one-unit increase in x. Points shown include zero comma one, one comma three, and two comma five.</desc>
+  <rect width="720" height="340" rx="18" fill="#f7f4ed"/>
+  <text x="34" y="42" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="#27333b">For y = 2x + 1, each x-value gives one output</text>
+  <g stroke="#d6d7d1" stroke-width="1"><path d="M160 82v214M220 82v214M280 82v214M340 82v214M400 82v214M460 82v214M520 82v214M580 82v214"/><path d="M145 96h465M145 136h465M145 176h465M145 216h465M145 256h465"/></g>
+  <path d="M130 296 340 16" fill="none" stroke="#3d7589" stroke-width="5"/>
+  <path d="M160 296V78M145 276h475" stroke="#29383e" stroke-width="3"/>
+  <g fill="#bf713b" stroke="#fff" stroke-width="2"><circle cx="160" cy="256" r="7"/><circle cx="220" cy="176" r="7"/><circle cx="280" cy="96" r="7"/></g>
+  <g font-family="Arial,sans-serif" font-size="13" fill="#4a4740"><text x="214" y="317">1</text><text x="274" y="317">2</text><text x="334" y="317">3</text><text x="124" y="260">1</text><text x="124" y="220">2</text><text x="124" y="180">3</text><text x="124" y="140">4</text><text x="124" y="100">5</text><text x="594" y="290">x</text><text x="151" y="75">y</text></g>
+  <text x="534" y="126" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#315666">y = 2x + 1</text>
+</svg>

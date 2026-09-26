@@ -25,8 +25,8 @@ const D = require('../lesson-pack.data.js');
 const ROOT = path.join(__dirname, '..');
 const ENGINE_SRC = fs.readFileSync(path.join(ROOT, 'lesson-pack.js'), 'utf8');
 const DATA_SRC = fs.readFileSync(path.join(ROOT, 'lesson-pack.data.js'), 'utf8');
-const GRADE2_PAGE = fs.readFileSync(path.join(ROOT, 'nabila-naviha.html'), 'utf8');
-const GRADE7_PAGE = fs.readFileSync(path.join(ROOT, 'nafis.html'), 'utf8');
+const GRADE2_PAGE = fs.readFileSync(path.join(ROOT, 'archive/legacy-pages/nabila-naviha-worksheet.html'), 'utf8');
+const GRADE7_PAGE = fs.readFileSync(path.join(ROOT, 'archive/legacy-pages/nafis-worksheet.html'), 'utf8');
 
 // The source scans must look at code, not prose — the header comments quote the
 // config keys and the storage prefixes they are explaining.

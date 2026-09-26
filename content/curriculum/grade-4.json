@@ -1,0 +1,78 @@
+{
+  "grade": 4,
+  "students": ["adnan", "manha"],
+  "lessons": {
+    "Math": {
+      "title": "Round to the nearest ten thousand",
+      "subject": "Math",
+      "type": "math",
+      "instructions": "Read the place-value explanation first. For each problem, find the halfway point before deciding which ten thousand is closer.",
+      "explanation": "To round a number to the nearest ten thousand, locate the two neighboring ten-thousands. Find the halfway point between them. A number below the halfway point rounds down; a number at or above it rounds up. For 224,830, the neighbors are 220,000 and 230,000. The halfway point is 225,000, and 224,830 is below it, so the number rounds to 220,000.",
+      "workedExamples": [
+        {"title": "Round 224,830 to the nearest ten thousand", "steps": ["The neighboring ten-thousands are 220,000 and 230,000.", "Their halfway point is 225,000.", "224,830 is less than 225,000, so it is closer to 220,000."]},
+        {"title": "Round 267,410 to the nearest ten thousand", "steps": ["The neighboring ten-thousands are 260,000 and 270,000.", "The halfway point is 265,000.", "267,410 is greater than 265,000, so it rounds to 270,000."]}
+      ],
+      "visuals": [{"src": "/assets/curriculum/g4-rounding.svg", "alt": "A number line from 220,000 to 230,000 marks 225,000 as the midpoint and 224,830 just below it.", "caption": "Compare the number with the midpoint between neighboring ten-thousands.", "credit": "Original LearnFlow instructional diagram."}],
+      "scopeNote": "The Grade 4 guide includes a released NYSED rounding example. This lesson uses that skill for extra practice; it is not a statement about the students’ current classroom unit.",
+      "sources": [{"title": "NYSED Grades 3–8 mathematics assessment information", "url": "https://www.nysed.gov/state-assessment/past-grades-3-8-tests"}],
+      "questions": [
+        {"id": "g4-math-1", "prompt": "Round 67,891 to the nearest ten thousand.", "answer": "70000", "acceptedAnswers": ["70,000"]},
+        {"id": "g4-math-2", "prompt": "Round 142,300 to the nearest ten thousand.", "answer": "140000", "acceptedAnswers": ["140,000"]},
+        {"id": "g4-math-3", "prompt": "Round 224,830 to the nearest ten thousand.", "answer": "220000", "acceptedAnswers": ["220,000"]},
+        {"id": "g4-math-4", "prompt": "What is the halfway point between 340,000 and 350,000?", "answer": "345000", "acceptedAnswers": ["345,000"]}
+      ]
+    },
+    "English": {
+      "title": "Biography: scientist Chien-Shiung Wu",
+      "subject": "English",
+      "type": "reading",
+      "instructions": "Read the original biography note and study the historical portrait. Use details from the passage to answer.",
+      "passage": "Chien-Shiung Wu was a physicist whose careful experiments helped scientists understand beta decay, a process studied in nuclear physics. Her work required close attention to evidence: a scientist asks a question, designs a fair test, records what happens, and explains what the results show. Wu built a long scientific career at a time when women and people of Chinese background faced unfair barriers. A biography can show both what a person did and the challenges around that work. The photograph is a real portrait of Wu; it does not show one of her experiments.",
+      "visuals": [{"src": "/assets/curriculum/chien-shiung-wu-1958.jpg", "alt": "Portrait photograph of physicist Chien-Shiung Wu in 1958.", "caption": "A historical portrait. The photograph is evidence of Wu’s appearance at that time, not an image of her laboratory work.", "credit": "Smithsonian Institution; no restrictions indicated in the source guide via Wikimedia Commons.", "sourceUrl": "https://commons.wikimedia.org/wiki/File:Chien-Shiung_Wu_(1912-1997)_in_1958.jpg"}],
+      "scopeNote": "The Grade 4 guide identifies Queen of Physics as a biography anchor. This short passage is original and summarizes source-supported facts; it does not reproduce the book or verify this week’s reading.",
+      "sources": [
+        {"title": "Queen of Physics, publisher description", "url": "https://www.hachettebookgroup.com/titles/teresa-robeson/queen-of-physics/9781454932208/"},
+        {"title": "Teresa Robeson, author’s book page", "url": "https://teresarobeson.com/queen-of-physics"}
+      ],
+      "questions": [
+        {"id": "g4-ela-1", "prompt": "What field did Chien-Shiung Wu work in?", "answer": "physics", "acceptedAnswers": ["a physicist", "physics"]},
+        {"id": "g4-ela-2", "prompt": "What process did Wu’s experiments help scientists understand?", "answer": "beta decay", "acceptedAnswers": ["beta decay"]},
+        {"id": "g4-ela-3", "prompt": "Name one action a scientist takes to explain what evidence shows.", "answer": "records what happens", "acceptedAnswers": ["records what happens", "record what happens", "explains results", "records results"]},
+        {"id": "g4-ela-4", "prompt": "Does the portrait photograph show one of Wu’s experiments?", "answer": "no", "acceptedAnswers": ["no"]}
+      ]
+    },
+    "Science": {
+      "title": "What makes a complete circuit?",
+      "subject": "Science",
+      "type": "reading",
+      "instructions": "Read the explanation and inspect the model. Then answer the questions and draw a closed-loop circuit.",
+      "passage": "A simple circuit can include a battery, wires, and a bulb. The parts must form a complete path from one battery terminal through the bulb and back to the other terminal. If the path is open, such as a switch that breaks the loop, the bulb will not light. A circuit diagram is a model: real wires and components can look different from the simple shapes in a drawing.",
+      "visuals": [{"src": "/assets/curriculum/g4-closed-circuit.svg", "alt": "A closed loop of wire connects both battery terminals through a lit bulb.", "caption": "The loop has no gap, so the model shows a closed circuit.", "credit": "Original LearnFlow instructional diagram."}],
+      "modelTask": "Draw a battery, a bulb, and wires that make a complete loop. Then draw one open-circuit version with a gap and explain which bulb would light.",
+      "scopeNote": "Circuits are within the Grade 4 science scope summarized in the guide. The guide does not establish the school’s current unit order.",
+      "sources": [{"title": "New York State P–12 Science Learning Standards", "url": "https://www.nysed.gov/sites/default/files/programs/curriculum-instruction/p-12-science-learning-standards.pdf"}],
+      "questions": [
+        {"id": "g4-science-1", "prompt": "What must the circuit path be for the bulb to light: complete or broken?", "answer": "complete", "acceptedAnswers": ["complete", "closed"]},
+        {"id": "g4-science-2", "prompt": "Name one source of energy in the simple circuit described.", "answer": "battery", "acceptedAnswers": ["the battery", "battery"]},
+        {"id": "g4-science-3", "prompt": "What happens to a circuit when a switch breaks the loop?", "answer": "it is open", "acceptedAnswers": ["it is open", "the path is open", "the circuit is open"]},
+        {"id": "g4-science-4", "prompt": "What does a circuit diagram represent?", "answer": "a model", "acceptedAnswers": ["a model", "a model of a circuit"]}
+      ]
+    },
+    "Social Studies": {
+      "title": "Read a New York map as a source",
+      "subject": "Social Studies",
+      "type": "reading",
+      "instructions": "Read the passage and inspect the map’s title and date. Treat this image as a historical source, not as a current travel map.",
+      "passage": "A physical map emphasizes features of the land and water, such as mountains, valleys, lakes, and rivers. A map made in the past also shows what its creator chose to record and how people described places at that time. This image is a 1902 map of New York State’s physical geography. Its title and date help us interpret it. To plan a trip or find a road today, use a current map; to ask how people represented New York’s landscape in 1902, this historic map is useful evidence.",
+      "visuals": [{"src": "/assets/curriculum/new-york-state-1902-map.jpg", "alt": "Historic 1902 map titled The Physical Geography of New York State.", "caption": "A historical map from 1902; it is not a current administrative or road map.", "credit": "Internet Archive Book Images; no restrictions indicated in the source guide via Wikimedia Commons.", "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_physical_geography_of_New_York_state_(1902)_(14776261461).jpg"}],
+      "scopeNote": "This is original map-reading practice connected to New York geography in the Grade 4 source guide. The map is historical and the lesson does not confirm classroom pacing.",
+      "sources": [{"title": "NYC Passport to Social Studies, Grade 4 resources", "url": "https://sites.google.com/schools.nyc.gov/social-studies-and-civics/resources-by-grade/elementary/4th-grade"}],
+      "questions": [
+        {"id": "g4-ss-1", "prompt": "What year was the map made?", "answer": "1902", "acceptedAnswers": ["1902"]},
+        {"id": "g4-ss-2", "prompt": "Name one physical feature a physical map can show.", "answer": "river", "acceptedAnswers": ["river", "rivers", "mountain", "mountains", "lake", "lakes", "valley", "valleys"]},
+        {"id": "g4-ss-3", "prompt": "Should you use this old map or a current map to find a road today?", "answer": "current map", "acceptedAnswers": ["a current map", "current"]},
+        {"id": "g4-ss-4", "prompt": "What two clues help you interpret the historical map?", "answer": "title and date", "acceptedAnswers": ["the title and date", "title date"]}
+      ]
+    }
+  }
+}

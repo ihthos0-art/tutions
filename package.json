@@ -1,0 +1,11 @@
+{
+  "name": "tutions",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "publish:curriculum": "node scripts/publish-curriculum.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

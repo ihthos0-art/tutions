@@ -1,6 +1,6 @@
 const assert = require('node:assert/strict');
 const test = require('node:test');
-const assignments = require('../august-assignments.js');
+const assignments = require('../archive/legacy-assets/august-assignments.js');
 
 const forbiddenStudentMarkup = /\\(?:frac|times|div|ge|le|text)|\\[()$]/;
 

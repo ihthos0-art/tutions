@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 320" role="img" aria-labelledby="title desc">
+  <title id="title">A complete simple circuit with a battery and bulb</title>
+  <desc id="desc">A wire makes an unbroken loop from one battery terminal, through a lit bulb, and back to the other terminal.</desc>
+  <rect width="720" height="320" rx="18" fill="#f7f4ed"/>
+  <text x="34" y="45" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="#27333b">A bulb lights when the circuit path is closed</text>
+  <path d="M184 108H498V224H184V180" fill="none" stroke="#53676e" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M184 108v31M184 157v23" stroke="#53676e" stroke-width="7" stroke-linecap="round"/>
+  <path d="M165 140h38M173 151h22" stroke="#bf713b" stroke-width="5"/>
+  <text x="184" y="207" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" fill="#4a4740">battery</text>
+  <circle cx="498" cy="166" r="38" fill="#f2c879" stroke="#8a5c13" stroke-width="4"/>
+  <path d="m479 185 38-38m-38 0 38 38" stroke="#8a5c13" stroke-width="4"/>
+  <text x="498" y="226" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" fill="#4a4740">bulb</text>
+  <text x="349" y="286" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" fill="#4a4740">The wires and components form one continuous loop.</text>
+</svg>

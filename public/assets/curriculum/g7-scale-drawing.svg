@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 330" role="img" aria-labelledby="title desc">
+  <title id="title">Scale drawing of a rectangular mural</title>
+  <desc id="desc">An 8-inch by 6-inch drawing uses a scale of 1 inch to 1.75 feet. The real mural measures 14 feet by 10.5 feet.</desc>
+  <rect width="720" height="300" rx="18" fill="#f7f4ed"/>
+  <text x="34" y="43" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="#27333b">Scale each side, then find the actual area</text>
+  <rect x="90" y="110" width="240" height="180" fill="#d8e4eb" stroke="#34566b" stroke-width="4"/>
+  <g font-family="Arial,sans-serif" text-anchor="middle" fill="#203e50"><text x="210" y="192" font-size="17" font-weight="700">8 in × 6 in drawing</text><text x="210" y="314" font-size="14">8 in × 1.75 = 14 ft</text></g>
+  <path d="M373 196h55" stroke="#53676e" stroke-width="4" marker-end="url(#arrow)"/>
+  <rect x="485" y="119" width="140" height="105" fill="#c8d8ba" stroke="#3d6841" stroke-width="4"/>
+  <text x="555" y="163" text-anchor="middle" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#294a2b">14 ft ×</text><text x="555" y="185" text-anchor="middle" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#294a2b">10.5 ft</text>
+  <text x="555" y="254" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" fill="#294a2b">Area = 147 ft²</text>
+  <text x="360" y="72" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" fill="#4a4740">Scale: 1 inch represents 1.75 feet. Both rectangles use the same proportions.</text>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0 8 3 0 6" fill="none" stroke="#53676e" stroke-width="2"/></marker></defs>
+</svg>

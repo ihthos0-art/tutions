@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 260" role="img" aria-labelledby="title desc">
+  <title id="title">Multiply 3.6 by four using equal groups</title>
+  <desc id="desc">Four groups of 3.6 are added to make 14.4. The decimal point keeps tenths in the tenths place.</desc>
+  <rect width="720" height="260" rx="18" fill="#f7f4ed"/>
+  <text x="36" y="46" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="#27333b">3.6 × 4 means four groups of 3.6</text>
+  <g font-family="Arial,sans-serif" text-anchor="middle">
+    <g><rect x="34" y="82" width="142" height="82" rx="12" fill="#d8e4eb"/><text x="105" y="132" font-size="24" font-weight="700" fill="#203e50">3.6</text></g>
+    <g><rect x="202" y="82" width="142" height="82" rx="12" fill="#d8e4eb"/><text x="273" y="132" font-size="24" font-weight="700" fill="#203e50">3.6</text></g>
+    <g><rect x="370" y="82" width="142" height="82" rx="12" fill="#d8e4eb"/><text x="441" y="132" font-size="24" font-weight="700" fill="#203e50">3.6</text></g>
+    <g><rect x="538" y="82" width="142" height="82" rx="12" fill="#d8e4eb"/><text x="609" y="132" font-size="24" font-weight="700" fill="#203e50">3.6</text></g>
+  </g>
+  <path d="M105 178v23h504v-23" fill="none" stroke="#52646c" stroke-width="3"/>
+  <text x="357" y="239" text-anchor="middle" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#294a2b">3.6 + 3.6 + 3.6 + 3.6 = 14.4</text>
+</svg>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 250" role="img" aria-labelledby="title desc">
+  <title id="title">Round 224,830 to the nearest ten thousand</title>
+  <desc id="desc">A number line from 220,000 to 230,000 marks the halfway point at 225,000. The number 224,830 is just left of halfway, so it rounds to 220,000.</desc>
+  <rect width="720" height="250" rx="18" fill="#f7f4ed"/>
+  <text x="34" y="44" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="#27333b">Find the halfway point</text>
+  <path d="M92 139H630" stroke="#53676e" stroke-width="5"/>
+  <path d="M92 125v28M361 119v40M630 125v28" stroke="#53676e" stroke-width="4"/>
+  <circle cx="353" cy="139" r="11" fill="#c65f38" stroke="#fff" stroke-width="3"/>
+  <g font-family="Arial,sans-serif" text-anchor="middle" fill="#27333b"><text x="92" y="184" font-size="17" font-weight="700">220,000</text><text x="361" y="184" font-size="17" font-weight="700">225,000</text><text x="630" y="184" font-size="17" font-weight="700">230,000</text></g>
+  <path d="M353 124v-42" stroke="#c65f38" stroke-width="2"/><text x="353" y="70" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" fill="#a74325">224,830</text>
+  <text x="361" y="220" text-anchor="middle" font-family="Arial,sans-serif" font-size="15" fill="#4a4740">224,830 is below the midpoint, so it is closer to 220,000.</text>
+</svg>

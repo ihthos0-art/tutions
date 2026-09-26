@@ -1,0 +1,78 @@
+{
+  "grade": 3,
+  "students": ["nahid"],
+  "lessons": {
+    "Math": {
+      "title": "Equal groups connect multiplication and division",
+      "subject": "Math",
+      "type": "math",
+      "instructions": "Study the two examples before you work. Think: how many groups are there, and how many are in each group?",
+      "explanation": "Multiplication can find a total from equal groups. Division can split a total into equal groups or find how many groups fit. If 6 × 6 = 36, then 36 ÷ 4 asks how many groups of 4 make 36. The fact family helps us see that 9 × 4 = 36, so 36 ÷ 4 = 9.",
+      "workedExamples": [
+        {"title": "Six bags with six cookies each", "steps": ["Find the total: 6 × 6 = 36 cookies.", "Put 4 brownies in each new bag: 36 ÷ 4.", "Nine groups of 4 make 36, so 36 ÷ 4 = 9 bags."]},
+        {"title": "Share 24 counters into groups of 3", "steps": ["Ask how many groups of 3 fit in 24.", "Count by threes: 3, 6, 9, 12, 15, 18, 21, 24 — that is 8 groups.", "Check: 8 × 3 = 24."]}
+      ],
+      "visuals": [{"src": "/assets/curriculum/g3-equal-groups.svg", "alt": "Nine boxes each contain four brownie dots, showing that 36 divided by 4 equals 9.", "caption": "Equal groups make the division visible.", "credit": "Original LearnFlow instructional diagram."}],
+      "scopeNote": "The Grade 3 guide includes released state-assessment examples using equal groups and division. This new practice is standards-aligned and does not claim to match Nahid’s current classroom lesson.",
+      "sources": [{"title": "NYSED Grade 3 Mathematics released items, 2025", "url": "https://www.nysedregents.org/ei/math/2025/2025-released-items-math-g3.pdf"}],
+      "questions": [
+        {"id": "g3-math-1", "prompt": "Six boxes hold 6 cookies each. How many cookies are there altogether?", "answer": "36", "acceptedAnswers": ["36 cookies"]},
+        {"id": "g3-math-2", "prompt": "Put 36 brownies into bags with 4 brownies in each bag. How many bags are needed?", "answer": "9", "acceptedAnswers": ["9 bags"]},
+        {"id": "g3-math-3", "prompt": "How many groups of 3 are in 24?", "answer": "8", "acceptedAnswers": ["8 groups"]},
+        {"id": "g3-math-4", "prompt": "Find 7 × 5.", "answer": "35", "acceptedAnswers": ["35"]}
+      ]
+    },
+    "English": {
+      "title": "Find the main idea and the details",
+      "subject": "English",
+      "type": "reading",
+      "instructions": "Read the original informational passage. Use its details to answer the questions.",
+      "passage": "A wave can travel across the ocean while the water mostly moves up and down in place. A floating leaf rises and falls as a wave passes, but it does not usually travel all the way across the sea with that wave. Wind transfers energy to the water and helps create many ocean waves. When waves reach shallow water near a beach, they can change shape and break. Waves can move sand along a shore, so beaches may change over time. Studying waves helps people understand how energy moves and why coastlines are not always the same.",
+      "visuals": [{"src": "/assets/curriculum/g3-main-idea.svg", "alt": "A main idea box connects to three details from the text.", "caption": "The main idea should fit several details, not just one sentence.", "credit": "Original LearnFlow reading organizer."}],
+      "scopeNote": "This is original nonfiction practice for reading central idea and evidence. The guide lists ocean-themed books as possibilities, not a confirmed current classroom text.",
+      "sources": [
+        {"title": "New York State Next Generation English Language Arts Learning Standards", "url": "https://www.nysed.gov/sites/default/files/programs/curriculum-instruction/nys-next-generation-ela-standards.pdf"},
+        {"title": "Publisher description: Ocean! Waves for All", "url": "https://us.macmillan.com/books/9781250788863/oceanwavesforall/"}
+      ],
+      "questions": [
+        {"id": "g3-ela-1", "prompt": "What does the passage explain about a wave and the water?", "answer": "the wave travels while water mostly moves up and down", "acceptedAnswers": ["the wave travels while the water mostly moves up and down", "waves travel while water moves up and down", "water mostly moves up and down in place"]},
+        {"id": "g3-ela-2", "prompt": "What transfers energy to the water and helps create many ocean waves?", "answer": "wind", "acceptedAnswers": ["wind"]},
+        {"id": "g3-ela-3", "prompt": "Name one way waves can change a beach. (Use the passage.)", "answer": "move sand along a shore", "acceptedAnswers": ["move sand", "move sand along a shore", "change the coastline"]},
+        {"id": "g3-ela-4", "prompt": "What is the main idea: waves move energy and can change shorelines, or leaves make waves?", "answer": "waves move energy and can change shorelines", "acceptedAnswers": ["waves move energy and can change shorelines", "waves carry energy and can change shorelines"]}
+      ]
+    },
+    "Science": {
+      "title": "Follow water through the water cycle",
+      "subject": "Science",
+      "type": "reading",
+      "instructions": "Read the explanation and follow the arrows in the model. Then answer the questions and draw your own labeled model.",
+      "passage": "Water moves among Earth’s surface, the air, living things, and the ground. Sunlight can warm liquid water so some changes into water vapor and rises; this is evaporation. Water vapor cools and forms tiny droplets in clouds; this is condensation. Water can return to the surface as rain or snow; this is precipitation. It may flow over land as runoff or soak into the ground. Plants also release water vapor. The cycle has many paths, so it is better understood as a system than as one simple circle.",
+      "visuals": [{"src": "/assets/curriculum/g3-water-cycle.svg", "alt": "A water-cycle model labels evaporation, condensation, precipitation, transpiration, runoff, and infiltration.", "caption": "Follow the arrows; water can take many routes through the system.", "credit": "Original LearnFlow instructional model."}],
+      "modelTask": "On paper, draw a cloud, land, surface water, and a plant. Add arrows and label evaporation, condensation, precipitation, and either runoff or infiltration.",
+      "scopeNote": "The water cycle appears in the New York State science standards and in archived P.S. 230 newsletter material noted in the guide. An archived example does not confirm the current class sequence.",
+      "sources": [{"title": "New York State P–12 Science Learning Standards", "url": "https://www.nysed.gov/sites/default/files/programs/curriculum-instruction/p-12-science-learning-standards.pdf"}],
+      "questions": [
+        {"id": "g3-science-1", "prompt": "What is the change from liquid water to water vapor called?", "answer": "evaporation", "acceptedAnswers": ["evaporation"]},
+        {"id": "g3-science-2", "prompt": "What is the name for water vapor cooling into tiny cloud droplets?", "answer": "condensation", "acceptedAnswers": ["condensation"]},
+        {"id": "g3-science-3", "prompt": "What is water falling as rain or snow called?", "answer": "precipitation", "acceptedAnswers": ["precipitation"]},
+        {"id": "g3-science-4", "prompt": "Name one path water may take after reaching the land: runoff or infiltration?", "answer": "runoff", "acceptedAnswers": ["runoff", "infiltration"]}
+      ]
+    },
+    "Social Studies": {
+      "title": "Why does geography matter?",
+      "subject": "Social Studies",
+      "type": "reading",
+      "instructions": "Read the passage and examine the Earth image. Answer from the passage rather than guessing about a place from one picture.",
+      "passage": "Geographers ask where a place is, what its land and water are like, and how people interact with the environment. A place can be described with both physical features, such as rivers and mountains, and human features, such as roads, buildings, languages, and work. Geography does not determine exactly how every person lives. It helps us ask useful questions and compare places carefully. The NASA image shows much of the Western Hemisphere, including North and South America. A single image can help with location, but it cannot tell us everything about the people who live there.",
+      "visuals": [{"src": "/assets/curriculum/western-hemisphere.jpg", "alt": "NASA composite image of Earth’s Western Hemisphere, showing North and South America and surrounding oceans.", "caption": "A satellite composite can help orient a reader to continents and oceans; it is not a detailed political map.", "credit": "NASA/Goddard Space Flight Center/Reto Stöckli, public domain via Wikimedia Commons.", "sourceUrl": "https://commons.wikimedia.org/wiki/File:Blue_Marble_Western_Hemisphere.jpg"}],
+      "scopeNote": "The Grade 3 NYC Passport guide includes “Why Does Geography Matter?” and case studies of Nigeria, Egypt, China, and Peru. This original lesson introduces geographic questions; it is not a confirmed weekly assignment.",
+      "sources": [{"title": "NYC Passport to Social Studies, Grade 3 resources", "url": "https://sites.google.com/schools.nyc.gov/social-studies-and-civics/resources-by-grade/elementary/3rd-grade"}],
+      "questions": [
+        {"id": "g3-ss-1", "prompt": "Name one physical feature a geographer might study.", "answer": "river", "acceptedAnswers": ["river", "rivers", "mountain", "mountains"]},
+        {"id": "g3-ss-2", "prompt": "Name one human feature a geographer might study.", "answer": "road", "acceptedAnswers": ["road", "roads", "building", "buildings", "language", "languages", "work"]},
+        {"id": "g3-ss-3", "prompt": "Which two American continents are visible in the NASA image?", "answer": "North and South America", "acceptedAnswers": ["north and south america", "north america and south america"]},
+        {"id": "g3-ss-4", "prompt": "Can one satellite image tell us everything about the people who live in a place?", "answer": "no", "acceptedAnswers": ["no", "no it cannot"]}
+      ]
+    }
+  }
+}

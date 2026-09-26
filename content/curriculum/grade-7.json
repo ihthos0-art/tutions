@@ -1,0 +1,78 @@
+{
+  "grade": 7,
+  "students": ["nafis"],
+  "lessons": {
+    "Math": {
+      "title": "Use a scale drawing to find real dimensions",
+      "subject": "Math",
+      "type": "math",
+      "instructions": "Work through the scale examples before solving. Convert each side first; find area only after both actual side lengths are known.",
+      "explanation": "A scale tells how a drawing length relates to a real length. If 1 inch represents 1.75 feet, multiply every drawing measurement by 1.75 to find the actual measurement. An 8-inch by 6-inch drawing represents 14 feet by 10.5 feet. The actual area is 14 × 10.5 = 147 square feet. Do not multiply the drawing’s area by the scale only once; both side lengths change.",
+      "workedExamples": [
+        {"title": "An 8 in by 6 in rectangle at 1 in : 1.75 ft", "steps": ["Actual length: 8 × 1.75 = 14 feet.", "Actual width: 6 × 1.75 = 10.5 feet.", "Actual area: 14 × 10.5 = 147 square feet."]},
+        {"title": "A 4 in by 3 in drawing at 1 in : 2 ft", "steps": ["Actual length: 4 × 2 = 8 feet.", "Actual width: 3 × 2 = 6 feet.", "Actual area: 8 × 6 = 48 square feet."]}
+      ],
+      "visuals": [{"src": "/assets/curriculum/g7-scale-drawing.svg", "alt": "An 8-inch by 6-inch drawing uses a scale of 1 inch to 1.75 feet and represents a 14-foot by 10.5-foot mural.", "caption": "Convert both dimensions, then multiply to find area.", "credit": "Original LearnFlow instructional diagram."}],
+      "scopeNote": "The Grade 7 guide includes a released NYSED scale-drawing example. This original explanation and practice do not indicate the school’s current unit schedule.",
+      "sources": [{"title": "NYSED Grade 7 Mathematics released items, 2025", "url": "https://www.nysedregents.org/ei/math/2025/2025-released-items-math-g7.pdf"}],
+      "questions": [
+        {"id": "g7-math-1", "prompt": "A 5-inch length uses a scale of 1 inch to 3 feet. What is the real length in feet?", "answer": "15", "acceptedAnswers": ["15 feet"]},
+        {"id": "g7-math-2", "prompt": "A 4-inch width uses the scale 1 inch to 2.5 feet. What is the real width in feet?", "answer": "10", "acceptedAnswers": ["10 feet"]},
+        {"id": "g7-math-3", "prompt": "A rectangle is 8 feet by 5 feet. What is its area in square feet?", "answer": "40", "acceptedAnswers": ["40 square feet", "40 ft2"]},
+        {"id": "g7-math-4", "prompt": "At 1 inch to 1.75 feet, what real length does 6 inches represent?", "answer": "10.5", "acceptedAnswers": ["10.5 feet"]}
+      ]
+    },
+    "English": {
+      "title": "Connect a claim to evidence",
+      "subject": "English",
+      "type": "reading",
+      "instructions": "This is an original practice scenario with made-up sample data. Read carefully, then distinguish the claim from the evidence.",
+      "passage": "In a practice scenario, a student group compares two small sidewalk plots on the same sunny afternoon. The plot under a tree measures 28°C at the surface. The nearby plot without shade measures 34°C. The group writes, “The shaded plot was cooler during our measurement.” The two readings support that limited claim. They do not prove that every shaded place is always cooler, because the group measured only two plots once. A careful writer states what the evidence supports and avoids claiming more than the evidence can show.",
+      "visuals": [{"src": "/assets/curriculum/claim-evidence-reasoning.svg", "alt": "A diagram links a claim to specific evidence and reasoning that explains why the evidence supports the claim.", "caption": "Strong responses explain the connection between evidence and a claim.", "credit": "Original LearnFlow reading organizer."}],
+      "scopeNote": "This lesson practices evidence-based reading and writing. The Grade 7 guide lists possible ELA topics but does not confirm a current text or weekly sequence.",
+      "sources": [{"title": "New York State Next Generation English Language Arts Learning Standards", "url": "https://www.nysed.gov/sites/default/files/programs/curriculum-instruction/nys-next-generation-ela-standards.pdf"}],
+      "questions": [
+        {"id": "g7-ela-1", "prompt": "What limited claim did the student group make?", "answer": "the shaded plot was cooler", "acceptedAnswers": ["the shaded plot was cooler during our measurement", "the shaded plot was cooler"]},
+        {"id": "g7-ela-2", "prompt": "What temperature did the shaded plot measure?", "answer": "28°C", "acceptedAnswers": ["28c", "28 degrees c", "28"]},
+        {"id": "g7-ela-3", "prompt": "How many times did the group measure the two plots?", "answer": "once", "acceptedAnswers": ["one time", "once"]},
+        {"id": "g7-ela-4", "prompt": "Why should the writer avoid claiming that every shaded place is always cooler?", "answer": "only two plots were measured once", "acceptedAnswers": ["the group measured only two plots once", "only two plots were measured once"]}
+      ]
+    },
+    "Science": {
+      "title": "Model a convergent plate boundary",
+      "subject": "Science",
+      "type": "reading",
+      "instructions": "Read the passage and compare the world map with the cross-section model. The cross-section is schematic and not to scale.",
+      "passage": "Earth’s outer rigid layer is divided into large plates that move slowly relative to one another. Where two plates move toward each other, they meet at a convergent boundary. In some places, a denser oceanic plate bends and sinks beneath another plate. This process is called subduction. It can be associated with earthquakes and volcanic activity, but the details vary by boundary. A map helps show broad plate locations; a cross-section model shows a possible process beneath the surface. Neither drawing is a photograph of the mantle.",
+      "visuals": [
+        {"src": "/assets/curriculum/tectonic-plates-map.png", "alt": "Public-domain world map showing the locations and names of Earth’s tectonic plates.", "caption": "Reference map of broad plate boundaries; use it for location, not as a cross-section.", "credit": "USGS map described by Muriel Gottrop, public domain via Wikimedia Commons.", "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tectonic_plates.png"},
+        {"src": "/assets/curriculum/g7-plate-cross-section.svg", "alt": "A schematic cross-section shows an oceanic plate subducting under a continental plate at a convergent boundary.", "caption": "A simplified model of one kind of convergent boundary; not to scale.", "credit": "Original LearnFlow instructional model."}
+      ],
+      "modelTask": "Draw two plates moving toward each other. Label the boundary, the subducting plate, and the direction of motion. Add a note that your diagram is a model and not to scale.",
+      "scopeNote": "Plate tectonics is a standards-aligned Grade 7 science topic in the guide; it does not establish that this unit is being taught this week.",
+      "sources": [{"title": "New York State P–12 Science Learning Standards", "url": "https://www.nysed.gov/sites/default/files/programs/curriculum-instruction/p-12-science-learning-standards.pdf"}],
+      "questions": [
+        {"id": "g7-science-1", "prompt": "What do we call a boundary where two plates move toward one another?", "answer": "convergent boundary", "acceptedAnswers": ["a convergent boundary", "convergent"]},
+        {"id": "g7-science-2", "prompt": "What is it called when an oceanic plate bends and sinks beneath another plate?", "answer": "subduction", "acceptedAnswers": ["subduction"]},
+        {"id": "g7-science-3", "prompt": "Which visual shows broad plate locations: the map or the cross-section?", "answer": "map", "acceptedAnswers": ["the map", "world map"]},
+        {"id": "g7-science-4", "prompt": "Is the cross-section a photograph of Earth’s mantle or a model?", "answer": "model", "acceptedAnswers": ["a model", "model"]}
+      ]
+    },
+    "Social Studies": {
+      "title": "Compare viewpoints during the American Revolution",
+      "subject": "Social Studies",
+      "type": "reading",
+      "instructions": "Read the short background and inspect the painting as a source. Do not treat the painting as a photograph or as a complete record of every viewpoint.",
+      "passage": "During the American Revolution, people held different views about independence. Patriots supported breaking from British rule. Loyalists wanted to remain connected to the British Crown. Some people tried to stay neutral, and many people’s choices were shaped by family, safety, community, and personal circumstances. These labels are a starting point, not a full explanation of any person’s beliefs. John Trumbull painted a scene connected to the Declaration of Independence in 1819, decades after the events shown. The painting is a later interpretation, so historians compare it with other sources and ask what it leaves out.",
+      "visuals": [{"src": "/assets/curriculum/declaration-trumbull-1819.jpg", "alt": "John Trumbull’s 1819 painting of the committee presenting the Declaration of Independence to Congress.", "caption": "A later painting of an earlier event. Ask what it depicts and what questions the image cannot answer by itself.", "credit": "John Trumbull (1819), public domain via Wikimedia Commons.", "sourceUrl": "https://commons.wikimedia.org/wiki/File:Declaration_of_Independence_(1819),_by_John_Trumbull.jpg"}],
+      "scopeNote": "The source guide identifies the Passport lesson “Taking Sides,” which compares Patriots, Loyalists, and neutral viewpoints. This original overview is supplemental and does not replace the primary-source lesson or verify current pacing.",
+      "sources": [{"title": "NYC Passport lesson: Taking Sides", "url": "https://sites.google.com/schools.nyc.gov/unit-1-2025/unit-2/30-taking-sides"}],
+      "questions": [
+        {"id": "g7-ss-1", "prompt": "Which group supported breaking from British rule?", "answer": "Patriots", "acceptedAnswers": ["the Patriots", "Patriots"]},
+        {"id": "g7-ss-2", "prompt": "Which group wanted to remain connected to the British Crown?", "answer": "Loyalists", "acceptedAnswers": ["the Loyalists", "Loyalists"]},
+        {"id": "g7-ss-3", "prompt": "When did Trumbull paint the scene?", "answer": "1819", "acceptedAnswers": ["1819"]},
+        {"id": "g7-ss-4", "prompt": "Was the painting made at the time of the event or decades later?", "answer": "decades later", "acceptedAnswers": ["later", "decades later"]}
+      ]
+    }
+  }
+}

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 370" role="img" aria-labelledby="title desc">
+  <title id="title">Schematic of an oceanic plate subducting beneath a continental plate</title>
+  <desc id="desc">Two tectonic plates move toward each other. The denser oceanic plate bends beneath the continental plate; arrows in the mantle indicate slow convection. This schematic is not to scale.</desc>
+  <rect width="720" height="370" rx="18" fill="#eef5f6"/>
+  <text x="30" y="40" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#27333b">At a convergent boundary, plates move toward one another</text>
+  <path d="M0 119H277l66 42 68 16 86-17 88-41H720v251H0Z" fill="#d5b887"/>
+  <path d="M0 121h284l70 52 56 22 32-11-70 77-72-31-70-50H0Z" fill="#7eb6c8" stroke="#36677a" stroke-width="3"/>
+  <path d="M442 120 720 120v251H0V273l203-1 100-27 107 6 26-61 6-23Z" fill="#ba9b73" opacity=".74"/>
+  <path d="M325 65H195M600 65H470" stroke="#365968" stroke-width="4" marker-end="url(#arrow)"/>
+  <text x="44" y="96" font-family="Arial,sans-serif" font-size="15" fill="#315666">oceanic plate</text><text x="517" y="96" font-family="Arial,sans-serif" font-size="15" fill="#604b32">continental plate</text>
+  <path d="M522 113 539 77l16 36" fill="#a75d3f" stroke="#7c3927" stroke-width="2"/><text x="571" y="78" font-family="Arial,sans-serif" font-size="13" fill="#753e2d">volcanic arc can form</text>
+  <path d="M195 304c76 34 137 32 203-1M544 303c-53 27-103 27-152 2" fill="none" stroke="#e2a24f" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="31" y="348" font-family="Arial,sans-serif" font-size="12" fill="#53636a">Conceptual cross-section; mantle arrows show a simplified model, not a measured flow.</text>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0 8 3 0 6" fill="none" stroke="#365968" stroke-width="2"/></marker></defs>
+</svg>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 340" role="img" aria-labelledby="title desc">
+  <title id="title">Simplified meadow food web</title>
+  <desc id="desc">Energy arrows point from food to consumer: grass feeds a grasshopper and a rabbit; grasshoppers feed frogs; rabbits and frogs can be eaten by hawks. Decomposers break down remains.</desc>
+  <rect width="720" height="340" rx="18" fill="#f7f4ed"/>
+  <text x="32" y="40" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#27333b">Arrows show energy moving from food to eater</text>
+  <g font-family="Arial,sans-serif" text-anchor="middle" font-size="16" font-weight="700">
+    <rect x="35" y="124" width="132" height="58" rx="12" fill="#c8d8ba"/><text x="101" y="159" fill="#294a2b">Grass</text>
+    <rect x="219" y="78" width="148" height="58" rx="12" fill="#d8e4eb"/><text x="293" y="113" fill="#203e50">Grasshopper</text>
+    <rect x="219" y="196" width="148" height="58" rx="12" fill="#f2c879"/><text x="293" y="231" fill="#563d10">Rabbit</text>
+    <rect x="425" y="78" width="112" height="58" rx="12" fill="#b9d8d4"/><text x="481" y="113" fill="#214a47">Frog</text>
+    <rect x="574" y="137" width="112" height="58" rx="12" fill="#ead5c7"/><text x="630" y="172" fill="#603e2d">Hawk</text>
+    <rect x="288" y="278" width="168" height="42" rx="12" fill="#ece2d4"/><text x="372" y="304" font-size="14" fill="#5c4934">Decomposers</text>
+  </g>
+  <g fill="none" stroke="#52646c" stroke-width="3" marker-end="url(#arrow)"><path d="M168 139 214 111"/><path d="M168 166 214 221"/><path d="M368 106h51"/><path d="M369 221c97 0 128-67 199-58"/><path d="M538 108c43 0 62 15 72 26"/><path d="M291 256 334 274"/><path d="M485 136 430 276"/><path d="M616 198 434 278"/></g>
+  <text x="357" y="62" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="#53636a">Simplified example; real food webs include many more connections.</text>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0 8 3 0 6" fill="none" stroke="#52646c" stroke-width="2"/></marker></defs>
+</svg>

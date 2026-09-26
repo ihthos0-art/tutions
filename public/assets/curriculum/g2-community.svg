@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 260" role="img" aria-labelledby="title desc">
+  <title id="title">A classroom community helps solve a shared problem</title>
+  <desc id="desc">Students notice a need, share ideas, take helpful actions, and check whether the action helped.</desc>
+  <rect width="720" height="260" rx="18" fill="#f7f4ed"/>
+  <text x="36" y="48" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="#27333b">People make a community stronger together</text>
+  <g font-family="Arial,sans-serif" text-anchor="middle">
+    <g><rect x="32" y="93" width="145" height="92" rx="14" fill="#d8e4eb"/><text x="104" y="130" font-size="17" font-weight="700" fill="#203e50">Notice a</text><text x="104" y="154" font-size="17" fill="#203e50">need</text></g>
+    <g><rect x="207" y="93" width="145" height="92" rx="14" fill="#f2c879"/><text x="279" y="130" font-size="17" font-weight="700" fill="#563d10">Share</text><text x="279" y="154" font-size="17" fill="#563d10">ideas</text></g>
+    <g><rect x="382" y="93" width="145" height="92" rx="14" fill="#c8d8ba"/><text x="454" y="130" font-size="17" font-weight="700" fill="#294a2b">Help</text><text x="454" y="154" font-size="17" fill="#294a2b">one another</text></g>
+    <g><rect x="557" y="93" width="130" height="92" rx="14" fill="#ead5c7"/><text x="622" y="130" font-size="17" font-weight="700" fill="#603e2d">Check</text><text x="622" y="154" font-size="17" fill="#603e2d">the result</text></g>
+  </g>
+  <path d="M180 139h23m152 0h23m152 0h23" stroke="#52646c" stroke-width="4" marker-end="url(#arrow)"/>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0 8 3 0 6" fill="none" stroke="#52646c" stroke-width="2"/></marker></defs>
+</svg>

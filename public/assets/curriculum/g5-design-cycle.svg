@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 300" role="img" aria-labelledby="title desc">
+  <title id="title">Engineering design cycle</title>
+  <desc id="desc">Define a problem, imagine options, build a model, test it, and improve the design. The process repeats.</desc>
+  <rect width="720" height="300" rx="18" fill="#f7f4ed"/>
+  <text x="34" y="45" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="#27333b">Designers learn by testing and improving</text>
+  <g font-family="Arial,sans-serif" text-anchor="middle">
+    <g><circle cx="112" cy="148" r="54" fill="#d8e4eb"/><text x="112" y="144" font-size="16" font-weight="700" fill="#203e50">Define</text><text x="112" y="166" font-size="13" fill="#203e50">the need</text></g>
+    <g><circle cx="278" cy="148" r="54" fill="#f2c879"/><text x="278" y="144" font-size="16" font-weight="700" fill="#563d10">Imagine</text><text x="278" y="166" font-size="13" fill="#563d10">ideas</text></g>
+    <g><circle cx="444" cy="148" r="54" fill="#c8d8ba"/><text x="444" y="144" font-size="16" font-weight="700" fill="#294a2b">Build</text><text x="444" y="166" font-size="13" fill="#294a2b">a model</text></g>
+    <g><circle cx="610" cy="148" r="54" fill="#ead5c7"/><text x="610" y="144" font-size="16" font-weight="700" fill="#603e2d">Test &amp;</text><text x="610" y="166" font-size="13" fill="#603e2d">improve</text></g>
+  </g>
+  <path d="M169 148h50m116 0h50m116 0h50" stroke="#52646c" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M608 216c-80 55-360 53-470 8" fill="none" stroke="#52646c" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="356" y="273" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" fill="#4a4740">A test gives evidence for the next improvement.</text>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0 8 3 0 6" fill="none" stroke="#52646c" stroke-width="2"/></marker></defs>
+</svg>

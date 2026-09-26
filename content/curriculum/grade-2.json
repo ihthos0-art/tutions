@@ -1,0 +1,81 @@
+{
+  "grade": 2,
+  "students": ["mahiya", "nabila", "naviha"],
+  "lessons": {
+    "Math": {
+      "title": "Subtract to find how many fewer",
+      "subject": "Math",
+      "type": "math",
+      "instructions": "Read the explanation and examples first. Then solve each problem. You can draw a bar or write an equation.",
+      "explanation": "The phrase “20 fewer than 45” means start with 45 and take away 20. Subtract the tens: 45 − 20 = 25. A tape diagram can show the bigger amount as one bar and the smaller amount as the part left after removing 20.",
+      "workedExamples": [
+        {"title": "Find 45 − 20", "steps": ["Start at 45.", "Take away 2 tens: 45 − 20 = 25.", "Check: 25 + 20 = 45, so 25 is correct."]},
+        {"title": "Find 63 − 30", "steps": ["63 has 6 tens and 3 ones.", "Take away 3 tens. That leaves 3 tens and 3 ones.", "63 − 30 = 33."]}
+      ],
+      "visuals": [{"src": "/assets/curriculum/g2-math-tape.svg", "alt": "A tape diagram shows 45 split into 20 and 25; the part left is 25.", "caption": "The whole is 45 pages. Removing 20 leaves 25.", "credit": "Original LearnFlow instructional diagram."}],
+      "scopeNote": "The source guide identifies this kind of comparison problem in P.S. 139 Grade 2 Illustrative Mathematics. P.S. 179’s current math sequence is not confirmed; this is original practice, not a claim about this week’s lesson.",
+      "sources": [{"title": "Illustrative Mathematics / Open Up Resources, Grade 2 Unit 1 family materials", "url": "https://cms-assets.illustrativemathematics.org/icxvbqzzuiz4fnwuwzqj07de3mfb"}],
+      "questions": [
+        {"id": "g2-math-1", "prompt": "A student read 45 pages. A friend read 20 fewer pages. How many pages did the friend read?", "answer": "25", "acceptedAnswers": ["25 pages"]},
+        {"id": "g2-math-2", "prompt": "Find 62 − 20.", "answer": "42", "acceptedAnswers": ["42"]},
+        {"id": "g2-math-3", "prompt": "Find 53 − 30.", "answer": "23", "acceptedAnswers": ["23"]},
+        {"id": "g2-math-4", "prompt": "A library has 38 books on a cart. 10 fewer are placed on a shelf. How many books are placed on the shelf?", "answer": "28", "acceptedAnswers": ["28 books"]}
+      ]
+    },
+    "English": {
+      "title": "A classroom can be a community",
+      "subject": "English",
+      "type": "reading",
+      "instructions": "Read the original story. Answer each question with a word or short phrase from the story.",
+      "passage": "On Monday, Imani noticed that some students came to class without a pencil. She asked her teacher if the class could help. The students talked together and made a small supply basket. Anyone could leave an extra pencil, and anyone who needed one could borrow it. At first, the basket was almost empty. By Friday, it held pencils, erasers, and a few notes that said, “You can do it!” Imani’s class learned that a community is a group of people who share a place and help one another. One small idea made it easier for everyone to get ready to learn.",
+      "visuals": [{"src": "/assets/curriculum/g2-community.svg", "alt": "A four-step diagram shows a classroom noticing a need, sharing ideas, helping, and checking whether the plan worked.", "caption": "Readers can use the story’s events to explain the central lesson.", "credit": "Original LearnFlow instructional diagram."}],
+      "scopeNote": "This is an original reading inspired by the “Be a Super Citizen” theme listed in the Grade 2 guide; it does not reproduce a textbook passage or confirm classroom pacing.",
+      "sources": [{"title": "NYC Reads program information", "url": "https://www.schools.nyc.gov/NYCreads"}],
+      "questions": [
+        {"id": "g2-ela-1", "prompt": "What did the class make to help students?", "answer": "supply basket", "acceptedAnswers": ["a supply basket", "basket"]},
+        {"id": "g2-ela-2", "prompt": "What could a student leave in the basket?", "answer": "pencil", "acceptedAnswers": ["an extra pencil", "pencils", "an eraser", "erasers"]},
+        {"id": "g2-ela-3", "prompt": "When did the class notice the basket held more supplies?", "answer": "Friday", "acceptedAnswers": ["by Friday", "on Friday"]},
+        {"id": "g2-ela-4", "prompt": "What is one lesson Imani’s class learned about a community?", "answer": "people help one another", "acceptedAnswers": ["help one another", "a community helps one another", "people share a place and help one another"]}
+      ]
+    },
+    "Science": {
+      "title": "How water can change land",
+      "subject": "Science",
+      "type": "reading",
+      "instructions": "Read the explanation and study the photograph and model. Then answer the questions. For the model task, draw and label your own version on paper.",
+      "passage": "Rain can loosen tiny pieces of soil and rock. When water flows downhill, it can carry some of those pieces with it. The movement of sediment from one place to another is erosion. Some sediment may settle when the water slows down. Roots and plant cover can help hold soil in place, but the amount of erosion depends on the land, soil, plants, and water flow. The photograph shows real erosion; the diagram is a simplified model of one way it can happen.",
+      "visuals": [
+        {"src": "/assets/curriculum/water-erosion-1600.jpg", "alt": "A photograph of water moving sediment and wearing away a riverbank.", "caption": "A real example of water moving soil. Notice the bank and the flowing water.", "credit": "Photo: Coder Junior, CC BY-SA 4.0 via Wikimedia Commons.", "sourceUrl": "https://commons.wikimedia.org/wiki/File:Water_erosion.jpg"},
+        {"src": "/assets/curriculum/g2-erosion-model.svg", "alt": "A simplified diagram shows rain and runoff carrying soil downhill toward a stream.", "caption": "Model of runoff carrying sediment. It is not to scale.", "credit": "Original LearnFlow instructional diagram."}
+      ],
+      "modelTask": "Draw a hillside, rain, moving runoff, soil particles, and a stream. Add arrows to show where the water and sediment move. Label your drawing “model—not to scale.”",
+      "scopeNote": "Changing landforms/erosion appears among the Grade 2 science topics in the source guide. It does not confirm which unit is being taught this week.",
+      "sources": [
+        {"title": "Amplify Science, Grades K–5", "url": "https://sciencek8.amplify.com/grades-k-5/"},
+        {"title": "New York State P–12 Science Learning Standards", "url": "https://www.nysed.gov/sites/default/files/programs/curriculum-instruction/p-12-science-learning-standards.pdf"}
+      ],
+      "questions": [
+        {"id": "g2-science-1", "prompt": "What is the movement of sediment from one place to another called?", "answer": "erosion", "acceptedAnswers": ["erosion"]},
+        {"id": "g2-science-2", "prompt": "Which can carry sediment downhill: runoff or a shadow?", "answer": "runoff", "acceptedAnswers": ["runoff"]},
+        {"id": "g2-science-3", "prompt": "What may happen to sediment when water slows down?", "answer": "it may settle", "acceptedAnswers": ["settle", "it may settle", "some sediment may settle"]},
+        {"id": "g2-science-4", "prompt": "What can plant roots help hold in place?", "answer": "soil", "acceptedAnswers": ["soil", "the soil"]}
+      ]
+    },
+    "Social Studies": {
+      "title": "Communities change over time",
+      "subject": "Social Studies",
+      "type": "reading",
+      "instructions": "Read the explanation, then inspect the historic map. Use the map’s date as evidence; do not use it for current directions.",
+      "passage": "A community is a place where people live, work, learn, and help one another. Communities may be urban, suburban, or rural, and each can have different buildings, roads, open spaces, and ways to travel. Maps are sources: a map’s title, date, labels, and symbols help us understand what it shows. This historic map shows part of Flatbush and Prospect Park in Brooklyn in 1873. It is evidence about the past, not a current street map. Comparing it with a current map can help us notice how places change.",
+      "visuals": [{"src": "/assets/curriculum/flatbush-1873.jpg", "alt": "An 1873 historic map of part of Flatbush, Brooklyn, including Prospect Park.", "caption": "Historic local map. Its date is 1873; compare with a current map before drawing conclusions about today.", "credit": "Atlas of Long Island, New York (1873), public domain via Wikimedia Commons.", "sourceUrl": "https://commons.wikimedia.org/wiki/File:1873_Beers_Map_of_Flabush_Area_of_Brooklyn,_New_York_City,_including_Prospect_Park_-_Geographicus_-_Flatbush-beers-1873.jpg"}],
+      "scopeNote": "The topic connects to NYC Passport Grade 2 community geography and New York City over time. The guide does not establish this as a current class assignment.",
+      "sources": [{"title": "NYC Passport to Social Studies, Grade 2 resources", "url": "https://sites.google.com/schools.nyc.gov/social-studies-and-civics/resources-by-grade/elementary/2nd-grade"}],
+      "questions": [
+        {"id": "g2-ss-1", "prompt": "What year is printed in the map’s caption?", "answer": "1873", "acceptedAnswers": ["1873"]},
+        {"id": "g2-ss-2", "prompt": "Is the pictured map a current map or a historic map?", "answer": "historic map", "acceptedAnswers": ["historic", "old map", "a historic map"]},
+        {"id": "g2-ss-3", "prompt": "Which Brooklyn place is named along with Flatbush?", "answer": "Prospect Park", "acceptedAnswers": ["prospect park"]},
+        {"id": "g2-ss-4", "prompt": "Which kind of map should you use to find a street today: this 1873 map or a current map?", "answer": "current map", "acceptedAnswers": ["a current map", "current"]}
+      ]
+    }
+  }
+}

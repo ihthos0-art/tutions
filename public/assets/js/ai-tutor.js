@@ -1,6 +1,8 @@
 (function () {
   'use strict';
 
+  if (window.__LEARNFLOW_AUTH_BLOCKED || !window.LEARNFLOW_AUTH || window.LEARNFLOW_AUTH.role !== 'student') return;
+
   var API_URL = '/api/chat';
 
   var pagePath = location.pathname.split('/').pop().replace('.html', '') || 'index';

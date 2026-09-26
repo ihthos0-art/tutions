@@ -1,0 +1,75 @@
+{
+  "grade": 6,
+  "students": ["salma", "khadija", "ayan"],
+  "lessons": {
+    "Math": {
+      "title": "Use equivalent ratios",
+      "subject": "Math",
+      "type": "math",
+      "instructions": "Study the ratio table and worked examples before solving. Keep the order of the two quantities the same.",
+      "explanation": "A ratio compares two quantities in a stated order. Equivalent ratios describe the same relationship. To make an equivalent ratio, multiply or divide both quantities by the same nonzero number. If blue beads to yellow beads is 2 to 5, multiplying both parts by 1.5 gives 3 to 7.5. Multiplying both by 2 gives 4 to 10. The relationship stays the same because both parts change by the same factor.",
+      "workedExamples": [
+        {"title": "Find a value equivalent to 2:5 when the first amount is 3", "steps": ["The first amount changes from 2 to 3, so multiply by 1.5.", "Multiply the second amount by the same factor: 5 × 1.5 = 7.5.", "The equivalent ratio is 3:7.5."]},
+        {"title": "Scale 4:7 by a factor of 3", "steps": ["Multiply the first part: 4 × 3 = 12.", "Multiply the second part by the same factor: 7 × 3 = 21.", "An equivalent ratio is 12:21."]}
+      ],
+      "visuals": [{"src": "/assets/curriculum/g6-ratio-table.svg", "alt": "A ratio table shows 2 blue beads to 5 yellow beads and an equivalent 3 to 7.5 ratio.", "caption": "Both parts scale by the same factor.", "credit": "Original LearnFlow instructional diagram."}],
+      "scopeNote": "Ratios and proportional reasoning are in the New York State Grade 6 mathematics standards. This is original practice, not a claim about the current class sequence.",
+      "sources": [{"title": "New York State Next Generation Mathematics Learning Standards", "url": "https://www.nysed.gov/sites/default/files/programs/standards-instruction/nys-next-generation-mathematics-p-12-standards_0.pdf"}],
+      "questions": [
+        {"id": "g6-math-1", "prompt": "Complete the equivalent ratio: 2:5 = 6:___.", "answer": "15", "acceptedAnswers": ["15"]},
+        {"id": "g6-math-2", "prompt": "Complete the equivalent ratio: 4:7 = 12:___.", "answer": "21", "acceptedAnswers": ["21"]},
+        {"id": "g6-math-3", "prompt": "If 2 cups of rice serve 5 people, how many cups keep the same ratio for 15 people?", "answer": "6", "acceptedAnswers": ["6 cups"]},
+        {"id": "g6-math-4", "prompt": "If both parts of a ratio are multiplied by 4, what happens to the relationship?", "answer": "it stays equivalent", "acceptedAnswers": ["it stays equivalent", "the ratio stays equivalent", "same relationship"]}
+      ]
+    },
+    "English": {
+      "title": "A myth: Theseus and the labyrinth",
+      "subject": "English",
+      "type": "reading",
+      "instructions": "Read this original summary of one ancient Greek myth. Myths have different versions; answer from this version and inspect the historical vase image as a separate source.",
+      "passage": "In one ancient Greek story, Theseus enters a winding labyrinth where the Minotaur lives. He carries a thread given to him so he can trace a path back through the confusing passages. The story focuses on a difficult task, a risk, and a plan to return safely. A plan does not remove every danger, but it can help a character respond to a problem. Ancient artists also showed scenes from myths on pottery. A painted vase is a historical object: it can provide clues about how an artist represented a story, but one picture does not tell every part of the tale.",
+      "visuals": [{"src": "/assets/curriculum/theseus-vase-painting.jpg", "alt": "Ancient Greek vase painting showing the mythic figures Theseus and the Minotaur.", "caption": "A historical image related to the myth; compare what the scene shows with what the passage explains.", "credit": "Unknown ancient artist; CC0 via Wikimedia Commons.", "sourceUrl": "https://commons.wikimedia.org/wiki/File:Greece_from_the_Coming_of_the_Hellenes_to_AD._14,_page_39,_Vase_painting.jpg"}],
+      "scopeNote": "Greek mythology is one possible Grade 6 reading topic in the guide, but it is not confirmed as the students’ current text. This is an original summary, not a retelling copied from a modern book.",
+      "sources": [{"title": "New York State Next Generation English Language Arts Learning Standards", "url": "https://www.nysed.gov/sites/default/files/programs/curriculum-instruction/nys-next-generation-ela-standards.pdf"}],
+      "questions": [
+        {"id": "g6-ela-1", "prompt": "Where does Theseus enter?", "answer": "labyrinth", "acceptedAnswers": ["the labyrinth", "labyrinth"]},
+        {"id": "g6-ela-2", "prompt": "What does Theseus carry to help him find his way back?", "answer": "thread", "acceptedAnswers": ["a thread", "thread"]},
+        {"id": "g6-ela-3", "prompt": "What does the passage say an image of a vase can provide?", "answer": "clues", "acceptedAnswers": ["clues", "clues about how an artist represented a story"]},
+        {"id": "g6-ela-4", "prompt": "Does one picture tell every part of the myth?", "answer": "no", "acceptedAnswers": ["no"]}
+      ]
+    },
+    "Science": {
+      "title": "Model the parts of an animal cell",
+      "subject": "Science",
+      "type": "reading",
+      "instructions": "Read the explanation and use the labeled model. The model is simplified and not drawn to scale.",
+      "passage": "A cell is the basic unit of living things. In an animal cell, the cell membrane forms a boundary and helps control what enters and leaves. Cytoplasm fills much of the cell, and many cell processes happen there. The nucleus contains genetic material and helps direct cell activities. Cells contain other structures too; this simple model shows only three parts. Plant cells share some of these parts and also have structures such as a cell wall and chloroplasts.",
+      "visuals": [{"src": "/assets/curriculum/g6-animal-cell.svg", "alt": "A simplified animal cell model labels the cell membrane, cytoplasm, and nucleus.", "caption": "The diagram is a model; real cells are far more detailed and are not this shape or scale.", "credit": "Original LearnFlow instructional diagram."}],
+      "modelTask": "Draw an animal cell and label its membrane, cytoplasm, and nucleus. Then add a short note describing one job of each labeled part.",
+      "scopeNote": "Cell structures appear in the Grade 6 science scope summarized in the guide. The school’s current unit order is not confirmed.",
+      "sources": [{"title": "New York State P–12 Science Learning Standards", "url": "https://www.nysed.gov/sites/default/files/programs/curriculum-instruction/p-12-science-learning-standards.pdf"}],
+      "questions": [
+        {"id": "g6-science-1", "prompt": "What structure forms the cell’s boundary and helps control what enters and leaves?", "answer": "cell membrane", "acceptedAnswers": ["the cell membrane", "cell membrane"]},
+        {"id": "g6-science-2", "prompt": "Which cell part contains genetic material and helps direct activities?", "answer": "nucleus", "acceptedAnswers": ["the nucleus", "nucleus"]},
+        {"id": "g6-science-3", "prompt": "What fills much of the cell around its structures?", "answer": "cytoplasm", "acceptedAnswers": ["the cytoplasm", "cytoplasm"]},
+        {"id": "g6-science-4", "prompt": "Name one structure that plant cells have in addition to the parts shown in this simple animal-cell model.", "answer": "cell wall", "acceptedAnswers": ["cell wall", "a cell wall", "chloroplast", "chloroplasts"]}
+      ]
+    },
+    "Social Studies": {
+      "title": "How river valleys supported early communities",
+      "subject": "Social Studies",
+      "type": "reading",
+      "instructions": "Read the passage and study the 1890 map. Separate what the map shows from what the passage explains.",
+      "passage": "The Nile River runs through northeastern Africa and flows north toward the Mediterranean Sea. Water, fertile soils in some areas, and routes for travel helped people build communities along the river. People also had to respond to floods, dry regions, and changing conditions. A river valley can offer resources, but people still make choices about farming, building, trade, and leadership. This historic 1890 map represents ancient Egypt; it can help you locate the Nile, but it is not a modern map and should be treated as a source with a date and creator.",
+      "visuals": [{"src": "/assets/curriculum/ancient-egypt-1890-map.png", "alt": "Historic map of ancient Egypt and the Nile from P. V. N. Myers’s 1890 history book.", "caption": "Trace the Nile and its delta. The map is a historical representation, not a current political map.", "credit": "P. V. N. Myers, A General History for Colleges and High Schools (1890), public domain via Wikimedia Commons.", "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ancient_Egypt_(Myers,_1890).png"}],
+      "scopeNote": "This connects to the Grade 6 NYC Passport Eastern Hemisphere and early-civilizations themes. It is not a claim about current classroom pacing.",
+      "sources": [{"title": "NYC Passport to Social Studies resources", "url": "https://sites.google.com/schools.nyc.gov/social-studies-and-civics/resources/passport-to-social-studies"}],
+      "questions": [
+        {"id": "g6-ss-1", "prompt": "Which river is central to the passage?", "answer": "Nile", "acceptedAnswers": ["the Nile", "Nile River"]},
+        {"id": "g6-ss-2", "prompt": "In which direction does the Nile flow toward the Mediterranean Sea?", "answer": "north", "acceptedAnswers": ["north"]},
+        {"id": "g6-ss-3", "prompt": "Name one resource or geographic feature that helped communities form near the river.", "answer": "water", "acceptedAnswers": ["water", "fertile soil", "travel route", "routes for travel"]},
+        {"id": "g6-ss-4", "prompt": "What year is the historical map’s source book?", "answer": "1890", "acceptedAnswers": ["1890"]}
+      ]
+    }
+  }
+}

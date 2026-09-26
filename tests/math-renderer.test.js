@@ -1,6 +1,6 @@
 const assert = require('node:assert/strict');
 const test = require('node:test');
-const renderer = require('../math-renderer.js');
+const renderer = require('../archive/legacy-assets/math-renderer.js');
 
 test('recognizes valid fraction tokens', () => {
   assert.deepEqual(renderer.parseFractionToken('3/4'), {

@@ -26,6 +26,8 @@
     .login-btn:disabled { background: #888; cursor: not-allowed; }
     .login-error { display: none; font-size: 13px; color: #c0392b; background: #fdf0ef; border: 1px solid #e74c3c; border-radius: 4px; padding: 10px 14px; margin-top: 14px; text-align: center; }
     .login-error.show { display: block; }
+    .login-links { margin-top: 22px; color: #888; font-size: 12px; text-align: center; }
+    .login-links a { color: #555; }
 
     /* ===== TOPBAR ===== */
     #admin-panel { display: none; min-height: 100vh; background: #f0efec; }
@@ -110,6 +112,20 @@
     .prog-pct { color: #999; font-size: 10px; }
     .empty-state { text-align: center; padding: 60px 20px; }
     .empty-state p { font-size: 15px; color: #aaa; font-style: italic; }
+    .directory-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .directory-card { display: grid; gap: 12px; background: #fff; border: 1px solid #d4d2cc; border-radius: 6px; padding: 18px; }
+    .directory-card h2 { font-family: 'Merriweather', serif; font-size: 17px; margin: 0; }
+    .directory-meta { color: #777; font-size: 12px; }
+    .directory-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+    .directory-actions button { padding: 8px 11px; font-size: 10px; }
+    .student-preview-controls { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 14px; align-items: end; }
+    #student-preview-frame { display: block; width: 100%; height: min(82vh, 1100px); min-height: 680px; border: 1px solid #d4d2cc; border-radius: 6px; background: #e8e8e6; }
+    @media (max-width: 620px) { .student-preview-controls { grid-template-columns: 1fr; } #student-preview-frame { height: 78vh; min-height: 600px; } }
+    .worksheet-template { min-height: 300px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; line-height: 1.55; }
+    .worksheet-template-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 12px; }
+    .worksheet-template-buttons .action-btn { font-size: 10px; }
+    .worksheet-preview { max-height: 360px; overflow: auto; background: #f7f6f3; border: 1px solid #dddbd4; border-radius: 4px; padding: 14px; white-space: pre-wrap; font: 12px/1.55 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .builder-help { color: #666; font-size: 13px; line-height: 1.65; }
     .page-heading { font-family: 'Merriweather', serif; font-size: 22px; font-weight: 700; margin-bottom: 20px; }
     .answers-controls { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; flex-wrap: wrap; }
     .current-badge { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; background: #e8f5e9; color: #1b5e20; border: 1px solid #81c784; border-radius: 3px; padding: 3px 10px; }
@@ -129,8 +145,14 @@
     .summer-practice-ans { font-family: 'Merriweather Sans', sans-serif; font-size: 12px; color: #555; margin-top: 4px; }
     .summer-q-code { font-family: 'Merriweather Sans', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #fff; background: #7c3aed; border-radius: 4px; padding: 3px 7px; white-space: nowrap; }
     .summer-qa-row.highlight { background: #fffbeb !important; outline: 2px solid #f59e0b; border-radius: 4px; }
+    .assignment-template { display: grid; gap: 12px; margin: 8px 0 20px; }
+    .assignment-template-row { display: grid; grid-template-columns: 150px 1fr; gap: 10px 14px; padding: 14px; background: #fafaf8; border: 1px solid #e2e0db; border-radius: 5px; }
+    .assignment-template-row > label { grid-row: 1 / span 3; padding-top: 10px; color: #444; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+    .assignment-replace-note { display: block; margin-top: 7px; color: #888; font-size: 10px; font-weight: 400; letter-spacing: 0; line-height: 1.4; text-transform: none; }
+    .assignment-template-row > label input { margin-right: 5px; accent-color: #1a1a1a; }
+    .assignment-template-row .form-textarea { min-height: 66px; }
     @media (max-width: 700px) { .summer-qa-row { grid-template-columns: 36px 1fr; } .summer-q-ans { margin-top: 6px; } }
-    @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+    @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } .assignment-template-row { grid-template-columns: 1fr; } .assignment-template-row > label { grid-row: auto; padding-top: 0; } .directory-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -153,6 +175,7 @@
       <button type="submit" class="login-btn" id="login-btn">Sign In</button>
       <div class="login-error" id="login-error">Incorrect username or password.</div>
     </form>
+    <p class="login-links"><a href="/about">About LearnFlow</a> · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></p>
   </div>
 </div>
 
@@ -161,20 +184,129 @@
   <div class="admin-topbar">
     <div class="brand">Admin Panel <span>NYC ELA Tutoring</span></div>
     <div class="topbar-right">
-      <a href="index.html" class="topbar-link">← Student Menu</a>
+      <a href="/" class="topbar-link">← Student Menu</a>
+      <a href="/about" class="topbar-link">About</a>
+      <a href="/privacy" class="topbar-link">Privacy</a>
+      <a href="/terms" class="topbar-link">Terms</a>
       <button class="logout-btn" id="logout-btn">Log Out</button>
     </div>
   </div>
 
   <div class="admin-body">
     <div class="main-tab-bar">
-      <button class="main-tab-btn active" data-tab="editor">Homework Editor</button>
+      <button class="main-tab-btn" data-tab="directory">Students</button>
+      <button class="main-tab-btn active" data-tab="assign-work">Assign Work</button>
+      <button class="main-tab-btn" data-tab="editor">Homework Editor</button>
       <button class="main-tab-btn" data-tab="answers">Student Answers</button>
       <button class="main-tab-btn" data-tab="summer-answers">Summer Answer Key</button>
     </div>
 
+    <!-- ===== STUDENT DIRECTORY TAB ===== -->
+    <div class="main-tab-content" id="tab-directory">
+      <h1 class="page-heading">Student directory</h1>
+      <p class="status-msg" style="margin-bottom:18px;color:#666;line-height:1.6">This private directory loads only after staff sign-in. Preview a student’s assigned-work page, assign work, or review answers.</p>
+      <div id="student-directory" class="directory-grid">
+        <p class="empty-state">Loading the private student directory…</p>
+      </div>
+      <div class="editor-card" id="student-preview-card" hidden>
+        <div class="student-preview-controls">
+          <div class="form-group" style="margin-bottom:0">
+            <label class="form-label" for="preview-student-select">Student view</label>
+            <select class="form-select" id="preview-student-select">
+              <option value="">— choose a student —</option>
+            </select>
+          </div>
+          <button class="action-btn secondary" id="close-student-preview" type="button">Back to students</button>
+        </div>
+        <p class="builder-help" style="margin:12px 0">This is the student’s assigned-work page in read-only preview mode.</p>
+        <iframe id="student-preview-frame" title="Student work preview" loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <!-- ===== ASSIGN WORK TAB ===== -->
+    <div class="main-tab-content active" id="tab-assign-work">
+      <h1 class="page-heading">Assign work</h1>
+      <p class="status-msg" style="margin-bottom:18px;color:#666;line-height:1.6">Choose one student and assign Math, English, Social Studies, and Science together. Saving one subject preserves the other subjects; only that same subject is replaced.</p>
+      <div class="editor-card">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="assignment-student">Student</label>
+            <select class="form-select" id="assignment-student">
+              <option value="">— choose a student —</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="assignment-date">Assignment date</label>
+            <input class="form-input" id="assignment-date" type="date" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="assignment-note">Message for the student (optional)</label>
+          <textarea class="form-textarea" id="assignment-note" rows="2" placeholder="e.g. Complete these before our next tutoring session."></textarea>
+        </div>
+        <div class="assignment-template" id="assignment-template">
+          <div class="assignment-template-row" data-subject="Math">
+            <label><input type="checkbox" class="assignment-enabled" /> <strong>Math</strong><span class="assignment-replace-note">Replaces only previous Math</span></label>
+            <input class="form-input assignment-title" type="text" placeholder="Title, e.g. Multiplication practice" />
+            <textarea class="form-textarea assignment-details" rows="2" placeholder="What should the student do?"></textarea>
+            <input class="form-input assignment-link" type="url" placeholder="Optional resource link" />
+          </div>
+          <div class="assignment-template-row" data-subject="English">
+            <label><input type="checkbox" class="assignment-enabled" /> <strong>English</strong><span class="assignment-replace-note">Replaces only previous English</span></label>
+            <input class="form-input assignment-title" type="text" placeholder="Title, e.g. Read and summarize" />
+            <textarea class="form-textarea assignment-details" rows="2" placeholder="What should the student do?"></textarea>
+            <input class="form-input assignment-link" type="url" placeholder="Optional resource link" />
+          </div>
+          <div class="assignment-template-row" data-subject="Social Studies">
+            <label><input type="checkbox" class="assignment-enabled" /> <strong>Social Studies</strong><span class="assignment-replace-note">Replaces only previous Social Studies</span></label>
+            <input class="form-input assignment-title" type="text" placeholder="Title, e.g. Review today’s topic" />
+            <textarea class="form-textarea assignment-details" rows="2" placeholder="What should the student do?"></textarea>
+            <input class="form-input assignment-link" type="url" placeholder="Optional resource link" />
+          </div>
+          <div class="assignment-template-row" data-subject="Science">
+            <label><input type="checkbox" class="assignment-enabled" /> <strong>Science</strong><span class="assignment-replace-note">Replaces only previous Science</span></label>
+            <input class="form-input assignment-title" type="text" placeholder="Title, e.g. Vocabulary review" />
+            <textarea class="form-textarea assignment-details" rows="2" placeholder="What should the student do?"></textarea>
+            <input class="form-input assignment-link" type="url" placeholder="Optional resource link" />
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="action-btn secondary" id="load-assignment-btn" type="button">Load current</button>
+          <button class="action-btn secondary" id="blank-assignment-btn" type="button">Blank template</button>
+          <button class="action-btn success" id="save-assignment-btn" type="button">Save &amp; publish</button>
+          <button class="action-btn secondary" id="assignment-preview-btn" type="button">View assigned work</button>
+          <span class="status-msg" id="assignment-status"></span>
+        </div>
+      </div>
+
+      <div class="editor-card">
+        <h2>Worksheet builder</h2>
+        <p class="builder-help">Choose a subject button to copy a blank template with bracketed instructions for ChatGPT. Replace the bracketed text, paste the completed version here, parse it, then publish it for the same student. Publishing a worksheet replaces only that subject’s worksheet.</p>
+        <div class="form-group">
+          <label class="form-label" for="worksheet-template-input">Paste worksheet template</label>
+          <div class="worksheet-template-buttons" aria-label="Copy subject template">
+            <button class="action-btn secondary worksheet-copy-btn" data-worksheet-subject="Math" type="button">Copy Math template</button>
+            <button class="action-btn secondary worksheet-copy-btn" data-worksheet-subject="English" type="button">Copy English template</button>
+            <button class="action-btn secondary worksheet-copy-btn" data-worksheet-subject="Social Studies" type="button">Copy Social Studies template</button>
+            <button class="action-btn secondary worksheet-copy-btn" data-worksheet-subject="Science" type="button">Copy Science template</button>
+          </div>
+          <textarea class="form-textarea worksheet-template" id="worksheet-template-input" spellcheck="false" placeholder="LEARNFLOW WORKSHEET v1\nTITLE: Multiplication warm-up\nSUBJECT: Math\nTYPE: math\nINSTRUCTIONS: Solve each problem.\nQUESTION 1: 6 × 7 =\nANSWER 1: 42"></textarea>
+        </div>
+        <div class="btn-row">
+          <button class="action-btn secondary" id="worksheet-example-btn" type="button">Load filled example</button>
+          <button class="action-btn primary" id="worksheet-parse-btn" type="button">Parse template</button>
+          <button class="action-btn success" id="worksheet-publish-btn" type="button">Publish worksheet</button>
+          <span class="status-msg" id="worksheet-status"></span>
+        </div>
+      </div>
+      <div class="editor-card">
+        <h2>Parsed preview</h2>
+        <pre id="worksheet-preview" class="worksheet-preview">Nothing parsed yet.</pre>
+      </div>
+    </div>
+
     <!-- ===== HOMEWORK EDITOR TAB ===== -->
-    <div class="main-tab-content active" id="tab-editor">
+    <div class="main-tab-content" id="tab-editor">
       <div class="editor-card">
         <h2>Edit Homework</h2>
 
@@ -183,16 +315,6 @@
             <label class="form-label" for="sel-student">Student</label>
             <select class="form-select" id="sel-student">
               <option value="">— choose a student —</option>
-              <option value="nabila-naviha">Nabila &amp; Naviha (Grade 2)</option>
-              <option value="salma-khadija">Salma &amp; Khadija (Grade 5)</option>
-              <option value="adnan">Adnan (Grade 4)</option>
-              <option value="nafis">Nafis (Grade 7)</option>
-              <option value="nahid">Nahid (Grade 5)</option>
-              <option value="sameer">Sameer (Grade 9)</option>
-              <option value="manha">Manha (Grade 3)</option>
-              <option value="mahiya">Mahiya (Grade 1)</option>
-              <option value="taha">Taha (Grade 2)</option>
-              <option value="ayan">Ayan (Grade 6)</option>
             </select>
           </div>
           <div class="form-group">
@@ -254,11 +376,11 @@
             <label class="form-label" for="summer-site-sel">Summer Site</label>
             <select class="form-select" id="summer-site-sel">
               <option value="">— choose a summer site —</option>
-              <option value="manha">Manha (Grade 3→4 · Math+ELA+Science+SS)</option>
-              <option value="salma-khadija-summer">Salma &amp; Khadija (Grade 7)</option>
-              <option value="taha-summer">Taha (Grade 5→6 Math)</option>
-              <option value="nahid-summer">Nahid (Grade 4 Math + English)</option>
-              <option value="ayan-summer">Ayan (Grade 6 Science · Math · English · Social Studies)</option>
+              <option value="manha">Summer site A</option>
+              <option value="salma-khadija-summer">Summer site B</option>
+              <option value="taha-summer">Summer site C</option>
+              <option value="nahid-summer">Summer site D</option>
+              <option value="ayan-summer">Summer site E</option>
             </select>
           </div>
           <button class="action-btn primary" id="load-summer-answers-btn">Load Answers</button>
@@ -282,16 +404,6 @@
       <div class="answers-controls">
         <select class="form-select" id="answers-student-sel" style="max-width:260px">
           <option value="">— all students —</option>
-          <option value="nabila-naviha">Nabila &amp; Naviha</option>
-          <option value="salma-khadija">Salma &amp; Khadija</option>
-          <option value="adnan">Adnan</option>
-          <option value="nafis">Nafis</option>
-          <option value="nahid">Nahid</option>
-          <option value="sameer">Sameer</option>
-          <option value="manha">Manha</option>
-          <option value="mahiya">Mahiya</option>
-          <option value="taha">Taha</option>
-          <option value="ayan">Ayan</option>
         </select>
         <button class="action-btn secondary" id="refresh-answers-btn">Refresh</button>
         <span class="status-msg" id="answers-status"></span>
@@ -301,6 +413,8 @@
   </div>
 </div>
 
+<script src="assets/js/assignments.js"></script>
+<script src="assets/js/worksheet-template.js"></script>
 <script>
 (function () {
   'use strict';
@@ -309,26 +423,20 @@
   var token = sessionStorage.getItem(TOKEN_KEY) || '';
   var generatedResult = null; // { section, generated }
   var currentContent = {};    // full homework object for selected student
+  var parsedWorksheet = null;
 
-  var STUDENT_NAMES = {
-    'nabila-naviha': 'Nabila & Naviha',
-    'salma-khadija': 'Salma & Khadija',
-    'adnan': 'Adnan',
-    'nafis': 'Nafis',
-    'nahid': 'Nahid',
-    'sameer': 'Sameer',
-    'manha': 'Manha',
-    'mahiya': 'Mahiya',
-    'taha': 'Taha',
-    'ayan': 'Ayan'
-  };
+  var STUDENT_NAMES = {};
+  var STUDENTS = [];
+  var previewReady = false;
+  var previewFrame = document.getElementById('student-preview-frame');
+  var previewStudentSelect = document.getElementById('preview-student-select');
 
   var SUMMER_SITES = {
-    'manha': 'Manha — Summer Bridge (Grade 3→4)',
-    'salma-khadija-summer': 'Salma & Khadija — Summer Bridge to Grade 7',
-    'taha-summer': 'Taha — Summer Math Bridge Grade 5→6',
-    'nahid-summer': 'Nahid — Summer Bridge to Grade 4',
-    'ayan-summer': 'Ayan — Summer Bridge to Grade 6'
+    'manha': 'Summer site A',
+    'salma-khadija-summer': 'Summer site B',
+    'taha-summer': 'Summer site C',
+    'nahid-summer': 'Summer site D',
+    'ayan-summer': 'Summer site E'
   };
 
   var KEY_LABELS = {
@@ -466,10 +574,362 @@
     el.className = 'status-msg' + (cls ? ' ' + cls : '');
   }
 
+  function showWorksheetPreview(worksheet) {
+    var preview = document.getElementById('worksheet-preview');
+    if (!preview) return;
+    preview.textContent = worksheet ? JSON.stringify(worksheet, null, 2) : 'Nothing parsed yet.';
+  }
+
+  function parseWorksheetInput() {
+    try {
+      parsedWorksheet = window.LearnFlowWorksheet.parse(document.getElementById('worksheet-template-input').value);
+      showWorksheetPreview(parsedWorksheet);
+      setStatus('worksheet-status', parsedWorksheet.questions.length + ' questions detected. Review the preview, then publish.', 'ok');
+      return parsedWorksheet;
+    } catch (error) {
+      parsedWorksheet = null;
+      showWorksheetPreview(null);
+      setStatus('worksheet-status', error.message || 'Template could not be parsed.', 'err');
+      return null;
+    }
+  }
+
+  function publishWorksheet() {
+    var student = document.getElementById('assignment-student').value;
+    if (!student) { setStatus('worksheet-status', 'Choose a student first.', 'err'); return; }
+    var worksheet = parsedWorksheet || parseWorksheetInput();
+    if (!worksheet) return;
+    var button = document.getElementById('worksheet-publish-btn');
+    button.disabled = true;
+    setStatus('worksheet-status', 'Loading current content…', 'working');
+    fetch('/api/homework/' + encodeURIComponent(student), { headers: { 'Authorization': 'Bearer ' + token } })
+      .then(function (response) {
+        return response.json().then(function (data) {
+          if (!response.ok) throw new Error(data.error || 'Could not load current homework.');
+          return data.content || {};
+        });
+      })
+      .then(function (content) {
+        content.assigned = content.assigned || {};
+        var worksheets = content.assigned.worksheets && typeof content.assigned.worksheets === 'object'
+          ? content.assigned.worksheets
+          : {};
+        if (content.assigned.worksheet && content.assigned.worksheet.subject) {
+          worksheets[content.assigned.worksheet.subject] = content.assigned.worksheet;
+        }
+        worksheets[worksheet.subject] = worksheet;
+        content.assigned.worksheets = worksheets;
+        delete content.assigned.worksheet;
+        content.version = 1;
+        content.student = student;
+        setStatus('worksheet-status', 'Publishing…', 'working');
+        return fetch('/api/homework/' + encodeURIComponent(student), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+          body: JSON.stringify(content)
+        });
+      })
+      .then(function (response) {
+        return response.json().then(function (data) {
+          if (!response.ok) throw new Error(data.error || 'Could not publish worksheet.');
+          return data;
+        });
+      })
+      .then(function () { setStatus('worksheet-status', 'Published. The student will see it in Assigned work.', 'ok'); })
+      .catch(function (error) { setStatus('worksheet-status', error.message || 'Could not publish worksheet.', 'err'); })
+      .finally(function () { button.disabled = false; });
+  }
+
+  function populateStudentSelects(students) {
+    STUDENTS = Array.isArray(students) ? students : [];
+    STUDENT_NAMES = {};
+    STUDENTS.forEach(function (student) { STUDENT_NAMES[student.id] = student.name; });
+    [
+      { id: 'assignment-student', empty: '— choose a student —' },
+      { id: 'sel-student', empty: '— choose a student —' },
+      { id: 'answers-student-sel', empty: '— all students —' },
+      { id: 'preview-student-select', empty: '— choose a student —' }
+    ].forEach(function (config) {
+      var select = document.getElementById(config.id);
+      if (!select) return;
+      select.replaceChildren(new Option(config.empty, ''));
+      STUDENTS.forEach(function (student) {
+        select.append(new Option(student.name + ' (Grade ' + student.grade + ')', student.id));
+      });
+    });
+  }
+
+  function activateStudentTab(tabName, studentId) {
+    var selectId = tabName === 'assign-work' ? 'assignment-student' : tabName === 'answers' ? 'answers-student-sel' : 'sel-student';
+    var select = document.getElementById(selectId);
+    if (select) select.value = studentId;
+    var button = document.querySelector('.main-tab-btn[data-tab="' + tabName + '"]');
+    if (button) button.click();
+    if (tabName === 'editor') {
+      window.setTimeout(function () {
+        var loadButton = document.getElementById('load-current-btn');
+        if (loadButton) loadButton.click();
+      }, 0);
+    }
+  }
+
+  function sendStudentPreview() {
+    var studentId = previewStudentSelect.value;
+    var student = STUDENTS.find(function (item) { return item.id === studentId; });
+    if (!previewReady || !token || !student) return;
+    previewFrame.contentWindow.postMessage({
+      type: 'learnflow-admin-preview-data',
+      token: token,
+      student: { id: student.id, name: student.name, grade: student.grade, route: student.route }
+    }, window.location.origin);
+  }
+
+  function showStudentPreview(studentId) {
+    var previewCard = document.getElementById('student-preview-card');
+    previewCard.hidden = false;
+    previewStudentSelect.value = studentId;
+    previewFrame.title = 'Assigned work for ' + (STUDENT_NAMES[studentId] || studentId);
+    if (!previewFrame.dataset.started) {
+      previewFrame.dataset.started = 'true';
+      previewFrame.src = '/admin-preview.html';
+    }
+    sendStudentPreview();
+    previewCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  window.addEventListener('message', function (event) {
+    if (event.origin !== window.location.origin || !previewFrame || event.source !== previewFrame.contentWindow) return;
+    if (event.data && event.data.type === 'learnflow-admin-preview-ready') {
+      previewReady = true;
+      sendStudentPreview();
+    }
+  });
+
+  function renderStudentDirectory() {
+    var root = document.getElementById('student-directory');
+    if (!root) return;
+    root.replaceChildren();
+    if (!STUDENTS.length) {
+      root.appendChild(document.createTextNode('No students are available yet.'));
+      return;
+    }
+    STUDENTS.forEach(function (student) {
+      var card = document.createElement('article');
+      card.className = 'directory-card';
+      card.innerHTML = '<h2>' + esc(student.name) + '</h2><p class="directory-meta">Grade ' + esc(student.grade) + '</p>' +
+        '<div class="directory-actions"><button type="button" class="action-btn secondary" data-directory-action="assign" data-student="' + esc(student.id) + '">Assign work</button>' +
+        '<button type="button" class="action-btn secondary" data-directory-action="preview" data-student="' + esc(student.id) + '">View assigned work</button>' +
+        '<button type="button" class="action-btn secondary" data-directory-action="answers" data-student="' + esc(student.id) + '">View answers</button>' +
+        '<button type="button" class="action-btn secondary" data-directory-action="reset" data-student="' + esc(student.id) + '">Reset PIN</button></div>';
+      root.appendChild(card);
+    });
+    root.querySelectorAll('[data-directory-action]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        var action = button.dataset.directoryAction;
+        var studentId = button.dataset.student;
+        if (action === 'reset') return resetStudentPin(studentId);
+        if (action === 'preview') return showStudentPreview(studentId);
+        activateStudentTab(action === 'assign' ? 'assign-work' : action === 'answers' ? 'answers' : 'editor', studentId);
+      });
+    });
+  }
+
+  previewStudentSelect.addEventListener('change', function () {
+    if (previewStudentSelect.value) showStudentPreview(previewStudentSelect.value);
+  });
+  document.getElementById('close-student-preview').addEventListener('click', function () {
+    document.getElementById('student-preview-card').hidden = true;
+    document.getElementById('student-directory').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  document.getElementById('assignment-preview-btn').addEventListener('click', function () {
+    var studentId = document.getElementById('assignment-student').value;
+    if (!studentId) {
+      setStatus('assignment-status', 'Choose a student to preview.', 'err');
+      return;
+    }
+    document.querySelector('.main-tab-btn[data-tab="directory"]').click();
+    showStudentPreview(studentId);
+  });
+
+  function loadAdminRoster() {
+    fetch('/api/admin/students', { headers: { 'Authorization': 'Bearer ' + token } })
+      .then(function (response) {
+        return response.json().then(function (data) {
+          if (!response.ok) throw new Error(data.error || 'Could not load the private directory.');
+          return data;
+        });
+      })
+      .then(function (data) {
+        populateStudentSelects(data.students);
+        renderStudentDirectory();
+      })
+      .catch(function (error) {
+        var root = document.getElementById('student-directory');
+        if (root) root.textContent = error.message;
+      });
+  }
+
+  function resetStudentPin(studentId) {
+    var name = STUDENT_NAMES[studentId] || studentId;
+    if (!confirm('Reset ' + name + ' to the temporary PIN 0000? They will be required to choose a new PIN next time.')) return;
+    fetch('/api/admin/students/' + encodeURIComponent(studentId) + '/reset-pin', {
+      method: 'POST', headers: { 'Authorization': 'Bearer ' + token }
+    }).then(function (response) {
+      return response.json().then(function (data) {
+        if (!response.ok) throw new Error(data.error || 'Could not reset the PIN.');
+        alert(data.message || 'PIN reset.');
+      });
+    }).catch(function (error) { alert(error.message); });
+  }
+
+  // ---- DAILY ASSIGNMENTS ----
+  function todayIso() {
+    var now = new Date();
+    var offset = now.getTimezoneOffset() * 60000;
+    return new Date(now.getTime() - offset).toISOString().slice(0, 10);
+  }
+
+  function assignmentRows() {
+    return Array.prototype.slice.call(document.querySelectorAll('.assignment-template-row'));
+  }
+
+  function clearAssignmentForm() {
+    document.getElementById('assignment-date').value = todayIso();
+    document.getElementById('assignment-note').value = '';
+    assignmentRows().forEach(function (row) {
+      row.querySelector('.assignment-enabled').checked = false;
+      row.querySelector('.assignment-title').value = '';
+      row.querySelector('.assignment-details').value = '';
+      row.querySelector('.assignment-link').value = '';
+      row.dataset.dirty = 'true';
+    });
+  }
+
+  function fillAssignmentForm(assignment) {
+    var data = assignment || {};
+    document.getElementById('assignment-date').value = data.date || todayIso();
+    document.getElementById('assignment-note').value = data.note || '';
+    var bySubject = {};
+    (data.items || []).forEach(function (item) { bySubject[item.subject] = item; });
+    assignmentRows().forEach(function (row) {
+      var item = bySubject[row.dataset.subject] || {};
+      row.querySelector('.assignment-enabled').checked = Boolean(item.title || item.details || item.link);
+      row.querySelector('.assignment-title').value = item.title || '';
+      row.querySelector('.assignment-details').value = item.details || '';
+      row.querySelector('.assignment-link').value = item.link || '';
+      row.dataset.dirty = 'false';
+    });
+  }
+
+  function readAssignmentForm() {
+    var items = [];
+    assignmentRows().forEach(function (row) {
+      var enabled = row.querySelector('.assignment-enabled').checked;
+      var title = row.querySelector('.assignment-title').value.trim();
+      var details = row.querySelector('.assignment-details').value.trim();
+      var link = row.querySelector('.assignment-link').value.trim();
+      if (enabled && !title && !details && !link) throw new Error(row.dataset.subject + ' is checked but empty.');
+      if (enabled) items.push({ subject: row.dataset.subject, title: title, details: details, link: link });
+    });
+    return {
+      date: document.getElementById('assignment-date').value || todayIso(),
+      note: document.getElementById('assignment-note').value.trim(),
+      items: items,
+      replaceSubjects: assignmentRows().filter(function (row) { return row.dataset.dirty === 'true'; }).map(function (row) { return row.dataset.subject; })
+    };
+  }
+
+  function loadAssignmentDraft() {
+    var student = document.getElementById('assignment-student').value;
+    if (!student) return;
+    setStatus('assignment-status', 'Loading…', 'working');
+    window.LearnFlowAssignments.load(student, token).then(function (result) {
+      fillAssignmentForm(result.assignment);
+      setStatus('assignment-status', result.assignment ? (result.source === 'local' ? 'Loaded local draft.' : 'Loaded published assignments.') : 'Blank template ready.', result.source === 'local' ? 'working' : 'ok');
+    });
+  }
+
+  document.getElementById('assignment-date').value = todayIso();
+  document.getElementById('assignment-student').addEventListener('change', loadAssignmentDraft);
+  assignmentRows().forEach(function (row) {
+    row.dataset.dirty = 'false';
+    row.addEventListener('input', function () { row.dataset.dirty = 'true'; });
+    row.addEventListener('change', function () { row.dataset.dirty = 'true'; });
+  });
+  document.getElementById('load-assignment-btn').addEventListener('click', loadAssignmentDraft);
+  document.getElementById('blank-assignment-btn').addEventListener('click', function () {
+    clearAssignmentForm();
+    setStatus('assignment-status', 'Blank daily template ready.', 'ok');
+  });
+  document.getElementById('save-assignment-btn').addEventListener('click', function () {
+    var student = document.getElementById('assignment-student').value;
+    if (!student) { setStatus('assignment-status', 'Choose a student first.', 'err'); return; }
+    var assignment;
+    try {
+      assignment = readAssignmentForm();
+    } catch (error) {
+      setStatus('assignment-status', error.message, 'err');
+      return;
+    }
+    var button = document.getElementById('save-assignment-btn');
+    button.disabled = true;
+    setStatus('assignment-status', 'Saving…', 'working');
+    window.LearnFlowAssignments.save(student, assignment, token)
+      .then(function (result) {
+        button.disabled = false;
+        if (result.warning) setStatus('assignment-status', result.warning, 'working');
+        else setStatus('assignment-status', 'Published for ' + (STUDENT_NAMES[student] || student) + '.', 'ok');
+      })
+      .catch(function (error) {
+        button.disabled = false;
+        setStatus('assignment-status', error.message || 'Could not save assignments.', 'err');
+      });
+  });
+
+  document.getElementById('worksheet-example-btn').addEventListener('click', function () {
+    document.getElementById('worksheet-template-input').value = window.LearnFlowWorksheet.example();
+    parsedWorksheet = null;
+    showWorksheetPreview(null);
+    setStatus('worksheet-status', 'Example loaded. Edit or replace it, then parse.', 'working');
+  });
+  document.querySelectorAll('.worksheet-copy-btn').forEach(function (button) {
+    button.addEventListener('click', function () {
+      var subject = button.getAttribute('data-worksheet-subject');
+      var input = document.getElementById('worksheet-template-input');
+      var text;
+      try {
+        text = window.LearnFlowWorksheet.templateForSubject(subject);
+      } catch (error) {
+        setStatus('worksheet-status', error.message || 'Could not create the subject template.', 'err');
+        return;
+      }
+      input.value = text;
+      input.focus();
+      input.select();
+      parsedWorksheet = null;
+      showWorksheetPreview(null);
+
+      function selectedFallback() {
+        try { document.execCommand('copy'); } catch (ignore) {}
+        setStatus('worksheet-status', subject + ' template is selected. Press Ctrl/Cmd+C if it was not copied automatically.', 'working');
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () {
+          setStatus('worksheet-status', subject + ' template copied. Paste it into ChatGPT, then paste the completed version back here.', 'ok');
+        }).catch(selectedFallback);
+      } else {
+        selectedFallback();
+      }
+    });
+  });
+  document.getElementById('worksheet-parse-btn').addEventListener('click', parseWorksheetInput);
+  document.getElementById('worksheet-publish-btn').addEventListener('click', publishWorksheet);
+
   // ---- AUTH ----
   function showPanel() {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('admin-panel').style.display = 'block';
+    loadAdminRoster();
   }
 
   document.getElementById('login-form').addEventListener('submit', function (e) {
@@ -522,6 +982,7 @@
       btn.classList.add('active');
       var tab = document.getElementById('tab-' + btn.dataset.tab);
       if (tab) { tab.classList.add('active'); }
+      if (btn.dataset.tab === 'assign-work') loadAssignmentDraft();
       if (btn.dataset.tab === 'answers') loadAnswersView();
       if (btn.dataset.tab === 'summer-answers') document.getElementById('summer-site-sel').focus();
     });
@@ -532,7 +993,7 @@
     var student = document.getElementById('sel-student').value;
     if (!student) { alert('Please choose a student first.'); return; }
     setStatus('gen-status', 'Loading…', 'working');
-    fetch('/api/homework/' + student)
+    fetch('/api/homework/' + student, { headers: { 'Authorization': 'Bearer ' + token } })
     .then(function(r){ return r.json(); })
     .then(function(d) {
       currentContent = d.content || {};
@@ -833,7 +1294,7 @@
         return;
       }
       var sg = document.createElement('script');
-      sg.src = 'summer-games.js?v=' + Date.now();
+      sg.src = 'assets/js/summer-games.js?v=' + Date.now();
       sg.onload = function () {
         var cfg = manhaCfgFromSG(window.SummerGames);
         loadedSummerSite = site;
@@ -1029,7 +1490,7 @@
       if (r.status === 401) { token = ''; sessionStorage.removeItem(TOKEN_KEY); }
       else showPanel();
     })
-    .catch(function() { showPanel(); }); // network error — show panel optimistically
+    .catch(function() { showPanel(); });
   }
 
 })();

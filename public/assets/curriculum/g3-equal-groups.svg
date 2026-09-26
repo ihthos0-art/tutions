@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" role="img" aria-labelledby="title desc">
+  <title id="title">Thirty-six brownies grouped into bags of four</title>
+  <desc id="desc">Nine boxes each hold four brownie dots, so thirty-six brownies make nine equal groups of four.</desc>
+  <rect width="720" height="310" rx="18" fill="#f7f4ed"/>
+  <text x="34" y="46" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="#27333b">36 brownies ÷ 4 in each bag = 9 bags</text>
+  <g fill="#f2c879" stroke="#8a5c13" stroke-width="2">
+    <rect x="35" y="75" width="192" height="66" rx="12"/><rect x="264" y="75" width="192" height="66" rx="12"/><rect x="493" y="75" width="192" height="66" rx="12"/>
+    <rect x="35" y="150" width="192" height="66" rx="12"/><rect x="264" y="150" width="192" height="66" rx="12"/><rect x="493" y="150" width="192" height="66" rx="12"/>
+    <rect x="35" y="225" width="192" height="66" rx="12"/><rect x="264" y="225" width="192" height="66" rx="12"/><rect x="493" y="225" width="192" height="66" rx="12"/>
+  </g>
+  <g fill="#704a2b">
+    <circle cx="85" cy="97" r="8"/><circle cx="132" cy="97" r="8"/><circle cx="85" cy="121" r="8"/><circle cx="132" cy="121" r="8"/><circle cx="314" cy="97" r="8"/><circle cx="361" cy="97" r="8"/><circle cx="314" cy="121" r="8"/><circle cx="361" cy="121" r="8"/><circle cx="543" cy="97" r="8"/><circle cx="590" cy="97" r="8"/><circle cx="543" cy="121" r="8"/><circle cx="590" cy="121" r="8"/>
+    <circle cx="85" cy="172" r="8"/><circle cx="132" cy="172" r="8"/><circle cx="85" cy="196" r="8"/><circle cx="132" cy="196" r="8"/><circle cx="314" cy="172" r="8"/><circle cx="361" cy="172" r="8"/><circle cx="314" cy="196" r="8"/><circle cx="361" cy="196" r="8"/><circle cx="543" cy="172" r="8"/><circle cx="590" cy="172" r="8"/><circle cx="543" cy="196" r="8"/><circle cx="590" cy="196" r="8"/>
+    <circle cx="85" cy="247" r="8"/><circle cx="132" cy="247" r="8"/><circle cx="85" cy="271" r="8"/><circle cx="132" cy="271" r="8"/><circle cx="314" cy="247" r="8"/><circle cx="361" cy="247" r="8"/><circle cx="314" cy="271" r="8"/><circle cx="361" cy="271" r="8"/><circle cx="543" cy="247" r="8"/><circle cx="590" cy="247" r="8"/><circle cx="543" cy="271" r="8"/><circle cx="590" cy="271" r="8"/>
+  </g>
+  <text x="360" y="332" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" fill="#4a4740">Nine equal groups with 4 brownies each: 9 × 4 = 36.</text>
+</svg>

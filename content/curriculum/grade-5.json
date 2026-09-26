@@ -1,0 +1,78 @@
+{
+  "grade": 5,
+  "students": ["taha"],
+  "lessons": {
+    "Math": {
+      "title": "Multiply and add decimal numbers",
+      "subject": "Math",
+      "type": "math",
+      "instructions": "Read the examples before the drills. Keep place values lined up when adding, and explain what each decimal represents.",
+      "explanation": "A decimal point separates ones from tenths, hundredths, and smaller parts. When you multiply a decimal by a whole number, you can think of equal groups or use place value. For 3.6 × 4, multiply 36 tenths by 4 to get 144 tenths, which equals 14.4. When adding decimals, line up the decimal points so tenths are added to tenths and hundredths to hundredths.",
+      "workedExamples": [
+        {"title": "Multiply 3.6 × 4", "steps": ["Think of 3.6 as 36 tenths.", "36 tenths × 4 = 144 tenths.", "144 tenths = 14.4, so 3.6 × 4 = 14.4."]},
+        {"title": "Add 4.25 + 2.8", "steps": ["Write 2.8 as 2.80 so the hundredths places line up.", "Add 4.25 + 2.80 = 7.05.", "Check: 4 + 2 is about 6, so 7.05 is a reasonable total."]}
+      ],
+      "visuals": [{"src": "/assets/curriculum/g5-decimal-place-value.svg", "alt": "Four equal groups of 3.6 are shown; adding the four groups gives 14.4.", "caption": "Four groups of 3.6 make 14.4.", "credit": "Original LearnFlow instructional diagram."}],
+      "scopeNote": "The Grade 5 guide includes released NYSED decimal-operation examples. These are original extra-practice questions and do not represent a confirmed weekly classroom sequence.",
+      "sources": [{"title": "NYSED Grade 5 Mathematics released items, 2025", "url": "https://www.nysedregents.org/ei/math/2025/2025-released-items-math-g5.pdf"}],
+      "questions": [
+        {"id": "g5-math-1", "prompt": "Find 2.4 × 3.", "answer": "7.2", "acceptedAnswers": ["7.2"]},
+        {"id": "g5-math-2", "prompt": "Find 5.6 × 4.", "answer": "22.4", "acceptedAnswers": ["22.4"]},
+        {"id": "g5-math-3", "prompt": "Find 3.45 + 2.3.", "answer": "5.75", "acceptedAnswers": ["5.75"]},
+        {"id": "g5-math-4", "prompt": "A 12.35-mile route is traveled three times. How many miles is that altogether?", "answer": "37.05", "acceptedAnswers": ["37.05 miles"]}
+      ]
+    },
+    "English": {
+      "title": "Read like an inventor: improve a design",
+      "subject": "English",
+      "type": "reading",
+      "instructions": "Read the original story. Notice the problem, the test, and the change the inventor makes.",
+      "passage": "Maya wanted to grow herbs on a sunny apartment windowsill, but water from the pots dripped onto the floor. She sketched a tray with a narrow channel that could guide extra water into a cup. Before building it, she made a small paper model and poured in a spoonful of water. The first model leaked at one corner. Maya added a folded paper wall and tested it again. This time, the water reached the cup. Her design was not finished, but the test gave her evidence about what to improve next. Inventors often repeat this cycle: define a problem, try an idea, test it, and revise.",
+      "visuals": [{"src": "/assets/curriculum/g5-design-cycle.svg", "alt": "A circular engineering process shows defining a need, imagining ideas, building a model, testing it, and improving it.", "caption": "A test can provide evidence for the next revision.", "credit": "Original LearnFlow instructional diagram."}],
+      "scopeNote": "The Grade 5 guide identifies “Inventors at Work” as an ELA module topic. This is an original passage aligned to that broad theme, not a textbook excerpt or confirmation of current pacing.",
+      "sources": [{"title": "NYC Reads program information", "url": "https://www.schools.nyc.gov/NYCreads"}],
+      "questions": [
+        {"id": "g5-ela-1", "prompt": "What problem did Maya want to solve?", "answer": "water dripped onto the floor", "acceptedAnswers": ["water from the pots dripped onto the floor", "water dripped on the floor", "the pots dripped"]},
+        {"id": "g5-ela-2", "prompt": "What did Maya use to make a small model?", "answer": "paper", "acceptedAnswers": ["paper", "a paper model"]},
+        {"id": "g5-ela-3", "prompt": "What evidence showed that the revised model worked?", "answer": "the water reached the cup", "acceptedAnswers": ["water reached the cup", "the water reached the cup"]},
+        {"id": "g5-ela-4", "prompt": "What did Maya add after the first test?", "answer": "a folded paper wall", "acceptedAnswers": ["folded paper wall", "a folded wall"]}
+      ]
+    },
+    "Science": {
+      "title": "Build a food web model",
+      "subject": "Science",
+      "type": "reading",
+      "instructions": "Read the explanation and follow the arrows in the food-web model. Remember: arrows point from the food to the organism that gets energy from it.",
+      "passage": "Plants are producers because they make sugars using light energy. Animals get energy by eating plants or other animals. A food web connects many feeding relationships. In this simplified meadow model, grass can feed a grasshopper and a rabbit; a frog can eat a grasshopper; and a hawk can eat several kinds of animals. Decomposers, such as fungi and bacteria, break down remains and waste. The diagram is only one model of a community, not a complete list of every organism or relationship.",
+      "visuals": [
+        {"src": "/assets/curriculum/g5-food-web.svg", "alt": "A simplified meadow food web with arrows from grass to rabbit and grasshopper, then from prey to predators and decomposers.", "caption": "Arrows show the direction that energy moves—from food to consumer. This is an original simplified model.", "credit": "Original LearnFlow instructional diagram."},
+        {"src": "/assets/curriculum/chesapeake-food-web.jpg", "alt": "A public-domain food-web diagram about waterbirds in the Chesapeake Bay.", "caption": "A historical reference diagram from the Chesapeake Bay; compare how its labeled organisms are connected.", "credit": "Matthew C. Perry, public domain via Wikimedia Commons.", "sourceUrl": "https://commons.wikimedia.org/wiki/File:Chesapeake_Waterbird_Food_Web.jpg"}
+      ],
+      "modelTask": "Draw a local food web with at least one producer, two consumers, and a decomposer. Draw arrows from each food source toward the organism that eats it, and label the arrows “energy.”",
+      "scopeNote": "Ecosystems are within the Grade 5 science scope in the guide. The exact school unit order is not established, so this is standards-aligned practice rather than a claim about this week’s class.",
+      "sources": [{"title": "New York State P–12 Science Learning Standards", "url": "https://www.nysed.gov/sites/default/files/programs/curriculum-instruction/p-12-science-learning-standards.pdf"}],
+      "questions": [
+        {"id": "g5-science-1", "prompt": "What is an organism that makes its own food using light energy called?", "answer": "producer", "acceptedAnswers": ["a producer", "producer"]},
+        {"id": "g5-science-2", "prompt": "In the model, what eats a grasshopper?", "answer": "frog", "acceptedAnswers": ["a frog", "frog"]},
+        {"id": "g5-science-3", "prompt": "Which way do the arrows point: from food to eater, or eater to food?", "answer": "food to eater", "acceptedAnswers": ["from food to eater", "food to consumer"]},
+        {"id": "g5-science-4", "prompt": "What do decomposers break down?", "answer": "remains and waste", "acceptedAnswers": ["dead organisms and waste", "remains", "waste and remains"]}
+      ]
+    },
+    "Social Studies": {
+      "title": "Use maps to compare places in the Western Hemisphere",
+      "subject": "Social Studies",
+      "type": "reading",
+      "instructions": "Read the passage and study the satellite image. Use the passage to distinguish a hemisphere, a continent, and a country.",
+      "passage": "A hemisphere is half of Earth. The Western Hemisphere includes North America and South America, along with parts of other regions. A continent is a large land area; a country is a political place with its own boundaries and government. Those ideas describe different kinds of places. A satellite image can show land, water, and clouds, but it may not show country boundaries. The Grade 5 Passport materials study the Western Hemisphere through geography and comparisons among places. Use a labeled map when you need exact boundaries or locations.",
+      "visuals": [{"src": "/assets/curriculum/western-hemisphere.jpg", "alt": "NASA composite image of Earth’s Western Hemisphere, including North and South America.", "caption": "Earth image for orientation; it is not a political-boundary map.", "credit": "NASA/Goddard Space Flight Center/Reto Stöckli, public domain via Wikimedia Commons.", "sourceUrl": "https://commons.wikimedia.org/wiki/File:Blue_Marble_Western_Hemisphere.jpg"}],
+      "scopeNote": "This connects to the Grade 5 NYC Passport “Western Hemisphere” theme. The source guide does not establish the current class sequence.",
+      "sources": [{"title": "NYC Passport to Social Studies, Grade 5 resources", "url": "https://sites.google.com/schools.nyc.gov/social-studies-and-civics/resources-by-grade/elementary/5th-grade"}],
+      "questions": [
+        {"id": "g5-ss-1", "prompt": "What is one half of Earth called?", "answer": "hemisphere", "acceptedAnswers": ["a hemisphere", "hemisphere"]},
+        {"id": "g5-ss-2", "prompt": "Name the two American continents included in the Western Hemisphere.", "answer": "North America and South America", "acceptedAnswers": ["north america and south america", "North and South America"]},
+        {"id": "g5-ss-3", "prompt": "Does the NASA image clearly show country boundaries?", "answer": "no", "acceptedAnswers": ["no"]},
+        {"id": "g5-ss-4", "prompt": "What kind of map helps you find exact country boundaries?", "answer": "labeled map", "acceptedAnswers": ["a labeled map", "political map", "a political map"]}
+      ]
+    }
+  }
+}

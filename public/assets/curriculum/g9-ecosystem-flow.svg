@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" role="img" aria-labelledby="title desc">
+  <title id="title">Energy flow and matter cycling in an ecosystem</title>
+  <desc id="desc">Energy passes from sunlight to plants to consumers and is eventually dissipated as heat. Decomposers break down dead organisms and waste, returning nutrients to the environment for producers.</desc>
+  <rect width="720" height="360" rx="18" fill="#f7f4ed"/>
+  <text x="32" y="40" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#27333b">Energy flows; matter is recycled</text>
+  <g font-family="Arial,sans-serif" text-anchor="middle">
+    <rect x="28" y="104" width="130" height="72" rx="12" fill="#f2c879"/><text x="93" y="147" font-size="16" font-weight="700" fill="#563d10">Sunlight</text>
+    <rect x="205" y="104" width="130" height="72" rx="12" fill="#c8d8ba"/><text x="270" y="147" font-size="16" font-weight="700" fill="#294a2b">Plants</text>
+    <rect x="382" y="104" width="130" height="72" rx="12" fill="#d8e4eb"/><text x="447" y="147" font-size="16" font-weight="700" fill="#203e50">Consumers</text>
+    <rect x="559" y="104" width="130" height="72" rx="12" fill="#ead5c7"/><text x="624" y="147" font-size="16" font-weight="700" fill="#603e2d">Heat to</text><text x="624" y="166" font-size="13" fill="#603e2d">surroundings</text>
+    <rect x="267" y="248" width="185" height="66" rx="12" fill="#ead5c7"/><text x="359" y="278" font-size="16" font-weight="700" fill="#603e2d">Decomposers</text><text x="359" y="297" font-size="12" fill="#603e2d">break down remains</text>
+  </g>
+  <path d="M159 140h40M336 140h40M513 140h40" stroke="#52646c" stroke-width="3" marker-end="url(#energy)"/>
+  <path d="M445 178c14 38 1 55-20 68M276 249c-28-16-30-39-15-67" fill="none" stroke="#648650" stroke-width="3" marker-end="url(#matter)"/>
+  <text x="361" y="337" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#53636a">Simplified model: nutrients return to the environment; energy does not cycle back to sunlight.</text>
+  <defs>
+    <marker id="energy" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0 8 3 0 6" fill="none" stroke="#52646c" stroke-width="2"/></marker>
+    <marker id="matter" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0 8 3 0 6" fill="none" stroke="#648650" stroke-width="2"/></marker>
+  </defs>
+</svg>

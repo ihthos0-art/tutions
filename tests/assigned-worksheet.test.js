@@ -30,7 +30,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const ROOT = path.join(__dirname, '..');
-const PAGE = fs.readFileSync(path.join(ROOT, 'nabila-naviha.html'), 'utf8');
+const PAGE = fs.readFileSync(path.join(ROOT, 'archive/legacy-pages/nabila-naviha-worksheet.html'), 'utf8');
 
 // Only the Assigned tab's own worksheet. homework-loader.js can replace this
 // markup at runtime from KV, with its own `hw<n>` keys; the static sheet is

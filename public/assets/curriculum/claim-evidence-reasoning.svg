@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 290" role="img" aria-labelledby="title desc">
+  <title id="title">A claim supported by evidence and reasoning</title>
+  <desc id="desc">A claim is connected to a specific piece of evidence; reasoning explains why the evidence supports the claim.</desc>
+  <rect width="720" height="290" rx="18" fill="#f7f4ed"/>
+  <g font-family="Arial,sans-serif" text-anchor="middle">
+    <rect x="32" y="67" width="196" height="126" rx="14" fill="#d8e4eb"/><text x="130" y="111" font-size="19" font-weight="700" fill="#203e50">CLAIM</text><text x="130" y="141" font-size="14" fill="#203e50">What do you think</text><text x="130" y="163" font-size="14" fill="#203e50">the text shows?</text>
+    <rect x="262" y="67" width="196" height="126" rx="14" fill="#f2c879"/><text x="360" y="111" font-size="19" font-weight="700" fill="#563d10">EVIDENCE</text><text x="360" y="141" font-size="14" fill="#563d10">Which detail or</text><text x="360" y="163" font-size="14" fill="#563d10">data supports it?</text>
+    <rect x="492" y="67" width="196" height="126" rx="14" fill="#c8d8ba"/><text x="590" y="111" font-size="19" font-weight="700" fill="#294a2b">REASONING</text><text x="590" y="141" font-size="14" fill="#294a2b">Why does that</text><text x="590" y="163" font-size="14" fill="#294a2b">evidence fit?</text>
+  </g>
+  <path d="M230 130h27M460 130h27" stroke="#52646c" stroke-width="4" marker-end="url(#arrow)"/>
+  <text x="360" y="244" text-anchor="middle" font-family="Arial,sans-serif" font-size="15" fill="#4a4740">A strong response connects all three parts instead of listing a detail alone.</text>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0 8 3 0 6" fill="none" stroke="#52646c" stroke-width="2"/></marker></defs>
+</svg>

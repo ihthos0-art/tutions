@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Sign in to LearnFlow, a student learning space for tutoring practice." />
+  <meta name="theme-color" content="#e8e8e6" />
+  <title>Student sign in | LearnFlow</title>
+  <link rel="stylesheet" href="assets/css/site.css" />
+</head>
+<body class="site-page">
+  <header class="site-header">
+    <a class="site-brand" href="/">LearnFlow</a>
+    <nav class="site-nav" aria-label="Site navigation">
+      <a href="about">About</a>
+      <a href="privacy">Privacy</a>
+      <a href="terms">Terms</a>
+    </nav>
+  </header>
+
+  <main class="site-main">
+    <section class="site-card login-card" aria-labelledby="login-title">
+      <p class="eyebrow">Student learning hub</p>
+      <h1 id="login-title">Welcome back</h1>
+      <p class="login-intro">Enter your name and four-number PIN. Your student page and assigned work stay behind this sign-in.</p>
+
+      <form class="login-form" id="student-login-form" autocomplete="off" novalidate>
+        <div class="login-field">
+          <label for="student-name">Your name</label>
+          <input id="student-name" name="name" type="text" autocomplete="name" autocapitalize="words" spellcheck="false" required />
+        </div>
+        <div class="login-field">
+          <label for="student-pin">Four-number PIN</label>
+          <input id="student-pin" name="pin" type="password" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="one-time-code" required aria-describedby="pin-help" />
+        </div>
+        <p id="pin-help" class="login-help" style="margin:0">Use numbers only. On your first sign-in, use the temporary PIN 0000; you will immediately choose a private PIN.</p>
+        <p class="login-error" id="login-error" role="alert"></p>
+        <button class="login-button" type="submit">Open my learning page</button>
+      </form>
+
+      <form class="login-form pin-setup" id="set-pin-form" autocomplete="off" novalidate hidden>
+        <p class="setup-heading">Create your private PIN</p>
+        <p class="login-help setup-copy">This is a one-time step. Choose a new four-number PIN that you can remember.</p>
+        <div class="login-field">
+          <label for="new-pin">New PIN</label>
+          <input id="new-pin" name="newPin" type="password" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="new-password" required />
+        </div>
+        <div class="login-field">
+          <label for="confirm-pin">Confirm new PIN</label>
+          <input id="confirm-pin" name="confirmPin" type="password" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="new-password" required />
+        </div>
+        <p id="setup-error" class="login-error" role="alert"></p>
+        <button class="login-button" type="submit">Save my PIN</button>
+      </form>
+
+      <p class="login-help">If you are not sure what to enter, ask your teacher or site administrator through your school’s approved channel. Do not use a PIN you use for another account.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>LearnFlow is a focused tutoring workspace for student practice.</p>
+    <div class="site-footer-links">
+      <a href="/">Student menu</a>
+      <a href="about">About</a>
+      <a href="privacy">Privacy</a>
+      <a href="terms">Terms</a>
+    </div>
+  </footer>
+  <script src="assets/js/student-login.js"></script>
+</body>
+</html>

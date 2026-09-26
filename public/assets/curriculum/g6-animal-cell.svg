@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 350" role="img" aria-labelledby="title desc">
+  <title id="title">Simplified animal cell model</title>
+  <desc id="desc">An oval cell membrane surrounds cytoplasm and a nucleus. The drawing is a model and not to scale.</desc>
+  <rect width="720" height="350" rx="18" fill="#f7f4ed"/>
+  <text x="34" y="44" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="#27333b">A cell is a system with parts that have jobs</text>
+  <ellipse cx="348" cy="192" rx="218" ry="104" fill="#e5f0e5" stroke="#46734d" stroke-width="5"/>
+  <ellipse cx="367" cy="193" rx="55" ry="45" fill="#d8e4eb" stroke="#34566b" stroke-width="4"/>
+  <text x="367" y="199" text-anchor="middle" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#203e50">nucleus</text>
+  <text x="280" y="260" font-family="Arial,sans-serif" font-size="15" fill="#365a3b">cytoplasm</text>
+  <path d="M138 112 194 132" stroke="#365a3b" stroke-width="2"/><text x="48" y="108" font-family="Arial,sans-serif" font-size="15" fill="#365a3b">cell membrane</text>
+  <path d="M424 170 540 112" stroke="#34566b" stroke-width="2"/><text x="548" y="108" font-family="Arial,sans-serif" font-size="15" fill="#203e50">nucleus</text>
+  <text x="348" y="327" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#53636a">Simplified model — cell parts are not drawn to scale.</text>
+</svg>

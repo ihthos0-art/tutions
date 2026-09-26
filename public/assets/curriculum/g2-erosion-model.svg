@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" role="img" aria-labelledby="title desc">
+  <title id="title">A model of rain moving soil downhill</title>
+  <desc id="desc">Rain falls on a sloped bank. Runoff moves loose soil toward a stream, where some sediment settles.</desc>
+  <rect width="720" height="360" rx="18" fill="#eef5f6"/>
+  <text x="34" y="42" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="#27333b">Erosion: moving pieces of rock or soil</text>
+  <path d="M0 260 258 138 505 225 720 215v145H0Z" fill="#a9bd81"/>
+  <path d="M505 225q38-18 76 0t75 0q32-17 64-2v137H505Z" fill="#74b6cb"/>
+  <path d="M510 245q55-12 105 2t105-2" fill="none" stroke="#fff" stroke-width="5" opacity=".8"/>
+  <g stroke="#4b86a0" stroke-width="4" stroke-linecap="round"><path d="M152 73v30"/><path d="M193 61v30"/><path d="M232 75v28"/></g>
+  <g fill="#76583f"><circle cx="277" cy="176" r="6"/><circle cx="323" cy="187" r="5"/><circle cx="374" cy="203" r="6"/><circle cx="429" cy="218" r="5"/></g>
+  <path d="M236 150c52 15 99 34 155 50" fill="none" stroke="#405f58" stroke-width="4" marker-end="url(#arrow)"/>
+  <text x="90" y="126" font-family="Arial,sans-serif" font-size="16" fill="#315666">rain</text>
+  <text x="273" y="260" font-family="Arial,sans-serif" font-size="16" fill="#355239">runoff carries sediment</text>
+  <text x="535" y="325" font-family="Arial,sans-serif" font-size="16" fill="#17485b">stream</text>
+  <text x="34" y="330" font-family="Arial,sans-serif" font-size="13" fill="#53636a">Model only — real erosion depends on slope, soil, plants, and water flow.</text>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0 8 3 0 6" fill="none" stroke="#405f58" stroke-width="2"/></marker></defs>
+</svg>

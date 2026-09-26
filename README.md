@@ -1,92 +1,114 @@
-# Socratic AI Homework Helper
+# Tutions
 
-Interactive homework workspace for NYC tutoring students. The project combines
-static, student-specific ELA and math pages with a Cloudflare Worker for AI
-assistance, answer sync, and an authenticated parent/admin workflow.
+A small, student-friendly learning hub for tutoring students. Each student has
+a stable page URL; shared browser modules provide the learning interactions.
+The four-subject dashboard is currently a scaffold: Math, English, Social
+Studies, and Science are marked **Coming soon** until the curriculum mapping is
+provided.
 
-## Purpose
-
-Give students a simple place to open assigned work, practice reading and math,
-receive guided AI help, and save responses. The interface is designed for
-younger learners and Bengali-speaking families, with the static pages remaining
-usable when the server features are unavailable.
-
-## Architecture
+## How it is arranged
 
 ```text
-Student HTML pages ──┐
-                     ├── Cloudflare Pages assets
-Shared JS modules ───┘          │
-                                └── Cloudflare Worker (`src/index.js`)
-                                     ├── AI chat provider chain
-                                     ├── Admin HMAC login + homework editor
-                                     └── KV homework / answer storage
+Browser
+  ├── public/                 Static site and its published URL structure
+  │   ├── index.html          Private learning-workspace landing page
+  │   ├── login.html          Name + PIN sign-in and first-use PIN setup
+  │   ├── about.html          Site purpose and school-use notes
+  │   ├── privacy.html        Plain-language privacy policy
+  │   ├── terms.html          Terms of use
+  │   ├── <student>.html      Lightweight subject dashboards
+  │   └── assets/             Shared JavaScript and CSS
+  ├── functions/api/[[path]].js  Pages Function adapter for `/api/*`
+  └── src/index.js               Shared Cloudflare Worker handler
+                                  └── Cloudflare KV for auth, homework, and answers
 ```
 
-- Student pages: per-student assigned work plus shared interactive math, ELA,
-  quiz, flashcard, and word-game modules.
-- Worker: `/api/chat`, `/api/homework/:student`, `/api/answers/:student`, and
-  `/api/admin/*` routes.
-- AI: OpenAI-compatible provider fallback for student chat; Kimi K2.6 through
-  Ollama Cloud for the admin content editor.
-- Storage: Cloudflare KV for homework and answer records; browser storage keeps
-  the static experience resilient offline.
+Cloudflare Pages serves the static files from `public/` and routes `/api/*`
+through the Pages Function adapter into `src/index.js`. AI provider keys,
+admin credentials, and the signing key remain server-side secrets.
 
-## Individual contribution
+## Repository map
 
-Built the student learning flows, reusable interaction modules, Cloudflare
-Worker API, provider fallback logic, signed admin sessions, KV-backed homework
-and answer synchronization, and the parent answer dashboard.
+| Location | What belongs there |
+| --- | --- |
+| `public/` | Website files deployed as static assets; Pages exposes HTML pages at clean, extensionless routes. |
+| `public/assets/js/` | Runtime dashboard, sign-in, tutor, and parent-dashboard modules. |
+| `public/assets/css/` | Shared page styles. |
+| `src/` | Cloudflare Worker API entry point. |
+| `tests/` | Node.js tests for student identity, assignments, and math rendering. |
+| `docs/curriculum-research/` | Curriculum references, research notes, and source documents. |
+| `docs/architecture/` | Architecture and feature plans. |
+| `docs/superpowers/` | Historical design specs and implementation plans. |
+| `archive/` | Retired code retained for reference; not part of the deployed site. |
+| `wrangler.toml` | Worker, static-asset, and KV configuration. |
+| `graphify-out/` | Generated codebase map; not runtime application code. |
 
-## Results and validation
+Student HTML files remain at the root of the *published site* (`public/`).
+Cloudflare Pages serves them at clean routes such as `/nafis` and
+`/salma-khadija?student=khadija`; requests to the old `.html` URLs redirect to
+those routes.
 
-- 10+ student-facing HTML routes with shared math/ELA interactions and answer
-  persistence.
-- Three focused JavaScript tests are committed under `tests/` for assignment
-  rendering, math rendering, and student identities.
-- No performance benchmark is currently published; response latency depends on
-  the configured AI provider and Cloudflare runtime.
+The current student routes are intentionally small: each page requires a
+server-issued student session, then loads the shared subject-dashboard module,
+which renders Math, English, Social Studies, and Science cards. The former worksheet pages and their unused homework/quiz
+modules are kept in `archive/legacy-pages/` and `archive/legacy-assets/` so they
+are recoverable but are not uploaded to Pages.
 
-## Setup
+Each student dashboard also has an **Assigned** tab. The parent panel’s
+**Daily Assignments** tab uses one four-subject template (date, optional message,
+title, instructions, and optional resource link) and stores records through
+`/api/assignments/:student`. The browser keeps a local preview fallback, clearly
+labeled as browser-only, if the API is temporarily unavailable.
 
-Install the Cloudflare CLI if needed, then authenticate with the account that
-owns the Worker:
+The parent panel’s **Worksheet Builder** accepts a copy/paste template generated
+by ChatGPT or another editor. Use `QUESTION 1:` / `ANSWER 1:` pairs (and continue
+the numbering for as many questions as needed), then parse and publish. Math,
+reading, and ELA worksheets render in the student’s Assigned tab with a Check
+answers button. The answer key remains server-side; checks are recorded under the
+student’s answer record.
 
-```bash
-npm install -g wrangler
-npx wrangler login
+## Develop and test
+
+Requirements: Node.js 20 or newer and Wrangler for local Cloudflare development.
+
+```sh
+npm test
 npx wrangler dev
 ```
 
-For local Worker secrets, create a `.dev.vars` file (never commit it):
+Create a local `.dev.vars` file for secrets when exercising API features. Never
+commit that file or real credentials. Tests run with Node's built-in test
+runner; the project has no third-party npm dependencies.
 
-```text
-GROQ_API_KEY=...
-ADMIN_USERNAME=...
-ADMIN_PASSWORD=...
-ADMIN_TOKEN_SECRET=generate-a-long-random-value
-OLLAMA_API_KEY=...
-```
+## Current hosting
 
-The KV namespace IDs and secret names are declared in `wrangler.toml`; secret
-values must be added with `wrangler secret put`. Deploy with:
+The public static site is deployed to Cloudflare Pages at
+`https://learnflow.ihthos.dev`. Cloudflare Pages exposes the HTML files at clean
+routes such as `/login`, `/about`, `/privacy`, `/terms`, and `/nafis`.
 
-```bash
-npx wrangler deploy
-```
+The Pages deployment now includes the API function. The existing API
+implementation provides:
 
-Run the committed tests with any JavaScript test runner that supports ES
-modules, or execute the test files directly while developing. The repository
-does not currently include a `package.json`, so the test command is intentionally
-not presented as a verified one-line script.
+- `/api/auth/login` and `/api/auth/set-pin` — student first-use PIN setup and admin sign-in
+- `/api/admin/students` and `/api/admin/students/:id/reset-pin` — authenticated staff directory and PIN reset
+- `/api/chat` — student AI help
+- `/api/homework/:student` — homework read/write
+- `/api/answers/:student` — answer sync and parent review
+- `/api/admin/*` — parent/admin login and content tools
+
+Do not put API keys, passwords, or student PINs in `public/`; the login UI uses
+the Worker/KV auth contract and intentionally does not contain a public student
+roster. If the API is unavailable, the student UI reports that explicitly and
+does not fall back to client-only authentication.
+
+Production publishing follows the connected GitHub `main` branch. Commit and
+push website changes to `origin main`; Cloudflare Pages publishes them to
+`https://learnflow.ihthos.dev`. Verify the live page after the push. Use Wrangler
+for local development or explicit infrastructure work, not routine publishing.
 
 ## Security notes
 
-Never commit `.dev.vars`, `SECRETS.local.md`, API keys, passwords, or token
-secrets. Production admin credentials belong in Cloudflare secrets. The Worker
-whitelists student IDs and requires a signed bearer token for admin operations.
-
-## Status
-
-Active private tutoring deployment. The public repository is
-[`ihthos0-art/tutions`](https://github.com/ihthos0-art/tutions).
+- Keep `.dev.vars`, API keys, passwords, and signing keys out of Git.
+- Store production credentials as Cloudflare secrets, not in `public/`.
+- The archived Pages chat handler is inactive; the live API entry point is
+  `src/index.js`.

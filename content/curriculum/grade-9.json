@@ -1,0 +1,75 @@
+{
+  "grade": 9,
+  "students": ["sameer"],
+  "lessons": {
+    "Math": {
+      "title": "Evaluate and interpret a linear function",
+      "subject": "Math",
+      "type": "math",
+      "instructions": "Read the function explanation and examples first. Substitute the input for x, then simplify in order.",
+      "explanation": "A function assigns exactly one output to each allowed input. In f(x) = 2x + 1, the input x is multiplied by 2 and then 1 is added. To find f(4), replace x with 4: f(4) = 2(4) + 1 = 9. A graph can show the same relationship: the line crosses the vertical axis at 1 and rises 2 units for each 1-unit increase in x.",
+      "workedExamples": [
+        {"title": "Evaluate f(5) when f(x) = 3x + 4", "steps": ["Replace x with 5: f(5) = 3(5) + 4.", "Multiply: 3 × 5 = 15.", "Add 4: 15 + 4 = 19, so f(5) = 19."]},
+        {"title": "Find f(−2) when f(x) = 2x + 1", "steps": ["Replace x with −2: f(−2) = 2(−2) + 1.", "Multiply: 2 × (−2) = −4.", "Add 1: −4 + 1 = −3, so f(−2) = −3."]}
+      ],
+      "visuals": [{"src": "/assets/curriculum/g9-linear-function.svg", "alt": "A coordinate graph of y equals 2x plus 1 crosses the vertical axis at 1 and rises two units for each step right.", "caption": "The graph, equation, and input-output rule describe the same function.", "credit": "Original LearnFlow instructional diagram."}],
+      "scopeNote": "This Algebra I lesson uses New York State function standards. Sameer’s Grade 9 school sequence was not included in the supplied Grade 2–7 guide, so this is standards-aligned practice rather than a claim about a current class unit.",
+      "sources": [{"title": "NYSED Next Generation Mathematics Learning Standards, Algebra I", "url": "https://www.nysed.gov/sites/default/files/programs/standards-instruction/nys-next-generation-mathematics-p-12-standards.pdf"}],
+      "questions": [
+        {"id": "g9-math-1", "prompt": "If f(x) = 2x + 1, what is f(3)?", "answer": "7", "acceptedAnswers": ["7"]},
+        {"id": "g9-math-2", "prompt": "If g(x) = 4x − 2, what is g(5)?", "answer": "18", "acceptedAnswers": ["18"]},
+        {"id": "g9-math-3", "prompt": "If h(x) = 3x + 2, what is h(0)?", "answer": "2", "acceptedAnswers": ["2"]},
+        {"id": "g9-math-4", "prompt": "For y = 2x + 1, how much does y rise when x increases by 1?", "answer": "2", "acceptedAnswers": ["2 units", "2"]}
+      ]
+    },
+    "English": {
+      "title": "Summarize a technical passage and check its evidence",
+      "subject": "English",
+      "type": "reading",
+      "instructions": "This original practice passage uses hypothetical sample data. Identify the limited claim, then find the exact evidence that supports it.",
+      "passage": "In a hypothetical school study, students measure two sidewalk surfaces at the same time on three sunny days. Across those days, the shaded surface reads 27°C, 28°C, and 27°C. The unshaded surface reads 32°C, 31°C, and 33°C. The students conclude that the shaded surface was cooler during their measurements. The data support that limited conclusion. The study does not prove that shade always causes every surface to be cooler: the team tested only two surfaces at one school, and other conditions could differ. A careful summary reports the pattern and the limits of the evidence.",
+      "visuals": [{"src": "/assets/curriculum/claim-evidence-reasoning.svg", "alt": "A diagram connects a claim to evidence and then to reasoning explaining why the evidence supports the claim.", "caption": "In technical reading, summarize the claim and trace it to evidence.", "credit": "Original LearnFlow reading organizer."}],
+      "scopeNote": "This lesson practices the New York State grades 9–10 reading standard for summarizing key ideas and tracing explanations in science/technical texts. The data in the passage are explicitly hypothetical.",
+      "sources": [{"title": "NYSED Next Generation English Language Arts Learning Standards, grades 9–10 literacy in science/technical subjects", "url": "https://www.nysed.gov/sites/default/files/programs/curriculum-instruction/nys-next-generation-ela-standards.pdf"}],
+      "questions": [
+        {"id": "g9-ela-1", "prompt": "What limited conclusion did the students reach?", "answer": "the shaded surface was cooler", "acceptedAnswers": ["the shaded surface was cooler during their measurements", "the shaded surface was cooler"]},
+        {"id": "g9-ela-2", "prompt": "What was the shaded surface’s first recorded temperature?", "answer": "27°C", "acceptedAnswers": ["27°c", "27c", "27"]},
+        {"id": "g9-ela-3", "prompt": "How many days did the students measure the two surfaces?", "answer": "3", "acceptedAnswers": ["3 days", "three days"]},
+        {"id": "g9-ela-4", "prompt": "Why does the passage say the study cannot prove that shade always cools every surface?", "answer": "only two surfaces at one school were tested", "acceptedAnswers": ["the team tested only two surfaces at one school", "only two surfaces at one school were tested"]}
+      ]
+    },
+    "Science": {
+      "title": "Energy flow and matter in ecosystems",
+      "subject": "Science",
+      "type": "reading",
+      "instructions": "Read the passage and follow the labeled arrows. Draw a food-chain model and identify where matter can return to the environment.",
+      "passage": "In an ecosystem, producers such as plants capture energy from sunlight and store some of it in sugars. Consumers obtain energy by eating plants or other consumers. Decomposers break down dead organisms and waste, returning nutrients to the environment. Matter can cycle through living things and the environment, while energy flows through the system and is eventually transferred to the surroundings as heat. Models help scientists track these different patterns; a simple food chain leaves out many connections that occur in a real ecosystem.",
+      "visuals": [{"src": "/assets/curriculum/g9-ecosystem-flow.svg", "alt": "A model shows energy moving from sunlight to plants to consumers and heat, while decomposers return nutrients to the environment.", "caption": "Energy flows through the system; matter can be recycled.", "credit": "Original LearnFlow instructional model."}],
+      "modelTask": "Draw sunlight, a producer, two consumers, and a decomposer. Use one arrow style for energy moving from food to consumer, and a different arrow to show nutrients returning to the environment. Add a legend.",
+      "scopeNote": "This lesson aligns to New York State high-school life-science expectations about matter and energy in organisms and ecosystems. It does not claim to match Sameer’s current course sequence.",
+      "sources": [{"title": "NYSED Life Science: Biology course map", "url": "https://www.nysed.gov/sites/default/files/programs/standards-instruction/biology.pdf"}],
+      "questions": [
+        {"id": "g9-science-1", "prompt": "Which organisms capture energy from sunlight in the model?", "answer": "producers", "acceptedAnswers": ["producer", "producers", "plants"]},
+        {"id": "g9-science-2", "prompt": "What do decomposers break down?", "answer": "dead organisms and waste", "acceptedAnswers": ["dead organisms", "waste", "dead organisms and waste"]},
+        {"id": "g9-science-3", "prompt": "What can decomposers return to the environment?", "answer": "nutrients", "acceptedAnswers": ["nutrients"]},
+        {"id": "g9-science-4", "prompt": "Which flows through the system rather than cycling back: energy or matter?", "answer": "energy", "acceptedAnswers": ["energy"]}
+      ]
+    },
+    "Social Studies": {
+      "title": "Trade networks connected regions",
+      "subject": "Social Studies",
+      "type": "reading",
+      "instructions": "Read the passage and inspect the schematic. It is not a precise map; use it to think about connections among places and routes.",
+      "passage": "During the classical and postclassical eras, trade networks across Afro-Eurasia grew by land and sea. The Silk Roads connected communities across parts of Asia and the Mediterranean world. The Indian Ocean, Mediterranean, and trans-Saharan routes linked other regions. Merchants often traveled through many towns and ports rather than making one uninterrupted journey. Goods such as silk, spices, gold, and salt moved through these networks, along with ideas, technologies, and cultural practices. Geography and travel technology shaped which routes people could use. Exchange connected regions, but it did not make every society alike.",
+      "visuals": [{"src": "/assets/curriculum/g9-trade-network.svg", "alt": "A non-scale schematic connects Chang’an, Central Asian oasis towns, Baghdad, and Constantinople as nodes in an example overland trade network.", "caption": "One simplified example of linked overland places; the wider era also had Indian Ocean, Mediterranean, and trans-Saharan networks.", "credit": "Original LearnFlow conceptual schematic; not to scale."}],
+      "scopeNote": "The supplied curriculum packet did not cover Grade 9. This lesson is based on NYSED Global History and Geography I Key Idea 9.4, which studies the rise of transregional trade networks; it is standards-aligned and not a claim about the current classroom sequence.",
+      "sources": [{"title": "New York State Grades 9–12 Social Studies Framework, Grade 9 Key Idea 9.4", "url": "https://www.nysed.gov/sites/default/files/programs/standards-instruction/framework-9-12-with-2017-updates.pdf"}],
+      "questions": [
+        {"id": "g9-ss-1", "prompt": "Name one trade network in the passage besides the Silk Roads.", "answer": "Indian Ocean", "acceptedAnswers": ["Indian Ocean", "Mediterranean", "trans-Saharan"]},
+        {"id": "g9-ss-2", "prompt": "Name one kind of good that moved through trade networks. (Use the passage.)", "answer": "silk", "acceptedAnswers": ["silk", "spices", "gold", "salt"]},
+        {"id": "g9-ss-3", "prompt": "Besides goods, what else could move through the networks?", "answer": "ideas", "acceptedAnswers": ["ideas", "technologies", "cultural practices"]},
+        {"id": "g9-ss-4", "prompt": "Did connected trade make every society alike?", "answer": "no", "acceptedAnswers": ["no"]}
+      ]
+    }
+  }
+}

@@ -1,6 +1,7 @@
 // Provider chain — tries each in order until one succeeds
 // All use OpenAI-compatible /chat/completions format
 import { gradeFor, mergeProgress, sanitizeProgress } from './progress.js';
+import { checkTopicAnswers, curriculumMapForGrade, learnerTopic, topicForGrade } from './curriculum-data.js';
 
 const PROVIDERS = [
   {
@@ -448,6 +449,93 @@ export default {
           updatedAt: new Date().toISOString()
         }));
         return json({ ok: true, studentId: student.id, message: 'Student must choose a new PIN at next sign-in.' });
+      }
+    }
+
+    // ---- GRADE CURRICULUM: shared topic maps, private answer keys ----
+    {
+      const mapMatch = url.pathname.match(/^\/api\/curriculum\/([a-z0-9-]+)\/map$/);
+      if (mapMatch && request.method === 'GET') {
+        const studentId = mapMatch[1];
+        if (!validStudent(studentId)) return json({ error: 'unknown student' }, 404);
+        if (!await canReadStudentRecord(env, request, studentId)) return json({ error: 'unauthorized' }, 401);
+        const student = STUDENT_ROSTER.find((item) => item.id === studentId);
+        const map = curriculumMapForGrade(student.grade);
+        if (!map) return json({ error: 'Study topics are not published for this grade yet.' }, 503);
+
+        let progress = null;
+        if (env.HOMEWORK) {
+          const raw = await env.HOMEWORK.get('study-progress:' + studentId);
+          if (raw) {
+            try {
+              progress = JSON.parse(raw);
+              if (!progress || typeof progress !== 'object' || Array.isArray(progress)) {
+                return json({ error: 'stored study progress is invalid' }, 500);
+              }
+            } catch {
+              return json({ error: 'stored study progress is invalid' }, 500);
+            }
+          } else {
+            progress = {};
+          }
+        }
+        for (const topics of Object.values(map.subjects)) {
+          for (const topic of topics) topic.progress = progress && progress[topic.id] ? progress[topic.id] : null;
+        }
+        return json(map);
+      }
+
+      const checkMatch = url.pathname.match(/^\/api\/curriculum\/([a-z0-9-]+)\/topic\/([a-z0-9-]+)\/check$/);
+      if (checkMatch && request.method === 'POST') {
+        const [, studentId, topicId] = checkMatch;
+        if (!validStudent(studentId)) return json({ error: 'unknown student' }, 404);
+        const claims = await readSignedToken(env, bearer(request));
+        if (!claims || (claims.role !== 'admin' && !(claims.role === 'student' && claims.student === studentId))) {
+          return json({ error: 'unauthorized' }, 401);
+        }
+        if (!env.HOMEWORK) return json({ error: 'Study progress service is not configured.' }, 503);
+        const student = STUDENT_ROSTER.find((item) => item.id === studentId);
+        const topic = topicForGrade(student.grade, topicId);
+        if (!topic) return json({ error: 'unknown topic' }, 404);
+
+        const body = await request.json().catch(() => null);
+        let check;
+        try {
+          check = checkTopicAnswers(topic, body && body.answers);
+        } catch (error) {
+          return json({ error: error.message || 'Answers are invalid.' }, 400);
+        }
+
+        const progressKey = 'study-progress:' + studentId;
+        const rawProgress = await env.HOMEWORK.get(progressKey);
+        let progress = {};
+        if (rawProgress) {
+          try {
+            progress = JSON.parse(rawProgress);
+            if (!progress || typeof progress !== 'object' || Array.isArray(progress)) throw new Error('invalid progress');
+          } catch {
+            return json({ error: 'stored study progress is invalid' }, 500);
+          }
+        }
+        progress[topic.id] = {
+          correct: check.correct,
+          total: check.total,
+          needsReview: check.needsReview,
+          updatedAt: new Date().toISOString()
+        };
+        await env.HOMEWORK.put(progressKey, JSON.stringify(progress));
+        return json({ ok: true, ...check });
+      }
+
+      const topicMatch = url.pathname.match(/^\/api\/curriculum\/([a-z0-9-]+)\/topic\/([a-z0-9-]+)$/);
+      if (topicMatch && request.method === 'GET') {
+        const [, studentId, topicId] = topicMatch;
+        if (!validStudent(studentId)) return json({ error: 'unknown student' }, 404);
+        if (!await canReadStudentRecord(env, request, studentId)) return json({ error: 'unauthorized' }, 401);
+        const student = STUDENT_ROSTER.find((item) => item.id === studentId);
+        const topic = topicForGrade(student.grade, topicId);
+        if (!topic) return json({ error: 'unknown topic' }, 404);
+        return json({ topic: learnerTopic(topic) });
       }
     }
 

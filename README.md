@@ -101,10 +101,14 @@ the Worker/KV auth contract and intentionally does not contain a public student
 roster. If the API is unavailable, the student UI reports that explicitly and
 does not fall back to client-only authentication.
 
-Production publishing follows the connected GitHub `main` branch. Commit and
-push website changes to `origin main`; Cloudflare Pages publishes them to
-`https://learnflow.ihthos.dev`. Verify the live page after the push. Use Wrangler
-for local development or explicit infrastructure work, not routine publishing.
+Pushing changes to GitHub `main` alone does not publish this Pages project.
+After testing and pushing to `origin main`, deploy the `public/` output and the
+root `functions/` directory to the existing Pages project with
+`wrangler pages deploy public --project-name learnflow --branch main`. Provide
+`CLOUDFLARE_API_TOKEN` through a private local environment; never commit or log
+the token. Then verify that Pages reports a successful production deployment
+for the pushed commit and that `https://learnflow.ihthos.dev` serves the updated
+page and assets.
 
 ## Security notes
 

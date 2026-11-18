@@ -54,3 +54,14 @@ test('a hit re-renders before the boom so the animation survives', () => {
   assert.match(js, /if \(game && !pollTimer\) startPolling\(\);/);
   assert.doesNotMatch(js, /\n  poll\(\);\n  startPolling\(\);\n\}\)\(\);/);
 });
+
+test('demo page is public, bot-driven, and reuses the game styling', () => {
+  const html = fs.readFileSync(path.join(root, 'public/poison-demo.html'), 'utf8');
+  assert.match(html, /assets\/js\/poison-demo\.js/);
+  assert.match(html, /assets\/css\/poison\.css/);
+  assert.doesNotMatch(html, /student-auth\.js/);
+  const js = fs.readFileSync(path.join(root, 'public/assets/js/poison-demo.js'), 'utf8');
+  assert.match(js, /Bot Amina/);
+  assert.match(js, /Not your turn/);
+  assert.match(js, /AudioContext/);
+});

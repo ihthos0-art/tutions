@@ -36,3 +36,13 @@ test('student pages include the game entry and it links to /poison', () => {
   const html = fs.readFileSync(path.join(root, 'public/nafis.html'), 'utf8');
   assert.match(html, /assets\/js\/game-entry\.js/);
 });
+
+test('admin panel loads game room controls', () => {
+  const html = fs.readFileSync(path.join(root, 'public/parent.html'), 'utf8');
+  assert.match(html, /assets\/js\/game-admin\.js/);
+  const js = fs.readFileSync(path.join(root, 'public/assets/js/game-admin.js'), 'utf8');
+  assert.match(js, /data-tab/);
+  assert.match(js, /game-room/);
+  assert.match(js, /\/api\/game\/start/);
+  assert.match(js, /\/api\/game\/reset/);
+});

@@ -120,3 +120,15 @@ test('number cross page wires a 10x6 board with 2 second holds and a 3 second co
   assert.match(js, /crossed\.size >= CELLS/);
   assert.ok(!js.includes('—'), 'em-dash in number-cross.js');
 });
+
+test('number cross has a bot demo with rotating team members', () => {
+  const js = fs.readFileSync(path.join(root, 'public/assets/js/number-cross.js'), 'utf8');
+  assert.match(js, /MODE = 'bots'/);
+  assert.match(js, /\['You', 'Mia', 'Leo'\]/);
+  assert.match(js, /\['Ava', 'Noah', 'Zoe'\]/);
+  assert.match(js, /scheduleBotSearch/);
+  assert.match(js, /botPick/);
+  const html = fs.readFileSync(path.join(root, 'public/number-cross.html'), 'utf8');
+  assert.match(html, /data-mode="bots"/);
+  assert.match(html, /data-mode="hot"/);
+});

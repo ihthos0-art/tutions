@@ -222,3 +222,58 @@
   .nc-countdown span { animation: none; }
   .nc-tile.is-wrong { animation: none; border-color: var(--danger); }
 }
+
+/* Mode switch and team rosters */
+.nc-modes {
+  display: flex;
+  gap: 8px;
+  padding: 6px;
+  background: rgba(20, 14, 36, 0.5);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  width: fit-content;
+}
+.nc-mode {
+  min-height: 44px;
+  padding: 8px 20px;
+  font-family: "Baloo 2", system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 150ms ease, color 150ms ease;
+}
+.nc-mode.is-active {
+  color: var(--accent-ink);
+  background: linear-gradient(180deg, #ffc93c, var(--accent));
+}
+.nc-mode:focus-visible { outline: 3px solid var(--sky); outline-offset: 2px; }
+
+.nc-members {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+.nc-member {
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+.nc-member.is-picking {
+  color: var(--accent-ink);
+  background: var(--gold);
+  border-color: var(--gold);
+}
+.nc-member.is-searching {
+  color: #04240f;
+  background: var(--lime);
+  border-color: var(--lime);
+}

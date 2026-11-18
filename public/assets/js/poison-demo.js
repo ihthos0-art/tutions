@@ -18,6 +18,28 @@
   var chosen = [];
   var timer = null;
   var audioCtx = null;
+  var items = [];
+  var salt = 'demo';
+
+  var ITEM_POOL = [
+    '🍎', '🍌', '🍇', '🍓', '🍒', '🍉', '🍑', '🍍', '🥝', '🍊',
+    '🍋', '🥥', '🍐', '🫐', '🍅', '🥑', '🌽', '🥕', '🍄', '🌶️',
+    '💎', '💍', '🔮', '⭐', '🌟', '🪙', '🎁', '🏆', '🎈', '🧸',
+    '🐸', '🐙', '🦄', '🐝', '🦋', '🐢', '🐳', '🦊', '🐼', '🦉'
+  ];
+
+  function hashText(text) {
+    var h = 2166136261;
+    for (var i = 0; i < text.length; i += 1) {
+      h ^= text.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return h >>> 0;
+  }
+
+  function itemFor(salt, cell) {
+    return ITEM_POOL[hashText(salt + ':' + cell) % ITEM_POOL.length];
+  }
 
   function byId(id) { return document.getElementById(id); }
 
@@ -112,6 +134,9 @@
     }
     turnIndex = 0;
 
+    salt = 'demo-' + Date.now() + '-' + Math.floor(Math.random() * 1e6);
+    items = [];
+    for (var c = 0; c < CELLS; c += 1) items.push(itemFor(salt, c));
     Object.keys(poisons).forEach(function (key) { delete poisons[key]; });
     players.slice(1).forEach(function (bot) { placeBot(bot.id); });
 
@@ -138,7 +163,8 @@
       var index = Number(cell.dataset.cell);
       var chosenHere = chosen.indexOf(index) >= 0;
       cell.classList.toggle('cell--chosen', chosenHere);
-      cell.textContent = chosenHere ? '☠' : '';
+      cell.classList.toggle('cell--own', chosenHere);
+      cell.textContent = items[index];
     });
     byId('demo-count').textContent = chosen.length + ' / 3 chosen';
     byId('demo-place-submit').disabled = chosen.length !== 3;
@@ -217,14 +243,12 @@
       var reveal = revealed[String(index)];
       cell.className = 'cell';
       cell.disabled = Boolean(reveal);
+      cell.textContent = items[index];
       if (reveal) {
         cell.classList.add(reveal.hit ? 'cell--poison' : 'cell--safe');
-        cell.textContent = reveal.hit ? '💥' : '✓';
+        if (reveal.hit) cell.textContent = '💥';
       } else if (poisons[String(index)] && poisons[String(index)].indexOf(me) >= 0) {
         cell.classList.add('cell--own');
-        cell.textContent = '☠';
-      } else {
-        cell.textContent = '';
       }
       if (mine) cell.removeAttribute('aria-disabled');
       else cell.setAttribute('aria-disabled', 'true');

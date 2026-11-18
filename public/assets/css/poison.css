@@ -94,21 +94,37 @@ body {
 .cell {
   position: relative;
   aspect-ratio: 1;
-  background: var(--poison-panel);
-  border: 1px solid var(--poison-line);
-  border-radius: 10px;
-  color: var(--poison-muted);
-  font-size: 20px;
+  background: linear-gradient(150deg, hsl(var(--tile, 220) 46% 24%), hsl(var(--tile, 220) 52% 13%));
+  border: 1px solid hsl(var(--tile, 220) 40% 34%);
+  border-radius: 12px;
+  color: var(--poison-text);
+  font-size: clamp(20px, 4vw, 30px);
+  line-height: 1;
   cursor: pointer;
-  transition: transform 0.12s ease, border-color 0.12s ease;
+  transition: transform 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
-.cell:hover { transform: translateY(-2px); border-color: var(--poison-muted); }
+.cell:nth-child(6n+1) { --tile: 200; }
+.cell:nth-child(6n+2) { --tile: 275; }
+.cell:nth-child(6n+3) { --tile: 340; }
+.cell:nth-child(6n+4) { --tile: 25; }
+.cell:nth-child(6n+5) { --tile: 130; }
+.cell:nth-child(6n) { --tile: 175; }
+.cell:hover { transform: translateY(-3px) scale(1.04); border-color: var(--poison-gold); box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35); }
 .cell:disabled { cursor: default; transform: none; }
 
-.cell--chosen { border-color: var(--poison-gold); box-shadow: 0 0 0 2px rgba(255, 209, 102, 0.35) inset; }
+.cell--chosen { border-color: var(--poison-gold); box-shadow: 0 0 0 3px rgba(255, 209, 102, 0.45) inset, 0 0 16px rgba(255, 209, 102, 0.35); }
+.cell--own::after {
+  content: '☠';
+  position: absolute;
+  top: 1px;
+  right: 5px;
+  font-size: 13px;
+  color: var(--poison-gold);
+}
 .cell--own { border-color: var(--poison-gold); }
-.cell--safe { background: #1b2430; color: var(--poison-accent); }
-.cell--poison { background: #3a1519; border-color: var(--poison-danger); color: var(--poison-danger); }
+.cell--safe { background: linear-gradient(150deg, #1d3a2b, #12251b); border-color: var(--poison-accent); box-shadow: 0 0 12px rgba(123, 211, 137, 0.28); }
+.cell--poison { background: radial-gradient(circle at 50% 40%, #ff8a5c 0%, #c02a2a 45%, #4a1114 100%); border-color: var(--poison-danger); }
 
 .board.locked .cell { opacity: 0.45; cursor: not-allowed; }
 .board.locked .cell:hover { transform: none; }

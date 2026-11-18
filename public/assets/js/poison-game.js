@@ -15,6 +15,26 @@
   var inFlight = false;
   var audioCtx = null;
 
+  var ITEM_POOL = [
+    '🍎', '🍌', '🍇', '🍓', '🍒', '🍉', '🍑', '🍍', '🥝', '🍊',
+    '🍋', '🥥', '🍐', '🫐', '🍅', '🥑', '🌽', '🥕', '🍄', '🌶️',
+    '💎', '💍', '🔮', '⭐', '🌟', '🪙', '🎁', '🏆', '🎈', '🧸',
+    '🐸', '🐙', '🦄', '🐝', '🦋', '🐢', '🐳', '🦊', '🐼', '🦉'
+  ];
+
+  function hashText(text) {
+    var h = 2166136261;
+    for (var i = 0; i < text.length; i += 1) {
+      h ^= text.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return h >>> 0;
+  }
+
+  function itemFor(salt, cell) {
+    return ITEM_POOL[hashText(salt + ':' + cell) % ITEM_POOL.length];
+  }
+
   function byId(id) { return document.getElementById(id); }
 
   function show(name) {
@@ -147,8 +167,10 @@
     if (byId('placement-board').children.length !== cellCount()) makeBoard(byId('placement-board'), game.cols);
     byId('placement-board').querySelectorAll('.cell').forEach(function (cell) {
       var index = Number(cell.dataset.cell);
-      cell.classList.toggle('cell--chosen', chosen.indexOf(index) >= 0);
-      cell.textContent = chosen.indexOf(index) >= 0 ? '☠' : '';
+      var isChosen = chosen.indexOf(index) >= 0;
+      cell.classList.toggle('cell--chosen', isChosen);
+      cell.classList.toggle('cell--own', isChosen);
+      cell.textContent = itemFor(game.id, index);
     });
     byId('placement-count').textContent = chosen.length + ' / 3 chosen';
     byId('placement-submit').disabled = chosen.length !== 3;
@@ -182,14 +204,12 @@
       var reveal = game.revealed ? game.revealed[String(index)] : null;
       cell.className = 'cell';
       cell.disabled = Boolean(reveal);
+      cell.textContent = itemFor(game.id, index);
       if (reveal) {
         cell.classList.add(reveal.hit ? 'cell--poison' : 'cell--safe');
-        cell.textContent = reveal.hit ? '💥' : '✓';
+        if (reveal.hit) cell.textContent = '💥';
       } else if (game.ownPoisons && game.ownPoisons.indexOf(index) >= 0) {
         cell.classList.add('cell--own');
-        cell.textContent = '☠';
-      } else {
-        cell.textContent = '';
       }
     });
 

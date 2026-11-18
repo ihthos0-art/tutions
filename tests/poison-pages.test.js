@@ -65,3 +65,17 @@ test('demo page is public, bot-driven, and reuses the game styling', () => {
   assert.match(js, /Not your turn/);
   assert.match(js, /AudioContext/);
 });
+
+test('boards show a varied item pool and colorful tiles', () => {
+  const game = fs.readFileSync(path.join(root, 'public/assets/js/poison-game.js'), 'utf8');
+  const demo = fs.readFileSync(path.join(root, 'public/assets/js/poison-demo.js'), 'utf8');
+  for (const src of [game, demo]) {
+    assert.match(src, /ITEM_POOL/);
+    assert.match(src, /itemFor\(/);
+    assert.match(src, /🦄/);
+  }
+  const css = fs.readFileSync(path.join(root, 'public/assets/css/poison.css'), 'utf8');
+  assert.match(css, /--tile/);
+  assert.match(css, /nth-child\(6n\+1\)/);
+  assert.match(css, /\.cell--own::after/);
+});

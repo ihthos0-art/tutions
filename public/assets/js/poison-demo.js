@@ -18,7 +18,7 @@
   var chosen = [];
   var timer = null;
   var audioCtx = null;
-  var items = [];
+  var gameItem = '🍎';
   var salt = 'demo';
 
   var ITEM_POOL = [
@@ -37,8 +37,9 @@
     return h >>> 0;
   }
 
-  function itemFor(salt, cell) {
-    return ITEM_POOL[hashText(salt + ':' + cell) % ITEM_POOL.length];
+  // One item for the whole board, re-rolled on every restart.
+  function itemFor(salt) {
+    return ITEM_POOL[hashText(String(salt)) % ITEM_POOL.length];
   }
 
   function byId(id) { return document.getElementById(id); }
@@ -135,8 +136,7 @@
     turnIndex = 0;
 
     salt = 'demo-' + Date.now() + '-' + Math.floor(Math.random() * 1e6);
-    items = [];
-    for (var c = 0; c < CELLS; c += 1) items.push(itemFor(salt, c));
+    gameItem = itemFor(salt);
     Object.keys(poisons).forEach(function (key) { delete poisons[key]; });
     players.slice(1).forEach(function (bot) { placeBot(bot.id); });
 
@@ -164,7 +164,7 @@
       var chosenHere = chosen.indexOf(index) >= 0;
       cell.classList.toggle('cell--chosen', chosenHere);
       cell.classList.toggle('cell--own', chosenHere);
-      cell.textContent = items[index];
+      cell.textContent = gameItem;
     });
     byId('demo-count').textContent = chosen.length + ' / 3 chosen';
     byId('demo-place-submit').disabled = chosen.length !== 3;
@@ -243,7 +243,7 @@
       var reveal = revealed[String(index)];
       cell.className = 'cell';
       cell.disabled = Boolean(reveal);
-      cell.textContent = items[index];
+      cell.textContent = gameItem;
       if (reveal) {
         cell.classList.add(reveal.hit ? 'cell--poison' : 'cell--safe');
         if (reveal.hit) cell.textContent = '💥';

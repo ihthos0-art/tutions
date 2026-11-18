@@ -74,6 +74,8 @@ test('boards show a varied item pool and colorful tiles', () => {
     assert.match(src, /itemFor\(/);
     assert.match(src, /🦄/);
   }
+  assert.doesNotMatch(game, /itemFor\(game\.id,\s*index\)/, 'one item per game, not per cell');
+  assert.match(demo, /gameItem = itemFor\(salt\)/);
   const css = fs.readFileSync(path.join(root, 'public/assets/css/poison.css'), 'utf8');
   assert.match(css, /--tile/);
   assert.match(css, /nth-child\(6n\+1\)/);

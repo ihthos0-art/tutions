@@ -31,8 +31,9 @@
     return h >>> 0;
   }
 
-  function itemFor(salt, cell) {
-    return ITEM_POOL[hashText(salt + ':' + cell) % ITEM_POOL.length];
+  // One item for the whole room, re-rolled for every new game id.
+  function itemFor(salt) {
+    return ITEM_POOL[hashText(String(salt)) % ITEM_POOL.length];
   }
 
   function byId(id) { return document.getElementById(id); }
@@ -170,7 +171,7 @@
       var isChosen = chosen.indexOf(index) >= 0;
       cell.classList.toggle('cell--chosen', isChosen);
       cell.classList.toggle('cell--own', isChosen);
-      cell.textContent = itemFor(game.id, index);
+      cell.textContent = itemFor(game.id);
     });
     byId('placement-count').textContent = chosen.length + ' / 3 chosen';
     byId('placement-submit').disabled = chosen.length !== 3;
@@ -204,7 +205,7 @@
       var reveal = game.revealed ? game.revealed[String(index)] : null;
       cell.className = 'cell';
       cell.disabled = Boolean(reveal);
-      cell.textContent = itemFor(game.id, index);
+      cell.textContent = itemFor(game.id);
       if (reveal) {
         cell.classList.add(reveal.hit ? 'cell--poison' : 'cell--safe');
         if (reveal.hit) cell.textContent = '💥';

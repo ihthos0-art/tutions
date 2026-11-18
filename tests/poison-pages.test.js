@@ -28,3 +28,11 @@ test('boom animation and grey-out turn styling exist', () => {
   assert.match(css, /\.locked/);
   assert.match(css, /\.cell--poison/);
 });
+
+test('student pages include the game entry and it links to /poison', () => {
+  const js = fs.readFileSync(path.join(root, 'public/assets/js/game-entry.js'), 'utf8');
+  assert.match(js, /\/poison/);
+  assert.match(js, /Game mode/);
+  const html = fs.readFileSync(path.join(root, 'public/nafis.html'), 'utf8');
+  assert.match(html, /assets\/js\/game-entry\.js/);
+});

@@ -45,4 +45,12 @@ test('admin panel loads game room controls', () => {
   assert.match(js, /game-room/);
   assert.match(js, /\/api\/game\/start/);
   assert.match(js, /\/api\/game\/reset/);
+  assert.match(js, /\/api\/game\/force-start/);
+});
+
+test('a hit re-renders before the boom so the animation survives', () => {
+  const js = fs.readFileSync(path.join(root, 'public/assets/js/poison-game.js'), 'utf8');
+  assert.match(js, /game = data\.game;\s*render\(\);\s*if \(data\.result && data\.result\.hit\) boom\(index\);/);
+  assert.match(js, /if \(game && !pollTimer\) startPolling\(\);/);
+  assert.doesNotMatch(js, /\n  poll\(\);\n  startPolling\(\);\n\}\)\(\);/);
 });

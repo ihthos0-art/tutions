@@ -8,6 +8,9 @@
   var me = auth.studentId;
   var game = null;
   var chosen = [];
+  var placementGameId = null;
+  var seenReveals = {};
+  var revealsInitialized = false;
   var pollTimer = null;
   var inFlight = false;
   var audioCtx = null;
@@ -129,6 +132,11 @@
 
   function renderPlacement() {
     show('placement');
+    if (placementGameId !== game.id) {
+      placementGameId = game.id;
+      chosen = [];
+      byId('placement-board').replaceChildren();
+    }
     var mine = game.players.filter(function (player) { return player.id === me; })[0];
     if (mine && mine.placementDone) {
       byId('placement-count').textContent = 'Poisons hidden. Waiting for the others…';
@@ -136,7 +144,7 @@
       byId('placement-board').querySelectorAll('.cell').forEach(function (cell) { cell.disabled = true; });
       return;
     }
-    if (!byId('placement-board').children.length) makeBoard(byId('placement-board'), game.cols);
+    if (byId('placement-board').children.length !== cellCount()) makeBoard(byId('placement-board'), game.cols);
     byId('placement-board').querySelectorAll('.cell').forEach(function (cell) {
       var index = Number(cell.dataset.cell);
       cell.classList.toggle('cell--chosen', chosen.indexOf(index) >= 0);
@@ -154,6 +162,10 @@
 
     var myTurn = Boolean(game.myTurn);
     board.classList.toggle('locked', !myTurn);
+    board.querySelectorAll('.cell').forEach(function (cell) {
+      if (myTurn) cell.removeAttribute('aria-disabled');
+      else cell.setAttribute('aria-disabled', 'true');
+    });
     byId('board-lock').hidden = myTurn;
 
     var banner = byId('turn-banner');
@@ -181,6 +193,15 @@
       }
     });
 
+    var fresh = [];
+    Object.keys(game.revealed || {}).forEach(function (key) {
+      if (!seenReveals[key]) {
+        seenReveals[key] = true;
+        if (revealsInitialized && game.revealed[key].hit) fresh.push(Number(key));
+      }
+    });
+    revealsInitialized = true;
+
     var lives = byId('lives-list');
     lives.replaceChildren();
     game.players.forEach(function (player) {
@@ -192,6 +213,8 @@
       li.appendChild(hearts);
       lives.appendChild(li);
     });
+
+    fresh.forEach(function (index) { boom(index); });
   }
 
   function renderFinished() {
@@ -233,9 +256,8 @@
     inFlight = true;
     api('/api/game/state')
       .then(function (data) {
-        var wasPlaying = game && game.status === 'playing';
         game = data.game || null;
-        if (wasPlaying && game && game.status === 'finished') playBoom();
+        if (game && !pollTimer) startPolling();
         render();
       })
       .catch(function (error) {
@@ -304,9 +326,9 @@
       body: JSON.stringify({ cell: index, version: game.version })
     })
       .then(function (data) {
-        if (data.result && data.result.hit) boom(index);
         game = data.game;
         render();
+        if (data.result && data.result.hit) boom(index);
       })
       .catch(function (error) {
         toast(error.message);
@@ -315,5 +337,4 @@
   });
 
   poll();
-  startPolling();
 })();

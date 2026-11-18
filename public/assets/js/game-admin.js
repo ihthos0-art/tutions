@@ -22,6 +22,7 @@
     '  <p class="builder-help">Start the Poison Challenge once every student has joined. Reset clears the current room.</p>',
     '  <div style="display:flex;gap:12px;flex-wrap:wrap">',
     '    <button class="action-btn" id="game-start-btn" type="button">Start game</button>',
+    '    <button class="action-btn secondary" id="game-force-btn" type="button">Force start</button>',
     '    <button class="action-btn secondary" id="game-reset-btn" type="button">Reset room</button>',
     '  </div>',
     '  <p class="status-msg" id="game-room-error" style="color:#b23b3b;min-height:20px"></p>',
@@ -85,6 +86,13 @@
   document.getElementById('game-start-btn').addEventListener('click', function () {
     error('');
     api('/api/game/start', { method: 'POST' })
+      .then(refresh)
+      .catch(function (failure) { error(failure.message); });
+  });
+
+  document.getElementById('game-force-btn').addEventListener('click', function () {
+    error('');
+    api('/api/game/force-start', { method: 'POST' })
       .then(refresh)
       .catch(function (failure) { error(failure.message); });
   });

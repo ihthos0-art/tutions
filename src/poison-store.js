@@ -84,6 +84,10 @@ export function createMemoryGameStore() {
     },
 
     async createLobby() {
+      if (activeId) {
+        const current = games.get(activeId);
+        if (current && current.status !== 'finished') return publicGame(current);
+      }
       const id = newId();
       const lobby = {
         id, status: 'lobby', cols: 0, rows: 0, turnOrder: [], turnIndex: 0,
@@ -141,6 +145,22 @@ export function createMemoryGameStore() {
       player.placementDone = true;
       found.version += 1;
       if (found.players.every((item) => item.placementDone)) found.status = 'playing';
+      return publicGame(found);
+    },
+
+    async forceStart(gameId, rng = Math.random) {
+      const found = game(gameId);
+      if (found.status !== 'placement') throw new Error('game is not in placement');
+      const map = poisonMap(gameId);
+      for (const player of found.players) {
+        if (player.placementDone) continue;
+        const cells = new Set();
+        while (cells.size < POISON_COUNT) cells.add(Math.floor(rng() * found.cols * found.rows));
+        for (const cell of cells) map.set(cell, [...(map.get(cell) || []), player.id]);
+        player.placementDone = true;
+      }
+      found.status = 'playing';
+      found.version += 1;
       return publicGame(found);
     },
 
@@ -248,7 +268,7 @@ export function createD1GameStore(db) {
   return {
     async getActive() {
       const row = await db.prepare(
-        `SELECT id FROM games WHERE status IN ('lobby','placement','playing') ORDER BY created_at DESC LIMIT 1`
+        `SELECT id FROM games WHERE status IN ('lobby','placement','playing','finished') ORDER BY created_at DESC LIMIT 1`
       ).first();
       if (!row) return null;
       const found = await loadGame(row.id);
@@ -257,9 +277,16 @@ export function createD1GameStore(db) {
 
     async createLobby() {
       const id = newId();
-      await db.prepare('INSERT INTO games (id, status, created_at) VALUES (?, ?, ?)')
-        .bind(id, 'lobby', new Date().toISOString()).run();
-      return publicGame(await requireGame(id));
+      const inserted = await db.prepare(
+        `INSERT INTO games (id, status, created_at)
+         SELECT ?, 'lobby', ?
+         WHERE NOT EXISTS (SELECT 1 FROM games WHERE status IN ('lobby','placement','playing'))`
+      ).bind(id, new Date().toISOString()).run();
+      if (inserted.meta && inserted.meta.changes === 1) return publicGame(await requireGame(id));
+      const row = await db.prepare(
+        `SELECT id FROM games WHERE status IN ('lobby','placement','playing') ORDER BY created_at DESC LIMIT 1`
+      ).first();
+      return publicGame(await requireGame(row.id));
     },
 
     async join(gameId, student) {
@@ -268,7 +295,7 @@ export function createD1GameStore(db) {
       const existing = found.players.find((player) => player.id === student.id);
       if (!existing) {
         await db.prepare(
-          'INSERT INTO players (game_id, student_id, name, lives, eliminated, join_index) VALUES (?, ?, ?, ?, 0, ?)'
+          'INSERT OR IGNORE INTO players (game_id, student_id, name, lives, eliminated, join_index) VALUES (?, ?, ?, ?, 0, ?)'
         ).bind(gameId, student.id, student.name, LIVES, found.players.length).run();
         await db.prepare('UPDATE games SET version = version + 1 WHERE id = ?').bind(gameId).run();
       }
@@ -307,6 +334,27 @@ export function createD1GameStore(db) {
       const status = Number(placed.done) === found.players.length ? 'playing' : 'placement';
       await db.prepare('UPDATE games SET status = ?, version = version + 1 WHERE id = ?')
         .bind(status, gameId).run();
+      return publicGame(await requireGame(gameId));
+    },
+
+    async forceStart(gameId, rng = Math.random) {
+      const found = await requireGame(gameId);
+      if (found.status !== 'placement') throw new Error('game is not in placement');
+      const statements = [];
+      for (const player of found.players) {
+        if (player.placementDone) continue;
+        const cells = new Set();
+        while (cells.size < POISON_COUNT) cells.add(Math.floor(rng() * found.cols * found.rows));
+        for (const cell of cells) {
+          statements.push(db.prepare('INSERT OR REPLACE INTO poisons (game_id, cell, owner) VALUES (?, ?, ?)')
+            .bind(gameId, cell, player.id));
+        }
+        statements.push(db.prepare('UPDATE players SET placement = ? WHERE game_id = ? AND student_id = ?')
+          .bind(JSON.stringify([...cells]), gameId, player.id));
+      }
+      statements.push(db.prepare(`UPDATE games SET status = 'playing', version = version + 1 WHERE id = ?`)
+        .bind(gameId));
+      await db.batch(statements);
       return publicGame(await requireGame(gameId));
     },
 

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Find and Cross | LearnFlow</title>
+  <link rel="stylesheet" href="assets/css/fonts.css?v=20261121" />
+  <link rel="stylesheet" href="assets/css/poison.css?v=20261121" />
+  <link rel="stylesheet" href="assets/css/number-cross.css?v=20261121" />
+</head>
+<body class="nc-body">
+  <noscript>Enable JavaScript to play Find and Cross.</noscript>
+
+  <header class="game-topbar">
+    <a class="game-back" href="/poison-demo">Poison demo</a>
+    <h1 class="game-title">Find and Cross</h1>
+    <span class="game-player">Hot seat demo, two teams</span>
+  </header>
+
+  <main class="game-main nc-main">
+    <section class="nc-scores" aria-label="Team progress">
+      <div class="nc-score" id="score-a">
+        <span class="nc-score-name">Team Sun</span>
+        <span class="nc-score-value"><span id="count-a">0</span>/60</span>
+      </div>
+      <div class="nc-score" id="score-b">
+        <span class="nc-score-name">Team Wave</span>
+        <span class="nc-score-value"><span id="count-b">0</span>/60</span>
+      </div>
+    </section>
+
+    <section class="screen" id="nc-stage">
+      <div class="nc-banner" id="nc-banner">Team Sun picks a number</div>
+      <p class="screen-help" id="nc-help">Team Wave, look away. Team Sun: tap a number to set the target.</p>
+
+      <div class="nc-board-wrap">
+        <div class="nc-board" id="nc-board" role="grid" aria-label="Number board"></div>
+        <div class="nc-cover" id="nc-cover" hidden>
+          <p id="nc-cover-text">Board hidden</p>
+          <button type="button" class="btn" id="nc-reveal">Show my board</button>
+        </div>
+      </div>
+
+      <div class="nc-target" id="nc-target" hidden>
+        <span class="nc-target-label">Find this number</span>
+        <span class="nc-target-number" id="nc-target-number">0</span>
+      </div>
+
+      <div class="nc-countdown" id="nc-countdown" hidden>
+        <span id="nc-countdown-number">3</span>
+      </div>
+
+      <p class="nc-note" id="nc-note"></p>
+    </section>
+
+    <section class="screen" id="nc-winner" hidden>
+      <h2 id="nc-winner-title">Team Sun wins</h2>
+      <p class="screen-help" id="nc-winner-sub">All 60 blocks crossed.</p>
+      <button type="button" class="btn" id="nc-restart">Play again</button>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="assets/js/number-cross.js?v=20261121"></script>
+</body>
+</html>

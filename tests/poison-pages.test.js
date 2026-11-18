@@ -104,3 +104,19 @@ test('game copy carries no em-dashes', () => {
     assert.ok(!text.includes('—'), 'em-dash in ' + file);
   }
 });
+
+test('number cross page wires a 10x6 board with 2 second holds and a 3 second countdown', () => {
+  const html = fs.readFileSync(path.join(root, 'public/number-cross.html'), 'utf8');
+  assert.match(html, /assets\/js\/number-cross\.js/);
+  assert.match(html, /assets\/css\/number-cross\.css/);
+  assert.match(html, /assets\/css\/fonts\.css/);
+  const js = fs.readFileSync(path.join(root, 'public/assets/js/number-cross.js'), 'utf8');
+  assert.match(js, /var COLS = 10;/);
+  assert.match(js, /var ROWS = 6;/);
+  assert.match(js, /var HOLD_MS = 2000;/);
+  assert.match(js, /var COUNTDOWN_MS = 3000;/);
+  assert.match(js, /Team Sun/);
+  assert.match(js, /Team Wave/);
+  assert.match(js, /crossed\.size >= CELLS/);
+  assert.ok(!js.includes('—'), 'em-dash in number-cross.js');
+});

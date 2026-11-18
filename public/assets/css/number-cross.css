@@ -1,0 +1,224 @@
+/* Find and Cross: number hunt board on top of the Poison Challenge theme */
+
+.nc-body { overflow-x: hidden; }
+
+.nc-main { display: grid; gap: 18px; }
+
+.nc-scores {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.nc-scores[hidden] { display: none; }
+
+.nc-score {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 16px;
+  background: linear-gradient(160deg, var(--surface-2), var(--surface));
+  border: 2px solid var(--line);
+  border-radius: var(--radius-sm);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+.nc-score.is-active {
+  border-color: var(--gold);
+  box-shadow: 0 0 18px rgba(255, 209, 102, 0.28);
+}
+#score-a.is-active { border-color: #ffb703; }
+#score-b.is-active { border-color: var(--sky); box-shadow: 0 0 18px rgba(116, 192, 252, 0.3); }
+
+.nc-score-name {
+  font-family: "Baloo 2", system-ui, sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+}
+.nc-score-value {
+  font-family: "Baloo 2", system-ui, sans-serif;
+  font-size: 22px;
+  color: var(--gold);
+}
+
+.nc-banner {
+  font-family: "Baloo 2", system-ui, sans-serif;
+  font-size: clamp(20px, 3vw, 26px);
+  font-weight: 700;
+  color: var(--text);
+}
+.nc-note {
+  min-height: 22px;
+  margin: 0;
+  color: var(--lime);
+  font-weight: 700;
+}
+
+.nc-board-wrap {
+  position: relative;
+  overflow-x: auto;
+  padding: 6px 2px 14px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.nc-board {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(44px, 1fr));
+  gap: 6px;
+  min-width: 500px;
+}
+
+.nc-tile {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 48px;
+  padding: 0;
+  font-family: "Baloo 2", system-ui, sans-serif;
+  font-size: clamp(14px, 2.2vw, 20px);
+  font-weight: 700;
+  color: var(--text);
+  background: linear-gradient(160deg, #3a2a6b, #2a1d4e);
+  border: 2px solid #58438f;
+  border-radius: 12px;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+  overflow: hidden;
+}
+
+.nc-tile.is-pickable {
+  cursor: pointer;
+  border-color: var(--gold);
+  background: linear-gradient(160deg, #4a3577, #35245e);
+}
+.nc-tile.is-pickable:hover { transform: translateY(-2px); }
+
+.nc-board.is-finding .nc-tile { cursor: pointer; }
+.nc-board.is-finding .nc-tile:hover { border-color: var(--sky); }
+
+.nc-tile.is-crossed {
+  color: var(--muted);
+  background: linear-gradient(160deg, #221a3a, #191227);
+  border-color: #3a2c5e;
+  opacity: 0.75;
+}
+.nc-tile.is-crossed::after {
+  content: "✕";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 26px;
+  color: var(--pink);
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.nc-tile::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 6px;
+  width: calc(var(--hold, 0) * 100%);
+  background: linear-gradient(90deg, var(--lime), #d8ffd9);
+  border-radius: 0 0 10px 10px;
+  opacity: 0;
+  pointer-events: none;
+}
+.nc-tile.is-holding::before { opacity: 1; }
+.nc-tile.is-holding { border-color: var(--lime); box-shadow: 0 0 18px rgba(140, 233, 154, 0.35); }
+
+@keyframes wrong-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+  75% { transform: translateX(-3px); }
+}
+.nc-tile.is-wrong {
+  animation: wrong-shake 320ms ease-in-out;
+  border-color: var(--danger);
+}
+
+.nc-cover {
+  position: absolute;
+  inset: 6px 2px 14px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 12px;
+  text-align: center;
+  padding: 20px;
+  background: rgba(17, 12, 32, 0.96);
+  border: 2px dashed var(--line);
+  border-radius: var(--radius-sm);
+  z-index: 5;
+}
+.nc-cover[hidden] { display: none; }
+.nc-cover p {
+  margin: 0;
+  font-family: "Baloo 2", system-ui, sans-serif;
+  font-size: 20px;
+  color: var(--muted);
+}
+
+.nc-target {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 18px;
+  background: linear-gradient(160deg, #4a3577, #2e2054);
+  border: 2px solid var(--gold);
+  border-radius: var(--radius-sm);
+}
+.nc-target[hidden] { display: none; }
+.nc-target-label {
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.nc-target-number {
+  font-family: "Baloo 2", system-ui, sans-serif;
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.nc-countdown {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(12, 8, 24, 0.72);
+  backdrop-filter: blur(4px);
+  z-index: 40;
+}
+.nc-countdown[hidden] { display: none; }
+.nc-countdown span {
+  font-family: "Baloo 2", system-ui, sans-serif;
+  font-size: clamp(72px, 22vw, 160px);
+  font-weight: 700;
+  color: var(--gold);
+  text-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  animation: countdown-pop 700ms ease-out;
+}
+@keyframes countdown-pop {
+  from { transform: scale(0.6); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@media (max-width: 640px) {
+  .nc-scores { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .nc-score { padding: 10px 12px; }
+  .nc-score-name { font-size: 14px; }
+  .nc-board { min-width: 460px; gap: 5px; }
+  .nc-tile { min-height: 44px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nc-countdown span { animation: none; }
+  .nc-tile.is-wrong { animation: none; border-color: var(--danger); }
+}

@@ -73,7 +73,6 @@
   function buildBoard() {
     var board = byId('nc-board');
     board.replaceChildren();
-    board.style.setProperty('--cols', String(COLS));
     for (var i = 0; i < CELLS; i += 1) {
       var tile = document.createElement('button');
       tile.type = 'button';
@@ -81,6 +80,15 @@
       tile.dataset.index = String(i);
       tile.textContent = String(numbers[i]);
       tile.setAttribute('aria-label', 'Number ' + numbers[i]);
+      // Scatter inside a loose 10x6 zone grid with jitter, so numbers never
+      // overlap but never read as rows and columns either.
+      var col = i % COLS;
+      var row = Math.floor(i / COLS);
+      var left = ((col + 0.12 + Math.random() * 0.76) / COLS) * 100;
+      var top = ((row + 0.14 + Math.random() * 0.72) / ROWS) * 100;
+      tile.style.left = Math.max(4, Math.min(96, left)).toFixed(2) + '%';
+      tile.style.top = Math.max(4, Math.min(96, top)).toFixed(2) + '%';
+      tile.style.setProperty('--rot', (Math.random() * 16 - 8).toFixed(1) + 'deg');
       board.appendChild(tile);
     }
   }

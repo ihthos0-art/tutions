@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Poison Challenge | LearnFlow</title>
+  <link rel="stylesheet" href="assets/css/poison.css" />
+</head>
+<body>
+  <noscript>Enable JavaScript to play the Poison Challenge.</noscript>
+
+  <header class="game-topbar">
+    <a class="game-back" href="/">← Back to learning</a>
+    <h1 class="game-title">Poison Challenge</h1>
+    <span class="game-player" id="game-player"></span>
+  </header>
+
+  <main class="game-main">
+    <section class="screen" id="pin-screen">
+      <h2>Enter the game PIN</h2>
+      <p class="screen-help">The teacher gives out the PIN at game time.</p>
+      <form id="pin-form" autocomplete="off">
+        <input id="pin-input" class="pin-input" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" placeholder="••••" aria-label="Game PIN" />
+        <button type="submit" class="btn">Unlock game</button>
+      </form>
+      <p class="screen-error" id="pin-error" role="alert"></p>
+    </section>
+
+    <section class="screen" id="lobby-screen" hidden>
+      <h2>Lobby</h2>
+      <p class="screen-help" id="lobby-status">Waiting for the teacher to start…</p>
+      <ul class="player-list" id="lobby-players"></ul>
+    </section>
+
+    <section class="screen" id="placement-screen" hidden>
+      <h2>Place your 3 poisons</h2>
+      <p class="screen-help">Tap three cells. Nobody sees them until they are hit.</p>
+      <p class="screen-help" id="placement-count">0 / 3 chosen</p>
+      <div class="board" id="placement-board"></div>
+      <button type="button" class="btn" id="placement-submit" disabled>Hide my poisons</button>
+    </section>
+
+    <section class="screen" id="play-screen" hidden>
+      <div class="turn-banner" id="turn-banner"></div>
+      <div class="board-wrap">
+        <div class="board" id="play-board"></div>
+        <div class="board-lock" id="board-lock" hidden>Not your turn</div>
+      </div>
+      <ul class="lives-list" id="lives-list"></ul>
+    </section>
+
+    <section class="screen" id="finished-screen" hidden>
+      <h2>Game over</h2>
+      <p class="screen-help" id="winner-line"></p>
+      <ol class="leaderboard" id="leaderboard"></ol>
+      <a class="btn" href="/">Back to my learning page</a>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="assets/js/student-auth.js"></script>
+  <script src="assets/js/poison-game.js"></script>
+</body>
+</html>

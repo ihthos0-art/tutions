@@ -79,3 +79,26 @@ test('boards show a varied item pool and colorful tiles', () => {
   assert.match(css, /nth-child\(6n\+1\)/);
   assert.match(css, /\.cell--own::after/);
 });
+
+test('game pages self-host fonts and use the arcade theme tokens', () => {
+  const fonts = fs.readFileSync(path.join(root, 'public/assets/css/fonts.css'), 'utf8');
+  assert.match(fonts, /Baloo 2/);
+  assert.match(fonts, /Nunito/);
+  const css = fs.readFileSync(path.join(root, 'public/assets/css/poison.css'), 'utf8');
+  assert.match(css, /--bg-plum/);
+  assert.match(css, /radial-gradient/);
+  assert.match(css, /prefers-reduced-motion/);
+  for (const page of ['public/poison.html', 'public/poison-demo.html']) {
+    const html = fs.readFileSync(path.join(root, page), 'utf8');
+    assert.match(html, /assets\/css\/fonts\.css/);
+  }
+});
+
+test('game copy carries no em-dashes', () => {
+  const files = ['public/poison.html', 'public/poison-demo.html',
+    'public/assets/js/poison-game.js', 'public/assets/js/poison-demo.js'];
+  for (const file of files) {
+    const text = fs.readFileSync(path.join(root, file), 'utf8');
+    assert.ok(!text.includes('—'), 'em-dash in ' + file);
+  }
+});

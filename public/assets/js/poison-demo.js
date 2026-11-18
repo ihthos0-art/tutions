@@ -231,7 +231,7 @@
 
     var banner = byId('demo-banner');
     if (mine) {
-      banner.textContent = 'Your turn — pick a cell';
+      banner.textContent = 'Your turn: pick a cell';
       banner.classList.add('is-mine');
     } else if (current) {
       banner.textContent = 'Waiting for ' + current.name;

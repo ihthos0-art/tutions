@@ -192,7 +192,7 @@
 
     var banner = byId('turn-banner');
     if (myTurn) {
-      banner.textContent = 'Your turn — pick a cell';
+      banner.textContent = 'Your turn: pick a cell';
       banner.classList.add('is-mine');
     } else {
       banner.textContent = 'Waiting for ' + playerName(game.turnOrder[game.turnIndex]);

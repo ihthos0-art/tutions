@@ -9,6 +9,12 @@ pages_build_output_dir = "public"
 binding = "HOMEWORK"
 id = "47b8b95b2de547019abeb3f42ce55457"
 
+# D1 database for the Poison Challenge game (game state, players, poisons).
+[[d1_databases]]
+binding = "GAMES_DB"
+database_name = "learnflow-games"
+database_id = "cc9e1718-17bf-48fc-b339-b07e6482f922"
+
 # Secrets pushed via wrangler (never in this file):
 # GROQ_API_KEY, CEREBRAS_API_KEY, MISTRAL_API_KEY, OPENROUTER_API_KEY, COHERE_API_KEY
 # OLLAMA_API_KEY        ← Kimi K2.6 via Ollama Cloud (admin AI editor)

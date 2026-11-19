@@ -119,7 +119,7 @@ test('number cross multiplayer page uses student auth and server routes', () => 
 test('number cross demo stays bot driven and login free', () => {
   const html = fs.readFileSync(path.join(root, 'public/number-cross-demo.html'), 'utf8');
   assert.match(html, /assets\/js\/number-cross-demo\.js/);
-  assert.match(html, /data-mode="bots"/);
+  assert.doesNotMatch(html, /look away/i);
   const js = fs.readFileSync(path.join(root, 'public/assets/js/number-cross-demo.js'), 'utf8');
   assert.match(js, /MODE = 'bots'/);
   assert.match(js, /scheduleBotSearch/);

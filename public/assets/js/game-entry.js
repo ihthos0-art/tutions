@@ -19,8 +19,13 @@
   var link = document.createElement('a');
   link.className = 'game-entry-link';
   link.href = '/poison';
-  link.textContent = 'Join the game →';
+  link.textContent = 'Poison Challenge →';
 
-  entry.append(title, help, link);
+  var cross = document.createElement('a');
+  cross.className = 'game-entry-link';
+  cross.href = '/number-cross';
+  cross.textContent = 'Find and Cross →';
+
+  entry.append(title, help, link, cross);
   panel.append(entry);
 })();

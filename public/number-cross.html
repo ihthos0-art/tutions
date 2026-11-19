@@ -4,47 +4,62 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Find and Cross | LearnFlow</title>
-  <link rel="stylesheet" href="assets/css/fonts.css?v=20261124" />
-  <link rel="stylesheet" href="assets/css/poison.css?v=20261124" />
-  <link rel="stylesheet" href="assets/css/number-cross.css?v=20261124" />
+  <link rel="stylesheet" href="assets/css/fonts.css?v=20261125" />
+  <link rel="stylesheet" href="assets/css/poison.css?v=20261125" />
+  <link rel="stylesheet" href="assets/css/number-cross.css?v=20261125" />
 </head>
 <body class="nc-body">
   <noscript>Enable JavaScript to play Find and Cross.</noscript>
 
   <header class="game-topbar">
-    <a class="game-back" href="/poison-demo">Poison demo</a>
+    <a class="game-back" href="/">Back to learning</a>
     <h1 class="game-title">Find and Cross</h1>
-    <span class="game-player">Hot seat demo, two teams</span>
+    <span class="game-player" id="nc-me"></span>
   </header>
 
   <main class="game-main nc-main">
-    <div class="nc-modes" role="group" aria-label="Game mode">
-      <button type="button" class="nc-mode is-active" id="mode-bots" data-mode="bots">Bot demo</button>
-      <button type="button" class="nc-mode" id="mode-hot" data-mode="hot">Hot seat</button>
-    </div>
+    <section class="screen" id="nc-lobby">
+      <h2>Choose your team</h2>
+      <p class="screen-help">Two teams race to cross all 60 numbers on their own board. Start once both teams have a player.</p>
 
-    <section class="nc-scores" aria-label="Team progress">
-      <div class="nc-score" id="score-a">
-        <span class="nc-score-name">Team Sun</span>
-        <span class="nc-score-value"><span id="count-a">0</span>/60</span>
-        <div class="nc-members" id="members-a"></div>
+      <div class="nc-teams" role="radiogroup" aria-label="Team">
+        <button type="button" class="nc-team" id="team-sun" data-team="sun" role="radio" aria-checked="false">
+          <span class="nc-team-name">Team Sun</span>
+          <span class="nc-team-count" id="team-count-sun">0 players</span>
+        </button>
+        <button type="button" class="nc-team nc-team-wave" id="team-wave" data-team="wave" role="radio" aria-checked="false">
+          <span class="nc-team-name">Team Wave</span>
+          <span class="nc-team-count" id="team-count-wave">0 players</span>
+        </button>
       </div>
-      <div class="nc-score" id="score-b">
-        <span class="nc-score-name">Team Wave</span>
-        <span class="nc-score-value"><span id="count-b">0</span>/60</span>
-        <div class="nc-members" id="members-b"></div>
-      </div>
+
+      <ul class="player-list" id="nc-lobby-players"></ul>
+      <button type="button" class="btn" id="nc-join" disabled>Join game</button>
+      <button type="button" class="btn" id="nc-start" hidden>Start game</button>
+      <p class="screen-error" id="nc-lobby-error" role="alert"></p>
     </section>
 
-    <section class="screen" id="nc-stage">
-      <div class="nc-banner" id="nc-banner">Team Sun picks a number</div>
-      <p class="screen-help" id="nc-help">Team Wave, look away. Team Sun: tap a number to set the target.</p>
+    <section class="screen" id="nc-stage" hidden>
+      <section class="nc-scores" aria-label="Team progress">
+        <div class="nc-score" id="score-a">
+          <span class="nc-score-name">Team Sun</span>
+          <span class="nc-score-value"><span id="count-a">0</span>/60</span>
+          <div class="nc-members" id="members-a"></div>
+        </div>
+        <div class="nc-score" id="score-b">
+          <span class="nc-score-name">Team Wave</span>
+          <span class="nc-score-value"><span id="count-b">0</span>/60</span>
+          <div class="nc-members" id="members-b"></div>
+        </div>
+      </section>
+
+      <div class="nc-banner" id="nc-banner">Waiting</div>
+      <p class="screen-help" id="nc-help"></p>
 
       <div class="nc-board-wrap">
         <div class="nc-board" id="nc-board" role="grid" aria-label="Number board"></div>
         <div class="nc-cover" id="nc-cover" hidden>
-          <p id="nc-cover-text">Board hidden</p>
-          <button type="button" class="btn" id="nc-reveal">Show my board</button>
+          <p id="nc-cover-text">Waiting for the other team</p>
         </div>
       </div>
 
@@ -61,14 +76,15 @@
     </section>
 
     <section class="screen" id="nc-winner" hidden>
-      <h2 id="nc-winner-title">Team Sun wins</h2>
+      <h2 id="nc-winner-title">Team wins</h2>
       <p class="screen-help" id="nc-winner-sub">All 60 blocks crossed.</p>
-      <button type="button" class="btn" id="nc-restart">Play again</button>
+      <button type="button" class="btn" id="nc-again">New game</button>
     </section>
   </main>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="assets/js/number-cross.js?v=20261124"></script>
+  <script src="assets/js/student-auth.js"></script>
+  <script src="assets/js/number-cross.js?v=20261125"></script>
 </body>
 </html>

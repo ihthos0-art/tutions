@@ -270,3 +270,36 @@
   background: var(--lime);
   border-color: var(--lime);
 }
+
+/* Team picker (multiplayer lobby) */
+.nc-teams {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.nc-team {
+  display: grid;
+  gap: 4px;
+  padding: 18px 16px;
+  text-align: left;
+  background: linear-gradient(160deg, #3a2a6b, #2a1d4e);
+  border: 2px solid var(--line);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: border-color 150ms ease, box-shadow 150ms ease, transform 120ms ease;
+}
+.nc-team:hover { transform: translateY(-2px); }
+.nc-team.is-active { border-color: var(--gold); box-shadow: 0 0 18px rgba(255, 209, 102, 0.35); }
+.nc-team-wave.is-active { border-color: var(--sky); box-shadow: 0 0 18px rgba(116, 192, 252, 0.35); }
+.nc-team:focus-visible { outline: 3px solid var(--sky); outline-offset: 3px; }
+.nc-team-name {
+  font-family: "Baloo 2", system-ui, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+}
+.nc-team-count { font-size: 13px; color: var(--muted); font-weight: 700; }
+
+@media (max-width: 520px) {
+  .nc-teams { grid-template-columns: 1fr; }
+}

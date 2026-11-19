@@ -105,30 +105,23 @@ test('game copy carries no em-dashes', () => {
   }
 });
 
-test('number cross page wires a 10x6 board with 2 second holds and a 3 second countdown', () => {
+test('number cross multiplayer page uses student auth and server routes', () => {
   const html = fs.readFileSync(path.join(root, 'public/number-cross.html'), 'utf8');
   assert.match(html, /assets\/js\/number-cross\.js/);
+  assert.match(html, /assets\/js\/student-auth\.js/);
   assert.match(html, /assets\/css\/number-cross\.css/);
-  assert.match(html, /assets\/css\/fonts\.css/);
   const js = fs.readFileSync(path.join(root, 'public/assets/js/number-cross.js'), 'utf8');
-  assert.match(js, /var COLS = 10;/);
-  assert.match(js, /var ROWS = 6;/);
-  assert.match(js, /var HOLD_MS = 2000;/);
-  assert.match(js, /var COUNTDOWN_MS = 3000;/);
-  assert.match(js, /Team Sun/);
-  assert.match(js, /Team Wave/);
-  assert.match(js, /crossed\.size >= CELLS/);
-  assert.ok(!js.includes('—'), 'em-dash in number-cross.js');
+  for (const needle of ['/api/cross/join', '/api/cross/start', '/api/cross/pick', '/api/cross/hold', '/api/cross/complete', 'var HOLD_MS = 2000', 'var CELLS = 60']) {
+    assert.ok(js.includes(needle), 'missing ' + needle);
+  }
 });
 
-test('number cross has a bot demo with rotating team members', () => {
-  const js = fs.readFileSync(path.join(root, 'public/assets/js/number-cross.js'), 'utf8');
-  assert.match(js, /MODE = 'bots'/);
-  assert.match(js, /\['You', 'Mia', 'Leo'\]/);
-  assert.match(js, /\['Ava', 'Noah', 'Zoe'\]/);
-  assert.match(js, /scheduleBotSearch/);
-  assert.match(js, /botPick/);
-  const html = fs.readFileSync(path.join(root, 'public/number-cross.html'), 'utf8');
+test('number cross demo stays bot driven and login free', () => {
+  const html = fs.readFileSync(path.join(root, 'public/number-cross-demo.html'), 'utf8');
+  assert.match(html, /assets\/js\/number-cross-demo\.js/);
   assert.match(html, /data-mode="bots"/);
-  assert.match(html, /data-mode="hot"/);
+  const js = fs.readFileSync(path.join(root, 'public/assets/js/number-cross-demo.js'), 'utf8');
+  assert.match(js, /MODE = 'bots'/);
+  assert.match(js, /scheduleBotSearch/);
+  assert.match(js, /\['You', 'Mia', 'Leo'\]/);
 });

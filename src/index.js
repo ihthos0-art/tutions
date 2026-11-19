@@ -2,6 +2,7 @@ import { PROVIDERS, tryProvider } from './ai-providers.js';
 import { gradeFor, mergeProgress, sanitizeProgress } from './progress.js';
 import { checkTopicAnswers, curriculumMapForGrade, learnerTopic, topicForGrade } from './curriculum-data.js';
 import { handleGameRoutes } from './poison-routes.js';
+import { handleCrossRoutes } from './cross-routes.js';
 // ---- Shared helpers ----
 const JSON_HEADERS = {
   'Content-Type': 'application/json',
@@ -516,6 +517,14 @@ export default {
           return json({ error: error.message || 'invalid assignment' }, 400);
         }
       }
+    }
+
+    // ---- FIND AND CROSS GAME ----
+    {
+      const crossResponse = await handleCrossRoutes({
+        request, url, env, json, readSignedToken, bearer, validStudent, roster: STUDENT_ROSTER
+      });
+      if (crossResponse) return crossResponse;
     }
 
     // ---- POISON CHALLENGE GAME ----

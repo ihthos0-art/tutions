@@ -62,8 +62,8 @@
 .nc-board {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 3;
-  min-height: 460px;
+  aspect-ratio: 12 / 4.1;
+  min-height: 300px;
   margin: 0 auto;
 }
 
@@ -75,7 +75,7 @@
   min-height: 44px;
   padding: 2px 8px;
   font-family: "Baloo 2", system-ui, sans-serif;
-  font-size: clamp(16px, 2.4vw, 24px);
+  font-size: clamp(17px, 2.1vw, 25px);
   font-weight: 700;
   color: var(--text);
   background: transparent;
@@ -207,8 +207,8 @@
   .nc-scores { grid-template-columns: 1fr 1fr; gap: 8px; }
   .nc-score { padding: 10px 12px; }
   .nc-score-name { font-size: 14px; }
-  .nc-board { min-height: 520px; aspect-ratio: 3 / 4; }
-  .nc-tile { font-size: 17px; padding: 2px 6px; }
+  .nc-board { min-height: 420px; }
+  .nc-tile { font-size: 16px; padding: 2px 5px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

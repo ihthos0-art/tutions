@@ -73,6 +73,10 @@
   function buildBoard() {
     var board = byId('nc-board');
     board.replaceChildren();
+    // One number per slot, lightly jittered: even coverage, no visible rows.
+    var slotCols = window.innerWidth < 700 ? 10 : 12;
+    var slotRows = Math.ceil(CELLS / slotCols);
+    board.style.aspectRatio = String((slotCols * 1.0) / (slotRows * 0.82));
     for (var i = 0; i < CELLS; i += 1) {
       var tile = document.createElement('button');
       tile.type = 'button';
@@ -82,13 +86,15 @@
       tile.setAttribute('aria-label', 'Number ' + numbers[i]);
       // Scatter inside a loose 10x6 zone grid with jitter, so numbers never
       // overlap but never read as rows and columns either.
-      var col = i % COLS;
-      var row = Math.floor(i / COLS);
-      var left = ((col + 0.12 + Math.random() * 0.76) / COLS) * 100;
-      var top = ((row + 0.14 + Math.random() * 0.72) / ROWS) * 100;
-      tile.style.left = Math.max(4, Math.min(96, left)).toFixed(2) + '%';
+      var col = i % slotCols;
+      var row = Math.floor(i / slotCols);
+      var jitterX = (Math.random() - 0.5) * 0.52;
+      var jitterY = (Math.random() - 0.5) * 0.46;
+      var left = ((col + 0.5 + jitterX) / slotCols) * 100;
+      var top = ((row + 0.5 + jitterY) / slotRows) * 100;
+      tile.style.left = Math.max(3.5, Math.min(96.5, left)).toFixed(2) + '%';
       tile.style.top = Math.max(4, Math.min(96, top)).toFixed(2) + '%';
-      tile.style.setProperty('--rot', (Math.random() * 16 - 8).toFixed(1) + 'deg');
+      tile.style.setProperty('--rot', (Math.random() * 12 - 6).toFixed(1) + 'deg');
       board.appendChild(tile);
     }
   }

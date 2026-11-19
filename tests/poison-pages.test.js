@@ -43,9 +43,11 @@ test('admin panel loads game room controls', () => {
   const js = fs.readFileSync(path.join(root, 'public/assets/js/game-admin.js'), 'utf8');
   assert.match(js, /data-tab/);
   assert.match(js, /game-room/);
-  assert.match(js, /\/api\/game\/start/);
-  assert.match(js, /\/api\/game\/reset/);
-  assert.match(js, /\/api\/game\/force-start/);
+  assert.match(js, /\/api\/admin\/games\/poison\/start/);
+  assert.match(js, /\/api\/admin\/games\/poison\/force-start/);
+  assert.match(js, /\/api\/admin\/games\//);
+  assert.match(js, /\/reset/);
+  assert.match(js, /kick/);
 });
 
 test('a hit re-renders before the boom so the animation survives', () => {

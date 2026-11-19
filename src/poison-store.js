@@ -9,6 +9,7 @@ import {
   gridForPlayers, shuffleOrder, resolvePick, rankPlayers,
   POISON_COUNT, LIVES
 } from './poison-engine.js';
+import { isOnline, isLobbyStale } from './presence.js';
 
 const ACTIVE_STATUSES = ['lobby', 'placement', 'playing'];
 
@@ -26,7 +27,7 @@ function assertCells(cells, cellCount) {
   return [...unique];
 }
 
-function publicGame(game) {
+function publicGame(game, nowMs = Date.now()) {
   return {
     id: game.id,
     status: game.status,
@@ -42,7 +43,8 @@ function publicGame(game) {
       lives: player.lives,
       eliminated: Boolean(player.eliminated),
       joinIndex: player.joinIndex,
-      placementDone: Boolean(player.placementDone)
+      placementDone: Boolean(player.placementDone),
+      online: isOnline(player.lastSeen, nowMs)
     }))
   };
 }
@@ -51,7 +53,9 @@ function gameView(game, poisonsForCell, revealed) {
   return { ...publicGame(game), revealed };
 }
 
-export function createMemoryGameStore() {
+export function createMemoryGameStore(options = {}) {
+  const now = options.now || (() => Date.now());
+  const lobbyTtl = Number.isFinite(options.lobbyTtlMs) ? options.lobbyTtlMs : 90000;
   let activeId = null;
   const games = new Map();
   const poisons = new Map();
@@ -80,7 +84,7 @@ export function createMemoryGameStore() {
   return {
     async getActive() {
       const found = activeId ? games.get(activeId) : null;
-      return found ? publicGame(found) : null;
+      return found ? publicGame(found, now()) : null;
     },
 
     async createLobby() {
@@ -97,20 +101,23 @@ export function createMemoryGameStore() {
       poisons.set(id, new Map());
       reveals.set(id, new Map());
       activeId = id;
-      return publicGame(lobby);
+      return publicGame(lobby, now());
     },
 
     async join(gameId, student) {
       const found = game(gameId);
       if (found.status !== 'lobby') throw new Error('game already started');
-      if (!found.players.some((player) => player.id === student.id)) {
+      const existing = found.players.find((player) => player.id === student.id);
+      if (!existing) {
         found.players.push({
           id: student.id, name: student.name, lives: LIVES, eliminated: false,
-          joinIndex: found.players.length, placementDone: false
+          joinIndex: found.players.length, placementDone: false, lastSeen: now()
         });
         found.version += 1;
+      } else {
+        existing.lastSeen = now();
       }
-      return publicGame(found);
+      return publicGame(found, now());
     },
 
     async start(gameId, rng = Math.random) {
@@ -124,7 +131,7 @@ export function createMemoryGameStore() {
       found.turnIndex = 0;
       found.status = 'placement';
       found.version += 1;
-      return publicGame(found);
+      return publicGame(found, now());
     },
 
     async setPlacement(gameId, studentId, cells) {
@@ -145,7 +152,7 @@ export function createMemoryGameStore() {
       player.placementDone = true;
       found.version += 1;
       if (found.players.every((item) => item.placementDone)) found.status = 'playing';
-      return publicGame(found);
+      return publicGame(found, now());
     },
 
     async forceStart(gameId, rng = Math.random) {
@@ -161,7 +168,7 @@ export function createMemoryGameStore() {
       }
       found.status = 'playing';
       found.version += 1;
-      return publicGame(found);
+      return publicGame(found, now());
     },
 
     async pick(gameId, studentId, cell, expectedVersion) {
@@ -186,11 +193,18 @@ export function createMemoryGameStore() {
       found.winner = next.winner;
       found.version += 1;
       revealMapRef.set(String(cell), next.revealed[String(cell)]);
-      return { game: publicGame(found), result };
+      return { game: publicGame(found, now()), result };
     },
 
     async state(gameId, viewerId) {
       const found = game(gameId);
+      const viewer = found.players.find((player) => player.id === viewerId);
+      if (viewer) viewer.lastSeen = now();
+      if (found.status === 'lobby') {
+        const before = found.players.length;
+        found.players = found.players.filter((player) => !isLobbyStale(player.lastSeen, now(), lobbyTtl));
+        if (found.players.length !== before) found.version += 1;
+      }
       const map = poisonMap(gameId);
       const ownPoisons = [];
       for (const [cell, owners] of map) {
@@ -203,6 +217,17 @@ export function createMemoryGameStore() {
         myTurn: found.status === 'playing' && found.turnOrder[found.turnIndex] === viewerId,
         leaderboard: found.status === 'finished' ? rankPlayers(found.players) : []
       };
+    },
+
+    async kick(gameId, studentId) {
+      const found = game(gameId);
+      if (found.status !== 'lobby') throw new Error('can only remove players from the lobby');
+      const before = found.players.length;
+      found.players = found.players.filter((player) => player.id !== studentId);
+      if (found.players.length === before) throw new Error('player is not in this game');
+      found.players.forEach((player, index) => { player.joinIndex = index; });
+      found.version += 1;
+      return publicGame(found, now());
     },
 
     async reset() {
@@ -236,7 +261,8 @@ export function createD1GameStore(db) {
         lives: player.lives,
         eliminated: Boolean(player.eliminated),
         joinIndex: player.join_index,
-        placementDone: Boolean(player.placement)
+        placementDone: Boolean(player.placement),
+        lastSeen: player.last_seen
       }))
     };
   }
@@ -295,9 +321,12 @@ export function createD1GameStore(db) {
       const existing = found.players.find((player) => player.id === student.id);
       if (!existing) {
         await db.prepare(
-          'INSERT OR IGNORE INTO players (game_id, student_id, name, lives, eliminated, join_index) VALUES (?, ?, ?, ?, 0, ?)'
-        ).bind(gameId, student.id, student.name, LIVES, found.players.length).run();
+          'INSERT OR IGNORE INTO players (game_id, student_id, name, lives, eliminated, join_index, last_seen) VALUES (?, ?, ?, ?, 0, ?, ?)'
+        ).bind(gameId, student.id, student.name, LIVES, found.players.length, Date.now()).run();
         await db.prepare('UPDATE games SET version = version + 1 WHERE id = ?').bind(gameId).run();
+      } else {
+        await db.prepare('UPDATE players SET last_seen = ? WHERE game_id = ? AND student_id = ?')
+          .bind(Date.now(), gameId, student.id).run();
       }
       return publicGame(await requireGame(gameId));
     },
@@ -393,6 +422,14 @@ export function createD1GameStore(db) {
 
     async state(gameId, viewerId) {
       const found = await requireGame(gameId);
+      if (found.players.some((player) => player.id === viewerId)) {
+        await db.prepare('UPDATE players SET last_seen = ? WHERE game_id = ? AND student_id = ?')
+          .bind(Date.now(), gameId, viewerId).run();
+      }
+      if (found.status === 'lobby') {
+        await db.prepare('DELETE FROM players WHERE game_id = ? AND (last_seen IS NULL OR last_seen < ?)')
+          .bind(gameId, Date.now() - 90000).run();
+      }
       const map = await loadPoisons(gameId);
       const revealed = await loadReveals(gameId);
       const ownPoisons = [];
@@ -406,6 +443,16 @@ export function createD1GameStore(db) {
         myTurn: found.status === 'playing' && found.turnOrder[found.turnIndex] === viewerId,
         leaderboard: found.status === 'finished' ? rankPlayers(found.players) : []
       };
+    },
+
+    async kick(gameId, studentId) {
+      const found = await requireGame(gameId);
+      if (found.status !== 'lobby') throw new Error('can only remove players from the lobby');
+      const result = await db.prepare('DELETE FROM players WHERE game_id = ? AND student_id = ?')
+        .bind(gameId, studentId).run();
+      if (!result.meta || result.meta.changes !== 1) throw new Error('player is not in this game');
+      await db.prepare('UPDATE games SET version = version + 1 WHERE id = ?').bind(gameId).run();
+      return publicGame(await requireGame(gameId));
     },
 
     async reset() {

@@ -63,6 +63,8 @@ export const ODD_BANK = {
 };
 
 const ALL_PAIRS = Object.values(ODD_BANK).flat();
+import { isOnline, isLobbyStale } from './presence.js';
+
 const PHASES = ['lobby', 'reveal', 'clues', 'vote', 'result'];
 
 function newId() { return crypto.randomUUID(); }
@@ -93,7 +95,7 @@ function decideResult(votes, imposterId, players) {
   return { tally, caught, winner: caught ? 'civilians' : 'imposter' };
 }
 
-function baseSnapshot(game, players, viewerId) {
+function baseSnapshot(game, players, viewerId, nowMs = Date.now()) {
   const me = players.find((player) => player.id === viewerId);
   const isImposter = Boolean(me && me.id === game.imposter);
   const myWord = me
@@ -110,6 +112,7 @@ function baseSnapshot(game, players, viewerId) {
     players: players.map((player) => ({
       id: player.id,
       name: player.name,
+      online: isOnline(player.lastSeen, nowMs),
       ready: ready.includes(player.id),
       voted: Boolean(votes[player.id])
     })),
@@ -146,6 +149,7 @@ function resultSnapshot(game, players, viewerId, base) {
 export function createMemoryOddStore(options = {}) {
   const cluesMs = Number.isFinite(options.cluesMs) ? options.cluesMs : ODD_CLUES_MS;
   const now = options.now || (() => Date.now());
+  const lobbyTtl = Number.isFinite(options.lobbyTtlMs) ? options.lobbyTtlMs : 90000;
   const games = new Map();
   const players = new Map();
   let activeId = null;
@@ -166,7 +170,7 @@ export function createMemoryOddStore(options = {}) {
   }
   function snapshot(id, viewerId) {
     const found = game(id);
-    const base = baseSnapshot(found, roster(id), viewerId);
+    const base = baseSnapshot(found, roster(id), viewerId, now());
     if (found.phase === 'result') return resultSnapshot(found, roster(id), viewerId, base);
     return base;
   }
@@ -201,8 +205,11 @@ export function createMemoryOddStore(options = {}) {
       const list = roster(gameId);
       if (!list.some((player) => player.id === student.id)) {
         if (list.length >= ODD_MAX_PLAYERS) throw new Error('room is full');
-        list.push({ id: student.id, name: student.name, joinIndex: list.length });
+        list.push({ id: student.id, name: student.name, joinIndex: list.length, lastSeen: now() });
         bump(found);
+      } else {
+        const existing = list.find((player) => player.id === student.id);
+        existing.lastSeen = now();
       }
       return snapshot(gameId, student.id);
     },
@@ -293,7 +300,32 @@ export function createMemoryOddStore(options = {}) {
     },
 
     async state(gameId, viewerId) {
+      const found = game(gameId);
+      const list = roster(gameId);
+      const viewer = list.find((player) => player.id === viewerId);
+      if (viewer) viewer.lastSeen = now();
+      if (found.status === 'lobby') {
+        const before = list.length;
+        const kept = list.filter((player) => !isLobbyStale(player.lastSeen, now(), lobbyTtl));
+        if (kept.length !== before) {
+          players.set(gameId, kept);
+          kept.forEach((player, index) => { player.joinIndex = index; });
+          bump(found);
+        }
+      }
       return snapshot(gameId, viewerId);
+    },
+
+    async kick(gameId, studentId) {
+      const found = game(gameId);
+      if (found.status !== 'lobby') throw new Error('can only remove players from the lobby');
+      const list = roster(gameId);
+      const kept = list.filter((player) => player.id !== studentId);
+      if (kept.length === list.length) throw new Error('player is not in this game');
+      kept.forEach((player, index) => { player.joinIndex = index; });
+      players.set(gameId, kept);
+      bump(found);
+      return snapshot(gameId, '');
     },
 
     async reset() {
@@ -328,7 +360,7 @@ export function createD1OddStore(db) {
   async function loadPlayers(id) {
     const rows = await db.prepare('SELECT * FROM odd_players WHERE game_id = ? ORDER BY join_index').bind(id).all();
     return (rows.results || []).map((row) => ({
-      id: row.student_id, name: row.name, joinIndex: row.join_index
+      id: row.student_id, name: row.name, joinIndex: row.join_index, lastSeen: row.last_seen
     }));
   }
   async function requireGame(id) {
@@ -383,10 +415,13 @@ export function createD1OddStore(db) {
       if (!players.some((player) => player.id === student.id)) {
         if (players.length >= ODD_MAX_PLAYERS) throw new Error('room is full');
         await db.prepare(
-          'INSERT OR IGNORE INTO odd_players (game_id, student_id, name, join_index) VALUES (?, ?, ?, ?)'
-        ).bind(gameId, student.id, student.name, players.length).run();
+          'INSERT OR IGNORE INTO odd_players (game_id, student_id, name, join_index, last_seen) VALUES (?, ?, ?, ?, ?)'
+        ).bind(gameId, student.id, student.name, players.length, Date.now()).run();
         found.version += 1;
         await saveGame(found);
+      } else {
+        await db.prepare('UPDATE odd_players SET last_seen = ? WHERE game_id = ? AND student_id = ?')
+          .bind(Date.now(), gameId, student.id).run();
       }
       return snap(found, await loadPlayers(gameId), student.id);
     },
@@ -479,7 +514,26 @@ export function createD1OddStore(db) {
 
     async state(gameId, viewerId) {
       const found = await requireGame(gameId);
+      if ((await loadPlayers(gameId)).some((player) => player.id === viewerId)) {
+        await db.prepare('UPDATE odd_players SET last_seen = ? WHERE game_id = ? AND student_id = ?')
+          .bind(Date.now(), gameId, viewerId).run();
+      }
+      if (found.status === 'lobby') {
+        await db.prepare('DELETE FROM odd_players WHERE game_id = ? AND (last_seen IS NULL OR last_seen < ?)')
+          .bind(gameId, Date.now() - 90000).run();
+      }
       return snap(found, await loadPlayers(gameId), viewerId);
+    },
+
+    async kick(gameId, studentId) {
+      const found = await requireGame(gameId);
+      if (found.status !== 'lobby') throw new Error('can only remove players from the lobby');
+      const result = await db.prepare('DELETE FROM odd_players WHERE game_id = ? AND student_id = ?')
+        .bind(gameId, studentId).run();
+      if (!result.meta || result.meta.changes !== 1) throw new Error('player is not in this game');
+      found.version += 1;
+      await saveGame(found);
+      return snap(found, await loadPlayers(gameId), '');
     },
 
     async reset() {

@@ -4,6 +4,7 @@ import { checkTopicAnswers, curriculumMapForGrade, learnerTopic, topicForGrade }
 import { handleGameRoutes } from './poison-routes.js';
 import { handleCrossRoutes } from './cross-routes.js';
 import { handleOddRoutes } from './odd-routes.js';
+import { handleAdminGameRoutes } from './admin-games-routes.js';
 // ---- Shared helpers ----
 const JSON_HEADERS = {
   'Content-Type': 'application/json',
@@ -518,6 +519,14 @@ export default {
           return json({ error: error.message || 'invalid assignment' }, 400);
         }
       }
+    }
+
+    // ---- ADMIN GAME CONTROLS ----
+    {
+      const adminGamesResponse = await handleAdminGameRoutes({
+        request, url, env, json, readSignedToken, bearer
+      });
+      if (adminGamesResponse) return adminGamesResponse;
     }
 
     // ---- ODD ONE OUT GAME ----

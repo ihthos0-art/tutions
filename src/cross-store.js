@@ -10,6 +10,8 @@
 export const CROSS_CELLS = 60;
 export const CROSS_HOLD_MS = 2000;
 export const CROSS_COUNTDOWN_MS = 3000;
+import { isOnline, isLobbyStale } from './presence.js';
+
 const TEAMS = ['sun', 'wave'];
 
 function newId() { return crypto.randomUUID(); }
@@ -35,13 +37,14 @@ function requireTeam(team) {
   return team;
 }
 
-function publicPlayers(players) {
+function publicPlayers(players, nowMs = Date.now()) {
   return players.map((player) => ({
-    id: player.id, name: player.name, team: player.team, joinIndex: player.joinIndex
+    id: player.id, name: player.name, team: player.team, joinIndex: player.joinIndex,
+    online: isOnline(player.lastSeen, nowMs)
   }));
 }
 
-function snapshot(game, players, crosses, viewerId) {
+function snapshot(game, players, crosses, viewerId, nowMs = Date.now()) {
   const now = Date.now();
   const phase = effectivePhase(game, now);
   const me = players.find((player) => player.id === viewerId);
@@ -58,7 +61,7 @@ function snapshot(game, players, crosses, viewerId) {
     finderTeam: game.finderTeam,
     target: picking ? null : game.target,
     countdownMsLeft: phase === 'countdown' ? Math.max(0, Number(game.countdownUntil) - now) : 0,
-    players: publicPlayers(players),
+    players: publicPlayers(players, nowMs),
     myTeam,
     crossed: {
       sun: [...crosses.sun],
@@ -73,6 +76,8 @@ function snapshot(game, players, crosses, viewerId) {
 }
 
 function createMemoryCrossStore(options = {}) {
+  const now = options.now || (() => Date.now());
+  const lobbyTtl = Number.isFinite(options.lobbyTtlMs) ? options.lobbyTtlMs : 90000;
   const holdMs = Number.isFinite(options.holdMs) ? options.holdMs : CROSS_HOLD_MS;
   const countdownMs = Number.isFinite(options.countdownMs) ? options.countdownMs : CROSS_COUNTDOWN_MS;
   const games = new Map();
@@ -136,7 +141,7 @@ function createMemoryCrossStore(options = {}) {
       const found = activeId ? games.get(activeId) : null;
       if (!found) return null;
       const me = (playerList(found.id)[0] || {}).id;
-      return snapshot(found, playerList(found.id), crossMap(found.id), me);
+      return snapshot(found, playerList(found.id), crossMap(found.id), me, now());
     },
 
     async createLobby(rng = Math.random) {
@@ -166,12 +171,13 @@ function createMemoryCrossStore(options = {}) {
       if (existing) {
         existing.team = team;
         existing.name = student.name;
+        existing.lastSeen = now();
         bump(found);
-        return snapshot(found, list, crossMap(gameId), student.id);
+        return snapshot(found, list, crossMap(gameId), student.id, now());
       }
-      list.push({ id: student.id, name: student.name, team, joinIndex: list.length });
+      list.push({ id: student.id, name: student.name, team, joinIndex: list.length, lastSeen: now() });
       bump(found);
-      return snapshot(found, list, crossMap(gameId), student.id);
+      return snapshot(found, list, crossMap(gameId), student.id, now());
     },
 
     async start(gameId) {
@@ -190,7 +196,7 @@ function createMemoryCrossStore(options = {}) {
       found.target = null;
       found.targetCell = null;
       bump(found);
-      return snapshot(found, list, crossMap(gameId), '');
+      return snapshot(found, list, crossMap(gameId), '', now());
     },
 
     async pick(gameId, studentId, cell, expectedVersion) {
@@ -207,7 +213,7 @@ function createMemoryCrossStore(options = {}) {
       found.phase = 'countdown';
       found.countdownUntil = Date.now() + countdownMs;
       bump(found);
-      return snapshot(found, playerList(gameId), crossMap(gameId), studentId);
+      return snapshot(found, playerList(gameId), crossMap(gameId), studentId, now());
     },
 
     async holdStart(gameId, studentId, cell) {
@@ -222,7 +228,7 @@ function createMemoryCrossStore(options = {}) {
       found.holdCell = cell;
       found.holdStartedAt = Date.now();
       bump(found);
-      return snapshot(found, playerList(gameId), crossMap(gameId), studentId);
+      return snapshot(found, playerList(gameId), crossMap(gameId), studentId, now());
     },
 
     async holdCancel(gameId, studentId) {
@@ -249,12 +255,36 @@ function createMemoryCrossStore(options = {}) {
       found.holdCell = null;
       found.holdStartedAt = null;
       advanceAfterCross(gameId);
-      return snapshot(found, playerList(gameId), crossMap(gameId), studentId);
+      return snapshot(found, playerList(gameId), crossMap(gameId), studentId, now());
     },
 
     async state(gameId, viewerId) {
       const found = game(gameId);
-      return snapshot(found, playerList(gameId), crossMap(gameId), viewerId);
+      const list = playerList(gameId);
+      const viewer = list.find((player) => player.id === viewerId);
+      if (viewer) viewer.lastSeen = now();
+      if (found.status === 'lobby') {
+        const before = list.length;
+        const kept = list.filter((player) => !isLobbyStale(player.lastSeen, now(), lobbyTtl));
+        if (kept.length !== before) {
+          players.set(gameId, kept);
+          kept.forEach((player, index) => { player.joinIndex = index; });
+          bump(found);
+        }
+      }
+      return snapshot(found, playerList(gameId), crossMap(gameId), viewerId, now());
+    },
+
+    async kick(gameId, studentId) {
+      const found = game(gameId);
+      if (found.status !== 'lobby') throw new Error('can only remove players from the lobby');
+      const list = playerList(gameId);
+      const kept = list.filter((player) => player.id !== studentId);
+      if (kept.length === list.length) throw new Error('player is not in this game');
+      kept.forEach((player, index) => { player.joinIndex = index; });
+      players.set(gameId, kept);
+      bump(found);
+      return snapshot(found, kept, crossMap(gameId), '', now());
     },
 
     async reset() {
@@ -294,7 +324,8 @@ function createD1CrossStore(db) {
   async function loadPlayers(id) {
     const rows = await db.prepare('SELECT * FROM cross_players WHERE game_id = ? ORDER BY join_index').bind(id).all();
     return (rows.results || []).map((row) => ({
-      id: row.student_id, name: row.name, team: row.team, joinIndex: row.join_index
+      id: row.student_id, name: row.name, team: row.team, joinIndex: row.join_index,
+      lastSeen: row.last_seen
     }));
   }
 
@@ -366,13 +397,13 @@ function createD1CrossStore(db) {
       if (found.status !== 'lobby') throw new Error('game already started');
       const existing = (await loadPlayers(gameId)).find((player) => player.id === student.id);
       if (existing) {
-        await db.prepare('UPDATE cross_players SET team = ?, name = ? WHERE game_id = ? AND student_id = ?')
-          .bind(team, student.name, gameId, student.id).run();
+        await db.prepare('UPDATE cross_players SET team = ?, name = ?, last_seen = ? WHERE game_id = ? AND student_id = ?')
+          .bind(team, student.name, Date.now(), gameId, student.id).run();
       } else {
         const rows = await db.prepare('SELECT COUNT(*) AS n FROM cross_players WHERE game_id = ?').bind(gameId).first();
         await db.prepare(
-          'INSERT OR IGNORE INTO cross_players (game_id, student_id, name, team, join_index) VALUES (?, ?, ?, ?, ?)'
-        ).bind(gameId, student.id, student.name, team, Number(rows.n)).run();
+          'INSERT OR IGNORE INTO cross_players (game_id, student_id, name, team, join_index, last_seen) VALUES (?, ?, ?, ?, ?, ?)'
+        ).bind(gameId, student.id, student.name, team, Number(rows.n), Date.now()).run();
       }
       await db.prepare('UPDATE cross_games SET version = version + 1 WHERE id = ?').bind(gameId).run();
       const players = await loadPlayers(gameId);
@@ -481,7 +512,25 @@ function createD1CrossStore(db) {
 
     async state(gameId, viewerId) {
       const found = await requireGame(gameId);
+      if ((await loadPlayers(gameId)).some((player) => player.id === viewerId)) {
+        await db.prepare('UPDATE cross_players SET last_seen = ? WHERE game_id = ? AND student_id = ?')
+          .bind(Date.now(), gameId, viewerId).run();
+      }
+      if (found.status === 'lobby') {
+        await db.prepare('DELETE FROM cross_players WHERE game_id = ? AND (last_seen IS NULL OR last_seen < ?)')
+          .bind(gameId, Date.now() - 90000).run();
+      }
       return snapshot(found, await loadPlayers(gameId), await loadCrosses(gameId), viewerId);
+    },
+
+    async kick(gameId, studentId) {
+      const found = await requireGame(gameId);
+      if (found.status !== 'lobby') throw new Error('can only remove players from the lobby');
+      const result = await db.prepare('DELETE FROM cross_players WHERE game_id = ? AND student_id = ?')
+        .bind(gameId, studentId).run();
+      if (!result.meta || result.meta.changes !== 1) throw new Error('player is not in this game');
+      await db.prepare('UPDATE cross_games SET version = version + 1 WHERE id = ?').bind(gameId).run();
+      return snapshot(await requireGame(gameId), await loadPlayers(gameId), await loadCrosses(gameId), '');
     },
 
     async reset() {

@@ -153,6 +153,37 @@
     .assignment-template-row .form-textarea { min-height: 66px; }
     @media (max-width: 700px) { .summer-qa-row { grid-template-columns: 36px 1fr; } .summer-q-ans { margin-top: 6px; } }
     @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } .assignment-template-row { grid-template-columns: 1fr; } .assignment-template-row > label { grid-row: auto; padding-top: 0; } .directory-grid { grid-template-columns: 1fr; } }
+  
+    /* ===== MOBILE ADMIN (phone) ===== */
+    @media (max-width: 720px) {
+      .admin-topbar { padding: 8px 12px; height: auto; min-height: 52px; flex-wrap: wrap; gap: 6px; }
+      .admin-topbar .brand { font-size: 12px; }
+      .admin-topbar .brand span { display: none; }
+      .topbar-right { gap: 10px; flex-wrap: wrap; }
+      .topbar-link { padding: 8px 2px; font-size: 11px; }
+      .logout-btn { min-height: 40px; padding: 8px 12px; }
+      .admin-body { padding: 16px 12px 64px; }
+      .main-tab-bar {
+        display: flex;
+        overflow-x: auto;
+        gap: 8px;
+        padding-bottom: 8px;
+        margin-bottom: 18px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      .main-tab-bar::-webkit-scrollbar { display: none; }
+      .main-tab-btn { flex: 0 0 auto; padding: 12px 15px; min-height: 44px; font-size: 11px; letter-spacing: 0.06em; }
+      .page-heading { font-size: 22px; }
+      .editor-card { padding: 16px; }
+      .action-btn { min-height: 44px; }
+      .form-input, .form-select, .form-textarea { font-size: 16px; }
+      input, select, textarea { max-width: 100%; }
+      table { display: block; overflow-x: auto; }
+      #student-preview-frame { min-height: 420px; height: 70vh; }
+      .directory-grid { grid-template-columns: 1fr; }
+      .login-card { padding: 32px 22px 36px; }
+    }
   </style>
 </head>
 <body>

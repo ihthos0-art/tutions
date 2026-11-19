@@ -125,3 +125,14 @@ test('number cross demo stays bot driven and login free', () => {
   assert.match(js, /scheduleBotSearch/);
   assert.match(js, /\['You', 'Mia', 'Leo'\]/);
 });
+
+test('odd one out page is login gated and wired to server routes', () => {
+  const html = fs.readFileSync(path.join(root, 'public/odd-one-out.html'), 'utf8');
+  assert.match(html, /assets\/js\/student-auth\.js/);
+  assert.match(html, /assets\/js\/odd-one-out\.js/);
+  assert.match(html, /assets\/css\/odd-one-out\.css/);
+  const js = fs.readFileSync(path.join(root, 'public/assets/js/odd-one-out.js'), 'utf8');
+  for (const needle of ['/api/odd/join', '/api/odd/start', '/api/odd/ready', '/api/odd/vote', '/api/odd/next-round']) {
+    assert.ok(js.includes(needle), 'missing ' + needle);
+  }
+});

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Odd One Out | LearnFlow</title>
+  <link rel="stylesheet" href="assets/css/fonts.css?v=20261126" />
+  <link rel="stylesheet" href="assets/css/poison.css?v=20261126" />
+  <link rel="stylesheet" href="assets/css/odd-one-out.css?v=20261126" />
+</head>
+<body class="odd-body">
+  <noscript>Enable JavaScript to play Odd One Out.</noscript>
+
+  <header class="game-topbar">
+    <a class="game-back" href="/">Back to learning</a>
+    <h1 class="game-title">Odd One Out</h1>
+    <span class="game-player" id="odd-me"></span>
+  </header>
+
+  <main class="game-main odd-main">
+    <section class="screen" id="odd-lobby">
+      <h2>Everyone in the room?</h2>
+      <p class="screen-help">Each player opens this page on their own phone and signs in. One of you gets a different word. Find them.</p>
+      <ul class="player-list" id="odd-lobby-players"></ul>
+      <p class="screen-help" id="odd-lobby-count">0 players</p>
+      <button type="button" class="btn" id="odd-start" disabled>Start round</button>
+      <p class="screen-error" id="odd-lobby-error" role="alert"></p>
+    </section>
+
+    <section class="screen" id="odd-reveal" hidden>
+      <div class="odd-role" id="odd-role">
+        <span class="odd-role-label" id="odd-role-label">Civilian</span>
+        <span class="odd-role-emoji" id="odd-role-emoji">❓</span>
+        <span class="odd-role-word" id="odd-role-word">word</span>
+        <span class="odd-role-hint" id="odd-role-hint"></span>
+      </div>
+      <button type="button" class="btn" id="odd-ready">I have seen my word</button>
+      <p class="screen-help" id="odd-ready-count"></p>
+    </section>
+
+    <section class="screen" id="odd-clues" hidden>
+      <h2>Give one clue each</h2>
+      <p class="screen-help">One clue about your word. Do not say the word itself.</p>
+      <div class="odd-timer" id="odd-timer">3:00</div>
+      <p class="screen-help" id="odd-first"></p>
+      <button type="button" class="btn" id="odd-go-vote">Ready to vote</button>
+      <p class="screen-help" id="odd-vote-ready-count"></p>
+    </section>
+
+    <section class="screen" id="odd-vote" hidden>
+      <h2>Who is the imposter?</h2>
+      <p class="screen-help">Pick one player. Votes lock when you tap.</p>
+      <div class="odd-votes" id="odd-votes"></div>
+      <p class="screen-help" id="odd-votes-cast"></p>
+    </section>
+
+    <section class="screen" id="odd-result" hidden>
+      <h2 id="odd-result-title">Round over</h2>
+      <div class="odd-words" id="odd-result-words"></div>
+      <ul class="odd-tally" id="odd-tally"></ul>
+      <button type="button" class="btn" id="odd-next">Next round</button>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="assets/js/student-auth.js"></script>
+  <script src="assets/js/odd-one-out.js?v=20261126"></script>
+</body>
+</html>

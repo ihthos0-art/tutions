@@ -14,7 +14,7 @@
 
   var help = document.createElement('p');
   help.className = 'game-entry-help';
-  help.textContent = 'Poison Challenge — the teacher gives out the PIN at game time.';
+  help.textContent = 'Games for class time: Poison Challenge needs the teacher PIN.';
 
   var link = document.createElement('a');
   link.className = 'game-entry-link';
@@ -26,6 +26,11 @@
   cross.href = '/number-cross';
   cross.textContent = 'Find and Cross →';
 
-  entry.append(title, help, link, cross);
+  var odd = document.createElement('a');
+  odd.className = 'game-entry-link';
+  odd.href = '/odd-one-out';
+  odd.textContent = 'Odd One Out →';
+
+  entry.append(title, help, link, cross, odd);
   panel.append(entry);
 })();

@@ -93,6 +93,7 @@
         if (data.role === 'admin') {
           saveSession(data);
           sessionStorage.setItem('admin-token-v2', data.sessionToken || '');
+          try { localStorage.setItem('learnflow.admin-token', data.sessionToken || ''); } catch (error) { /* storage can be blocked */ }
           window.location.assign('/parent');
           return;
         }

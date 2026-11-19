@@ -983,6 +983,7 @@
       if (d.ok && d.token) {
         token = d.token;
         sessionStorage.setItem(TOKEN_KEY, token);
+        try { localStorage.setItem('learnflow.admin-token', token); } catch (error) { /* storage can be blocked */ }
         document.getElementById('login-error').classList.remove('show');
         showPanel();
       } else {
@@ -1003,6 +1004,7 @@
   document.getElementById('logout-btn').addEventListener('click', function () {
     token = '';
     sessionStorage.removeItem(TOKEN_KEY);
+    try { localStorage.removeItem('learnflow.admin-token'); } catch (error) { /* ignore */ }
     location.reload();
   });
 
@@ -1519,7 +1521,7 @@
     // Verify token is still valid by making a cheap request
     fetch('/api/answers/nabila-naviha', { headers: { 'Authorization': 'Bearer ' + token } })
     .then(function(r) {
-      if (r.status === 401) { token = ''; sessionStorage.removeItem(TOKEN_KEY); }
+      if (r.status === 401) { token = ''; sessionStorage.removeItem(TOKEN_KEY); try { localStorage.removeItem('learnflow.admin-token'); } catch (error) { /* ignore */ } }
       else showPanel();
     })
     .catch(function() { showPanel(); });

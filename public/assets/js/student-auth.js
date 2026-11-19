@@ -16,6 +16,9 @@
   // Teacher can play the games from the admin login on the same device.
   var GAME_ROUTES = ['/poison', '/number-cross', '/odd-one-out'];
   var adminToken = sessionStorage.getItem('admin-token-v2');
+  if (!adminToken) {
+    try { adminToken = localStorage.getItem('learnflow.admin-token'); } catch (error) { adminToken = null; }
+  }
   if (adminToken && GAME_ROUTES.indexOf(window.location.pathname) >= 0) {
     window.LEARNFLOW_AUTH = {
       role: 'admin',

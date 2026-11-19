@@ -24,9 +24,23 @@ export async function handleGameRoutes(ctx) {
   const claims = await readSignedToken(env, bearer(request));
   const isStudent = Boolean(claims && claims.role === 'student' && validStudent(claims.student));
   const isAdmin = Boolean(claims && claims.role === 'admin');
+  const actingId = isAdmin ? 'admin' : (claims ? claims.student : '');
 
   if (url.pathname === '/api/game/join' && request.method === 'POST') {
-    if (!isStudent) return json({ error: 'unauthorized' }, 401);
+    if (!isStudent && !isAdmin) return json({ error: 'unauthorized' }, 401);
+    if (isAdmin) {
+      try {
+        let active = await store.getActive();
+        if (!active || active.status === 'finished') active = await store.createLobby();
+        if (active.players.some((player) => player.id === 'admin')) {
+          return json({ ok: true, game: active });
+        }
+        if (active.status !== 'lobby') return json({ error: 'game already started' }, 409);
+        return json({ ok: true, game: await store.join(active.id, { id: 'admin', name: 'Teacher' }) });
+      } catch (error) {
+        return json({ error: error.message || 'cannot join right now' }, 409);
+      }
+    }
     const body = await request.json().catch(() => ({}));
     const pin = String(body.pin || '').trim();
     const expectedPin = String(env.GAME_PIN || DEFAULT_GAME_PIN);
@@ -60,10 +74,10 @@ export async function handleGameRoutes(ctx) {
     if (!isStudent && !isAdmin) return json({ error: 'unauthorized' }, 401);
     const active = await store.getActive();
     if (!active) return json({ ok: true, game: null });
-    if (isStudent && !active.players.some((player) => player.id === claims.student)) {
+    if (!active.players.some((player) => player.id === actingId)) {
       return json({ ok: true, game: null });
     }
-    const viewer = isStudent ? claims.student : '';
+    const viewer = actingId;
     try {
       return json({ ok: true, game: await store.state(active.id, viewer) });
     } catch (error) {
@@ -73,13 +87,13 @@ export async function handleGameRoutes(ctx) {
   }
 
   if (url.pathname === '/api/game/poison' && request.method === 'POST') {
-    if (!isStudent) return json({ error: 'unauthorized' }, 401);
+    if (!isStudent && !isAdmin) return json({ error: 'unauthorized' }, 401);
     const body = await request.json().catch(() => ({}));
     const active = await store.getActive();
     if (!active) return json({ error: 'game not found' }, 404);
     if (active.version !== body.version) return json({ error: 'state changed, refresh' }, 409);
     try {
-      const game = await store.setPlacement(active.id, claims.student, body.cells);
+      const game = await store.setPlacement(active.id, actingId, body.cells);
       return json({ ok: true, game });
     } catch (error) {
       return json({ error: error.message || 'invalid placement' }, 400);
@@ -87,7 +101,7 @@ export async function handleGameRoutes(ctx) {
   }
 
   if (url.pathname === '/api/game/pick' && request.method === 'POST') {
-    if (!isStudent) return json({ error: 'unauthorized' }, 401);
+    if (!isStudent && !isAdmin) return json({ error: 'unauthorized' }, 401);
     const body = await request.json().catch(() => ({}));
     const active = await store.getActive();
     if (!active) return json({ error: 'game not found' }, 404);
@@ -98,7 +112,7 @@ export async function handleGameRoutes(ctx) {
     }
     try {
       const { game, result } = await store.pick(
-        active.id, claims.student, cell, Number(body.version)
+        active.id, actingId, cell, Number(body.version)
       );
       return json({ ok: true, game, result });
     } catch (error) {

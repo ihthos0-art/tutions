@@ -83,3 +83,21 @@ test('admin reset works for every game', async () => {
     assert.equal(response.status, 200);
   }
 });
+
+test('admin can join each game as Teacher and see the game', async () => {
+  const e = env();
+  const admin = await adminToken(e);
+  const poisonJoin = await post(e, '/api/game/join', { pin: 'ignored' }, admin);
+  assert.equal(poisonJoin.status, 200);
+  assert.ok((await poisonJoin.json()).game.players.some((p) => p.id === 'admin' && p.name === 'Teacher'));
+  const crossJoin = await post(e, '/api/cross/join', { team: 'sun' }, admin);
+  assert.equal(crossJoin.status, 200);
+  assert.ok((await crossJoin.json()).game.players.some((p) => p.id === 'admin'));
+  const oddJoin = await post(e, '/api/odd/join', {}, admin);
+  assert.equal(oddJoin.status, 200);
+  assert.ok((await oddJoin.json()).game.players.some((p) => p.id === 'admin'));
+  const poisonState = await get(e, '/api/game/state', admin);
+  assert.equal((await poisonState.json()).game.myTurn, false);
+  const oddState = await get(e, '/api/odd/state', admin);
+  assert.ok((await oddState.json()).game);
+});

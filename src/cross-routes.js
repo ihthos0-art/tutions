@@ -15,6 +15,7 @@ export async function handleCrossRoutes(ctx) {
   const claims = await readSignedToken(env, bearer(request));
   const isStudent = Boolean(claims && claims.role === 'student' && validStudent(claims.student));
   const isAdmin = Boolean(claims && claims.role === 'admin');
+  const actingId = isAdmin ? 'admin' : (claims ? claims.student : '');
 
   function mapError(error) {
     const message = error.message || 'request failed';
@@ -26,18 +27,18 @@ export async function handleCrossRoutes(ctx) {
   }
 
   if (url.pathname === '/api/cross/join' && request.method === 'POST') {
-    if (!isStudent) return json({ error: 'unauthorized' }, 401);
+    if (!isStudent && !isAdmin) return json({ error: 'unauthorized' }, 401);
     const body = await request.json().catch(() => ({}));
     const team = body.team;
     if (team !== 'sun' && team !== 'wave') return json({ error: 'pick a team first' }, 400);
-    const student = roster.find((item) => item.id === claims.student);
+    const student = isAdmin ? { id: 'admin', name: 'Teacher' } : roster.find((item) => item.id === claims.student);
     if (!student) return json({ error: 'unknown student' }, 401);
     try {
       let active = await store.getActive();
       let gameId = active ? active.id : null;
       if (!active || active.status === 'finished') gameId = await store.createLobby();
-      const state = await store.state(gameId, claims.student);
-      if (state.players.some((player) => player.id === claims.student)) {
+      const state = await store.state(gameId, student.id);
+      if (state.players.some((player) => player.id === student.id)) {
         if (state.status !== 'lobby') return json({ ok: true, game: state });
         return json({ ok: true, game: await store.join(gameId, { id: student.id, name: student.name }, team) });
       }
@@ -50,12 +51,12 @@ export async function handleCrossRoutes(ctx) {
   }
 
   if (url.pathname === '/api/cross/state' && request.method === 'GET') {
-    if (!isStudent) return json({ error: 'unauthorized' }, 401);
+    if (!isStudent && !isAdmin) return json({ error: 'unauthorized' }, 401);
     const active = await store.getActive();
     if (!active) return json({ ok: true, game: null });
     try {
-      const state = await store.state(active.id, claims.student);
-      if (!state.players.some((player) => player.id === claims.student)) {
+      const state = await store.state(active.id, actingId);
+      if (!state.players.some((player) => player.id === actingId)) {
         return json({ ok: true, game: null });
       }
       return json({ ok: true, game: state });
@@ -66,12 +67,12 @@ export async function handleCrossRoutes(ctx) {
   }
 
   if (url.pathname === '/api/cross/start' && request.method === 'POST') {
-    if (!isStudent) return json({ error: 'unauthorized' }, 401);
+    if (!isStudent && !isAdmin) return json({ error: 'unauthorized' }, 401);
     const active = await store.getActive();
     if (!active) return json({ error: 'game not found' }, 404);
     try {
-      const state = await store.state(active.id, claims.student);
-      if (!state.players.some((player) => player.id === claims.student)) {
+      const state = await store.state(active.id, actingId);
+      if (!state.players.some((player) => player.id === actingId)) {
         return json({ error: 'join the game first' }, 403);
       }
       return json({ ok: true, game: await store.start(active.id) });
@@ -81,12 +82,12 @@ export async function handleCrossRoutes(ctx) {
   }
 
   if (url.pathname === '/api/cross/pick' && request.method === 'POST') {
-    if (!isStudent) return json({ error: 'unauthorized' }, 401);
+    if (!isStudent && !isAdmin) return json({ error: 'unauthorized' }, 401);
     const body = await request.json().catch(() => ({}));
     const active = await store.getActive();
     if (!active) return json({ error: 'game not found' }, 404);
     try {
-      const game = await store.pick(active.id, claims.student, Number(body.cell), Number(body.version));
+      const game = await store.pick(active.id, actingId, Number(body.cell), Number(body.version));
       return json({ ok: true, game });
     } catch (error) {
       return mapError(error);
@@ -94,16 +95,16 @@ export async function handleCrossRoutes(ctx) {
   }
 
   if (url.pathname === '/api/cross/hold' && request.method === 'POST') {
-    if (!isStudent) return json({ error: 'unauthorized' }, 401);
+    if (!isStudent && !isAdmin) return json({ error: 'unauthorized' }, 401);
     const body = await request.json().catch(() => ({}));
     const active = await store.getActive();
     if (!active) return json({ error: 'game not found' }, 404);
     if (body.action === 'cancel') {
-      await store.holdCancel(active.id, claims.student);
+      await store.holdCancel(active.id, actingId);
       return json({ ok: true });
     }
     try {
-      const game = await store.holdStart(active.id, claims.student, Number(body.cell));
+      const game = await store.holdStart(active.id, actingId, Number(body.cell));
       return json({ ok: true, game });
     } catch (error) {
       return mapError(error);
@@ -111,13 +112,13 @@ export async function handleCrossRoutes(ctx) {
   }
 
   if (url.pathname === '/api/cross/complete' && request.method === 'POST') {
-    if (!isStudent) return json({ error: 'unauthorized' }, 401);
+    if (!isStudent && !isAdmin) return json({ error: 'unauthorized' }, 401);
     const body = await request.json().catch(() => ({}));
     const active = await store.getActive();
     if (!active) return json({ error: 'game not found' }, 404);
     try {
       const game = await store.completeHold(
-        active.id, claims.student, Number(body.cell), Number(body.version)
+        active.id, actingId, Number(body.cell), Number(body.version)
       );
       return json({ ok: true, game });
     } catch (error) {

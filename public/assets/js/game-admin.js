@@ -174,6 +174,17 @@
       actions.appendChild(reset);
     }
 
+    var join = document.createElement('a');
+    join.className = 'action-btn secondary';
+    join.href = mode === 'poison' ? '/poison' : (mode === 'cross' ? '/number-cross' : '/odd-one-out');
+    join.target = '_blank';
+    join.rel = 'noopener';
+    join.style.textDecoration = 'none';
+    join.style.display = 'inline-flex';
+    join.style.alignItems = 'center';
+    join.textContent = 'Join as Teacher';
+    actions.appendChild(join);
+
     if (actions.children.length) wrap.appendChild(actions);
 
     if (game && game.players.length) {

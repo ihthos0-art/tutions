@@ -14,6 +14,7 @@ export async function handleOddRoutes(ctx) {
   const claims = await readSignedToken(env, bearer(request));
   const isStudent = Boolean(claims && claims.role === 'student' && validStudent(claims.student));
   const isAdmin = Boolean(claims && claims.role === 'admin');
+  const actingId = isAdmin ? 'admin' : (claims ? claims.student : '');
 
   function mapError(error) {
     const message = error.message || 'request failed';
@@ -33,15 +34,15 @@ export async function handleOddRoutes(ctx) {
   }
 
   if (url.pathname === '/api/odd/join' && request.method === 'POST') {
-    if (!isStudent) return json({ error: 'unauthorized' }, 401);
-    const student = roster.find((item) => item.id === claims.student);
+    if (!isStudent && !isAdmin) return json({ error: 'unauthorized' }, 401);
+    const student = isAdmin ? { id: 'admin', name: 'Teacher' } : roster.find((item) => item.id === claims.student);
     if (!student) return json({ error: 'unknown student' }, 401);
     try {
       let active = await store.getActive();
       let gameId = active ? active.id : null;
       if (!active || active.status === 'finished') gameId = await store.createLobby();
-      const state = await store.state(gameId, claims.student);
-      if (state.players.some((player) => player.id === claims.student)) {
+      const state = await store.state(gameId, student.id);
+      if (state.players.some((player) => player.id === student.id)) {
         return json({ ok: true, game: state });
       }
       if (state.status !== 'lobby') return json({ error: 'game already started' }, 409);
@@ -52,12 +53,12 @@ export async function handleOddRoutes(ctx) {
   }
 
   if (url.pathname === '/api/odd/state' && request.method === 'GET') {
-    if (!isStudent) return json({ error: 'unauthorized' }, 401);
+    if (!isStudent && !isAdmin) return json({ error: 'unauthorized' }, 401);
     const active = await store.getActive();
     if (!active) return json({ ok: true, game: null });
     try {
-      const state = await store.state(active.id, claims.student);
-      if (!state.players.some((player) => player.id === claims.student)) {
+      const state = await store.state(active.id, actingId);
+      if (!state.players.some((player) => player.id === actingId)) {
         return json({ ok: true, game: null });
       }
       return json({ ok: true, game: state });
@@ -68,10 +69,10 @@ export async function handleOddRoutes(ctx) {
   }
 
   if (url.pathname === '/api/odd/start' && request.method === 'POST') {
-    if (!isStudent) return json({ error: 'unauthorized' }, 401);
+    if (!isStudent && !isAdmin) return json({ error: 'unauthorized' }, 401);
     return withGame(async (id) => {
-      const state = await store.state(id, claims.student);
-      if (!state.players.some((player) => player.id === claims.student)) {
+      const state = await store.state(id, actingId);
+      if (!state.players.some((player) => player.id === actingId)) {
         throw new Error('join the game first');
       }
       return store.start(id);
@@ -79,24 +80,24 @@ export async function handleOddRoutes(ctx) {
   }
 
   if (url.pathname === '/api/odd/ready' && request.method === 'POST') {
-    if (!isStudent) return json({ error: 'unauthorized' }, 401);
-    return withGame((id) => store.markReady(id, claims.student));
+    if (!isStudent && !isAdmin) return json({ error: 'unauthorized' }, 401);
+    return withGame((id) => store.markReady(id, actingId));
   }
 
   if (url.pathname === '/api/odd/start-vote' && request.method === 'POST') {
-    if (!isStudent) return json({ error: 'unauthorized' }, 401);
-    return withGame((id) => store.startVote(id, claims.student));
+    if (!isStudent && !isAdmin) return json({ error: 'unauthorized' }, 401);
+    return withGame((id) => store.startVote(id, actingId));
   }
 
   if (url.pathname === '/api/odd/vote' && request.method === 'POST') {
-    if (!isStudent) return json({ error: 'unauthorized' }, 401);
+    if (!isStudent && !isAdmin) return json({ error: 'unauthorized' }, 401);
     const body = await request.json().catch(() => ({}));
-    return withGame((id) => store.vote(id, claims.student, String(body.target || '')));
+    return withGame((id) => store.vote(id, actingId, String(body.target || '')));
   }
 
   if (url.pathname === '/api/odd/next-round' && request.method === 'POST') {
-    if (!isStudent) return json({ error: 'unauthorized' }, 401);
-    return withGame((id) => store.nextRound(id, claims.student));
+    if (!isStudent && !isAdmin) return json({ error: 'unauthorized' }, 401);
+    return withGame((id) => store.nextRound(id, actingId));
   }
 
   if (url.pathname === '/api/odd/reset' && request.method === 'POST') {

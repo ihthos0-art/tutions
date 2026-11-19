@@ -74,7 +74,7 @@ test('full round: ready, clues, votes, result', async () => {
   const voters = tokens.filter((_, index) => index !== imposterIndex);
   await post(e, '/api/odd/vote', { target: views[imposterIndex].players[imposterIndex].id }, voters[0]);
   await post(e, '/api/odd/vote', { target: views[imposterIndex].players[imposterIndex].id }, voters[1]);
-  await post(e, '/api/odd/vote', { target: views[imposterIndex].players[0].id }, tokens[imposterIndex]);
+  await post(e, '/api/odd/vote', { target: views[imposterIndex].players[(imposterIndex + 1) % 3].id }, tokens[imposterIndex]);
   const finalState = (await (await get(e, '/api/odd/state', tokens[0])).json()).game;
   assert.equal(finalState.phase, 'result');
   assert.equal(finalState.result.imposterId, views[imposterIndex].players[imposterIndex].id);

@@ -22,7 +22,9 @@ export async function handleAdminGameRoutes(ctx) {
     for (const key of Object.keys(stores)) {
       if (!stores[key]) { games[key] = null; continue; }
       try {
-        games[key] = await stores[key].getActive();
+        const active = await stores[key].getActive();
+        // state() also drops stale lobby seats and refreshes presence flags.
+        games[key] = active ? await stores[key].state(active.id, 'admin') : null;
       } catch (error) {
         games[key] = { error: error.message || 'unavailable' };
       }

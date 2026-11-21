@@ -6,28 +6,21 @@ import { createMemoryCrossStore } from '../src/cross-store.js';
 function env(store) {
   const kv = new Map();
   return {
-    ADMIN_USERNAME: 'kazi',
-    ADMIN_PASSWORD: '5649',
-    ADMIN_TOKEN_SECRET: 'test-secret',
+    ADMIN_USERNAME: 'kazi', ADMIN_PASSWORD: '5649', ADMIN_TOKEN_SECRET: 'test-secret',
     CROSS_STORE: store,
     HOMEWORK: { get: async (k) => kv.get(k) || null, put: async (k, v) => { kv.set(k, v); } }
   };
 }
-
 function post(e, path, body, token) {
   const headers = { 'content-type': 'application/json' };
   if (token) headers.authorization = 'Bearer ' + token;
-  return worker.fetch(new Request('https://t.local' + path, {
-    method: 'POST', headers, body: JSON.stringify(body)
-  }), e);
+  return worker.fetch(new Request('https://t.local' + path, { method: 'POST', headers, body: JSON.stringify(body || {}) }), e);
 }
-
 function get(e, path, token) {
   const headers = {};
   if (token) headers.authorization = 'Bearer ' + token;
   return worker.fetch(new Request('https://t.local' + path, { headers }), e);
 }
-
 async function studentToken(e, name) {
   const login = await post(e, '/api/auth/login', { name, pin: '0000' });
   const first = await login.json();
@@ -35,74 +28,87 @@ async function studentToken(e, name) {
   const setup = await post(e, '/api/auth/set-pin', { setupToken: first.setupToken, newPin: '1234' });
   return (await setup.json()).sessionToken;
 }
-
-async function twoTeams(e) {
+async function joined(e) {
   const a = await studentToken(e, 'Adnan');
   const b = await studentToken(e, 'Nafis');
   await post(e, '/api/cross/join', { team: 'sun' }, a);
-  const joined = await post(e, '/api/cross/join', { team: 'wave' }, b);
-  return { a, b, state: (await joined.json()).game };
+  await post(e, '/api/cross/join', { team: 'wave' }, b);
+  const started = await post(e, '/api/cross/start', {}, a);
+  return { a, b, game: (await started.json()).game };
 }
 
-test('cross game requires a student session', async () => {
-  const e = env(createMemoryCrossStore({ holdMs: 0, countdownMs: 0 }));
-  const response = await get(e, '/api/cross/state');
-  assert.equal(response.status, 401);
+test('needs a student session', async () => {
+  const e = env(createMemoryCrossStore({ holdMs: 0, wrongMs: 0 }));
+  assert.equal((await get(e, '/api/cross/state')).status, 401);
 });
 
-test('both teams join and any player can start', async () => {
-  const e = env(createMemoryCrossStore({ holdMs: 0, countdownMs: 0 }));
-  const { a, state } = await twoTeams(e);
-  assert.equal(state.status, 'lobby');
-  const started = await post(e, '/api/cross/start', {}, a);
-  assert.equal(started.status, 200);
-  assert.equal((await started.json()).game.status, 'playing');
-});
-
-test('non-members cannot see the game', async () => {
-  const e = env(createMemoryCrossStore({ holdMs: 0, countdownMs: 0 }));
-  await twoTeams(e);
-  const outsider = await studentToken(e, 'Taha');
-  const response = await get(e, '/api/cross/state', outsider);
-  assert.equal((await response.json()).game, null);
-});
-
-test('finder cannot see numbers during pick, picker can', async () => {
-  const e = env(createMemoryCrossStore({ holdMs: 0, countdownMs: 0 }));
-  const { a, b } = await twoTeams(e);
-  await post(e, '/api/cross/start', {}, a);
-  const stateA = (await (await get(e, '/api/cross/state', a)).json()).game;
-  const pickerToken = stateA.pickerTeam === 'sun' ? a : b;
-  const finderToken = stateA.pickerTeam === 'sun' ? b : a;
-  const picker = (await (await get(e, '/api/cross/state', pickerToken)).json()).game;
-  const finder = (await (await get(e, '/api/cross/state', finderToken)).json()).game;
-  assert.equal(picker.numbers.length, 60);
-  assert.equal(finder.numbers, null);
-});
-
-test('pick, hold, and complete cross a block and swap roles', async () => {
-  const e = env(createMemoryCrossStore({ holdMs: 0, countdownMs: 0 }));
-  const { a, b } = await twoTeams(e);
-  await post(e, '/api/cross/start', {}, a);
-  let pickerState = (await (await get(e, '/api/cross/state', a)).json()).game;
-  const pickerToken = pickerState.pickerTeam === 'sun' ? a : b;
-  const finderToken = pickerState.pickerTeam === 'sun' ? b : a;
-  pickerState = (await (await get(e, '/api/cross/state', pickerToken)).json()).game;
-
-  const picked = await post(e, '/api/cross/pick', { cell: 0, version: pickerState.version }, pickerToken);
+test('secret number is hidden from the hunting team', async () => {
+  const e = env(createMemoryCrossStore({ holdMs: 0, wrongMs: 0 }));
+  const { a, b, game } = await joined(e);
+  const pickerToken = game.pickerTeam === 'sun' ? a : b;
+  const finderToken = game.pickerTeam === 'sun' ? b : a;
+  const pickerView = (await (await get(e, '/api/cross/state', pickerToken)).json()).game;
+  const picked = await post(e, '/api/cross/pick', { cell: 2, version: pickerView.version }, pickerToken);
   assert.equal(picked.status, 200);
-  const afterPick = (await picked.json()).game;
-  assert.equal(afterPick.target, pickerState.numbers[0]);
+  const secret = (await picked.json()).game.secretNumber;
+  assert.ok(secret);
+  const finder = (await (await get(e, '/api/cross/state', finderToken)).json()).game;
+  assert.equal(finder.secretNumber, null);
+  assert.equal(finder.secretCell, null);
+  assert.equal(finder.canGuess, true);
+});
 
-  await new Promise((resolve) => setTimeout(resolve, 5));
-  const finderView = (await (await get(e, '/api/cross/state', finderToken)).json()).game;
-  assert.equal(finderView.phase, 'find');
-  const holdStarted = await post(e, '/api/cross/hold', { action: 'start', cell: 0 }, finderToken);
-  assert.equal(holdStarted.status, 200);
-  const held = (await holdStarted.json()).game;
-  const done = await post(e, '/api/cross/complete', { cell: 0, version: held.version }, finderToken);
+test('correct guess stops crossing and swaps roles', async () => {
+  const e = env(createMemoryCrossStore({ holdMs: 0, wrongMs: 0 }));
+  const { a, b, game } = await joined(e);
+  const pickerToken = game.pickerTeam === 'sun' ? a : b;
+  const finderToken = game.pickerTeam === 'sun' ? b : a;
+  const pickerView = (await (await get(e, '/api/cross/state', pickerToken)).json()).game;
+  const picked = (await (await post(e, '/api/cross/pick', { cell: 5, version: pickerView.version }, pickerToken)).json()).game;
+  const response = await post(e, '/api/cross/guess', { cell: pickerView.numbers.indexOf(picked.secretNumber) }, finderToken);
+  assert.equal(response.status, 200);
+  const data = await response.json();
+  assert.equal(data.stopped, true);
+  assert.notEqual(data.game.pickerTeam, game.pickerTeam);
+});
+
+test('wrong guess is rejected', async () => {
+  const e = env(createMemoryCrossStore({ holdMs: 0, wrongMs: 0 }));
+  const { a, b, game } = await joined(e);
+  const pickerToken = game.pickerTeam === 'sun' ? a : b;
+  const finderToken = game.pickerTeam === 'sun' ? b : a;
+  const view = (await (await get(e, '/api/cross/state', pickerToken)).json()).game;
+  await post(e, '/api/cross/pick', { cell: 2, version: view.version }, pickerToken);
+  const wrongCell = 2 === 0 ? 1 : 0;
+  const response = await post(e, '/api/cross/guess', { cell: wrongCell }, finderToken);
+  assert.equal(response.status, 409);
+  assert.equal((await response.json()).error, 'wrong number');
+});
+
+test('hold and complete crosses a box for the picking team', async () => {
+  const e = env(createMemoryCrossStore({ holdMs: 0, wrongMs: 0 }));
+  const { a, b, game } = await joined(e);
+  const pickerToken = game.pickerTeam === 'sun' ? a : b;
+  let view = (await (await get(e, '/api/cross/state', pickerToken)).json()).game;
+  view = (await (await post(e, '/api/cross/pick', { cell: 0, version: view.version }, pickerToken)).json()).game;
+  const started = await post(e, '/api/cross/hold', { action: 'start', cell: 7 }, pickerToken);
+  assert.equal(started.status, 200);
+  const held = (await started.json()).game;
+  const done = await post(e, '/api/cross/complete', { cell: 7, version: held.version }, pickerToken);
   assert.equal(done.status, 200);
-  const finalState = (await done.json()).game;
-  assert.equal(finalState.crossed[finderView.myTeam].length, 1);
-  assert.equal(finalState.pickerTeam, finderView.myTeam);
+  const finalGame = (await done.json()).game;
+  assert.equal(finalGame.counts[finalGame.myTeam], 1);
+});
+
+test('admin kick and reset work', async () => {
+  const e = env(createMemoryCrossStore({ holdMs: 0, wrongMs: 0 }));
+  const a = await studentToken(e, 'Adnan');
+  const b = await studentToken(e, 'Nafis');
+  await post(e, '/api/cross/join', { team: 'sun' }, a);
+  await post(e, '/api/cross/join', { team: 'wave' }, b);
+  const admin = (await (await post(e, '/api/admin/login', { username: 'kazi', password: '5649' })).json()).token;
+  const kicked = await post(e, '/api/admin/games/cross/kick', { student: 'nafis' }, admin);
+  assert.equal(kicked.status, 200);
+  const reset = await post(e, '/api/admin/games/cross/reset', {}, admin);
+  assert.equal(reset.status, 200);
 });

@@ -126,6 +126,20 @@ export async function handleCrossRoutes(ctx) {
     }
   }
 
+  if (url.pathname === '/api/cross/guess' && request.method === 'POST') {
+    if (!isStudent && !isAdmin) return json({ error: 'unauthorized' }, 401);
+    const body = await request.json().catch(() => ({}));
+    const active = await store.getActive();
+    if (!active) return json({ error: 'game not found' }, 404);
+    try {
+      const result = await store.guess(active.id, actingId, Number(body.cell));
+      return json({ ok: true, stopped: Boolean(result.stopped), game: result.game });
+    } catch (error) {
+      if (error.wrong) return json({ error: 'wrong number' }, 409);
+      return mapError(error);
+    }
+  }
+
   if (url.pathname === '/api/cross/reset' && request.method === 'POST') {
     if (!isAdmin) return json({ error: 'unauthorized' }, 401);
     await store.reset();

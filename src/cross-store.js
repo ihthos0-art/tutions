@@ -1,17 +1,15 @@
 /* ============================================================================
-   Find and Cross persistence and rules.
+   Find and Cross.
 
-   Two teams, each with its own 10x6 board holding the same 60 numbers. A team
-   picks a number for the other team to find; the finder holds that tile for
-   two seconds to cross it on its own board. First team with all 60 crossed
-   wins. Same interface for the memory store (tests) and D1 (production).
+   Two teams, one shared board of 50 numbers. The active team secretly picks a
+   number, then crosses boxes on their own progress by holding each one for two
+   seconds. The other team hunts for the secret number; tapping it stops the
+   crossing and swaps roles. First team with all 50 crossed wins.
    ========================================================================== */
 
-export const CROSS_CELLS = 60;
+export const CROSS_CELLS = 50;
 export const CROSS_HOLD_MS = 2000;
-export const CROSS_COUNTDOWN_MS = 3000;
-import { isOnline, isLobbyStale } from './presence.js';
-
+export const CROSS_WRONG_MS = 1500;
 const TEAMS = ['sun', 'wave'];
 
 function newId() { return crypto.randomUUID(); }
@@ -27,59 +25,48 @@ export function makeCrossNumbers(rng = Math.random) {
   return pool.slice(0, CROSS_CELLS);
 }
 
-function effectivePhase(game, now) {
-  if (game.phase === 'countdown' && now >= Number(game.countdownUntil || 0)) return 'find';
-  return game.phase;
-}
-
-function requireTeam(team) {
-  if (!TEAMS.includes(team)) throw new Error('team must be sun or wave');
-  return team;
-}
-
 function publicPlayers(players, nowMs = Date.now()) {
   return players.map((player) => ({
     id: player.id, name: player.name, team: player.team, joinIndex: player.joinIndex,
-    online: isOnline(player.lastSeen, nowMs)
+    online: Boolean(player.lastSeen) && nowMs - Number(player.lastSeen) <= 25000
   }));
 }
 
 function snapshot(game, players, crosses, viewerId, nowMs = Date.now()) {
-  const now = Date.now();
-  const phase = effectivePhase(game, now);
   const me = players.find((player) => player.id === viewerId);
   const myTeam = me ? me.team : null;
-  const picking = phase === 'pick';
   const isPicker = myTeam === game.pickerTeam;
-  const numbersVisible = game.status !== 'lobby' && (!picking || isPicker);
   return {
     id: game.id,
     status: game.status,
-    phase,
-    numbers: numbersVisible ? game.numbers : null,
+    phase: game.phase,
+    round: game.round,
+    numbers: game.numbers,
     pickerTeam: game.pickerTeam,
     finderTeam: game.finderTeam,
-    target: picking ? null : game.target,
-    countdownMsLeft: phase === 'countdown' ? Math.max(0, Number(game.countdownUntil) - now) : 0,
+    secretCell: isPicker ? game.secretCell : null,
+    secretNumber: isPicker ? game.secretNumber : null,
     players: publicPlayers(players, nowMs),
     myTeam,
-    crossed: {
-      sun: [...crosses.sun],
-      wave: [...crosses.wave]
-    },
-    canPick: Boolean(me) && picking && isPicker,
-    canHold: Boolean(me) && phase === 'find' && myTeam === game.finderTeam,
+    crossed: { sun: [...crosses.sun], wave: [...crosses.wave] },
+    counts: { sun: crosses.sun.size, wave: crosses.wave.size },
+    canPick: Boolean(me) && game.phase === 'pick' && isPicker,
+    canCross: Boolean(me) && game.phase === 'cross' && isPicker,
+    canGuess: Boolean(me) && game.phase === 'cross' && myTeam === game.finderTeam,
     holdingCell: me && game.holdBy === viewerId ? game.holdCell : null,
+    guessCooldown: game.lastWrongAt
+      ? Math.max(0, Number(game.lastWrongAt) + CROSS_WRONG_MS - nowMs)
+      : 0,
     winner: game.winner || null,
     version: game.version
   };
 }
 
-function createMemoryCrossStore(options = {}) {
+export function createMemoryCrossStore(options = {}) {
   const now = options.now || (() => Date.now());
-  const lobbyTtl = Number.isFinite(options.lobbyTtlMs) ? options.lobbyTtlMs : 90000;
   const holdMs = Number.isFinite(options.holdMs) ? options.holdMs : CROSS_HOLD_MS;
-  const countdownMs = Number.isFinite(options.countdownMs) ? options.countdownMs : CROSS_COUNTDOWN_MS;
+  const wrongMs = Number.isFinite(options.wrongMs) ? options.wrongMs : CROSS_WRONG_MS;
+  const lobbyTtl = Number.isFinite(options.lobbyTtlMs) ? options.lobbyTtlMs : 90000;
   const games = new Map();
   const players = new Map();
   const crosses = new Map();
@@ -90,58 +77,45 @@ function createMemoryCrossStore(options = {}) {
     if (!found) throw new Error('game not found');
     return found;
   }
-
-  function playerList(id) {
+  function roster(id) {
     if (!players.has(id)) players.set(id, []);
     return players.get(id);
   }
-
   function crossMap(id) {
     if (!crosses.has(id)) crosses.set(id, { sun: new Set(), wave: new Set() });
     return crosses.get(id);
   }
-
   function requirePlayer(id, studentId) {
-    const found = playerList(id).find((player) => player.id === studentId);
+    const found = roster(id).find((player) => player.id === studentId);
     if (!found) throw new Error('player is not in this game');
     return found;
   }
-
   function bump(found) { found.version += 1; }
-
-  function advanceAfterCross(id) {
+  function snap(id, viewerId) {
     const found = game(id);
-    const crossedMap = crossMap(id);
-    if (crossedMap[found.finderTeam].size >= CROSS_CELLS) {
-      found.status = 'finished';
-      found.phase = 'finished';
-      found.winner = found.finderTeam;
-      found.holdBy = null;
-      found.holdCell = null;
-      found.holdStartedAt = null;
-      found.countdownUntil = null;
-      bump(found);
-      return;
-    }
+    return snapshot(found, roster(id), crossMap(id), viewerId, now());
+  }
+
+  function swapRoles(found) {
     const finder = found.finderTeam;
     found.pickerTeam = finder;
     found.finderTeam = otherTeam(finder);
     found.phase = 'pick';
-    found.target = null;
-    found.targetCell = null;
-    found.countdownUntil = null;
+    found.secretCell = null;
+    found.secretNumber = null;
     found.holdBy = null;
     found.holdCell = null;
     found.holdStartedAt = null;
+    found.lastWrongAt = null;
+    found.round += 1;
     bump(found);
   }
 
-  return {
+  const store = {
     async getActive() {
       const found = activeId ? games.get(activeId) : null;
       if (!found) return null;
-      const me = (playerList(found.id)[0] || {}).id;
-      return snapshot(found, playerList(found.id), crossMap(found.id), me, now());
+      return snap(found.id, (roster(found.id)[0] || {}).id || '');
     },
 
     async createLobby(rng = Math.random) {
@@ -151,9 +125,9 @@ function createMemoryCrossStore(options = {}) {
       }
       const id = newId();
       games.set(id, {
-        id, status: 'lobby', phase: 'lobby', numbers: makeCrossNumbers(rng),
-        pickerTeam: null, finderTeam: null, target: null, targetCell: null,
-        countdownUntil: null, holdBy: null, holdCell: null, holdStartedAt: null,
+        id, status: 'lobby', phase: 'lobby', round: 0, numbers: makeCrossNumbers(rng),
+        pickerTeam: null, finderTeam: null, secretCell: null, secretNumber: null,
+        holdBy: null, holdCell: null, holdStartedAt: null, lastWrongAt: null,
         winner: null, version: 0, createdAt: new Date().toISOString()
       });
       players.set(id, []);
@@ -163,27 +137,26 @@ function createMemoryCrossStore(options = {}) {
     },
 
     async join(gameId, student, team) {
+      if (!TEAMS.includes(team)) throw new Error('team must be sun or wave');
       const found = game(gameId);
-      requireTeam(team);
       if (found.status !== 'lobby') throw new Error('game already started');
-      const list = playerList(gameId);
+      const list = roster(gameId);
       const existing = list.find((player) => player.id === student.id);
       if (existing) {
         existing.team = team;
         existing.name = student.name;
         existing.lastSeen = now();
-        bump(found);
-        return snapshot(found, list, crossMap(gameId), student.id, now());
+      } else {
+        list.push({ id: student.id, name: student.name, team, joinIndex: list.length, lastSeen: now() });
       }
-      list.push({ id: student.id, name: student.name, team, joinIndex: list.length, lastSeen: now() });
       bump(found);
-      return snapshot(found, list, crossMap(gameId), student.id, now());
+      return snap(gameId, student.id);
     },
 
     async start(gameId) {
       const found = game(gameId);
       if (found.status !== 'lobby') throw new Error('game already started');
-      const list = playerList(gameId);
+      const list = roster(gameId);
       if (list.length < 2) throw new Error('need at least two players');
       if (!TEAMS.every((team) => list.some((player) => player.team === team))) {
         throw new Error('both teams need at least one player');
@@ -193,98 +166,117 @@ function createMemoryCrossStore(options = {}) {
       found.phase = 'pick';
       found.pickerTeam = pickerTeam;
       found.finderTeam = otherTeam(pickerTeam);
-      found.target = null;
-      found.targetCell = null;
+      found.round = 1;
+      found.secretCell = null;
+      found.secretNumber = null;
       bump(found);
-      return snapshot(found, list, crossMap(gameId), '', now());
+      return snap(gameId, '');
     },
 
     async pick(gameId, studentId, cell, expectedVersion) {
       const found = game(gameId);
       if (found.version !== expectedVersion) throw new Error('version conflict');
-      if (found.status !== 'playing') throw new Error('game is not in play');
-      if (effectivePhase(found, Date.now()) !== 'pick') throw new Error('not the pick phase');
+      if (found.phase !== 'pick') throw new Error('not the pick phase');
       const player = requirePlayer(gameId, studentId);
       if (player.team !== found.pickerTeam) throw new Error('not your team to pick');
       if (!Number.isInteger(cell) || cell < 0 || cell >= CROSS_CELLS) throw new Error('cell out of range');
-      if (crossMap(gameId)[found.finderTeam].has(cell)) throw new Error('that block is already crossed');
-      found.target = found.numbers[cell];
-      found.targetCell = cell;
-      found.phase = 'countdown';
-      found.countdownUntil = Date.now() + countdownMs;
+      found.secretCell = cell;
+      found.secretNumber = found.numbers[cell];
+      found.phase = 'cross';
+      found.lastWrongAt = null;
       bump(found);
-      return snapshot(found, playerList(gameId), crossMap(gameId), studentId, now());
+      return snap(gameId, studentId);
     },
 
     async holdStart(gameId, studentId, cell) {
       const found = game(gameId);
-      if (found.status !== 'playing') throw new Error('game is not in play');
-      if (effectivePhase(found, Date.now()) !== 'find') throw new Error('not the find phase');
+      if (found.phase !== 'cross') throw new Error('not the cross phase');
       const player = requirePlayer(gameId, studentId);
-      if (player.team !== found.finderTeam) throw new Error('only the finding team can hold');
-      if (cell !== found.targetCell) throw new Error('that is not the target number');
-      if (crossMap(gameId)[found.finderTeam].has(cell)) throw new Error('already crossed');
+      if (player.team !== found.pickerTeam) throw new Error('only the picking team crosses');
+      if (!Number.isInteger(cell) || cell < 0 || cell >= CROSS_CELLS) throw new Error('cell out of range');
+      if (crossMap(gameId)[player.team].has(cell)) throw new Error('already crossed');
       found.holdBy = studentId;
       found.holdCell = cell;
-      found.holdStartedAt = Date.now();
+      found.holdStartedAt = now();
       bump(found);
-      return snapshot(found, playerList(gameId), crossMap(gameId), studentId, now());
+      return snap(gameId, studentId);
     },
 
     async holdCancel(gameId, studentId) {
       const found = game(gameId);
-      if (found.holdBy === studentId) {
-        found.holdBy = null;
-        found.holdCell = null;
-        found.holdStartedAt = null;
-        bump(found);
-      }
+      if (found.holdBy !== studentId) return;
+      found.holdBy = null;
+      found.holdCell = null;
+      found.holdStartedAt = null;
+      bump(found);
     },
 
     async completeHold(gameId, studentId, cell, expectedVersion) {
       const found = game(gameId);
       if (found.version !== expectedVersion) throw new Error('version conflict');
       const player = requirePlayer(gameId, studentId);
-      if (player.team !== found.finderTeam) throw new Error('only the finding team can cross');
-      if (effectivePhase(found, Date.now()) !== 'find') throw new Error('not the find phase');
+      if (player.team !== found.pickerTeam) throw new Error('only the picking team crosses');
+      if (found.phase !== 'cross') throw new Error('not the cross phase');
       if (found.holdBy !== studentId || found.holdCell !== cell) throw new Error('hold was not started');
-      if (Date.now() - Number(found.holdStartedAt) < holdMs) throw new Error('hold too short');
-      if (crossMap(gameId)[found.finderTeam].has(cell)) throw new Error('already crossed');
-      crossMap(gameId)[found.finderTeam].add(cell);
+      if (now() - Number(found.holdStartedAt) < holdMs) throw new Error('hold too short');
+      const map = crossMap(gameId);
+      if (map[player.team].has(cell)) throw new Error('already crossed');
+      map[player.team].add(cell);
       found.holdBy = null;
       found.holdCell = null;
       found.holdStartedAt = null;
-      advanceAfterCross(gameId);
-      return snapshot(found, playerList(gameId), crossMap(gameId), studentId, now());
+      if (map[player.team].size >= CROSS_CELLS) {
+        found.status = 'finished';
+        found.phase = 'finished';
+        found.winner = player.team;
+        found.secretCell = null;
+        found.secretNumber = null;
+      }
+      bump(found);
+      return snap(gameId, studentId);
+    },
+
+    async guess(gameId, studentId, cell) {
+      const found = game(gameId);
+      if (found.phase !== 'cross') throw new Error('not the cross phase');
+      const player = requirePlayer(gameId, studentId);
+      if (player.team !== found.finderTeam) throw new Error('only the hunting team guesses');
+      if (now() < Number(found.lastWrongAt || 0) + wrongMs) throw new Error('wait a moment');
+      if (cell === found.secretCell) {
+        swapRoles(found);
+        return { stopped: true, game: snap(gameId, studentId) };
+      }
+      found.lastWrongAt = now();
+      bump(found);
+      throw Object.assign(new Error('wrong number'), { wrong: true });
     },
 
     async state(gameId, viewerId) {
       const found = game(gameId);
-      const list = playerList(gameId);
+      const list = roster(gameId);
       const viewer = list.find((player) => player.id === viewerId);
       if (viewer) viewer.lastSeen = now();
       if (found.status === 'lobby') {
-        const before = list.length;
-        const kept = list.filter((player) => !isLobbyStale(player.lastSeen, now(), lobbyTtl));
-        if (kept.length !== before) {
+        const kept = list.filter((player) => now() - Number(player.lastSeen) < lobbyTtl);
+        if (kept.length !== list.length) {
           players.set(gameId, kept);
           kept.forEach((player, index) => { player.joinIndex = index; });
           bump(found);
         }
       }
-      return snapshot(found, playerList(gameId), crossMap(gameId), viewerId, now());
+      return snap(gameId, viewerId);
     },
 
     async kick(gameId, studentId) {
       const found = game(gameId);
       if (found.status !== 'lobby') throw new Error('can only remove players from the lobby');
-      const list = playerList(gameId);
+      const list = roster(gameId);
       const kept = list.filter((player) => player.id !== studentId);
       if (kept.length === list.length) throw new Error('player is not in this game');
       kept.forEach((player, index) => { player.joinIndex = index; });
       players.set(gameId, kept);
       bump(found);
-      return snapshot(found, kept, crossMap(gameId), '', now());
+      return snap(gameId, '');
     },
 
     async reset() {
@@ -294,9 +286,11 @@ function createMemoryCrossStore(options = {}) {
       activeId = null;
     }
   };
+
+  return store;
 }
 
-function createD1CrossStore(db) {
+export function createD1CrossStore(db) {
   if (!db) throw new Error('GAMES_DB binding is not configured');
 
   async function loadGame(id) {
@@ -306,63 +300,51 @@ function createD1CrossStore(db) {
       id: row.id,
       status: row.status,
       phase: row.phase,
+      round: row.round_no || 0,
       numbers: JSON.parse(row.numbers || '[]'),
       pickerTeam: row.picker_team,
       finderTeam: row.finder_team,
-      target: row.target,
-      targetCell: row.target_cell,
-      countdownUntil: row.countdown_until,
+      secretCell: row.secret_cell,
+      secretNumber: row.secret_number,
       holdBy: row.hold_by,
       holdCell: row.hold_cell,
       holdStartedAt: row.hold_started_at,
+      lastWrongAt: row.last_wrong_at,
       winner: row.winner,
       version: row.version,
       createdAt: row.created_at
     };
   }
-
   async function loadPlayers(id) {
     const rows = await db.prepare('SELECT * FROM cross_players WHERE game_id = ? ORDER BY join_index').bind(id).all();
     return (rows.results || []).map((row) => ({
-      id: row.student_id, name: row.name, team: row.team, joinIndex: row.join_index,
-      lastSeen: row.last_seen
+      id: row.student_id, name: row.name, team: row.team, joinIndex: row.join_index, lastSeen: row.last_seen
     }));
   }
-
   async function loadCrosses(id) {
     const rows = await db.prepare('SELECT team, cell FROM cross_crosses WHERE game_id = ?').bind(id).all();
     const out = { sun: new Set(), wave: new Set() };
-    for (const row of rows.results || []) {
-      if (out[row.team]) out[row.team].add(row.cell);
-    }
+    for (const row of rows.results || []) if (out[row.team]) out[row.team].add(row.cell);
     return out;
   }
-
   async function requireGame(id) {
     const found = await loadGame(id);
     if (!found) throw new Error('game not found');
     return found;
   }
-
   async function saveGame(game) {
     await db.prepare(
-      `UPDATE cross_games SET status = ?, phase = ?, picker_team = ?, finder_team = ?,
-       target = ?, target_cell = ?, countdown_until = ?, hold_by = ?, hold_cell = ?,
-       hold_started_at = ?, winner = ?, version = ? WHERE id = ?`
+      `UPDATE cross_games SET status = ?, phase = ?, round_no = ?, picker_team = ?, finder_team = ?,
+       secret_cell = ?, secret_number = ?, hold_by = ?, hold_cell = ?, hold_started_at = ?,
+       last_wrong_at = ?, winner = ?, version = ? WHERE id = ?`
     ).bind(
-      game.status, game.phase, game.pickerTeam, game.finderTeam,
-      game.target, game.targetCell, game.countdownUntil, game.holdBy, game.holdCell,
-      game.holdStartedAt, game.winner, game.version, game.id
+      game.status, game.phase, game.round, game.pickerTeam, game.finderTeam,
+      game.secretCell, game.secretNumber, game.holdBy, game.holdCell, game.holdStartedAt,
+      game.lastWrongAt, game.winner, game.version, game.id
     ).run();
   }
-
-  async function guard(id, expectedVersion) {
-    const result = await db.prepare('UPDATE cross_games SET version = version + 1 WHERE id = ? AND version = ?')
-      .bind(id, expectedVersion).run();
-    if (!result.meta || result.meta.changes !== 1) throw new Error('version conflict');
-    const found = await requireGame(id);
-    found.version = expectedVersion + 1;
-    return found;
+  function snap(found, players, crosses, viewerId) {
+    return snapshot(found, players, crosses, viewerId);
   }
 
   return {
@@ -371,9 +353,8 @@ function createD1CrossStore(db) {
         `SELECT id FROM cross_games WHERE status IN ('lobby','playing','finished') ORDER BY created_at DESC LIMIT 1`
       ).first();
       if (!row) return null;
-      const found = await loadGame(row.id);
       const players = await loadPlayers(row.id);
-      return snapshot(found, players, await loadCrosses(row.id), (players[0] || {}).id || '');
+      return snap(await requireGame(row.id), players, await loadCrosses(row.id), (players[0] || {}).id || '');
     },
 
     async createLobby(rng = Math.random) {
@@ -392,22 +373,20 @@ function createD1CrossStore(db) {
     },
 
     async join(gameId, student, team) {
-      requireTeam(team);
+      if (!TEAMS.includes(team)) throw new Error('team must be sun or wave');
       const found = await requireGame(gameId);
       if (found.status !== 'lobby') throw new Error('game already started');
-      const existing = (await loadPlayers(gameId)).find((player) => player.id === student.id);
-      if (existing) {
+      const players = await loadPlayers(gameId);
+      if (players.some((player) => player.id === student.id)) {
         await db.prepare('UPDATE cross_players SET team = ?, name = ?, last_seen = ? WHERE game_id = ? AND student_id = ?')
           .bind(team, student.name, Date.now(), gameId, student.id).run();
       } else {
-        const rows = await db.prepare('SELECT COUNT(*) AS n FROM cross_players WHERE game_id = ?').bind(gameId).first();
         await db.prepare(
           'INSERT OR IGNORE INTO cross_players (game_id, student_id, name, team, join_index, last_seen) VALUES (?, ?, ?, ?, ?, ?)'
-        ).bind(gameId, student.id, student.name, team, Number(rows.n), Date.now()).run();
+        ).bind(gameId, student.id, student.name, team, players.length, Date.now()).run();
       }
       await db.prepare('UPDATE cross_games SET version = version + 1 WHERE id = ?').bind(gameId).run();
-      const players = await loadPlayers(gameId);
-      return snapshot(await requireGame(gameId), players, await loadCrosses(gameId), student.id);
+      return snap(await requireGame(gameId), await loadPlayers(gameId), await loadCrosses(gameId), student.id);
     },
 
     async start(gameId) {
@@ -423,45 +402,47 @@ function createD1CrossStore(db) {
       found.phase = 'pick';
       found.pickerTeam = pickerTeam;
       found.finderTeam = otherTeam(pickerTeam);
+      found.round = 1;
+      found.secretCell = null;
+      found.secretNumber = null;
       found.version += 1;
       await saveGame(found);
-      return snapshot(found, players, await loadCrosses(gameId), '');
+      return snap(found, players, await loadCrosses(gameId), '');
     },
 
     async pick(gameId, studentId, cell, expectedVersion) {
-      const preliminary = await requireGame(gameId);
-      if (preliminary.version !== expectedVersion) throw new Error('version conflict');
-      if (preliminary.status !== 'playing') throw new Error('game is not in play');
-      if (effectivePhase(preliminary, Date.now()) !== 'pick') throw new Error('not the pick phase');
+      const found = await requireGame(gameId);
+      if (found.version !== expectedVersion) throw new Error('version conflict');
+      if (found.phase !== 'pick') throw new Error('not the pick phase');
       const players = await loadPlayers(gameId);
       const player = players.find((item) => item.id === studentId);
       if (!player) throw new Error('player is not in this game');
-      if (player.team !== preliminary.pickerTeam) throw new Error('not your team to pick');
+      if (player.team !== found.pickerTeam) throw new Error('not your team to pick');
       if (!Number.isInteger(cell) || cell < 0 || cell >= CROSS_CELLS) throw new Error('cell out of range');
-      const crosses = await loadCrosses(gameId);
-      if (crosses[preliminary.finderTeam].has(cell)) throw new Error('that block is already crossed');
-      const found = await guard(gameId, expectedVersion);
-      found.target = found.numbers[cell];
-      found.targetCell = cell;
-      found.phase = 'countdown';
-      found.countdownUntil = Date.now() + CROSS_COUNTDOWN_MS;
+      found.secretCell = cell;
+      found.secretNumber = found.numbers[cell];
+      found.phase = 'cross';
+      found.lastWrongAt = null;
+      found.version += 1;
       await saveGame(found);
-      return snapshot(found, players, crosses, studentId);
+      return snap(found, players, await loadCrosses(gameId), studentId);
     },
 
     async holdStart(gameId, studentId, cell) {
       const found = await requireGame(gameId);
-      if (found.status !== 'playing') throw new Error('game is not in play');
-      if (effectivePhase(found, Date.now()) !== 'find') throw new Error('not the find phase');
-      const player = (await loadPlayers(gameId)).find((item) => item.id === studentId);
-      if (!player || player.team !== found.finderTeam) throw new Error('only the finding team can hold');
-      if (cell !== found.targetCell) throw new Error('that is not the target number');
+      if (found.phase !== 'cross') throw new Error('not the cross phase');
+      const players = await loadPlayers(gameId);
+      const player = players.find((item) => item.id === studentId);
+      if (!player || player.team !== found.pickerTeam) throw new Error('only the picking team crosses');
+      if (!Number.isInteger(cell) || cell < 0 || cell >= CROSS_CELLS) throw new Error('cell out of range');
+      const crosses = await loadCrosses(gameId);
+      if (crosses[player.team].has(cell)) throw new Error('already crossed');
       found.holdBy = studentId;
       found.holdCell = cell;
       found.holdStartedAt = Date.now();
       found.version += 1;
       await saveGame(found);
-      return snapshot(found, await loadPlayers(gameId), await loadCrosses(gameId), studentId);
+      return snap(found, players, crosses, studentId);
     },
 
     async holdCancel(gameId, studentId) {
@@ -475,44 +456,68 @@ function createD1CrossStore(db) {
     },
 
     async completeHold(gameId, studentId, cell, expectedVersion) {
-      const preliminary = await requireGame(gameId);
-      if (preliminary.version !== expectedVersion) throw new Error('version conflict');
-      const player = (await loadPlayers(gameId)).find((item) => item.id === studentId);
-      if (!player || player.team !== preliminary.finderTeam) throw new Error('only the finding team can cross');
-      if (effectivePhase(preliminary, Date.now()) !== 'find') throw new Error('not the find phase');
-      if (preliminary.holdBy !== studentId || preliminary.holdCell !== cell) throw new Error('hold was not started');
-      if (Date.now() - Number(preliminary.holdStartedAt) < CROSS_HOLD_MS) throw new Error('hold too short');
+      const found = await requireGame(gameId);
+      if (found.version !== expectedVersion) throw new Error('version conflict');
+      const players = await loadPlayers(gameId);
+      const player = players.find((item) => item.id === studentId);
+      if (!player || player.team !== found.pickerTeam) throw new Error('only the picking team crosses');
+      if (found.phase !== 'cross') throw new Error('not the cross phase');
+      if (found.holdBy !== studentId || found.holdCell !== cell) throw new Error('hold was not started');
+      if (Date.now() - Number(found.holdStartedAt) < CROSS_HOLD_MS) throw new Error('hold too short');
       const crosses = await loadCrosses(gameId);
-      if (crosses[preliminary.finderTeam].has(cell)) throw new Error('already crossed');
-      const found = await guard(gameId, expectedVersion);
+      if (crosses[player.team].has(cell)) throw new Error('already crossed');
       await db.prepare('INSERT OR IGNORE INTO cross_crosses (game_id, team, cell, created_at) VALUES (?, ?, ?, ?)')
-        .bind(gameId, found.finderTeam, cell, new Date().toISOString()).run();
-      crosses[found.finderTeam].add(cell);
+        .bind(gameId, player.team, cell, new Date().toISOString()).run();
+      crosses[player.team].add(cell);
       found.holdBy = null;
       found.holdCell = null;
       found.holdStartedAt = null;
-      if (crosses[found.finderTeam].size >= CROSS_CELLS) {
+      if (crosses[player.team].size >= CROSS_CELLS) {
         found.status = 'finished';
         found.phase = 'finished';
-        found.winner = found.finderTeam;
-        found.countdownUntil = null;
-      } else {
+        found.winner = player.team;
+        found.secretCell = null;
+        found.secretNumber = null;
+      }
+      found.version += 1;
+      await saveGame(found);
+      return snap(found, players, crosses, studentId);
+    },
+
+    async guess(gameId, studentId, cell) {
+      const found = await requireGame(gameId);
+      if (found.phase !== 'cross') throw new Error('not the cross phase');
+      const players = await loadPlayers(gameId);
+      const player = players.find((item) => item.id === studentId);
+      if (!player || player.team !== found.finderTeam) throw new Error('only the hunting team guesses');
+      if (Date.now() < Number(found.lastWrongAt || 0) + CROSS_WRONG_MS) throw new Error('wait a moment');
+      const crosses = await loadCrosses(gameId);
+      if (cell === found.secretCell) {
         const finder = found.finderTeam;
         found.pickerTeam = finder;
         found.finderTeam = otherTeam(finder);
         found.phase = 'pick';
-        found.target = null;
-        found.targetCell = null;
-        found.countdownUntil = null;
+        found.round += 1;
+        found.secretCell = null;
+        found.secretNumber = null;
+        found.holdBy = null;
+        found.holdCell = null;
+        found.holdStartedAt = null;
+        found.lastWrongAt = null;
+        found.version += 1;
+        await saveGame(found);
+        return { stopped: true, game: snap(found, players, crosses, studentId) };
       }
+      found.lastWrongAt = Date.now();
       found.version += 1;
       await saveGame(found);
-      return snapshot(found, await loadPlayers(gameId), crosses, studentId);
+      throw Object.assign(new Error('wrong number'), { wrong: true });
     },
 
     async state(gameId, viewerId) {
       const found = await requireGame(gameId);
-      if ((await loadPlayers(gameId)).some((player) => player.id === viewerId)) {
+      const players = await loadPlayers(gameId);
+      if (players.some((player) => player.id === viewerId)) {
         await db.prepare('UPDATE cross_players SET last_seen = ? WHERE game_id = ? AND student_id = ?')
           .bind(Date.now(), gameId, viewerId).run();
       }
@@ -520,7 +525,7 @@ function createD1CrossStore(db) {
         await db.prepare('DELETE FROM cross_players WHERE game_id = ? AND (last_seen IS NULL OR last_seen < ?)')
           .bind(gameId, Date.now() - 90000).run();
       }
-      return snapshot(found, await loadPlayers(gameId), await loadCrosses(gameId), viewerId);
+      return snap(found, await loadPlayers(gameId), await loadCrosses(gameId), viewerId);
     },
 
     async kick(gameId, studentId) {
@@ -530,7 +535,7 @@ function createD1CrossStore(db) {
         .bind(gameId, studentId).run();
       if (!result.meta || result.meta.changes !== 1) throw new Error('player is not in this game');
       await db.prepare('UPDATE cross_games SET version = version + 1 WHERE id = ?').bind(gameId).run();
-      return snapshot(await requireGame(gameId), await loadPlayers(gameId), await loadCrosses(gameId), '');
+      return snap(await requireGame(gameId), await loadPlayers(gameId), await loadCrosses(gameId), '');
     },
 
     async reset() {
@@ -542,5 +547,3 @@ function createD1CrossStore(db) {
     }
   };
 }
-
-export { createMemoryCrossStore, createD1CrossStore };

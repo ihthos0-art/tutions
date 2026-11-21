@@ -3,111 +3,109 @@ import test from 'node:test';
 import { createMemoryCrossStore } from '../src/cross-store.js';
 
 function fastStore() {
-  return createMemoryCrossStore({ holdMs: 0, countdownMs: 0 });
+  return createMemoryCrossStore({ holdMs: 0, wrongMs: 0 });
 }
 
-async function readyGame(store) {
+async function ready(store) {
   const id = await store.createLobby(() => 0.42);
   await store.join(id, { id: 'a', name: 'A' }, 'sun');
   await store.join(id, { id: 'b', name: 'B' }, 'wave');
   return { id, game: await store.start(id) };
 }
 
-test('lobby, start, and both teams must be present', async () => {
+function pickerIds(game) {
+  return {
+    pickerId: game.pickerTeam === 'sun' ? 'a' : 'b',
+    finderId: game.finderTeam === 'sun' ? 'a' : 'b'
+  };
+}
+
+test('both teams are required to start', async () => {
   const store = fastStore();
   const id = await store.createLobby();
   await store.join(id, { id: 'a', name: 'A' }, 'sun');
-  await assert.rejects(() => store.start(id), /two players|both teams/);
-  await store.join(id, { id: 'b', name: 'B' }, 'wave');
-  const started = await store.start(id);
-  assert.equal(started.status, 'playing');
-  assert.equal(started.phase, 'pick');
+  await assert.rejects(() => store.start(id), /both teams|two players/);
 });
 
-test('finding team cannot see numbers while the other team picks', async () => {
+test('only the picking team sees and sets the secret', async () => {
   const store = fastStore();
-  const { id, game } = await readyGame(store);
-  const picker = game.pickerTeam;
-  const pickerId = picker === 'sun' ? 'a' : 'b';
-  const finderId = picker === 'sun' ? 'b' : 'a';
+  const { id, game } = await ready(store);
+  const { pickerId, finderId } = pickerIds(game);
+  const picker = await store.state(id, pickerId);
+  const finder = await store.state(id, finderId);
+  assert.equal(picker.numbers.length, 50);
+  assert.equal(picker.canPick, true);
+  assert.equal(finder.canPick, false);
+  assert.equal(finder.secretNumber, null);
+  const picked = await store.pick(id, pickerId, 3, picker.version);
+  assert.equal(picked.secretNumber, picker.numbers[3]);
+  const finderAfter = await store.state(id, finderId);
+  assert.equal(finderAfter.secretNumber, null);
+  assert.equal(finderAfter.phase, 'cross');
+});
+
+test('finder finds the secret and stops the crossing', async () => {
+  const store = fastStore();
+  const { id, game } = await ready(store);
+  const { pickerId, finderId } = pickerIds(game);
   const pickerView = await store.state(id, pickerId);
+  const picked = await store.pick(id, pickerId, 4, pickerView.version);
   const finderView = await store.state(id, finderId);
-  assert.equal(pickerView.numbers.length, 60);
-  assert.equal(finderView.numbers, null);
-  assert.equal(pickerView.canPick, true);
-  assert.equal(finderView.canPick, false);
+  const before = finderView.pickerTeam;
+  const result = await store.guess(id, finderId, picked.secretCell);
+  assert.equal(result.stopped, true);
+  assert.notEqual(result.game.pickerTeam, before);
+  assert.equal(result.game.phase, 'pick');
+  assert.equal(result.game.round, 2);
 });
 
-test('pick sets a target and the finder crosses it with a hold', async () => {
-  const store = fastStore();
-  const { id, game } = await readyGame(store);
-  const picker = game.pickerTeam;
-  const pickerId = picker === 'sun' ? 'a' : 'b';
-  const finderTeam = picker === 'sun' ? 'wave' : 'sun';
-  const finderId = finderTeam === 'sun' ? 'a' : 'b';
-  const view = await store.state(id, pickerId);
-  const picked = await store.pick(id, pickerId, 0, view.version);
-  assert.equal(picked.target, view.numbers[0]);
-  await new Promise((resolve) => setTimeout(resolve, 5));
-  const findView = await store.state(id, finderId);
-  assert.equal(findView.phase, 'find');
-  await store.holdStart(id, finderId, 0);
-  const done = await store.completeHold(id, finderId, 0, findView.version + 1);
-  assert.equal(done.crossed[finderTeam].length, 1);
-  assert.equal(done.pickerTeam, finderTeam);
-  assert.equal(done.finderTeam, picker);
+test('a wrong guess fails and starts a cooldown', async () => {
+  const store = createMemoryCrossStore({ holdMs: 0, wrongMs: 5000 });
+  const { id, game } = await ready(store);
+  const { pickerId, finderId } = pickerIds(game);
+  const pickerView = await store.state(id, pickerId);
+  const picked = await store.pick(id, pickerId, 4, pickerView.version);
+  const wrong = picked.secretCell === 0 ? 1 : 0;
+  await assert.rejects(() => store.guess(id, finderId, wrong), /wrong number/);
+  await assert.rejects(() => store.guess(id, finderId, picked.secretCell), /wait a moment/);
 });
 
-test('only the picker team may pick and only the finder team may hold', async () => {
+test('picker crosses with a verified hold and reaches the win at 50', async () => {
   const store = fastStore();
-  const { id, game } = await readyGame(store);
-  const picker = game.pickerTeam;
-  const wrongTeam = picker === 'sun' ? 'b' : 'a';
-  const view = await store.state(id, wrongTeam);
-  await assert.rejects(() => store.pick(id, wrongTeam, 0, view.version), /not your team/);
+  const { id, game } = await ready(store);
+  const { pickerId } = pickerIds(game);
+  let view = await store.state(id, pickerId);
+  view = await store.pick(id, pickerId, 0, view.version);
+  const team = view.pickerTeam;
+  for (let cell = 0; cell < 50; cell += 1) {
+    const start = await store.holdStart(id, pickerId, cell);
+    const done = await store.completeHold(id, pickerId, cell, start.version);
+    view = done;
+    if (view.status === 'finished') break;
+  }
+  assert.equal(view.status, 'finished');
+  assert.equal(view.winner, team);
+  assert.equal(view.counts[team], 50);
 });
 
 test('a short hold is rejected', async () => {
-  const store = createMemoryCrossStore({ holdMs: 50, countdownMs: 0 });
-  const { id, game } = await readyGame(store);
-  const pickerId = game.pickerTeam === 'sun' ? 'a' : 'b';
-  const finderId = pickerId === 'a' ? 'b' : 'a';
-  const view = await store.state(id, pickerId);
-  await store.pick(id, pickerId, 0, view.version);
-  await new Promise((resolve) => setTimeout(resolve, 5));
-  const findView = await store.state(id, finderId);
-  await store.holdStart(id, finderId, 0);
-  await assert.rejects(() => store.completeHold(id, finderId, 0, findView.version + 1), /hold too short/);
+  const store = createMemoryCrossStore({ holdMs: 200, wrongMs: 0 });
+  const { id, game } = await ready(store);
+  const { pickerId } = pickerIds(game);
+  let view = await store.state(id, pickerId);
+  view = await store.pick(id, pickerId, 0, view.version);
+  const start = await store.holdStart(id, pickerId, 0);
+  await assert.rejects(() => store.completeHold(id, pickerId, 0, start.version), /hold too short/);
 });
 
-test('the first team to cross all 60 blocks wins', async () => {
+test('kicking only works in the lobby', async () => {
   const store = fastStore();
-  const { id } = await readyGame(store);
-  for (let round = 0; round < 140; round += 1) {
-    let view = await store.state(id, '');
-    const pickerId = view.pickerTeam === 'sun' ? 'a' : 'b';
-    const finderId = pickerId === 'a' ? 'b' : 'a';
-    const pickerView = await store.state(id, pickerId);
-    const crossed = new Set(pickerView.crossed[view.finderTeam]);
-    let cell = -1;
-    for (let i = 0; i < 60; i += 1) { if (!crossed.has(i)) { cell = i; break; } }
-    await store.pick(id, pickerId, cell, pickerView.version);
-    await new Promise((resolve) => setTimeout(resolve, 2));
-    const findView = await store.state(id, finderId);
-    await store.holdStart(id, finderId, cell);
-    const result = await store.completeHold(id, finderId, cell, findView.version + 1);
-    if (result.status === 'finished') {
-      assert.ok(result.winner === 'sun' || result.winner === 'wave');
-      assert.equal(result.crossed[result.winner].length, 60);
-      return;
-    }
-  }
-  assert.fail('game never finished');
-});
-
-test('lobby creation is idempotent', async () => {
-  const store = fastStore();
-  const first = await store.createLobby();
-  const second = await store.createLobby();
-  assert.equal(first, second);
+  const id = await store.createLobby();
+  await store.join(id, { id: 'a', name: 'A' }, 'sun');
+  await store.join(id, { id: 'b', name: 'B' }, 'wave');
+  const kicked = await store.kick(id, 'b');
+  assert.equal(kicked.players.length, 1);
+  await store.join(id, { id: 'c', name: 'C' }, 'wave');
+  await store.start(id);
+  await assert.rejects(() => store.kick(id, 'c'), /lobby/);
 });

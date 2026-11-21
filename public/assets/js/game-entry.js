@@ -26,11 +26,16 @@
   cross.href = '/number-cross';
   cross.textContent = 'Find and Cross →';
 
+  var table = document.createElement('a');
+  table.className = 'game-entry-link';
+  table.href = '/poison-table';
+  table.textContent = 'Poison, one screen →';
+
   var odd = document.createElement('a');
   odd.className = 'game-entry-link';
   odd.href = '/odd-one-out';
   odd.textContent = 'Odd One Out →';
 
-  entry.append(title, help, link, cross, odd);
+  entry.append(title, help, link, table, cross, odd);
   panel.append(entry);
 })();

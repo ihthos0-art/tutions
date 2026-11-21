@@ -396,3 +396,4 @@ h1 {
 .game-entry-link { color: #7bd389; font-weight: 600; text-decoration: none; }
 .game-entry-link:hover { text-decoration: underline; }
 .game-entry-link + .game-entry-link { margin-left: 16px; }
+.game-entry-link { display: inline-block; margin: 0 16px 6px 0; }

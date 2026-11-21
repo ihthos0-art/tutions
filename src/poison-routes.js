@@ -51,6 +51,26 @@ export async function handleGameRoutes(ctx) {
       }
     }
 
+    const student = roster.find((item) => item.id === claims.student);
+    if (!student) return json({ error: 'unknown student' }, 401);
+
+    let active = await store.getActive();
+    const wasMember = Boolean(active && active.players.some((player) => player.id === student.id));
+
+    // A player already in this room (or just finishing it) needs no PIN again.
+    if (wasMember) {
+      try {
+        if (active.status === 'finished') active = await store.createLobby();
+        if (mode && active.status === 'lobby' && active.players.length === 0) {
+          active = await store.setMode(active.id, mode);
+        }
+        if (active.status !== 'lobby') return json({ ok: true, game: active });
+        return json({ ok: true, game: await store.join(active.id, { id: student.id, name: student.name }, team) });
+      } catch (error) {
+        return json({ error: error.message || 'cannot join right now' }, 409);
+      }
+    }
+
     const pin = String(body.pin || '').trim();
     const expectedPin = String(env.GAME_PIN || DEFAULT_GAME_PIN);
     const now = Date.now();
@@ -63,10 +83,7 @@ export async function handleGameRoutes(ctx) {
       return json({ error: 'Wrong PIN' }, 403);
     }
     gamePinAttempts.delete(claims.student);
-    const student = roster.find((item) => item.id === claims.student);
-    if (!student) return json({ error: 'unknown student' }, 401);
     try {
-      let active = await store.getActive();
       if (active && active.status === 'finished') active = await store.createLobby();
       if (active && active.status === 'lobby' && active.players.length === 0 && mode) {
         active = await store.setMode(active.id, mode);

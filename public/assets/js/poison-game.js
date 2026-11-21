@@ -15,6 +15,7 @@
   var inFlight = false;
   var audioCtx = null;
   var lastPin = '';
+  try { lastPin = sessionStorage.getItem('poison-pin') || ''; } catch (error) { lastPin = ''; }
   var pickMode = 'solo';
   var pickTeam = null;
 
@@ -373,7 +374,10 @@
     })
       .then(function (data) {
         game = data.game;
-        if (pin) lastPin = pin;
+        if (pin) {
+          lastPin = pin;
+          try { sessionStorage.setItem('poison-pin', pin); } catch (error) { /* storage can be blocked */ }
+        }
         render();
         startPolling();
       })

@@ -129,34 +129,55 @@
     } catch (error) { /* audio is optional */ }
   }
 
+  function makeBoom() {
+    var t = audioCtx.currentTime;
+    var osc = audioCtx.createOscillator();
+    var gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(190, t);
+    osc.frequency.exponentialRampToValueAtTime(38, t + 0.5);
+    gain.gain.setValueAtTime(0.95, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.6);
+    osc.connect(gain).connect(audioCtx.destination);
+    osc.start(t);
+    osc.stop(t + 0.65);
+
+    var crack = audioCtx.createOscillator();
+    var crackGain = audioCtx.createGain();
+    crack.type = 'square';
+    crack.frequency.setValueAtTime(520, t);
+    crack.frequency.exponentialRampToValueAtTime(120, t + 0.18);
+    crackGain.gain.setValueAtTime(0.18, t);
+    crackGain.gain.exponentialRampToValueAtTime(0.001, t + 0.2);
+    crack.connect(crackGain).connect(audioCtx.destination);
+    crack.start(t);
+    crack.stop(t + 0.22);
+
+    var frames = Math.floor(audioCtx.sampleRate * 0.35);
+    var buffer = audioCtx.createBuffer(1, frames, audioCtx.sampleRate);
+    var data = buffer.getChannelData(0);
+    for (var i = 0; i < frames; i += 1) data[i] = (Math.random() * 2 - 1) * (1 - i / frames);
+    var noise = audioCtx.createBufferSource();
+    var noiseGain = audioCtx.createGain();
+    noiseGain.gain.value = 0.35;
+    noise.buffer = buffer;
+    noise.connect(noiseGain).connect(audioCtx.destination);
+    noise.start(t);
+  }
+
   function playBoom() {
     try {
       var Ctx = window.AudioContext || window.webkitAudioContext;
-      if (!Ctx) return;
+      if (!Ctx) { toast('This browser has no audio support'); return; }
       audioCtx = audioCtx || new Ctx();
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      var t = audioCtx.currentTime;
-      var osc = audioCtx.createOscillator();
-      var gain = audioCtx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(180, t);
-      osc.frequency.exponentialRampToValueAtTime(40, t + 0.45);
-      gain.gain.setValueAtTime(0.6, t);
-      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.55);
-      osc.connect(gain).connect(audioCtx.destination);
-      osc.start(t);
-      osc.stop(t + 0.6);
-
-      var frames = Math.floor(audioCtx.sampleRate * 0.3);
-      var buffer = audioCtx.createBuffer(1, frames, audioCtx.sampleRate);
-      var data = buffer.getChannelData(0);
-      for (var i = 0; i < frames; i += 1) data[i] = (Math.random() * 2 - 1) * (1 - i / frames);
-      var noise = audioCtx.createBufferSource();
-      var noiseGain = audioCtx.createGain();
-      noiseGain.gain.value = 0.25;
-      noise.buffer = buffer;
-      noise.connect(noiseGain).connect(audioCtx.destination);
-      noise.start(t);
+      if (audioCtx.state === 'running') {
+        makeBoom();
+        return;
+      }
+      audioCtx.resume().then(makeBoom).catch(function (error) {
+        console.warn('Boom sound unavailable:', error);
+        toast('Tap the page once to enable sound');
+      });
     } catch (error) {
       console.warn('Boom sound unavailable:', error);
     }
@@ -432,6 +453,7 @@
     });
   });
 
+  byId('sound-test').addEventListener('click', function () { playBoom(); });
   byId('game-player').textContent = auth.studentName || me;
 
   byId('pin-form').addEventListener('submit', function (event) {

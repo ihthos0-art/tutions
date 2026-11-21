@@ -34,56 +34,97 @@
     catch (error) { /* storage can be blocked */ }
   }
 
+  var toastTimer = null;
+  function toast(message) {
+    var node = document.getElementById('hw-toast');
+    if (!node) {
+      node = document.createElement('div');
+      node.id = 'hw-toast';
+      node.className = 'hw-toast';
+      document.body.appendChild(node);
+    }
+    node.textContent = message;
+    node.classList.add('is-visible');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { node.classList.remove('is-visible'); }, 1800);
+  }
+
   function fillRegion(canvas, img, op) {
-    if (!img || !img.complete || !img.naturalWidth) return;
-    var scale = Math.min(1, 900 / img.naturalWidth);
+    if (!img || !img.complete || !img.naturalWidth) { toast('Page still loading'); return; }
+    var scale = Math.min(1, 820 / img.naturalWidth);
+    var W = Math.max(1, Math.round(img.naturalWidth * scale));
+    var H = Math.max(1, Math.round(img.naturalHeight * scale));
     var off = document.createElement('canvas');
-    off.width = Math.max(1, Math.round(img.naturalWidth * scale));
-    off.height = Math.max(1, Math.round(img.naturalHeight * scale));
+    off.width = W; off.height = H;
     var octx = off.getContext('2d');
-    octx.drawImage(img, 0, 0, off.width, off.height);
-    var data = octx.getImageData(0, 0, off.width, off.height);
-    var px = Math.round(op.x * off.width);
-    var py = Math.round(op.y * off.height);
-    if (px < 0 || py < 0 || px >= off.width || py >= off.height) return;
-    var W = off.width, H = off.height;
-    var src = data.data;
+    octx.drawImage(img, 0, 0, W, H);
+    var src = octx.getImageData(0, 0, W, H).data;
+
+    var px = Math.round(op.x * W);
+    var py = Math.round(op.y * H);
+    if (px < 0 || py < 0 || px >= W || py >= H) return;
+
+    var hex = op.color.replace('#', '');
+    var rgb = [parseInt(hex.slice(0, 2), 16), parseInt(hex.slice(2, 4), 16), parseInt(hex.slice(4, 6), 16)];
     var start = (py * W + px) * 4;
     var target = [src[start], src[start + 1], src[start + 2]];
-    var tolerance = 46;
+    var tolerance = 42;
     var seen = new Uint8Array(W * H);
-    var stack = [py * W + px];
-    var rgb = (function (hex) {
-      var v = hex.replace('#', '');
-      return [parseInt(v.slice(0, 2), 16), parseInt(v.slice(2, 4), 16), parseInt(v.slice(4, 6), 16)];
-    })(op.color);
     var out = octx.createImageData(W, H);
+    var limit = 500000;
     var filled = 0;
-    while (stack.length) {
-      var index = stack.pop();
-      if (seen[index]) continue;
-      seen[index] = 1;
+    var stack = [[px, py]];
+
+    function matches(index) {
       var offset = index * 4;
-      if (Math.abs(src[offset] - target[0]) > tolerance
-        || Math.abs(src[offset + 1] - target[1]) > tolerance
-        || Math.abs(src[offset + 2] - target[2]) > tolerance) continue;
+      return Math.abs(src[offset] - target[0]) <= tolerance
+        && Math.abs(src[offset + 1] - target[1]) <= tolerance
+        && Math.abs(src[offset + 2] - target[2]) <= tolerance;
+    }
+    function paint(index) {
+      var offset = index * 4;
       out.data[offset] = rgb[0];
       out.data[offset + 1] = rgb[1];
       out.data[offset + 2] = rgb[2];
       out.data[offset + 3] = 190;
       filled += 1;
-      var x = index % W;
-      var y = (index - x) / W;
-      if (x > 0) stack.push(index - 1);
-      if (x < W - 1) stack.push(index + 1);
-      if (y > 0) stack.push(index - W);
-      if (y < H - 1) stack.push(index + W);
     }
-    if (!filled) return;
+
+    while (stack.length && filled < limit) {
+      var seed = stack.pop();
+      var x = seed[0];
+      var y = seed[1];
+      var row = y * W;
+      if (seen[row + x] || !matches(row + x)) continue;
+
+      var left = x;
+      while (left > 0 && !seen[row + left - 1] && matches(row + left - 1)) left -= 1;
+      var right = x;
+      while (right < W - 1 && !seen[row + right + 1] && matches(row + right + 1)) right += 1;
+
+      for (var cx = left; cx <= right; cx += 1) {
+        seen[row + cx] = 1;
+        paint(row + cx);
+      }
+      for (var ny = y - 1; ny <= y + 1; ny += 2) {
+        if (ny < 0 || ny >= H) continue;
+        var nrow = ny * W;
+        var inRun = false;
+        for (var nx = left; nx <= right; nx += 1) {
+          var ok = !seen[nrow + nx] && matches(nrow + nx);
+          if (ok && !inRun) { stack.push([nx, ny]); inRun = true; }
+          else if (!ok) inRun = false;
+        }
+      }
+    }
+
+    if (!filled) { toast('Tap inside an area to fill'); return; }
+    if (filled >= limit) { toast('Area too large, tap a smaller space'); return; }
+
     var mask = document.createElement('canvas');
-    mask.width = W;
-    mask.height = H;
-    mask.getContext('2d').putImageData(out, 0, 0);
+    mask.width = W; mask.height = H;
+    var mctx = mask.getContext('2d');
+    mctx.putImageData(out, 0, 0);
     var ctx = canvas.getContext('2d');
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.drawImage(mask, 0, 0, canvas.width, canvas.height);

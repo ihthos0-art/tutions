@@ -138,9 +138,13 @@
       });
     });
 
-    buildBoard(game.numbers, game.id + ':' + game.numbers.join(','));
-
-    byId('nc-cover').hidden = true;
+    if (Array.isArray(game.numbers) && game.numbers.length) {
+      buildBoard(game.numbers, game.id + ':' + game.numbers.join(','));
+      byId('nc-cover').hidden = true;
+    } else {
+      byId('nc-cover').hidden = false;
+      byId('nc-cover-text').textContent = teamName(game.pickerTeam) + ' is picking, numbers are hidden';
+    }
     byId('nc-countdown').hidden = true;
 
     var targetHost = byId('nc-target');

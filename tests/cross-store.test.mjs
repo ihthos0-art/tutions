@@ -36,12 +36,14 @@ test('only the picking team sees and sets the secret', async () => {
   assert.equal(picker.numbers.length, 50);
   assert.equal(picker.canPick, true);
   assert.equal(finder.canPick, false);
+  assert.equal(finder.numbers, null, 'numbers hidden from the hunting team while picking');
   assert.equal(finder.secretNumber, null);
   const picked = await store.pick(id, pickerId, 3, picker.version);
   assert.equal(picked.secretNumber, picker.numbers[3]);
   const finderAfter = await store.state(id, finderId);
   assert.equal(finderAfter.secretNumber, null);
   assert.equal(finderAfter.phase, 'cross');
+  assert.equal(finderAfter.numbers.length, 50, 'board visible once the hunt starts');
 });
 
 test('finder finds the secret and stops the crossing', async () => {

@@ -41,7 +41,7 @@ function snapshot(game, players, crosses, viewerId, nowMs = Date.now()) {
     status: game.status,
     phase: game.phase,
     round: game.round,
-    numbers: game.numbers,
+    numbers: (game.status === 'playing' && game.phase === 'pick' && !isPicker) ? null : game.numbers,
     pickerTeam: game.pickerTeam,
     finderTeam: game.finderTeam,
     secretCell: isPicker ? game.secretCell : null,

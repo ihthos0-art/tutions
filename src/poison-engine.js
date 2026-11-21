@@ -1,13 +1,16 @@
 /* ============================================================================
-   Poison Challenge rules.
+   Poison Challenge rules, two-team edition.
 
-   Pure functions only: no storage, no network, no clock. The Worker route
-   layer and the store both run this same code, so a bug here shows up in the
-   tests for every caller instead of only in production.
+   Two teams share three lives each. A player who hits a poison costs their
+   whole team one life. A team at zero lives is out entirely. Last team with
+   lives left wins. Placement is still three secret poison cells per player on
+   one shared board.
    ========================================================================== */
 
 export const POISON_COUNT = 3;
 export const LIVES = 3;
+export const TEAMS = ['sun', 'wave'];
+export const MODES = ['solo', 'teams'];
 
 export function gridForPlayers(playerCount) {
   const wanted = Math.max(16, Math.ceil(playerCount) * 8);
@@ -30,6 +33,13 @@ export function activePlayers(players) {
   return players.filter((player) => !player.eliminated);
 }
 
+export function teamLivesFrom(state) {
+  return {
+    sun: Number(state.teamLives && state.teamLives.sun),
+    wave: Number(state.teamLives && state.teamLives.wave)
+  };
+}
+
 export function resolvePick(state, cell) {
   if (!state || state.status !== 'playing') throw new Error('game is not in play');
   if (state.revealed && state.revealed[String(cell)]) throw new Error('cell already revealed');
@@ -41,48 +51,100 @@ export function resolvePick(state, cell) {
   if (!current) throw new Error('current player is missing');
   if (current.eliminated) throw new Error('current player is eliminated');
 
+  const mode = state.mode === 'solo' ? 'solo' : 'teams';
   const poisonedBy = (state.poisons && state.poisons[String(cell)]) || [];
   const hit = poisonedBy.length > 0;
-  if (hit) current.lives = Math.max(0, current.lives - 1);
-  if (hit && current.lives === 0) current.eliminated = true;
+  const teamLives = teamLivesFrom(state);
+  const eliminated = [];
+  let winnerPlayer = null;
+  let winnerTeam = null;
+
+  if (hit) {
+    if (mode === 'solo') {
+      current.lives = Math.max(0, Number(current.lives ?? LIVES) - 1);
+      if (current.lives === 0) {
+        current.eliminated = true;
+        eliminated.push(current.id);
+      }
+    } else {
+      const team = current.team;
+      if (!TEAMS.includes(team)) throw new Error('current player has no team');
+      teamLives[team] = Math.max(0, teamLives[team] - 1);
+      if (teamLives[team] === 0) {
+        players.forEach((player) => {
+          if (player.team === team && !player.eliminated) {
+            player.eliminated = true;
+            eliminated.push(player.id);
+          }
+        });
+      }
+    }
+  }
 
   const revealed = { ...(state.revealed || {}), [String(cell)]: { hit, by: currentId, poisonedBy } };
-  const eliminated = current.eliminated ? [currentId] : [];
-
-  const alive = players.filter((player) => !player.eliminated);
-  const finished = alive.length <= 1;
-  const winner = finished && alive.length === 1 ? alive[0].id : null;
+  let finished = false;
+  if (mode === 'solo') {
+    const alivePlayers = players.filter((player) => !player.eliminated);
+    finished = alivePlayers.length <= 1;
+    winnerPlayer = finished && alivePlayers.length === 1 ? alivePlayers[0].id : null;
+  } else {
+    const aliveTeams = TEAMS.filter((team) => teamLives[team] > 0);
+    finished = aliveTeams.length <= 1;
+    winnerTeam = finished && aliveTeams.length === 1 ? aliveTeams[0] : null;
+  }
 
   let turnIndex = state.turnIndex;
   if (!finished) {
+    let guard = 0;
     do {
       turnIndex = (turnIndex + 1) % turnOrder.length;
-    } while (players.find((player) => player.id === turnOrder[turnIndex])?.eliminated);
+      guard += 1;
+    } while (
+      guard <= turnOrder.length &&
+      players.find((player) => player.id === turnOrder[turnIndex])?.eliminated
+    );
   }
 
   const next = {
     ...state,
+    mode,
     status: finished ? 'finished' : 'playing',
     players,
+    teamLives,
     revealed,
     turnIndex,
-    winner
+    winnerTeam,
+    winnerPlayer
   };
-  return { state: next, result: { hit, poisonedBy, eliminated, winner, cell, by: currentId } };
+  return {
+    state: next,
+    result: {
+      hit, poisonedBy, eliminated, winnerTeam, winnerPlayer, cell, by: currentId,
+      team: mode === 'solo' ? null : current.team
+    }
+  };
+}
+
+export function rankTeams(teamLives, players) {
+  return TEAMS.map((team) => ({
+    team,
+    lives: Number(teamLives[team] || 0),
+    members: players.filter((player) => player.team === team).map((player) => player.name)
+  })).sort((a, b) => b.lives - a.lives)
+    .map((row, index) => ({ ...row, rank: index + 1 }));
 }
 
 export function rankPlayers(players) {
-  const ordered = players.slice().sort((a, b) => {
+  return players.slice().sort((a, b) => {
     const aOut = a.eliminated ? 1 : 0;
     const bOut = b.eliminated ? 1 : 0;
     if (aOut !== bOut) return aOut - bOut;
-    if (a.lives !== b.lives) return b.lives - a.lives;
+    if (Number(a.lives ?? 0) !== Number(b.lives ?? 0)) return Number(b.lives ?? 0) - Number(a.lives ?? 0);
     return (a.joinIndex || 0) - (b.joinIndex || 0);
-  });
-  return ordered.map((player, index) => ({
+  }).map((player, index) => ({
     id: player.id,
     name: player.name,
-    lives: player.lives,
+    lives: Number(player.lives ?? 0),
     eliminated: Boolean(player.eliminated),
     rank: index + 1
   }));

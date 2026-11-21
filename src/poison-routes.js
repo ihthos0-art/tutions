@@ -28,20 +28,29 @@ export async function handleGameRoutes(ctx) {
 
   if (url.pathname === '/api/game/join' && request.method === 'POST') {
     if (!isStudent && !isAdmin) return json({ error: 'unauthorized' }, 401);
+    const body = await request.json().catch(() => ({}));
+    const team = body.team;
+    const mode = (body.mode === 'solo' || body.mode === 'teams') ? body.mode : null;
+
     if (isAdmin) {
       try {
         let active = await store.getActive();
         if (!active || active.status === 'finished') active = await store.createLobby();
-        if (active.players.some((player) => player.id === 'admin')) {
-          return json({ ok: true, game: active });
+        if (mode && active.status === 'lobby' && active.players.length === 0) {
+          active = await store.setMode(active.id, mode);
         }
+        const mine = active.players.find((player) => player.id === 'admin');
+        if (mine && active.status === 'lobby') {
+          return json({ ok: true, game: await store.join(active.id, { id: 'admin', name: 'Teacher' }, team) });
+        }
+        if (mine) return json({ ok: true, game: active });
         if (active.status !== 'lobby') return json({ error: 'game already started' }, 409);
-        return json({ ok: true, game: await store.join(active.id, { id: 'admin', name: 'Teacher' }) });
+        return json({ ok: true, game: await store.join(active.id, { id: 'admin', name: 'Teacher' }, team) });
       } catch (error) {
         return json({ error: error.message || 'cannot join right now' }, 409);
       }
     }
-    const body = await request.json().catch(() => ({}));
+
     const pin = String(body.pin || '').trim();
     const expectedPin = String(env.GAME_PIN || DEFAULT_GAME_PIN);
     const now = Date.now();
@@ -58,15 +67,44 @@ export async function handleGameRoutes(ctx) {
     if (!student) return json({ error: 'unknown student' }, 401);
     try {
       let active = await store.getActive();
+      if (active && active.status === 'lobby' && active.players.length === 0 && mode) {
+        active = await store.setMode(active.id, mode);
+      }
       if (active && active.players.some((player) => player.id === student.id)) {
-        return json({ ok: true, game: active });
+        if (active.status !== 'lobby') return json({ ok: true, game: active });
+        return json({ ok: true, game: await store.join(active.id, { id: student.id, name: student.name }, team) });
       }
       if (!active || active.status === 'finished') active = await store.createLobby();
       if (active.status !== 'lobby') return json({ error: 'game already started' }, 409);
-      const game = await store.join(active.id, { id: student.id, name: student.name });
+      const game = await store.join(active.id, { id: student.id, name: student.name }, team);
       return json({ ok: true, game });
     } catch (error) {
       return json({ error: error.message || 'cannot join right now' }, 409);
+    }
+  }
+
+  if (url.pathname === '/api/game/mode' && request.method === 'POST') {
+    if (!isStudent && !isAdmin) return json({ error: 'unauthorized' }, 401);
+    const body = await request.json().catch(() => ({}));
+    const mode = body.mode;
+    if (mode !== 'solo' && mode !== 'teams') return json({ error: 'mode must be solo or teams' }, 400);
+    const active = await store.getActive();
+    if (!active) return json({ error: 'game not found' }, 404);
+    try {
+      return json({ ok: true, game: await store.setMode(active.id, mode) });
+    } catch (error) {
+      return json({ error: error.message || 'cannot change mode' }, 409);
+    }
+  }
+
+  if (url.pathname === '/api/game/leave' && request.method === 'POST') {
+    if (!isStudent && !isAdmin) return json({ error: 'unauthorized' }, 401);
+    const active = await store.getActive();
+    if (!active) return json({ error: 'game not found' }, 404);
+    try {
+      return json({ ok: true, game: await store.leave(active.id, actingId) });
+    } catch (error) {
+      return json({ error: error.message || 'cannot leave' }, 409);
     }
   }
 

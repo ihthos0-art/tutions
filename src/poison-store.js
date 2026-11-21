@@ -1,21 +1,17 @@
 /* ============================================================================
-   Poison Challenge persistence.
+   Poison Challenge persistence, two-team edition.
 
-   Two implementations of one interface: an in-memory store for tests and the
-   D1 store used in production. Routes never touch SQL directly.
+   Memory store for tests, D1 store for production, one shared snapshot shape.
+   Teams share three lives; the engine owns the rules.
    ========================================================================== */
 
 import {
-  gridForPlayers, shuffleOrder, resolvePick, rankPlayers,
-  POISON_COUNT, LIVES
+  gridForPlayers, shuffleOrder, resolvePick, rankTeams, rankPlayers,
+  POISON_COUNT, LIVES, TEAMS, MODES
 } from './poison-engine.js';
 import { isOnline, isLobbyStale } from './presence.js';
 
-const ACTIVE_STATUSES = ['lobby', 'placement', 'playing'];
-
-function newId() {
-  return crypto.randomUUID();
-}
+function newId() { return crypto.randomUUID(); }
 
 function assertCells(cells, cellCount) {
   if (!Array.isArray(cells) || cells.length !== POISON_COUNT) throw new Error('exactly 3 poison cells are required');
@@ -27,6 +23,24 @@ function assertCells(cells, cellCount) {
   return [...unique];
 }
 
+function assertTeam(team) {
+  if (!TEAMS.includes(team)) throw new Error('team must be sun or wave');
+  return team;
+}
+
+function publicPlayers(game, nowMs) {
+  return game.players.map((player) => ({
+    id: player.id,
+    name: player.name,
+    team: player.team,
+    lives: Number(player.lives ?? LIVES),
+    eliminated: Boolean(player.eliminated),
+    joinIndex: player.joinIndex,
+    placementDone: Boolean(player.placementDone),
+    online: isOnline(player.lastSeen, nowMs)
+  }));
+}
+
 function publicGame(game, nowMs = Date.now()) {
   return {
     id: game.id,
@@ -36,21 +50,12 @@ function publicGame(game, nowMs = Date.now()) {
     turnOrder: game.turnOrder.slice(),
     turnIndex: game.turnIndex,
     version: game.version,
-    winner: game.winner || null,
-    players: game.players.map((player) => ({
-      id: player.id,
-      name: player.name,
-      lives: player.lives,
-      eliminated: Boolean(player.eliminated),
-      joinIndex: player.joinIndex,
-      placementDone: Boolean(player.placementDone),
-      online: isOnline(player.lastSeen, nowMs)
-    }))
+    mode: game.mode || 'solo',
+    winnerTeam: game.winnerTeam || null,
+    winnerPlayer: game.winnerPlayer || null,
+    teamLives: { sun: game.teamLives.sun, wave: game.teamLives.wave },
+    players: publicPlayers(game, nowMs)
   };
-}
-
-function gameView(game, poisonsForCell, revealed) {
-  return { ...publicGame(game), revealed };
 }
 
 export function createMemoryGameStore(options = {}) {
@@ -66,22 +71,16 @@ export function createMemoryGameStore(options = {}) {
     if (!found) throw new Error('game not found');
     return found;
   }
-
   function poisonMap(gameId) {
     if (!poisons.has(gameId)) poisons.set(gameId, new Map());
     return poisons.get(gameId);
   }
-
   function revealMap(gameId) {
     if (!reveals.has(gameId)) reveals.set(gameId, new Map());
     return reveals.get(gameId);
   }
 
-  function revealedObject(gameId) {
-    return Object.fromEntries(revealMap(gameId));
-  }
-
-  return {
+  const store = {
     async getActive() {
       const found = activeId ? games.get(activeId) : null;
       return found ? publicGame(found, now()) : null;
@@ -90,46 +89,111 @@ export function createMemoryGameStore(options = {}) {
     async createLobby() {
       if (activeId) {
         const current = games.get(activeId);
-        if (current && current.status !== 'finished') return publicGame(current);
+        if (current && current.status !== 'finished') return publicGame(current, now());
       }
       const id = newId();
-      const lobby = {
+      games.set(id, {
         id, status: 'lobby', cols: 0, rows: 0, turnOrder: [], turnIndex: 0,
-        version: 0, winner: null, players: [], createdAt: new Date().toISOString()
-      };
-      games.set(id, lobby);
+        version: 0, mode: 'solo', winnerTeam: null, winnerPlayer: null, players: [],
+        teamLives: { sun: LIVES, wave: LIVES },
+        createdAt: new Date().toISOString()
+      });
       poisons.set(id, new Map());
       reveals.set(id, new Map());
       activeId = id;
-      return publicGame(lobby, now());
+      return publicGame(games.get(id), now());
     },
 
-    async join(gameId, student) {
+    async join(gameId, student, team) {
       const found = game(gameId);
       if (found.status !== 'lobby') throw new Error('game already started');
+      const wantsTeam = found.mode === 'teams';
+      if (wantsTeam) assertTeam(team);
       const existing = found.players.find((player) => player.id === student.id);
-      if (!existing) {
+      if (existing) {
+        existing.team = wantsTeam ? team : null;
+        existing.name = student.name;
+        existing.lastSeen = now();
+      } else {
         found.players.push({
-          id: student.id, name: student.name, lives: LIVES, eliminated: false,
+          id: student.id, name: student.name, team: wantsTeam ? team : null,
+          lives: LIVES, eliminated: false,
           joinIndex: found.players.length, placementDone: false, lastSeen: now()
         });
-        found.version += 1;
-      } else {
-        existing.lastSeen = now();
       }
+      found.version += 1;
       return publicGame(found, now());
     },
+
+    async leave(gameId, studentId) {
+      const found = game(gameId);
+      if (found.status !== 'lobby') throw new Error('cannot leave after the game starts');
+      const before = found.players.length;
+      found.players = found.players.filter((player) => player.id !== studentId);
+      if (found.players.length === before) throw new Error('player is not in this game');
+      found.players.forEach((player, index) => { player.joinIndex = index; });
+      found.version += 1;
+      return publicGame(found, now());
+    },
+
+    async kick(gameId, studentId) {
+      return store.leave(gameId, studentId);
+    },
+
+    async setMode(gameId, mode) {
+      const found = await requireGame(gameId);
+      if (found.status !== 'lobby') throw new Error('mode can only change in the lobby');
+      if (!MODES.includes(mode)) throw new Error('mode must be solo or teams');
+      await db.prepare('UPDATE games SET mode = ?, version = version + 1 WHERE id = ?')
+        .bind(mode, gameId).run();
+      if (mode === 'teams') {
+        const rows = await db.prepare(
+          'SELECT student_id FROM players WHERE game_id = ? AND (team IS NULL OR team = \'\') ORDER BY join_index'
+        ).bind(gameId).all();
+        const statements = (rows.results || []).map((row, index) => db.prepare(
+          'UPDATE players SET team = ? WHERE game_id = ? AND student_id = ?'
+        ).bind(TEAMS[index % 2], gameId, row.student_id));
+        if (statements.length) await db.batch(statements);
+      }
+      return publicGame(await requireGame(gameId));
+    },
+
+    async setMode(gameId, mode) {
+      const found = game(gameId);
+      if (found.status !== 'lobby') throw new Error('mode can only change in the lobby');
+      if (!MODES.includes(mode)) throw new Error('mode must be solo or teams');
+      found.mode = mode;
+      if (mode === 'teams') {
+        found.players.forEach((player, index) => {
+          if (!TEAMS.includes(player.team)) player.team = TEAMS[index % 2];
+        });
+      }
+      found.version += 1;
+      return publicGame(found, now());
+    },
+
+
 
     async start(gameId, rng = Math.random) {
       const found = game(gameId);
       if (found.status !== 'lobby') throw new Error('game already started');
-      if (!found.players.length) throw new Error('no players have joined');
+      if (found.players.length < 2) throw new Error('need at least two players');
+      if (found.mode === 'teams' && !TEAMS.every((team) => found.players.some((player) => player.team === team))) {
+        throw new Error('both teams need at least one player');
+      }
+      found.players.forEach((player) => {
+        player.eliminated = false;
+        player.lives = LIVES;
+      });
       const grid = gridForPlayers(found.players.length);
       found.cols = grid.cols;
       found.rows = grid.rows;
       found.turnOrder = shuffleOrder(found.players.map((player) => player.id), rng);
       found.turnIndex = 0;
       found.status = 'placement';
+      found.teamLives = { sun: LIVES, wave: LIVES };
+      found.winnerTeam = null;
+      found.winnerPlayer = null;
       found.version += 1;
       return publicGame(found, now());
     },
@@ -179,21 +243,28 @@ export function createMemoryGameStore(options = {}) {
       const map = poisonMap(gameId);
       const revealMapRef = revealMap(gameId);
       const engineState = {
+        mode: found.mode,
         status: found.status,
         turnOrder: found.turnOrder,
         turnIndex: found.turnIndex,
         players: found.players.map((player) => ({ ...player })),
+        teamLives: { ...found.teamLives },
         poisons: Object.fromEntries(map),
         revealed: Object.fromEntries(revealMapRef)
       };
       const { state: next, result } = resolvePick(engineState, cell);
-      found.players = next.players;
+      found.players = found.players.map((player) => {
+        const updated = next.players.find((item) => item.id === player.id);
+        return { ...player, eliminated: updated.eliminated, lives: updated.lives };
+      });
+      found.teamLives = next.teamLives;
       found.turnIndex = next.turnIndex;
       found.status = next.status;
-      found.winner = next.winner;
+      found.winnerTeam = next.winnerTeam;
+      found.winnerPlayer = next.winnerPlayer;
       found.version += 1;
       revealMapRef.set(String(cell), next.revealed[String(cell)]);
-      return { game: publicGame(found, now()), result };
+      return { game: await store.state(gameId, studentId), result };
     },
 
     async state(gameId, viewerId) {
@@ -212,22 +283,15 @@ export function createMemoryGameStore(options = {}) {
       }
       ownPoisons.sort((a, b) => a - b);
       return {
-        ...gameView(found, null, revealedObject(gameId)),
+        ...publicGame(found, now()),
+        revealed: Object.fromEntries(revealMap(gameId)),
         ownPoisons,
+        myTeam: viewer ? viewer.team : null,
         myTurn: found.status === 'playing' && found.turnOrder[found.turnIndex] === viewerId,
-        leaderboard: found.status === 'finished' ? rankPlayers(found.players) : []
+        leaderboard: found.status === 'finished'
+          ? (found.mode === 'solo' ? rankPlayers(found.players) : rankTeams(found.teamLives, found.players))
+          : []
       };
-    },
-
-    async kick(gameId, studentId) {
-      const found = game(gameId);
-      if (found.status !== 'lobby') throw new Error('can only remove players from the lobby');
-      const before = found.players.length;
-      found.players = found.players.filter((player) => player.id !== studentId);
-      if (found.players.length === before) throw new Error('player is not in this game');
-      found.players.forEach((player, index) => { player.joinIndex = index; });
-      found.version += 1;
-      return publicGame(found, now());
     },
 
     async reset() {
@@ -237,6 +301,8 @@ export function createMemoryGameStore(options = {}) {
       activeId = null;
     }
   };
+
+  return store;
 }
 
 export function createD1GameStore(db) {
@@ -254,11 +320,18 @@ export function createD1GameStore(db) {
       turnOrder: JSON.parse(row.turn_order || '[]'),
       turnIndex: row.turn_index,
       version: row.version,
-      winner: row.winner || null,
+      mode: row.mode || 'solo',
+      winnerTeam: row.winner || null,
+      winnerPlayer: row.winner_player || null,
+      teamLives: {
+        sun: Number(row.team_lives_sun ?? LIVES),
+        wave: Number(row.team_lives_wave ?? LIVES)
+      },
       players: (players.results || []).map((player) => ({
         id: player.student_id,
         name: player.name,
-        lives: player.lives,
+        team: player.team,
+        lives: Number(player.lives ?? LIVES),
         eliminated: Boolean(player.eliminated),
         joinIndex: player.join_index,
         placementDone: Boolean(player.placement),
@@ -270,35 +343,41 @@ export function createD1GameStore(db) {
   async function loadPoisons(gameId) {
     const rows = await db.prepare('SELECT cell, owner FROM poisons WHERE game_id = ?').bind(gameId).all();
     const map = new Map();
-    for (const row of rows.results || []) {
-      map.set(row.cell, [...(map.get(row.cell) || []), row.owner]);
-    }
+    for (const row of rows.results || []) map.set(row.cell, [...(map.get(row.cell) || []), row.owner]);
     return map;
   }
 
   async function loadReveals(gameId) {
     const rows = await db.prepare('SELECT cell, student_id, hit FROM reveals WHERE game_id = ?').bind(gameId).all();
     const out = {};
-    for (const row of rows.results || []) {
-      out[String(row.cell)] = { hit: Boolean(row.hit), by: row.student_id };
-    }
+    for (const row of rows.results || []) out[String(row.cell)] = { hit: Boolean(row.hit), by: row.student_id };
     return out;
   }
 
-  async function requireGame(gameId) {
-    const found = await loadGame(gameId);
+  async function requireGame(id) {
+    const found = await loadGame(id);
     if (!found) throw new Error('game not found');
     return found;
   }
 
-  return {
+  async function saveState(game) {
+    await db.prepare(
+      `UPDATE games SET status = ?, mode = ?, cols = ?, rows = ?, turn_order = ?, turn_index = ?,
+       version = ?, winner = ?, team_lives_sun = ?, team_lives_wave = ? WHERE id = ?`
+    ).bind(
+      game.status, game.mode || 'solo', game.cols, game.rows, JSON.stringify(game.turnOrder), game.turnIndex,
+      game.version, game.winnerTeam, game.teamLives.sun, game.teamLives.wave, game.id
+    ).run();
+  }
+
+  const store = {
     async getActive() {
       const row = await db.prepare(
         `SELECT id FROM games WHERE status IN ('lobby','placement','playing','finished') ORDER BY created_at DESC LIMIT 1`
       ).first();
       if (!row) return null;
-      const found = await loadGame(row.id);
-      return found ? publicGame(found) : null;
+      const found = await requireGame(row.id);
+      return publicGame(found);
     },
 
     async createLobby() {
@@ -315,32 +394,60 @@ export function createD1GameStore(db) {
       return publicGame(await requireGame(row.id));
     },
 
-    async join(gameId, student) {
+    async join(gameId, student, team) {
       const found = await requireGame(gameId);
       if (found.status !== 'lobby') throw new Error('game already started');
+      const wantsTeam = found.mode === 'teams';
+      if (wantsTeam) assertTeam(team);
+      const seat = wantsTeam ? team : null;
       const existing = found.players.find((player) => player.id === student.id);
-      if (!existing) {
-        await db.prepare(
-          'INSERT OR IGNORE INTO players (game_id, student_id, name, lives, eliminated, join_index, last_seen) VALUES (?, ?, ?, ?, 0, ?, ?)'
-        ).bind(gameId, student.id, student.name, LIVES, found.players.length, Date.now()).run();
-        await db.prepare('UPDATE games SET version = version + 1 WHERE id = ?').bind(gameId).run();
+      if (existing) {
+        await db.prepare('UPDATE players SET team = ?, name = ?, last_seen = ? WHERE game_id = ? AND student_id = ?')
+          .bind(seat, student.name, Date.now(), gameId, student.id).run();
       } else {
-        await db.prepare('UPDATE players SET last_seen = ? WHERE game_id = ? AND student_id = ?')
-          .bind(Date.now(), gameId, student.id).run();
+        await db.prepare(
+          'INSERT OR IGNORE INTO players (game_id, student_id, name, lives, eliminated, join_index, team, last_seen) VALUES (?, ?, ?, ?, 0, ?, ?, ?)'
+        ).bind(gameId, student.id, student.name, LIVES, found.players.length, seat, Date.now()).run();
       }
+      await db.prepare('UPDATE games SET version = version + 1 WHERE id = ?').bind(gameId).run();
       return publicGame(await requireGame(gameId));
     },
+
+    async leave(gameId, studentId) {
+      const found = await requireGame(gameId);
+      if (found.status !== 'lobby') throw new Error('cannot leave after the game starts');
+      const result = await db.prepare('DELETE FROM players WHERE game_id = ? AND student_id = ?')
+        .bind(gameId, studentId).run();
+      if (!result.meta || result.meta.changes !== 1) throw new Error('player is not in this game');
+      await db.prepare('UPDATE games SET version = version + 1 WHERE id = ?').bind(gameId).run();
+      return publicGame(await requireGame(gameId));
+    },
+
+    async kick(gameId, studentId) {
+      return store.leave(gameId, studentId);
+    },
+
+
 
     async start(gameId, rng = Math.random) {
       const found = await requireGame(gameId);
       if (found.status !== 'lobby') throw new Error('game already started');
-      if (!found.players.length) throw new Error('no players have joined');
+      if (found.players.length < 2) throw new Error('need at least two players');
+      if (found.mode === 'teams' && !TEAMS.every((team) => found.players.some((player) => player.team === team))) {
+        throw new Error('both teams need at least one player');
+      }
+      await db.prepare('UPDATE players SET lives = ?, eliminated = 0 WHERE game_id = ?')
+        .bind(LIVES, gameId).run();
       const grid = gridForPlayers(found.players.length);
-      const order = shuffleOrder(found.players.map((player) => player.id), rng);
-      await db.prepare(
-        `UPDATE games SET status = 'placement', cols = ?, rows = ?, turn_order = ?, turn_index = 0,
-         version = version + 1 WHERE id = ?`
-      ).bind(grid.cols, grid.rows, JSON.stringify(order), gameId).run();
+      found.cols = grid.cols;
+      found.rows = grid.rows;
+      found.turnOrder = shuffleOrder(found.players.map((player) => player.id), rng);
+      found.turnIndex = 0;
+      found.status = 'placement';
+      found.teamLives = { sun: LIVES, wave: LIVES };
+      found.winnerTeam = null;
+      found.version += 1;
+      await saveState(found);
       return publicGame(await requireGame(gameId));
     },
 
@@ -388,36 +495,38 @@ export function createD1GameStore(db) {
     },
 
     async pick(gameId, studentId, cell, expectedVersion) {
-      const found = await requireGame(gameId);
-      if (found.version !== expectedVersion) throw new Error('version conflict');
-      if (found.status !== 'playing') throw new Error('game is not in play');
-      if (found.turnOrder[found.turnIndex] !== studentId) throw new Error('not your turn');
+      const preliminary = await requireGame(gameId);
+      if (preliminary.version !== expectedVersion) throw new Error('version conflict');
+      if (preliminary.status !== 'playing') throw new Error('game is not in play');
+      if (preliminary.turnOrder[preliminary.turnIndex] !== studentId) throw new Error('not your turn');
       const guard = await db.prepare('UPDATE games SET version = version + 1 WHERE id = ? AND version = ? AND status = ?')
         .bind(gameId, expectedVersion, 'playing').run();
       if (!guard.meta || guard.meta.changes !== 1) throw new Error('version conflict');
+
+      const found = await requireGame(gameId);
       const map = await loadPoisons(gameId);
       const revealed = await loadReveals(gameId);
       const engineState = {
+        mode: found.mode,
         status: found.status,
         turnOrder: found.turnOrder,
         turnIndex: found.turnIndex,
         players: found.players.map((player) => ({ ...player })),
+        teamLives: { ...found.teamLives },
         poisons: Object.fromEntries(map),
         revealed
       };
       const { state: next, result } = resolvePick(engineState, cell);
       const statements = [
-        ...next.players.map((player) => db.prepare(
-          'UPDATE players SET lives = ?, eliminated = ? WHERE game_id = ? AND student_id = ?'
-        ).bind(player.lives, player.eliminated ? 1 : 0, gameId, player.id)),
-        db.prepare(
-          'INSERT OR REPLACE INTO reveals (game_id, cell, student_id, hit, created_at) VALUES (?, ?, ?, ?, ?)'
-        ).bind(gameId, cell, studentId, result.hit ? 1 : 0, new Date().toISOString()),
-        db.prepare('UPDATE games SET status = ?, turn_index = ?, winner = ? WHERE id = ?')
-          .bind(next.status, next.turnIndex, next.winner, gameId)
+        ...next.players.map((player) => db.prepare('UPDATE players SET eliminated = ?, lives = ? WHERE game_id = ? AND student_id = ?')
+          .bind(player.eliminated ? 1 : 0, player.lives, gameId, player.id)),
+        db.prepare('INSERT OR REPLACE INTO reveals (game_id, cell, student_id, hit, created_at) VALUES (?, ?, ?, ?, ?)')
+          .bind(gameId, cell, studentId, result.hit ? 1 : 0, new Date().toISOString()),
+        db.prepare('UPDATE games SET status = ?, turn_index = ?, winner = ?, team_lives_sun = ?, team_lives_wave = ? WHERE id = ?')
+          .bind(next.status, next.turnIndex, next.winnerTeam, next.teamLives.sun, next.teamLives.wave, gameId)
       ];
       await db.batch(statements);
-      return { game: publicGame(await requireGame(gameId)), result };
+      return { game: await store.state(gameId, studentId), result };
     },
 
     async state(gameId, viewerId) {
@@ -430,29 +539,25 @@ export function createD1GameStore(db) {
         await db.prepare('DELETE FROM players WHERE game_id = ? AND (last_seen IS NULL OR last_seen < ?)')
           .bind(gameId, Date.now() - 90000).run();
       }
+      const fresh = await requireGame(gameId);
       const map = await loadPoisons(gameId);
       const revealed = await loadReveals(gameId);
+      const viewer = fresh.players.find((player) => player.id === viewerId);
       const ownPoisons = [];
       for (const [cell, owners] of map) {
         if (owners.includes(viewerId)) ownPoisons.push(cell);
       }
       ownPoisons.sort((a, b) => a - b);
       return {
-        ...gameView(found, null, revealed),
+        ...publicGame(fresh),
+        revealed,
         ownPoisons,
-        myTurn: found.status === 'playing' && found.turnOrder[found.turnIndex] === viewerId,
-        leaderboard: found.status === 'finished' ? rankPlayers(found.players) : []
+        myTeam: viewer ? viewer.team : null,
+        myTurn: fresh.status === 'playing' && fresh.turnOrder[fresh.turnIndex] === viewerId,
+        leaderboard: fresh.status === 'finished'
+          ? (fresh.mode === 'solo' ? rankPlayers(fresh.players) : rankTeams(fresh.teamLives, fresh.players))
+          : []
       };
-    },
-
-    async kick(gameId, studentId) {
-      const found = await requireGame(gameId);
-      if (found.status !== 'lobby') throw new Error('can only remove players from the lobby');
-      const result = await db.prepare('DELETE FROM players WHERE game_id = ? AND student_id = ?')
-        .bind(gameId, studentId).run();
-      if (!result.meta || result.meta.changes !== 1) throw new Error('player is not in this game');
-      await db.prepare('UPDATE games SET version = version + 1 WHERE id = ?').bind(gameId).run();
-      return publicGame(await requireGame(gameId));
     },
 
     async reset() {
@@ -464,4 +569,6 @@ export function createD1GameStore(db) {
       ]);
     }
   };
+
+  return store;
 }

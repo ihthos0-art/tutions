@@ -14,6 +14,9 @@
   var pollTimer = null;
   var inFlight = false;
   var audioCtx = null;
+  var lastPin = '';
+  var pickMode = 'solo';
+  var pickTeam = null;
 
   var ITEM_POOL = [
     '🍎', '🍌', '🍇', '🍓', '🍒', '🍉', '🍑', '🍍', '🥝', '🍊',
@@ -31,7 +34,6 @@
     return h >>> 0;
   }
 
-  // One item for the whole room, re-rolled for every new game id.
   function itemFor(salt) {
     return ITEM_POOL[hashText(String(salt)) % ITEM_POOL.length];
   }
@@ -70,13 +72,38 @@
     });
   }
 
+  function mePlayer() {
+    if (!game) return null;
+    return game.players.filter(function (player) { return player.id === me; })[0] || null;
+  }
+
+  function teamName(team) { return team === 'sun' ? 'Team Sun' : 'Team Wave'; }
+
   function playerName(id) {
     if (!game) return id;
     var found = game.players.filter(function (player) { return player.id === id; })[0];
     return found ? found.name : id;
   }
 
-  function cellCount() { return (game ? game.cols * game.rows : 0); }
+  function cellCount() { return game ? game.cols * game.rows : 0; }
+
+  function setModeButtons(root, active) {
+    ['solo', 'teams'].forEach(function (mode) {
+      var node = byId(root + '-mode-' + mode);
+      if (!node) return;
+      node.classList.toggle('is-active', mode === active);
+      node.setAttribute('aria-checked', String(mode === active));
+    });
+  }
+
+  function renderModePickers() {
+    setModeButtons('pick', pickMode);
+    byId('pin-team-pick').hidden = pickMode !== 'teams';
+    if (game) {
+      setModeButtons('lobby', game.mode);
+      byId('lobby-team-pick').hidden = game.mode !== 'teams';
+    }
+  }
 
   function makeBoard(host, cols) {
     host.replaceChildren();
@@ -139,16 +166,38 @@
 
   function renderLobby() {
     show('lobby');
-    byId('lobby-players').replaceChildren();
+    renderModePickers();
+    var counts = { sun: 0, wave: 0 };
+    game.players.forEach(function (player) { if (player.team) counts[player.team] += 1; });
+    byId('lobby-sun-count').textContent = counts.sun + (counts.sun === 1 ? ' player' : ' players');
+    byId('lobby-wave-count').textContent = counts.wave + (counts.wave === 1 ? ' player' : ' players');
+    var mine = mePlayer();
+    ['sun', 'wave'].forEach(function (team) {
+      var node = byId('lobby-' + team);
+      var active = mine && mine.team === team;
+      node.classList.toggle('is-active', active);
+      node.setAttribute('aria-checked', String(Boolean(active)));
+    });
+
+    var list = byId('lobby-players');
+    list.replaceChildren();
     game.players.forEach(function (player) {
       var li = document.createElement('li');
       if (player.id === me) li.className = 'is-me';
-      li.appendChild(document.createTextNode(player.name + (player.id === me ? ' (you)' : '')));
+      li.appendChild(document.createTextNode(
+        player.name + (player.id === me ? ' (you)' : '') + (player.team ? ' - ' + teamName(player.team) : '')
+      ));
       var badge = document.createElement('span');
-      badge.textContent = 'ready';
+      badge.textContent = player.online === false ? 'offline' : 'ready';
       li.appendChild(badge);
-      byId('lobby-players').appendChild(li);
+      list.appendChild(li);
     });
+
+    var ready = game.players.length >= 2 && (game.mode !== 'teams' || (counts.sun > 0 && counts.wave > 0));
+    byId('lobby-status').textContent = game.mode === 'teams'
+      ? 'Teams share 3 lives. Both teams need a player before the teacher starts.'
+      : 'Free for all: everyone solo with 3 lives.';
+    byId('lobby-status').dataset.ready = ready ? '1' : '0';
   }
 
   function renderPlacement() {
@@ -158,9 +207,9 @@
       chosen = [];
       byId('placement-board').replaceChildren();
     }
-    var mine = game.players.filter(function (player) { return player.id === me; })[0];
+    var mine = mePlayer();
     if (mine && mine.placementDone) {
-      byId('placement-count').textContent = 'Poisons hidden. Waiting for the others…';
+      byId('placement-count').textContent = 'Poisons hidden. Waiting for the others.';
       byId('placement-submit').disabled = true;
       byId('placement-board').querySelectorAll('.cell').forEach(function (cell) { cell.disabled = true; });
       return;
@@ -177,6 +226,23 @@
     byId('placement-submit').disabled = chosen.length !== 3;
   }
 
+  function renderTeamLives() {
+    var host = byId('team-lives');
+    host.replaceChildren();
+    ['sun', 'wave'].forEach(function (team) {
+      var card = document.createElement('div');
+      card.className = 'team-life is-' + team;
+      var lives = Number(game.teamLives[team] || 0);
+      if (lives <= 0) card.classList.add('is-out');
+      var name = document.createElement('strong');
+      name.textContent = teamName(team);
+      var hearts = document.createElement('span');
+      hearts.textContent = lives > 0 ? '♥'.repeat(lives) : 'out';
+      card.append(name, hearts);
+      host.appendChild(card);
+    });
+  }
+
   function renderPlay() {
     show('play');
     var board = byId('play-board');
@@ -190,6 +256,8 @@
       else cell.setAttribute('aria-disabled', 'true');
     });
     byId('board-lock').hidden = myTurn;
+
+    renderTeamLives();
 
     var banner = byId('turn-banner');
     if (myTurn) {
@@ -228,9 +296,15 @@
     game.players.forEach(function (player) {
       var li = document.createElement('li');
       if (player.id === me) li.className = 'is-me';
-      li.appendChild(document.createTextNode(player.name + (player.id === me ? ' (you)' : '')));
+      li.appendChild(document.createTextNode(
+        player.name + (player.id === me ? ' (you)' : '') + (player.team ? ' - ' + teamName(player.team) : '')
+      ));
       var hearts = document.createElement('span');
-      hearts.textContent = player.eliminated ? 'out' : '♥'.repeat(player.lives);
+      if (game.mode === 'teams') {
+        hearts.textContent = game.teamLives[player.team] > 0 ? 'team ' + game.teamLives[player.team] : 'out';
+      } else {
+        hearts.textContent = player.eliminated ? 'out' : '♥'.repeat(Number(player.lives || 0));
+      }
       li.appendChild(hearts);
       lives.appendChild(li);
     });
@@ -240,31 +314,28 @@
 
   function renderFinished() {
     show('finished');
-    var winners = game.players.filter(function (player) { return player.id === game.winner; });
-    byId('winner-line').textContent = winners.length
-      ? winners[0].name + ' wins!'
-      : 'Everyone is out.';
-    var rows = game.leaderboard && game.leaderboard.length
-      ? game.leaderboard
-      : game.players.slice().sort(function (a, b) {
-        return Number(a.eliminated) - Number(b.eliminated) || b.lives - a.lives;
-      }).map(function (player, index) {
-        return { id: player.id, name: player.name, lives: player.lives, rank: index + 1 };
-      });
+    var rows = game.leaderboard || [];
+    byId('winner-line').textContent = game.mode === 'teams'
+      ? (game.winnerTeam ? teamName(game.winnerTeam) + ' wins!' : 'Draw')
+      : (game.winnerPlayer
+        ? ((game.players.filter(function (p) { return p.id === game.winnerPlayer; })[0] || {}).name || 'Winner') + ' wins!'
+        : 'Everyone is out.');
     var list = byId('leaderboard');
     list.replaceChildren();
     rows.forEach(function (row) {
       var li = document.createElement('li');
-      li.appendChild(document.createTextNode(row.name));
+      li.appendChild(document.createTextNode(
+        game.mode === 'teams' ? teamName(row.team) : row.name
+      ));
       var span = document.createElement('span');
-      span.textContent = row.lives + ' lives left';
+      span.textContent = String(row.lives) + ' lives left';
       li.appendChild(span);
       list.appendChild(li);
     });
   }
 
   function render() {
-    if (!game) { show('pin'); return; }
+    if (!game || !mePlayer()) { show('pin'); renderModePickers(); return; }
     if (game.status === 'lobby') renderLobby();
     else if (game.status === 'placement') renderPlacement();
     else if (game.status === 'playing') renderPlay();
@@ -281,9 +352,7 @@
         if (game && !pollTimer) startPolling();
         render();
       })
-      .catch(function (error) {
-        if (error.status === 401) window.location.replace('/login');
-      })
+      .catch(function (error) { if (error.status === 401) window.location.replace('/login'); })
       .finally(function () { inFlight = false; });
   }
 
@@ -292,25 +361,80 @@
     pollTimer = setInterval(poll, 1000);
   }
 
+  function joinGame(mode, team, pin) {
+    byId('pin-error').textContent = '';
+    api('/api/game/join', {
+      method: 'POST',
+      body: JSON.stringify({ pin: pin || lastPin, team: team || undefined, mode: mode })
+    })
+      .then(function (data) {
+        game = data.game;
+        if (pin) lastPin = pin;
+        render();
+        startPolling();
+      })
+      .catch(function (error) {
+        if (game) toast(error.message);
+        else byId('pin-error').textContent = error.message;
+      });
+  }
+
+  ['pick', 'lobby'].forEach(function (root) {
+    ['solo', 'teams'].forEach(function (mode) {
+      var node = byId(root + '-mode-' + mode);
+      if (!node) return;
+      node.addEventListener('click', function () {
+        if (root === 'pick') {
+          pickMode = mode;
+          renderModePickers();
+          return;
+        }
+        api('/api/game/mode', { method: 'POST', body: JSON.stringify({ mode: mode }) })
+          .then(function (data) { game = data.game; render(); })
+          .catch(function (error) { toast(error.message); });
+      });
+    });
+  });
+
+  ['pin', 'lobby'].forEach(function (root) {
+    ['sun', 'wave'].forEach(function (team) {
+      var node = byId(root + '-' + team);
+      if (!node) return;
+      node.addEventListener('click', function () {
+        if (root === 'pin') {
+          pickTeam = team;
+          ['sun', 'wave'].forEach(function (other) {
+            var btn = byId('pick-' + other);
+            btn.classList.toggle('is-active', other === team);
+            btn.setAttribute('aria-checked', String(other === team));
+          });
+          return;
+        }
+        joinGame('teams', team);
+      });
+    });
+  });
+
   byId('game-player').textContent = auth.studentName || me;
 
   byId('pin-form').addEventListener('submit', function (event) {
     event.preventDefault();
     var pin = byId('pin-input').value.trim();
-    byId('pin-error').textContent = '';
     if (!/^\d{4}$/.test(pin)) {
       byId('pin-error').textContent = 'Enter the four-number PIN.';
       return;
     }
-    api('/api/game/join', { method: 'POST', body: JSON.stringify({ pin: pin }) })
-      .then(function (data) {
-        game = data.game;
-        render();
-        startPolling();
-      })
-      .catch(function (error) {
-        byId('pin-error').textContent = error.message;
-      });
+    if (pickMode === 'teams' && !pickTeam) {
+      byId('pin-error').textContent = 'Pick a team first.';
+      return;
+    }
+    joinGame(pickMode, pickTeam, pin);
+  });
+
+  byId('leave-game').addEventListener('click', function () {
+    api('/api/game/leave', { method: 'POST' })
+      .then(function () { game = null; show('pin'); renderModePickers(); })
+      .catch(function (error) { toast(error.message); });
   });
 
   byId('placement-board').addEventListener('click', function (event) {
@@ -330,11 +454,8 @@
       method: 'POST',
       body: JSON.stringify({ cells: chosen, version: game.version })
     })
-      .then(function (data) { game = data.game; render(); })
-      .catch(function (error) {
-        toast(error.message);
-        poll();
-      });
+      .then(function (data) { game = data.game; chosen = []; render(); })
+      .catch(function (error) { toast(error.message); poll(); });
   });
 
   byId('play-board').addEventListener('click', function (event) {
@@ -351,10 +472,7 @@
         render();
         if (data.result && data.result.hit) boom(index);
       })
-      .catch(function (error) {
-        toast(error.message);
-        poll();
-      });
+      .catch(function (error) { toast(error.message); poll(); });
   });
 
   poll();

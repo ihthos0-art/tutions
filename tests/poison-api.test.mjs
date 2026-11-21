@@ -113,7 +113,9 @@ test('admin can start and reset the room', async () => {
   const store = createMemoryGameStore();
   const e = env(store);
   const adnan = await studentToken(e, 'Adnan');
+  const nafis = await studentToken(e, 'Nafis');
   await post(e, '/api/game/join', { pin: '5649' }, adnan);
+  await post(e, '/api/game/join', { pin: '5649' }, nafis);
   const admin = await adminToken(e);
   const started = await post(e, '/api/game/start', {}, admin);
   assert.equal(started.status, 200);
@@ -138,8 +140,10 @@ test('a member who reloads rejoins a game already in play', async () => {
   const store = createMemoryGameStore();
   const e = env(store);
   const adnan = await studentToken(e, 'Adnan');
+  const nafis = await studentToken(e, 'Nafis');
   const admin = await adminToken(e);
   await post(e, '/api/game/join', { pin: '5649' }, adnan);
+  await post(e, '/api/game/join', { pin: '5649' }, nafis);
   await post(e, '/api/game/start', {}, admin);
   const again = await post(e, '/api/game/join', { pin: '5649' }, adnan);
   assert.equal(again.status, 200);

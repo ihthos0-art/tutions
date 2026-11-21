@@ -138,3 +138,14 @@ test('odd one out page is login gated and wired to server routes', () => {
     assert.ok(js.includes(needle), 'missing ' + needle);
   }
 });
+
+test('poison page offers both modes, team pick and leave', () => {
+  const html = fs.readFileSync(path.join(root, 'public/poison.html'), 'utf8');
+  assert.match(html, /pick-mode-solo/);
+  assert.match(html, /pick-mode-teams/);
+  assert.match(html, /leave-game/);
+  const js = fs.readFileSync(path.join(root, 'public/assets/js/poison-game.js'), 'utf8');
+  assert.match(js, /\/api\/game\/mode/);
+  assert.match(js, /\/api\/game\/leave/);
+  assert.match(js, /teamLives/);
+});

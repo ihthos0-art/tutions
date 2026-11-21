@@ -67,6 +67,8 @@ test('admin can kick a lobby player and start poison', async () => {
   const kicked = await post(e, '/api/admin/games/poison/kick', { student: 'nafis' }, admin);
   assert.equal(kicked.status, 200);
   assert.deepEqual((await kicked.json()).game.players.map((p) => p.id), ['adnan']);
+  const c = await studentToken(e, 'Manha');
+  await post(e, '/api/game/join', { pin: '5649' }, c);
   const started = await post(e, '/api/admin/games/poison/start', {}, admin);
   assert.equal(started.status, 200);
   assert.equal((await started.json()).game.status, 'placement');

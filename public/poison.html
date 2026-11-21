@@ -20,6 +20,20 @@
     <section class="screen" id="pin-screen">
       <h2>Enter the game PIN</h2>
       <p class="screen-help">The teacher gives out the PIN at game time.</p>
+      <div class="mode-pick" role="radiogroup" aria-label="Game mode">
+        <button type="button" class="mode-btn is-active" id="pick-mode-solo" data-mode="solo" role="radio" aria-checked="true">Free for all</button>
+        <button type="button" class="mode-btn" id="pick-mode-teams" data-mode="teams" role="radio" aria-checked="false">Teams</button>
+      </div>
+      <div class="team-pick" id="pin-team-pick" role="radiogroup" aria-label="Team" hidden>
+        <button type="button" class="team-btn" id="pick-sun" data-team="sun" role="radio" aria-checked="false">
+          <span class="team-name">Team Sun</span>
+          <span class="team-count" id="pick-sun-count">0</span>
+        </button>
+        <button type="button" class="team-btn team-wave" id="pick-wave" data-team="wave" role="radio" aria-checked="false">
+          <span class="team-name">Team Wave</span>
+          <span class="team-count" id="pick-wave-count">0</span>
+        </button>
+      </div>
       <form id="pin-form" autocomplete="off">
         <input id="pin-input" class="pin-input" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" placeholder="••••" aria-label="Game PIN" />
         <button type="submit" class="btn">Unlock game</button>
@@ -29,8 +43,23 @@
 
     <section class="screen" id="lobby-screen" hidden>
       <h2>Lobby</h2>
-      <p class="screen-help" id="lobby-status">Waiting for the teacher to start…</p>
+      <p class="screen-help" id="lobby-status">Free for all: everyone solo with 3 lives. Teams: shared 3 lives per team.</p>
+      <div class="mode-pick" role="radiogroup" aria-label="Game mode">
+        <button type="button" class="mode-btn" id="lobby-mode-solo" data-mode="solo" role="radio" aria-checked="false">Free for all</button>
+        <button type="button" class="mode-btn" id="lobby-mode-teams" data-mode="teams" role="radio" aria-checked="false">Teams</button>
+      </div>
+      <div class="team-pick" id="lobby-team-pick" role="radiogroup" aria-label="Switch team" hidden>
+        <button type="button" class="team-btn" id="lobby-sun" data-team="sun" role="radio" aria-checked="false">
+          <span class="team-name">Team Sun</span>
+          <span class="team-count" id="lobby-sun-count">0</span>
+        </button>
+        <button type="button" class="team-btn team-wave" id="lobby-wave" data-team="wave" role="radio" aria-checked="false">
+          <span class="team-name">Team Wave</span>
+          <span class="team-count" id="lobby-wave-count">0</span>
+        </button>
+      </div>
       <ul class="player-list" id="lobby-players"></ul>
+      <button type="button" class="btn secondary" id="leave-game">Leave game</button>
     </section>
 
     <section class="screen" id="placement-screen" hidden>
@@ -42,6 +71,7 @@
     </section>
 
     <section class="screen" id="play-screen" hidden>
+      <div class="team-lives" id="team-lives"></div>
       <div class="turn-banner" id="turn-banner"></div>
       <div class="board-wrap">
         <div class="board" id="play-board"></div>

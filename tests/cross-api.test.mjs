@@ -55,7 +55,7 @@ test('target number is shown to the hunting team once picked', async () => {
   const finder = (await (await get(e, '/api/cross/state', finderToken)).json()).game;
   assert.equal(finder.secretNumber, secret, 'hunter sees the target number');
   assert.equal(finder.secretCell, null, 'hunter does not get the cell index');
-  assert.equal(finder.numbers.length, 50);
+  assert.equal(finder.numbers.length, 50, 'board appears once the hunt starts');
   assert.equal(finder.canGuess, true);
 });
 

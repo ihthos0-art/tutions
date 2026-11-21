@@ -36,7 +36,7 @@ test('only the picking team sees and sets the secret', async () => {
   assert.equal(picker.numbers.length, 50);
   assert.equal(picker.canPick, true);
   assert.equal(finder.canPick, false);
-  assert.equal(finder.numbers.length, 50, 'numbers visible to both teams');
+  assert.equal(finder.numbers, null, 'numbers hidden from the hunter while picking');
   assert.equal(finder.secretNumber, null, 'no target yet before a pick');
   const picked = await store.pick(id, pickerId, 3, picker.version);
   assert.equal(picked.secretNumber, picker.numbers[3]);

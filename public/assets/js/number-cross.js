@@ -159,9 +159,14 @@
       });
     });
 
-    buildNumbers(game.numbers);
+    if (Array.isArray(game.numbers) && game.numbers.length) {
+      buildNumbers(game.numbers);
+      byId('nc-cover').hidden = true;
+    } else {
+      byId('nc-cover').hidden = false;
+      byId('nc-cover-text').textContent = teamName(game.pickerTeam) + ' is picking';
+    }
     buildBoxes();
-    byId('nc-cover').hidden = true;
     byId('nc-countdown').hidden = true;
     document.body.classList.toggle('nc-hunting', game.myTeam === game.finderTeam);
     byId('nc-boxes-help').textContent = game.myTeam === game.pickerTeam

@@ -502,6 +502,8 @@
       .catch(function (error) { toast(error.message); poll(); });
   });
 
+  startPolling();
+
   document.addEventListener('pointerdown', unlockAudio, { passive: true });
   document.addEventListener('click', unlockAudio, { passive: true });
 

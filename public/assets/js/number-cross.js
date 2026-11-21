@@ -347,4 +347,5 @@
 
   byId('nc-me').textContent = auth.studentName || '';
   poll();
+  startPolling();
 })();

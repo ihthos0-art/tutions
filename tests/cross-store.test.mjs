@@ -111,3 +111,21 @@ test('kicking only works in the lobby', async () => {
   await store.start(id);
   await assert.rejects(() => store.kick(id, 'c'), /lobby/);
 });
+
+test('roles swap when the acting team goes offline', async () => {
+  let clock = 5000000;
+  const store = createMemoryCrossStore({ now: () => clock, holdMs: 0, wrongMs: 0 });
+  const id = await store.createLobby();
+  await store.join(id, { id: 'a', name: 'A' }, 'sun');
+  await store.join(id, { id: 'b', name: 'B' }, 'wave');
+  const started = await store.start(id);
+  const picker = started.pickerTeam;
+  const pickerId = picker === 'sun' ? 'a' : 'b';
+  const onlineId = picker === 'sun' ? 'b' : 'a';
+  await store.state(id, pickerId);
+  clock += 40000;
+  const view = await store.state(id, onlineId);
+  assert.notEqual(view.pickerTeam, picker);
+  assert.equal(view.phase, 'pick');
+  assert.equal(view.canPick, true);
+});

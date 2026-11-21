@@ -256,6 +256,26 @@ export function createMemoryCrossStore(options = {}) {
       const list = roster(gameId);
       const viewer = list.find((player) => player.id === viewerId);
       if (viewer) viewer.lastSeen = now();
+      if (found.status === 'playing' && found.phase !== 'finished') {
+        const online = (team) => list.some((player) => player.team === team
+          && now() - Number(player.lastSeen || 0) <= 25000);
+        const others = online(found.finderTeam);
+        const acting = online(found.pickerTeam);
+        if (!acting && others) {
+          const next = found.pickerTeam;
+          found.pickerTeam = found.finderTeam;
+          found.finderTeam = next;
+          found.phase = 'pick';
+          found.secretCell = null;
+          found.secretNumber = null;
+          found.holdBy = null;
+          found.holdCell = null;
+          found.holdStartedAt = null;
+          found.lastWrongAt = null;
+          if (found.round < 1) found.round = 1;
+          bump(found);
+        }
+      }
       if (found.status === 'lobby') {
         const kept = list.filter((player) => now() - Number(player.lastSeen) < lobbyTtl);
         if (kept.length !== list.length) {
@@ -520,6 +540,23 @@ export function createD1CrossStore(db) {
       if (players.some((player) => player.id === viewerId)) {
         await db.prepare('UPDATE cross_players SET last_seen = ? WHERE game_id = ? AND student_id = ?')
           .bind(Date.now(), gameId, viewerId).run();
+      }
+      if (found.status === 'playing' && found.phase !== 'finished') {
+        const nowMs = Date.now();
+        const online = (team) => players.some((player) => player.team === team
+          && nowMs - Number(player.lastSeen || 0) <= 25000);
+        if (!online(found.pickerTeam) && online(found.finderTeam)) {
+          const next = found.pickerTeam;
+          const guard = await db.prepare(
+            `UPDATE cross_games SET picker_team = ?, finder_team = ?, phase = 'pick', secret_cell = NULL,
+             secret_number = NULL, hold_by = NULL, hold_cell = NULL, hold_started_at = NULL,
+             last_wrong_at = NULL, version = version + 1, round_no = MAX(round_no, 1)
+             WHERE id = ? AND version = ?`
+          ).bind(found.finderTeam, next, gameId, found.version).run();
+          if (guard.meta && guard.meta.changes === 1) {
+            return snap(await requireGame(gameId), await loadPlayers(gameId), await loadCrosses(gameId), viewerId);
+          }
+        }
       }
       if (found.status === 'lobby') {
         await db.prepare('DELETE FROM cross_players WHERE game_id = ? AND (last_seen IS NULL OR last_seen < ?)')

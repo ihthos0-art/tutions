@@ -455,6 +455,23 @@
   });
 
   byId('sound-test').addEventListener('click', function () { playBoom(); });
+  var bootEtag = null;
+  function watchBuild() {
+    fetch('/assets/js/poison-game.js', { method: 'HEAD', cache: 'no-store' })
+      .then(function (response) {
+        var etag = response.headers.get('etag') || response.headers.get('last-modified') || '';
+        if (!etag) return;
+        if (bootEtag && etag !== bootEtag) { window.location.reload(); return; }
+        bootEtag = etag;
+      })
+      .catch(function () {});
+  }
+  watchBuild();
+  setInterval(watchBuild, 45000);
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) poll();
+  });
+
   byId('game-player').textContent = auth.studentName || me;
 
   byId('pin-form').addEventListener('submit', function (event) {

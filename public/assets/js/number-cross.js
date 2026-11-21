@@ -345,6 +345,23 @@
   byId('nc-boxes').addEventListener('pointercancel', releaseHold);
   byId('nc-boxes').addEventListener('pointerleave', releaseHold);
 
+  var bootEtag = null;
+  function watchBuild() {
+    fetch('/assets/js/number-cross.js', { method: 'HEAD', cache: 'no-store' })
+      .then(function (response) {
+        var etag = response.headers.get('etag') || response.headers.get('last-modified') || '';
+        if (!etag) return;
+        if (bootEtag && etag !== bootEtag) { window.location.reload(); return; }
+        bootEtag = etag;
+      })
+      .catch(function () {});
+  }
+  watchBuild();
+  setInterval(watchBuild, 45000);
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) poll();
+  });
+
   byId('nc-me').textContent = auth.studentName || '';
   poll();
   startPolling();

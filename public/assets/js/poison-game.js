@@ -435,6 +435,10 @@
     joinGame(pickMode, pickTeam, pin);
   });
 
+  byId('back-to-lobby').addEventListener('click', function () {
+    joinGame(game && game.mode ? game.mode : 'solo', mePlayer() ? mePlayer().team : null, lastPin);
+  });
+
   byId('leave-game').addEventListener('click', function () {
     api('/api/game/leave', { method: 'POST' })
       .then(function () { game = null; show('pin'); renderModePickers(); })

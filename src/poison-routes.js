@@ -67,6 +67,7 @@ export async function handleGameRoutes(ctx) {
     if (!student) return json({ error: 'unknown student' }, 401);
     try {
       let active = await store.getActive();
+      if (active && active.status === 'finished') active = await store.createLobby();
       if (active && active.status === 'lobby' && active.players.length === 0 && mode) {
         active = await store.setMode(active.id, mode);
       }

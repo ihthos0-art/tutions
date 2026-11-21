@@ -39,6 +39,13 @@ export async function handleOddRoutes(ctx) {
     if (!student) return json({ error: 'unknown student' }, 401);
     try {
       let active = await store.getActive();
+      if (active && active.status === 'playing') {
+        const snapshot = await store.state(active.id, '');
+        if (!snapshot.players.some((player) => player.online)) {
+          await store.reset();
+          active = null;
+        }
+      }
       let gameId = active ? active.id : null;
       if (!active || active.status === 'finished') gameId = await store.createLobby();
       const state = await store.state(gameId, student.id);

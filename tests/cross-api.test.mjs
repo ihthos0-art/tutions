@@ -112,3 +112,21 @@ test('admin kick and reset work', async () => {
   const reset = await post(e, '/api/admin/games/cross/reset', {}, admin);
   assert.equal(reset.status, 200);
 });
+
+test('an abandoned running game is replaced instead of blocking new joins', async () => {
+  let clock = 2000000;
+  const store = createMemoryCrossStore({ now: () => clock, holdMs: 0, wrongMs: 0 });
+  const e = env(store);
+  const a = await studentToken(e, 'Adnan');
+  const b = await studentToken(e, 'Nafis');
+  await post(e, '/api/cross/join', { team: 'sun' }, a);
+  await post(e, '/api/cross/join', { team: 'wave' }, b);
+  await post(e, '/api/cross/start', {}, a);
+  clock += 60000; // everyone has been gone for a minute
+  const c = await studentToken(e, 'Manha');
+  const response = await post(e, '/api/cross/join', { team: 'sun' }, c);
+  assert.equal(response.status, 200);
+  const game = (await response.json()).game;
+  assert.equal(game.status, 'lobby');
+  assert.deepEqual(game.players.map((p) => p.id), ['manha']);
+});

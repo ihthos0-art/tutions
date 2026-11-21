@@ -55,6 +55,13 @@ export async function handleGameRoutes(ctx) {
     if (!student) return json({ error: 'unknown student' }, 401);
 
     let active = await store.getActive();
+    if (active && (active.status === 'placement' || active.status === 'playing')) {
+      const snapshot = await store.state(active.id, '');
+      if (!snapshot.players.some((player) => player.online)) {
+        await store.reset();
+        active = null;
+      }
+    }
     const wasMember = Boolean(active && active.players.some((player) => player.id === student.id));
 
     // A player already in this room (or just finishing it) needs no PIN again.

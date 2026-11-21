@@ -8,7 +8,7 @@
   var me = auth.studentId;
   var CELLS = 50;
   var BOXES = 50;
-  var HOLD_MS = 1000;
+  var HOLD_MS = 500;
 
   var game = null;
   var teamPick = null;
@@ -172,7 +172,7 @@
     buildBoxes();
     byId('nc-countdown').hidden = true;
     document.body.classList.toggle('nc-hunting', game.myTeam === game.finderTeam);
-    byId('nc-boxes-help').textContent = 'Hold each box for 1 second to cross it.';
+    byId('nc-boxes-help').textContent = 'Hold each box for half a second to cross it.';
 
     var targetHost = byId('nc-target');
     if (game.secretNumber) {
@@ -190,7 +190,7 @@
       }
     } else if (game.phase === 'cross') {
       if (game.myTeam === game.pickerTeam) {
-        setBanner('Cross boxes', 'Your number is ' + game.secretNumber + '. Hold boxes for 1 second.');
+        setBanner('Cross boxes', 'Your number is ' + game.secretNumber + '. Hold boxes for half a second.');
       } else {
         setBanner('Find ' + game.secretNumber, 'Tap that number on the board to stop them.');
       }
@@ -239,7 +239,7 @@
 
   function startPolling() {
     if (pollTimer) return;
-    pollTimer = setInterval(poll, 600);
+    pollTimer = setInterval(poll, 500);
   }
 
   function joinGame(team) {

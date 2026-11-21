@@ -8,7 +8,7 @@
    ========================================================================== */
 
 export const CROSS_CELLS = 50;
-export const CROSS_HOLD_MS = 2000;
+export const CROSS_HOLD_MS = 1000;
 export const CROSS_WRONG_MS = 1500;
 const TEAMS = ['sun', 'wave'];
 

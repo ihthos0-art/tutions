@@ -113,7 +113,7 @@ test('number cross multiplayer page uses student auth and server routes', () => 
   assert.match(html, /assets\/js\/student-auth\.js/);
   assert.match(html, /assets\/css\/number-cross\.css/);
   const js = fs.readFileSync(path.join(root, 'public/assets/js/number-cross.js'), 'utf8');
-  for (const needle of ['/api/cross/join', '/api/cross/start', '/api/cross/pick', '/api/cross/hold', '/api/cross/complete', '/api/cross/guess', 'var HOLD_MS = 2000', 'var CELLS = 50']) {
+  for (const needle of ['/api/cross/join', '/api/cross/start', '/api/cross/pick', '/api/cross/hold', '/api/cross/complete', '/api/cross/guess', 'var HOLD_MS = 1000', 'var CELLS = 50']) {
     assert.ok(js.includes(needle), 'missing ' + needle);
   }
 });

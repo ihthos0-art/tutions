@@ -1,20 +1,10 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Slope & Graphing Practice</title>
-<style>
-body{margin:0;background:#14101f;color:#f4f0ff;font-family:system-ui,sans-serif}
-header{position:sticky;top:0;z-index:2;display:flex;gap:12px;align-items:center;padding:12px 16px;background:#1d1730;border-bottom:1px solid #3a2c5e}
-header a{color:#ffd166;text-decoration:none;font-weight:700;font-size:14px} header h1{margin:0;font-size:16px}
-main{max-width:900px;margin:0 auto;padding:14px;display:grid;gap:14px}
-figure{margin:0;background:#221a38;border:1px solid #3a2c5e;border-radius:12px;padding:8px}
-figure img{display:block;width:100%;height:auto;border-radius:8px;background:#fff}
-figcaption{padding:6px 4px 2px;font-size:12px;color:#b9a9e6}
-.print{text-align:center;padding:10px 0 30px;font-size:13px} .print a{color:#ffd166}
-</style></head><body>
-<header><a href="/nafis">Back</a><h1>Slope & Graphing Practice</h1></header>
-<main id="pages"></main>
-<p class="print">Need to print or scribble on it? <a href="/homework/nafis/slope-graphing-practice.pdf">Open the PDF file</a></p>
-<script>
-var host=document.getElementById('pages');
-for(var i=1;i<=4;i+=1){var f=document.createElement('figure');var im=document.createElement('img');im.loading=i<=2?'eager':'lazy';im.src='page-'+i+'.jpg';im.alt='Slope & Graphing Practice page '+i;var c=document.createElement('figcaption');c.textContent='Page '+i+' of 4';f.append(im,c);host.appendChild(f);}
-</script></body></html>
+<link rel="stylesheet" href="/assets/css/homework-viewer.css" />
+</head><body>
+<header class="hw-header"><a href="/nafis">Back</a><h1>Slope & Graphing Practice</h1></header>
+<main id="hw-pages"></main>
+<p class="hw-print">Need to print or scribble on it? <a href="/homework/nafis/slope-graphing-practice.pdf">Open the PDF file</a></p>
+<script src="/assets/js/hw-viewer.js" data-title="Slope & Graphing Practice" data-pages="4" data-back="/nafis" data-pdf="/homework/nafis/slope-graphing-practice.pdf" data-key="nafis/slope-graphing"></script>
+</body></html>

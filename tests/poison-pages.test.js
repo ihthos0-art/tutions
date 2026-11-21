@@ -170,3 +170,14 @@ test('cross board has visible boxes and a crossed state', () => {
   const js = fs.readFileSync(path.join(root, 'public/assets/js/number-cross.js'), 'utf8');
   assert.match(js, /is-crossed/);
 });
+
+test('homework viewers ship the scribble tool', () => {
+  const js = fs.readFileSync(path.join(root, 'public/assets/js/hw-viewer.js'), 'utf8');
+  for (const needle of ['hw-ink', 'pointerdown', 'destination-out', 'localStorage', 'Undo', 'Clear page']) {
+    assert.ok(js.includes(needle), 'missing ' + needle);
+  }
+  const css = fs.readFileSync(path.join(root, 'public/assets/css/homework-viewer.css'), 'utf8');
+  assert.match(css, /body\.ink-on \.hw-ink/);
+  const page = fs.readFileSync(path.join(root, 'public/homework/manha/cats/index.html'), 'utf8');
+  assert.match(page, /hw-viewer\.js/);
+});

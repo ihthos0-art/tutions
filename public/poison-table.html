@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Poison Challenge, one screen | LearnFlow</title>
+  <link rel="stylesheet" href="assets/css/fonts.css?v=20261132" />
+  <link rel="stylesheet" href="assets/css/poison.css?v=20261132" />
+</head>
+<body>
+  <noscript>Enable JavaScript to play.</noscript>
+
+  <header class="game-topbar">
+    <a class="game-back" href="/poison">Online game</a>
+    <h1 class="game-title">Poison Challenge, one screen</h1>
+    <span class="game-player">Pass the device</span>
+  </header>
+
+  <main class="game-main">
+    <section class="screen" id="pt-setup">
+      <h2>Who is playing?</h2>
+      <div class="mode-pick" role="radiogroup" aria-label="Mode">
+        <button type="button" class="mode-btn is-active" id="pt-mode-solo" data-mode="solo" role="radio" aria-checked="true">Free for all</button>
+        <button type="button" class="mode-btn" id="pt-mode-teams" data-mode="teams" role="radio" aria-checked="false">Teams</button>
+      </div>
+      <label class="form-label" for="pt-count">Players</label>
+      <div class="counter-pick">
+        <button type="button" class="btn secondary" id="pt-minus">-</button>
+        <strong id="pt-count-value">4</strong>
+        <button type="button" class="btn secondary" id="pt-plus">+</button>
+      </div>
+      <div id="pt-names" class="pt-names"></div>
+      <button type="button" class="btn" id="pt-start">Start game</button>
+    </section>
+
+    <section class="screen" id="pt-pass" hidden>
+      <h2 id="pt-pass-title">Pass to Player 1</h2>
+      <p class="screen-help" id="pt-pass-help">Place three poisons. Everyone else, look away.</p>
+      <button type="button" class="btn" id="pt-reveal">Show my board</button>
+    </section>
+
+    <section class="screen" id="pt-place" hidden>
+      <h2 id="pt-place-title">Place your 3 poisons</h2>
+      <p class="screen-help" id="pt-place-count">0 / 3 chosen</p>
+      <div class="board" id="pt-board"></div>
+      <button type="button" class="btn" id="pt-place-done" disabled>Hide and pass</button>
+    </section>
+
+    <section class="screen" id="pt-play" hidden>
+      <div class="team-lives" id="pt-lives"></div>
+      <div class="turn-banner" id="pt-turn"></div>
+      <div class="board" id="pt-play-board"></div>
+      <p class="nc-note" id="pt-note"></p>
+    </section>
+
+    <section class="screen" id="pt-over" hidden>
+      <h2 id="pt-winner">Winner</h2>
+      <ol class="leaderboard" id="pt-ranking"></ol>
+      <button type="button" class="btn" id="pt-again">Play again</button>
+      <a class="btn secondary" href="/poison">Back online</a>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="assets/js/poison-table.js?v=20261132"></script>
+</body>
+</html>

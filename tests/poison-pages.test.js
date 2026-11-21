@@ -149,3 +149,14 @@ test('poison page offers both modes, team pick and leave', () => {
   assert.match(js, /\/api\/game\/leave/);
   assert.match(js, /teamLives/);
 });
+
+test('one-screen poison page exists and is self contained', () => {
+  const html = fs.readFileSync(path.join(root, 'public/poison-table.html'), 'utf8');
+  assert.match(html, /assets\/js\/poison-table\.js/);
+  const js = fs.readFileSync(path.join(root, 'public/assets/js/poison-table.js'), 'utf8');
+  for (const needle of ['pt-mode-teams', 'cell--chosen', 'state.teamLives', 'renderPass']) {
+    assert.ok(js.includes(needle) || html.includes(needle), 'missing ' + needle);
+  }
+  const main = fs.readFileSync(path.join(root, 'public/poison.html'), 'utf8');
+  assert.match(main, /poison-table/);
+});

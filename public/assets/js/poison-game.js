@@ -120,6 +120,15 @@
     }
   }
 
+  function unlockAudio() {
+    try {
+      var Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) return;
+      audioCtx = audioCtx || new Ctx();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+    } catch (error) { /* audio is optional */ }
+  }
+
   function playBoom() {
     try {
       var Ctx = window.AudioContext || window.webkitAudioContext;
@@ -469,6 +478,9 @@
       .then(function (data) { game = data.game; chosen = []; render(); })
       .catch(function (error) { toast(error.message); poll(); });
   });
+
+  document.addEventListener('pointerdown', unlockAudio, { passive: true });
+  document.addEventListener('click', unlockAudio, { passive: true });
 
   byId('play-board').addEventListener('click', function (event) {
     var cell = event.target.closest('.cell');

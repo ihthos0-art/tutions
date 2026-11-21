@@ -4,27 +4,30 @@
   var script = document.currentScript;
   var title = script.dataset.title || 'Homework';
   var pages = Number(script.dataset.pages || 0);
-  var back = script.dataset.back || '/';
-  var pdf = script.dataset.pdf || '';
   var keyBase = script.dataset.key || title;
 
   var COLORS = ['#ff4d6d', '#ffd166', '#4cc9f0', '#2ecc71', '#ffffff'];
-  var drawing = false;
+  var mode = 'off'; // off | draw | erase | text | check
   var color = COLORS[0];
   var size = 4;
-  var erasing = false;
+  var drawing = false;
   var activeCanvas = null;
-  var strokes = {};
+  var pageState = {};
 
-  function storeKey(page) { return 'hw-ink:' + keyBase + ':' + page; }
+  function stateKey(page) { return 'hw-annot:' + keyBase + ':' + page; }
+
+  function blank() { return { strokes: [], texts: [], checks: [] }; }
 
   function load(page) {
-    try { return JSON.parse(localStorage.getItem(storeKey(page)) || '[]'); }
-    catch (error) { return []; }
+    try {
+      var raw = JSON.parse(localStorage.getItem(stateKey(page)) || 'null');
+      if (raw && Array.isArray(raw.strokes)) return raw;
+    } catch (error) { /* ignore */ }
+    return blank();
   }
 
   function save(page) {
-    try { localStorage.setItem(storeKey(page), JSON.stringify(strokes[page] || [])); }
+    try { localStorage.setItem(stateKey(page), JSON.stringify(pageState[page])); }
     catch (error) { /* storage can be blocked */ }
   }
 
@@ -37,8 +40,8 @@
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
-    (strokes[page] || []).forEach(function (stroke) {
-      ctx.strokeStyle = stroke.erase ? 'rgba(0,0,0,1)' : stroke.color;
+    (pageState[page].strokes || []).forEach(function (stroke) {
+      ctx.strokeStyle = stroke.erase ? '#000' : stroke.color;
       ctx.globalCompositeOperation = stroke.erase ? 'destination-out' : 'source-over';
       ctx.lineWidth = stroke.size * ratio * (stroke.erase ? 6 : 1);
       ctx.beginPath();
@@ -65,11 +68,59 @@
     redraw(canvas);
   }
 
+  function relPoint(wrap, event) {
+    var rect = wrap.getBoundingClientRect();
+    return {
+      x: ((event.clientX - rect.left) / rect.width) * 100,
+      y: ((event.clientY - rect.top) / rect.height) * 100
+    };
+  }
+
+  function renderItems(page) {
+    var wrap = document.querySelector('.hw-page-wrap[data-page="' + page + '"]');
+    if (!wrap) return;
+    wrap.querySelectorAll('.hw-text, .hw-check').forEach(function (node) { node.remove(); });
+
+    pageState[page].texts.forEach(function (item) {
+      var input = document.createElement('input');
+      input.className = 'hw-text';
+      input.value = item.text;
+      input.placeholder = 'type…';
+      input.style.left = item.x + '%';
+      input.style.top = item.y + '%';
+      input.style.width = Math.max(14, item.w) + '%';
+      input.addEventListener('input', function () {
+        item.text = input.value;
+        save(page);
+      });
+      wrap.appendChild(input);
+    });
+
+    pageState[page].checks.forEach(function (item) {
+      var box = document.createElement('button');
+      box.type = 'button';
+      box.className = 'hw-check' + (item.checked ? ' is-checked' : '');
+      box.style.left = item.x + '%';
+      box.style.top = item.y + '%';
+      box.setAttribute('aria-label', 'Checkbox');
+      box.setAttribute('aria-pressed', String(Boolean(item.checked)));
+      box.textContent = item.checked ? '✓' : '';
+      box.addEventListener('click', function (event) {
+        event.stopPropagation();
+        item.checked = !item.checked;
+        save(page);
+        renderItems(page);
+      });
+      wrap.appendChild(box);
+    });
+  }
+
   function buildPage(page) {
     var figure = document.createElement('figure');
     figure.className = 'hw-page';
     var wrap = document.createElement('div');
     wrap.className = 'hw-page-wrap';
+    wrap.dataset.page = String(page);
     var img = document.createElement('img');
     img.loading = page <= 2 ? 'eager' : 'lazy';
     img.src = 'page-' + page + '.jpg';
@@ -85,50 +136,59 @@
 
     figure.append(wrap, caption);
     img.addEventListener('load', function () { fit(canvas); });
-    strokes[page] = load(page);
-    canvas.addEventListener('pointerdown', down);
-    canvas.addEventListener('pointermove', move);
-    canvas.addEventListener('pointerup', up);
-    canvas.addEventListener('pointercancel', up);
-    return figure;
-  }
 
-  function pointFrom(canvas, event) {
-    var rect = canvas.getBoundingClientRect();
-    return [(event.clientX - rect.left), (event.clientY - rect.top)];
-  }
+    pageState[page] = load(page);
 
-  function down(event) {
-    if (!document.body.classList.contains('ink-on')) return;
-    event.preventDefault();
-    var canvas = event.currentTarget;
-    canvas.setPointerCapture(event.pointerId);
-    activeCanvas = canvas;
-    drawing = true;
-    var page = Number(canvas.dataset.page);
-    strokes[page] = strokes[page] || [];
-    strokes[page].push({ color: color, size: size, erase: erasing, points: [pointFrom(canvas, event)] });
-    redraw(canvas);
-  }
-
-  function move(event) {
-    if (!drawing || !activeCanvas) return;
-    event.preventDefault();
-    var page = Number(activeCanvas.dataset.page);
-    var stroke = strokes[page][strokes[page].length - 1];
-    stroke.points.push(pointFrom(activeCanvas, event));
-    redraw(activeCanvas);
-  }
-
-  function up(event) {
-    if (!drawing) return;
-    drawing = false;
-    if (activeCanvas) {
-      var page = Number(activeCanvas.dataset.page);
+    canvas.addEventListener('pointerdown', function (event) {
+      if (mode === 'draw' || mode === 'erase') {
+        event.preventDefault();
+        canvas.setPointerCapture(event.pointerId);
+        activeCanvas = canvas;
+        drawing = true;
+        pageState[page].strokes.push({
+          color: color, size: size, erase: mode === 'erase',
+          points: [[event.clientX - canvas.getBoundingClientRect().left,
+            event.clientY - canvas.getBoundingClientRect().top]]
+        });
+        redraw(canvas);
+        return;
+      }
+      if (mode === 'text' || mode === 'check') {
+        event.preventDefault();
+        var point = relPoint(wrap, event);
+        if (mode === 'text') {
+          pageState[page].texts.push({ x: point.x, y: point.y, w: 26, text: '' });
+        } else {
+          pageState[page].checks.push({ x: point.x, y: point.y, checked: false });
+        }
+        save(page);
+        renderItems(page);
+        if (mode === 'text') {
+          var inputs = wrap.querySelectorAll('.hw-text');
+          var last = inputs[inputs.length - 1];
+          if (last) last.focus();
+        }
+      }
+    });
+    canvas.addEventListener('pointermove', function (event) {
+      if (!drawing || activeCanvas !== canvas) return;
+      event.preventDefault();
+      var stroke = pageState[page].strokes[pageState[page].strokes.length - 1];
+      stroke.points.push([event.clientX - canvas.getBoundingClientRect().left,
+        event.clientY - canvas.getBoundingClientRect().top]);
+      redraw(canvas);
+    });
+    function endStroke() {
+      if (!drawing) return;
+      drawing = false;
       save(page);
       activeCanvas = null;
     }
-    void event;
+    canvas.addEventListener('pointerup', endStroke);
+    canvas.addEventListener('pointercancel', endStroke);
+
+    renderItems(page);
+    return figure;
   }
 
   var host = document.getElementById('hw-pages');
@@ -137,49 +197,63 @@
   var bar = document.createElement('div');
   bar.className = 'hw-tools';
   bar.innerHTML = [
-    '<button type="button" data-act="toggle" id="hw-toggle">Scribble: off</button>',
-    COLORS.map(function (c, i) {
-      return '<button type="button" class="hw-swatch" data-color="' + c + '" style="background:' + c + '" aria-label="Color ' + (i + 1) + '"></button>';
+    '<button type="button" data-mode="off" class="is-active" id="hw-off">Read</button>',
+    '<button type="button" data-mode="draw" id="hw-draw">Scribble</button>',
+    '<button type="button" data-mode="erase" id="hw-erase">Eraser</button>',
+    '<button type="button" data-mode="text" id="hw-text">Type</button>',
+    '<button type="button" data-mode="check" id="hw-check">Checkbox</button>',
+    COLORS.map(function (c, index) {
+      return '<button type="button" class="hw-swatch" data-color="' + c + '" style="background:' + c + '" aria-label="Color ' + (index + 1) + '"></button>';
     }).join(''),
-    '<button type="button" data-act="eraser">Eraser</button>',
     '<button type="button" data-act="undo">Undo</button>',
     '<button type="button" data-act="clear">Clear page</button>'
   ].join('');
   document.body.appendChild(bar);
 
+  function setMode(next) {
+    mode = next;
+    document.body.classList.toggle('ink-on', next === 'draw' || next === 'erase');
+    document.body.classList.toggle('place-on', next === 'text' || next === 'check');
+    bar.querySelectorAll('[data-mode]').forEach(function (button) {
+      button.classList.toggle('is-active', button.dataset.mode === next);
+    });
+  }
+
+  function visiblePage() {
+    var canvases = Array.from(document.querySelectorAll('.hw-ink'));
+    var found = canvases.find(function (canvas) {
+      var rect = canvas.getBoundingClientRect();
+      return rect.bottom > 0 && rect.top < window.innerHeight;
+    });
+    return found ? Number(found.dataset.page) : 1;
+  }
+
   bar.addEventListener('click', function (event) {
     var button = event.target.closest('button');
     if (!button) return;
-    var act = button.dataset.act;
+    if (button.dataset.mode) { setMode(button.dataset.mode); return; }
     if (button.dataset.color) {
       color = button.dataset.color;
-      erasing = false;
-      bar.querySelectorAll('.hw-swatch').forEach(function (s) { s.classList.toggle('is-active', s === button); });
+      bar.querySelectorAll('.hw-swatch').forEach(function (swatch) {
+        swatch.classList.toggle('is-active', swatch === button);
+      });
       return;
     }
-    if (act === 'toggle') {
-      var on = !document.body.classList.contains('ink-on');
-      document.body.classList.toggle('ink-on', on);
-      button.textContent = 'Scribble: ' + (on ? 'on' : 'off');
-      button.classList.toggle('is-active', on);
-    } else if (act === 'eraser') {
-      erasing = !erasing;
-      button.classList.toggle('is-active', erasing);
-    } else if (act === 'undo' || act === 'clear') {
-      var current = document.querySelector('.hw-ink');
-      var page = 1;
-      var visible = Array.from(document.querySelectorAll('.hw-ink')).find(function (canvas) {
-        var rect = canvas.getBoundingClientRect();
-        return rect.bottom > 0 && rect.top < window.innerHeight;
-      });
-      if (visible) { page = Number(visible.dataset.page); }
-      strokes[page] = strokes[page] || [];
-      if (act === 'undo') strokes[page].pop();
-      else strokes[page] = [];
-      save(page);
-      if (visible) redraw(visible);
-      void current;
+    var page = visiblePage();
+    var state = pageState[page];
+    if (button.dataset.act === 'undo') {
+      if (state.checks.length) state.checks.pop();
+      else if (state.texts.length) state.texts.pop();
+      else state.strokes.pop();
+    } else if (button.dataset.act === 'clear') {
+      state.strokes = [];
+      state.texts = [];
+      state.checks = [];
     }
+    save(page);
+    var canvas = document.querySelector('.hw-ink[data-page="' + page + '"]');
+    if (canvas) redraw(canvas);
+    renderItems(page);
   });
 
   window.addEventListener('resize', function () {

@@ -173,7 +173,7 @@ test('cross board has visible boxes and a crossed state', () => {
 
 test('homework viewers ship the scribble tool', () => {
   const js = fs.readFileSync(path.join(root, 'public/assets/js/hw-viewer.js'), 'utf8');
-  for (const needle of ['hw-ink', 'pointerdown', 'destination-out', 'localStorage', 'Undo', 'Clear page']) {
+  for (const needle of ['hw-ink', 'pointerdown', 'destination-out', 'localStorage', 'Undo', 'Clear page', 'hw-text', 'hw-check', 'data-mode="text"', 'data-mode="check"']) {
     assert.ok(js.includes(needle), 'missing ' + needle);
   }
   const css = fs.readFileSync(path.join(root, 'public/assets/css/homework-viewer.css'), 'utf8');

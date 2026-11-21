@@ -16,3 +16,34 @@ body.ink-on .hw-ink { pointer-events: auto; touch-action: none; cursor: crosshai
 .hw-tools button.is-active { background: #ffd166; color: #241a05; border-color: #ffd166; }
 .hw-swatch { width: 40px; min-width: 40px; height: 40px; padding: 0; border-radius: 50%; border: 2px solid #4b3a7d; }
 .hw-swatch.is-active { outline: 3px solid #fff; outline-offset: 2px; }
+
+/* Typed answers and checkboxes */
+body.place-on .hw-ink { pointer-events: auto; touch-action: none; cursor: cell; }
+.hw-text {
+  position: absolute;
+  transform: translate(0, -50%);
+  min-width: 80px;
+  padding: 2px 4px;
+  font: inherit;
+  font-size: 15px;
+  color: #10121a;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #7a6ab0;
+  border-radius: 4px;
+}
+.hw-text:focus { outline: 3px solid #ffd166; outline-offset: 1px; }
+.hw-check {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  border: 2px solid #7a6ab0;
+  background: rgba(255, 255, 255, 0.85);
+  color: #1b7f3a;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1;
+  cursor: pointer;
+}
+.hw-check.is-checked { background: #d8ffe0; border-color: #2ecc71; }

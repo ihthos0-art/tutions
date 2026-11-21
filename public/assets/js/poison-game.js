@@ -166,6 +166,7 @@
   }
 
   function playBoom() {
+    if (window.LearnFlowBoom) { window.LearnFlowBoom.play(); return; }
     try {
       var Ctx = window.AudioContext || window.webkitAudioContext;
       if (!Ctx) { toast('This browser has no audio support'); return; }

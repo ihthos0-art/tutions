@@ -7,14 +7,16 @@
   var token = auth.token;
   var me = auth.studentId;
   var CELLS = 50;
+  var BOXES = 50;
   var HOLD_MS = 2000;
 
   var game = null;
   var teamPick = null;
   var pollTimer = null;
   var inFlight = false;
-  var builtKey = null;
-  var hold = { raf: null, tile: null, cell: -1, startedAt: 0, version: 0 };
+  var numbersKey = null;
+  var boxesKey = null;
+  var hold = { raf: null, box: null, cell: -1, startedAt: 0, version: 0 };
 
   function byId(id) { return document.getElementById(id); }
   function teamName(team) { return team === 'sun' ? 'Team Sun' : 'Team Wave'; }
@@ -92,14 +94,13 @@
     byId('nc-lobby-error').textContent = '';
   }
 
-  function buildBoard(numbers, key) {
-    if (builtKey === key) return;
-    builtKey = key;
+  function buildNumbers(numbers) {
+    var key = game.id + ':' + numbers.join(',');
+    if (numbersKey === key) return;
+    numbersKey = key;
     var board = byId('nc-board');
     board.replaceChildren();
-    var cols = window.innerWidth < 700 ? 10 : 10;
-    var rows = CELLS / cols;
-    board.style.aspectRatio = String(cols / (rows * 0.9));
+    board.style.aspectRatio = '10 / 4.4';
     for (var i = 0; i < CELLS; i += 1) {
       var tile = document.createElement('button');
       tile.type = 'button';
@@ -107,15 +108,36 @@
       tile.dataset.index = String(i);
       tile.textContent = String(numbers[i]);
       tile.setAttribute('aria-label', 'Number ' + numbers[i]);
-      var col = i % cols;
-      var row = Math.floor(i / cols);
-      var left = ((col + 0.5 + (Math.random() - 0.5) * 0.5) / cols) * 100;
-      var top = ((row + 0.5 + (Math.random() - 0.5) * 0.42) / rows) * 100;
+      var col = i % 10;
+      var row = Math.floor(i / 10);
+      var left = ((col + 0.5 + (Math.random() - 0.5) * 0.5) / 10) * 100;
+      var top = ((row + 0.5 + (Math.random() - 0.5) * 0.42) / 5) * 100;
       tile.style.left = Math.max(3.5, Math.min(96.5, left)).toFixed(2) + '%';
-      tile.style.top = Math.max(2.5, Math.min(97.5, top)).toFixed(2) + '%';
+      tile.style.top = Math.max(3, Math.min(97, top)).toFixed(2) + '%';
       tile.style.setProperty('--rot', (Math.random() * 10 - 5).toFixed(1) + 'deg');
       board.appendChild(tile);
     }
+  }
+
+  function buildBoxes() {
+    var key = game.id;
+    if (boxesKey === key) return;
+    boxesKey = key;
+    var host = byId('nc-boxes');
+    host.replaceChildren();
+    for (var i = 0; i < BOXES; i += 1) {
+      var box = document.createElement('button');
+      box.type = 'button';
+      box.className = 'nc-box';
+      box.dataset.index = String(i);
+      box.setAttribute('aria-label', 'Box ' + (i + 1));
+      host.appendChild(box);
+    }
+  }
+
+  function setBanner(title, help) {
+    byId('nc-banner').textContent = title;
+    byId('nc-help').textContent = help || '';
   }
 
   function renderStage() {
@@ -132,60 +154,54 @@
         var chip = document.createElement('span');
         chip.className = 'nc-member';
         if (team === game.pickerTeam) chip.classList.add('is-picking');
-        if (team === game.finderTeam) chip.classList.add('is-searching');
         chip.textContent = player.name;
         host.appendChild(chip);
       });
     });
 
-    if (Array.isArray(game.numbers) && game.numbers.length) {
-      buildBoard(game.numbers, game.id + ':' + game.numbers.join(','));
-      byId('nc-cover').hidden = true;
-    } else {
-      byId('nc-cover').hidden = false;
-      byId('nc-cover-text').textContent = teamName(game.pickerTeam) + ' is picking, numbers are hidden';
-    }
+    buildNumbers(game.numbers);
+    buildBoxes();
+    byId('nc-cover').hidden = true;
     byId('nc-countdown').hidden = true;
+    document.body.classList.toggle('nc-hunting', game.myTeam === game.finderTeam);
+    byId('nc-boxes-help').textContent = game.myTeam === game.pickerTeam
+      ? 'Hold each box for 2 seconds to cross it.'
+      : 'The other team is crossing these boxes.';
+    byId('nc-boxes-help').hidden = game.phase === 'pick';
 
     var targetHost = byId('nc-target');
-    if (game.phase === 'pick') {
+    if (game.secretNumber) {
+      targetHost.hidden = false;
+      byId('nc-target-number').textContent = String(game.secretNumber);
+    } else {
       targetHost.hidden = true;
+    }
+
+    if (game.phase === 'pick') {
       if (game.myTeam === game.pickerTeam) {
-        setBanner('Pick a secret number', 'Tap one number. The other team will try to find it.');
+        setBanner('Pick a secret number', 'Tap one number. Do not let them see which one.');
       } else {
-        setBanner(teamName(game.pickerTeam) + ' is picking', 'Get ready to hunt their number.');
+        setBanner(teamName(game.pickerTeam) + ' is picking', 'Watch the board. The number will appear.');
       }
     } else if (game.phase === 'cross') {
-      if (game.secretNumber && game.myTeam === game.pickerTeam) {
-        targetHost.hidden = false;
-        byId('nc-target-number').textContent = String(game.secretNumber);
-        setBanner('Your number is ' + game.secretNumber + ': cross boxes', 'Hold any box for 2 seconds. The other team is hunting your number.');
-      } else if (game.myTeam === game.pickerTeam) {
-        targetHost.hidden = true;
-        setBanner('Cross boxes', 'Hold any box for 2 seconds.');
-      } else if (game.canGuess) {
-        targetHost.hidden = true;
-        setBanner('Find their number', 'Tap the number the other team picked. Wrong guesses pause you.');
+      if (game.myTeam === game.pickerTeam) {
+        setBanner('Cross boxes', 'Your number is ' + game.secretNumber + '. Hold boxes for 2 seconds.');
       } else {
-        targetHost.hidden = true;
-        setBanner('Hunting', 'Watching the board.');
+        setBanner('Find ' + game.secretNumber, 'Tap that number on the board to stop them.');
       }
     }
 
-    var own = new Set(game.crossed[game.myTeam] || []);
+    var guessable = Boolean(game.canGuess);
     byId('nc-board').querySelectorAll('.nc-tile').forEach(function (tile) {
-      var index = Number(tile.dataset.index);
-      tile.classList.toggle('is-crossed', own.has(index));
       tile.classList.toggle('is-pickable', Boolean(game.canPick));
-      tile.classList.toggle('is-guessable', Boolean(game.canGuess));
-      tile.disabled = false;
+      tile.classList.toggle('is-guessable', guessable);
+      tile.classList.remove('is-crossed');
     });
 
-  }
-
-  function setBanner(title, help) {
-    byId('nc-banner').textContent = title;
-    byId('nc-help').textContent = help || '';
+    var own = new Set(game.crossed[game.myTeam] || []);
+    byId('nc-boxes').querySelectorAll('.nc-box').forEach(function (box) {
+      box.classList.toggle('is-crossed', own.has(Number(box.dataset.index)));
+    });
   }
 
   function renderWinner() {
@@ -193,7 +209,7 @@
     var winnerName = game.winner === 'sun' ? 'Team Sun' : 'Team Wave';
     byId('nc-winner-title').textContent = game.winner === game.myTeam ? 'Your team wins' : winnerName + ' wins';
     byId('nc-winner-sub').textContent =
-      'Team Sun ' + game.counts.sun + '/50, Team Wave ' + game.counts.wave + '/50';
+      'Team Sun ' + game.counts.sun + '/50 boxes, Team Wave ' + game.counts.wave + '/50 boxes';
   }
 
   function render() {
@@ -231,7 +247,6 @@
   ['sun', 'wave'].forEach(function (team) {
     byId('team-' + team).addEventListener('click', function () { teamPick = team; renderLobby(); });
   });
-
   byId('nc-join').addEventListener('click', function () { if (teamPick) joinGame(teamPick); });
   byId('nc-start').addEventListener('click', function () {
     api('/api/cross/start', { method: 'POST' })
@@ -271,58 +286,59 @@
 
   function cancelHold(sendCancel) {
     if (hold.raf) cancelAnimationFrame(hold.raf);
-    if (hold.tile) {
-      hold.tile.classList.remove('is-holding');
-      hold.tile.style.setProperty('--hold', '0');
+    if (hold.box) {
+      hold.box.classList.remove('is-holding');
+      hold.box.style.setProperty('--hold', '0');
     }
     if (sendCancel && hold.cell >= 0) {
       api('/api/cross/hold', { method: 'POST', body: JSON.stringify({ action: 'cancel' }) }).catch(function () {});
     }
-    hold = { raf: null, tile: null, cell: -1, startedAt: 0, version: 0 };
+    hold = { raf: null, box: null, cell: -1, startedAt: 0, version: 0 };
   }
 
-  function beginHold(tile, index) {
+  function beginHold(box, index) {
     if (!game || !game.canCross || hold.cell >= 0) return;
+    if ((game.crossed[game.myTeam] || []).indexOf(index) >= 0) return;
     api('/api/cross/hold', { method: 'POST', body: JSON.stringify({ action: 'start', cell: index }) })
       .then(function (data) {
         game = data.game;
         hold.cell = index;
-        hold.tile = tile;
+        hold.box = box;
         hold.startedAt = performance.now();
         hold.version = game.version;
-        tile.classList.add('is-holding');
+        box.classList.add('is-holding');
         var tick = function (now) {
           var progress = Math.min(1, (now - hold.startedAt) / HOLD_MS);
-          tile.style.setProperty('--hold', String(progress));
+          box.style.setProperty('--hold', String(progress));
           if (progress < 1) { hold.raf = requestAnimationFrame(tick); return; }
-          finishHold(index, tile);
+          finishHold(index, box);
         };
         hold.raf = requestAnimationFrame(tick);
       })
       .catch(function (error) { toast(error.message); poll(); });
   }
 
-  function finishHold(index, tile) {
+  function finishHold(index, box) {
     if (hold.raf) cancelAnimationFrame(hold.raf);
-    tile.classList.remove('is-holding');
-    tile.style.setProperty('--hold', '0');
+    box.classList.remove('is-holding');
+    box.style.setProperty('--hold', '0');
     var version = hold.version;
-    hold = { raf: null, tile: null, cell: -1, startedAt: 0, version: 0 };
+    hold = { raf: null, box: null, cell: -1, startedAt: 0, version: 0 };
     api('/api/cross/complete', { method: 'POST', body: JSON.stringify({ cell: index, version: version }) })
       .then(function (data) { game = data.game; render(); })
       .catch(function (error) { toast(error.message); poll(); });
   }
 
-  byId('nc-board').addEventListener('pointerdown', function (event) {
-    var tile = event.target.closest('.nc-tile');
-    if (!tile || !game || !game.canCross) return;
+  byId('nc-boxes').addEventListener('pointerdown', function (event) {
+    var box = event.target.closest('.nc-box');
+    if (!box || !game || !game.canCross) return;
     event.preventDefault();
-    beginHold(tile, Number(tile.dataset.index));
+    beginHold(box, Number(box.dataset.index));
   });
   function releaseHold() { if (hold.cell >= 0) cancelHold(true); }
-  byId('nc-board').addEventListener('pointerup', releaseHold);
-  byId('nc-board').addEventListener('pointercancel', releaseHold);
-  byId('nc-board').addEventListener('pointerleave', releaseHold);
+  byId('nc-boxes').addEventListener('pointerup', releaseHold);
+  byId('nc-boxes').addEventListener('pointercancel', releaseHold);
+  byId('nc-boxes').addEventListener('pointerleave', releaseHold);
 
   byId('nc-me').textContent = auth.studentName || '';
   poll();

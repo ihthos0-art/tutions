@@ -42,7 +42,7 @@ test('needs a student session', async () => {
   assert.equal((await get(e, '/api/cross/state')).status, 401);
 });
 
-test('secret number is hidden from the hunting team', async () => {
+test('target number is shown to the hunting team once picked', async () => {
   const e = env(createMemoryCrossStore({ holdMs: 0, wrongMs: 0 }));
   const { a, b, game } = await joined(e);
   const pickerToken = game.pickerTeam === 'sun' ? a : b;
@@ -53,8 +53,9 @@ test('secret number is hidden from the hunting team', async () => {
   const secret = (await picked.json()).game.secretNumber;
   assert.ok(secret);
   const finder = (await (await get(e, '/api/cross/state', finderToken)).json()).game;
-  assert.equal(finder.secretNumber, null);
-  assert.equal(finder.secretCell, null);
+  assert.equal(finder.secretNumber, secret, 'hunter sees the target number');
+  assert.equal(finder.secretCell, null, 'hunter does not get the cell index');
+  assert.equal(finder.numbers.length, 50);
   assert.equal(finder.canGuess, true);
 });
 

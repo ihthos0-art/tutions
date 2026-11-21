@@ -166,13 +166,13 @@
       byId('nc-cover').hidden = false;
       byId('nc-cover-text').textContent = teamName(game.pickerTeam) + ' is picking';
     }
+    var pickerCrossing = game.phase === 'cross' && game.myTeam === game.pickerTeam;
+    byId('nc-boxes-wrap').hidden = !pickerCrossing;
+    byId('nc-board').parentElement.hidden = pickerCrossing;
     buildBoxes();
     byId('nc-countdown').hidden = true;
     document.body.classList.toggle('nc-hunting', game.myTeam === game.finderTeam);
-    byId('nc-boxes-help').textContent = game.myTeam === game.pickerTeam
-      ? 'Hold each box for 2 seconds to cross it.'
-      : 'The other team is crossing these boxes.';
-    byId('nc-boxes-help').hidden = game.phase === 'pick';
+    byId('nc-boxes-help').textContent = 'Hold each box for 2 seconds to cross it.';
 
     var targetHost = byId('nc-target');
     if (game.secretNumber) {

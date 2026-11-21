@@ -181,3 +181,10 @@ test('homework viewers ship the scribble tool', () => {
   const page = fs.readFileSync(path.join(root, 'public/homework/manha/cats/index.html'), 'utf8');
   assert.match(page, /hw-viewer\.js/);
 });
+
+test('picker screen swaps the number board for boxes once picked', () => {
+  const js = fs.readFileSync(path.join(root, 'public/assets/js/number-cross.js'), 'utf8');
+  assert.match(js, /nc-boxes-wrap/);
+  assert.match(js, /pickerCrossing/);
+  assert.match(js, /parentElement\.hidden = pickerCrossing/);
+});

@@ -47,3 +47,8 @@ body.place-on .hw-ink { pointer-events: auto; touch-action: none; cursor: cell; 
   cursor: pointer;
 }
 .hw-check.is-checked { background: #d8ffe0; border-color: #2ecc71; }
+
+.hw-picker input { width: 38px; height: 38px; padding: 0; border: 2px solid #4b3a7d; border-radius: 50%; background: transparent; cursor: pointer; }
+.hw-size { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #b9a9e6; }
+.hw-size input { width: 110px; accent-color: #ffd166; }
+.hw-size output { min-width: 18px; text-align: right; color: #f4f0ff; font-weight: 700; }

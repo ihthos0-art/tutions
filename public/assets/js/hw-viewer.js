@@ -6,9 +6,9 @@
   var pages = Number(script.dataset.pages || 0);
   var keyBase = script.dataset.key || title;
 
-  var COLORS = ['#ff4d6d', '#ffd166', '#4cc9f0', '#2ecc71', '#ffffff'];
+  var COLORS = ['#000000', '#ff4d6d', '#ffd166', '#4cc9f0', '#2ecc71', '#b388ff', '#ff9f1c', '#ffffff'];
   var mode = 'off'; // off | draw | erase | text | check
-  var color = COLORS[0];
+  var color = COLORS[1];
   var size = 4;
   var drawing = false;
   var activeCanvas = null;
@@ -16,12 +16,15 @@
 
   function stateKey(page) { return 'hw-annot:' + keyBase + ':' + page; }
 
-  function blank() { return { strokes: [], texts: [], checks: [] }; }
+  function blank() { return { strokes: [], texts: [], checks: [], fills: [] }; }
 
   function load(page) {
     try {
       var raw = JSON.parse(localStorage.getItem(stateKey(page)) || 'null');
-      if (raw && Array.isArray(raw.strokes)) return raw;
+      if (raw && Array.isArray(raw.strokes)) {
+        if (!Array.isArray(raw.fills)) raw.fills = [];
+        return raw;
+      }
     } catch (error) { /* ignore */ }
     return blank();
   }
@@ -31,13 +34,71 @@
     catch (error) { /* storage can be blocked */ }
   }
 
+  function fillRegion(canvas, img, op) {
+    if (!img || !img.complete || !img.naturalWidth) return;
+    var scale = Math.min(1, 900 / img.naturalWidth);
+    var off = document.createElement('canvas');
+    off.width = Math.max(1, Math.round(img.naturalWidth * scale));
+    off.height = Math.max(1, Math.round(img.naturalHeight * scale));
+    var octx = off.getContext('2d');
+    octx.drawImage(img, 0, 0, off.width, off.height);
+    var data = octx.getImageData(0, 0, off.width, off.height);
+    var px = Math.round(op.x * off.width);
+    var py = Math.round(op.y * off.height);
+    if (px < 0 || py < 0 || px >= off.width || py >= off.height) return;
+    var W = off.width, H = off.height;
+    var src = data.data;
+    var start = (py * W + px) * 4;
+    var target = [src[start], src[start + 1], src[start + 2]];
+    var tolerance = 46;
+    var seen = new Uint8Array(W * H);
+    var stack = [py * W + px];
+    var rgb = (function (hex) {
+      var v = hex.replace('#', '');
+      return [parseInt(v.slice(0, 2), 16), parseInt(v.slice(2, 4), 16), parseInt(v.slice(4, 6), 16)];
+    })(op.color);
+    var out = octx.createImageData(W, H);
+    var filled = 0;
+    while (stack.length) {
+      var index = stack.pop();
+      if (seen[index]) continue;
+      seen[index] = 1;
+      var offset = index * 4;
+      if (Math.abs(src[offset] - target[0]) > tolerance
+        || Math.abs(src[offset + 1] - target[1]) > tolerance
+        || Math.abs(src[offset + 2] - target[2]) > tolerance) continue;
+      out.data[offset] = rgb[0];
+      out.data[offset + 1] = rgb[1];
+      out.data[offset + 2] = rgb[2];
+      out.data[offset + 3] = 190;
+      filled += 1;
+      var x = index % W;
+      var y = (index - x) / W;
+      if (x > 0) stack.push(index - 1);
+      if (x < W - 1) stack.push(index + 1);
+      if (y > 0) stack.push(index - W);
+      if (y < H - 1) stack.push(index + W);
+    }
+    if (!filled) return;
+    var mask = document.createElement('canvas');
+    mask.width = W;
+    mask.height = H;
+    mask.getContext('2d').putImageData(out, 0, 0);
+    var ctx = canvas.getContext('2d');
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.drawImage(mask, 0, 0, canvas.width, canvas.height);
+  }
+
   function redraw(canvas) {
     var page = Number(canvas.dataset.page);
     var ctx = canvas.getContext('2d');
     var rect = canvas.getBoundingClientRect();
     var ratio = canvas.width / Math.max(1, rect.width);
+    var img = canvas.parentElement.querySelector('img');
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    (pageState[page].fills || []).forEach(function (op) { fillRegion(canvas, img, op); });
+    ctx = canvas.getContext('2d');
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
     (pageState[page].strokes || []).forEach(function (stroke) {
@@ -153,6 +214,16 @@
         redraw(canvas);
         return;
       }
+      if (mode === 'fill') {
+        event.preventDefault();
+        var wrapRect = wrap.getBoundingClientRect();
+        var pointX = (event.clientX - wrapRect.left) / wrapRect.width;
+        var pointY = (event.clientY - wrapRect.top) / wrapRect.height;
+        pageState[page].fills.push({ x: pointX, y: pointY, color: color });
+        save(page);
+        redraw(canvas);
+        return;
+      }
       if (mode === 'text' || mode === 'check') {
         event.preventDefault();
         var point = relPoint(wrap, event);
@@ -202,9 +273,12 @@
     '<button type="button" data-mode="erase" id="hw-erase">Eraser</button>',
     '<button type="button" data-mode="text" id="hw-text">Type</button>',
     '<button type="button" data-mode="check" id="hw-check">Checkbox</button>',
+    '<button type="button" data-mode="fill" id="hw-fill">Fill</button>',
     COLORS.map(function (c, index) {
       return '<button type="button" class="hw-swatch" data-color="' + c + '" style="background:' + c + '" aria-label="Color ' + (index + 1) + '"></button>';
     }).join(''),
+    '<label class="hw-picker" aria-label="Pick any color"><input type="color" id="hw-color" value="' + color + '" /></label>',
+    '<label class="hw-size" aria-label="Brush size"><span>Size</span><input type="range" id="hw-size" min="1" max="40" value="' + size + '" /><output id="hw-size-out">' + size + '</output></label>',
     '<button type="button" data-act="undo">Undo</button>',
     '<button type="button" data-act="clear">Clear page</button>'
   ].join('');
@@ -212,7 +286,7 @@
 
   function setMode(next) {
     mode = next;
-    document.body.classList.toggle('ink-on', next === 'draw' || next === 'erase');
+    document.body.classList.toggle('ink-on', next === 'draw' || next === 'erase' || next === 'fill');
     document.body.classList.toggle('place-on', next === 'text' || next === 'check');
     bar.querySelectorAll('[data-mode]').forEach(function (button) {
       button.classList.toggle('is-active', button.dataset.mode === next);
@@ -244,16 +318,26 @@
     if (button.dataset.act === 'undo') {
       if (state.checks.length) state.checks.pop();
       else if (state.texts.length) state.texts.pop();
-      else state.strokes.pop();
+      else if (state.strokes.length) state.strokes.pop();
+      else if (state.fills.length) state.fills.pop();
     } else if (button.dataset.act === 'clear') {
       state.strokes = [];
       state.texts = [];
       state.checks = [];
+      state.fills = [];
     }
     save(page);
     var canvas = document.querySelector('.hw-ink[data-page="' + page + '"]');
     if (canvas) redraw(canvas);
     renderItems(page);
+  });
+
+  document.getElementById('hw-color').addEventListener('input', function (event) {
+    color = event.target.value;
+  });
+  document.getElementById('hw-size').addEventListener('input', function (event) {
+    size = Number(event.target.value);
+    document.getElementById('hw-size-out').textContent = String(size);
   });
 
   window.addEventListener('resize', function () {

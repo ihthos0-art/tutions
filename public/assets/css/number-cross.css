@@ -317,8 +317,18 @@
 .nc-tile.is-pickable { border-color: var(--gold); background: linear-gradient(160deg, #5b439b, #3a2668); }
 .nc-tile.is-guessable { border-color: var(--pink); }
 .nc-tile.is-guessable:hover { --scale: 1.1; border-color: #ffd1e0; }
+.nc-tile.is-crossed::after {
+  content: "✓";
+  position: absolute;
+  top: 2px;
+  right: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--lime);
+  text-decoration: none;
+}
 .nc-tile.is-crossed {
-  opacity: 0.32;
+  opacity: 0.4;
   filter: grayscale(0.6);
   text-decoration: line-through;
   text-decoration-thickness: 3px;

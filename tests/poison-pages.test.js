@@ -160,3 +160,13 @@ test('one-screen poison page exists and is self contained', () => {
   const main = fs.readFileSync(path.join(root, 'public/poison.html'), 'utf8');
   assert.match(main, /poison-table/);
 });
+
+test('cross board has visible boxes and a crossed state', () => {
+  const css = fs.readFileSync(path.join(root, 'public/assets/css/number-cross.css'), 'utf8');
+  assert.match(css, /\.nc-tile \{[^}]*background:/);
+  assert.match(css, /\.nc-tile \{[^}]*border: 2px solid/);
+  assert.match(css, /\.nc-tile\.is-crossed/);
+  assert.match(css, /\.nc-tile\.is-holding/);
+  const js = fs.readFileSync(path.join(root, 'public/assets/js/number-cross.js'), 'utf8');
+  assert.match(js, /is-crossed/);
+});

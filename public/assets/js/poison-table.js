@@ -241,7 +241,41 @@
     renderPlay();
   }
 
+  var audioCtx = null;
+  function playBoom() {
+    try {
+      var Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) return;
+      audioCtx = audioCtx || new Ctx();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      var t = audioCtx.currentTime;
+      var osc = audioCtx.createOscillator();
+      var gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(180, t);
+      osc.frequency.exponentialRampToValueAtTime(40, t + 0.45);
+      gain.gain.setValueAtTime(0.6, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.55);
+      osc.connect(gain).connect(audioCtx.destination);
+      osc.start(t);
+      osc.stop(t + 0.6);
+      var frames = Math.floor(audioCtx.sampleRate * 0.3);
+      var buffer = audioCtx.createBuffer(1, frames, audioCtx.sampleRate);
+      var data = buffer.getChannelData(0);
+      for (var i = 0; i < frames; i += 1) data[i] = (Math.random() * 2 - 1) * (1 - i / frames);
+      var noise = audioCtx.createBufferSource();
+      var noiseGain = audioCtx.createGain();
+      noiseGain.gain.value = 0.25;
+      noise.buffer = buffer;
+      noise.connect(noiseGain).connect(audioCtx.destination);
+      noise.start(t);
+    } catch (error) {
+      console.warn('Boom sound unavailable:', error);
+    }
+  }
+
   function flash(index) {
+    playBoom();
     var cell = byId('pt-play-board').querySelector('[data-cell="' + index + '"]');
     if (cell) {
       cell.classList.add('boom');

@@ -155,7 +155,7 @@
       if (game.secretNumber && game.myTeam === game.pickerTeam) {
         targetHost.hidden = false;
         byId('nc-target-number').textContent = String(game.secretNumber);
-        setBanner('Cross boxes', 'Hold any box for 2 seconds. Your secret number is above.');
+        setBanner('Your number is ' + game.secretNumber + ': cross boxes', 'Hold any box for 2 seconds. The other team is hunting your number.');
       } else if (game.myTeam === game.pickerTeam) {
         targetHost.hidden = true;
         setBanner('Cross boxes', 'Hold any box for 2 seconds.');

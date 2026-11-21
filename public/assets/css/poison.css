@@ -449,3 +449,38 @@ body.shake { animation: shake 300ms ease-in-out; }
 .mode-btn.is-active { color: var(--accent-ink); background: linear-gradient(180deg, #ffc93c, var(--accent)); }
 .mode-btn:focus-visible { outline: 3px solid var(--sky); outline-offset: 2px; }
 .mode-pick[hidden], .team-pick[hidden] { display: none; }
+
+/* Revealed cells: clearly done, not clickable-looking */
+.cell--revealed {
+  opacity: 0.32;
+  filter: grayscale(0.7);
+  box-shadow: none;
+  transform: none !important;
+  cursor: default;
+  border-style: dashed;
+}
+.cell--revealed.cell--safe {
+  background: #1a2a20;
+  border-color: #3d6b4e;
+}
+.cell--revealed.cell--poison {
+  background: #2c1114;
+  border-color: #6e2a2a;
+  opacity: 0.38;
+}
+.cell--revealed:hover, .cell--revealed:active {
+  transform: none !important;
+  filter: grayscale(0.7);
+}
+
+/* Placement picks: obvious gold tick */
+.cell--chosen::after {
+  content: "✓";
+  position: absolute;
+  top: 2px;
+  right: 5px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--gold);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.65);
+}

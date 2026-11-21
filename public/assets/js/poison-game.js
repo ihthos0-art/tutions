@@ -275,8 +275,12 @@
       cell.disabled = Boolean(reveal);
       cell.textContent = itemFor(game.id);
       if (reveal) {
+        cell.classList.add('cell--revealed');
         cell.classList.add(reveal.hit ? 'cell--poison' : 'cell--safe');
+        cell.setAttribute('aria-disabled', 'true');
+        cell.setAttribute('aria-label', reveal.hit ? 'Poison, out' : 'Safe, already picked');
         if (reveal.hit) cell.textContent = '💥';
+        else cell.textContent = '✓';
       } else if (game.ownPoisons && game.ownPoisons.indexOf(index) >= 0) {
         cell.classList.add('cell--own');
       }
